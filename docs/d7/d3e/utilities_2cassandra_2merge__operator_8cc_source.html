@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/cassandra/merge_operator.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d7/d3e/utilities_2cassandra_2merge__operator_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">merge_operator.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d7/d3e/utilities_2cassandra_2merge__operator_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2017-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/dd0/utilities_2cassandra_2merge__operator_8h.html">merge_operator.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/dca/include_2rocksdb_2merge__operator_8h.html">rocksdb/merge_operator.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d48/slice_8h.html">rocksdb/slice.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/db1/options__type_8h.html">rocksdb/utilities/options_type.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d21/utilities_2cassandra_2format_8h.html">utilities/cassandra/format.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/daf/merge__operators_8h.html">utilities/merge_operators.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html">ROCKSDB_NAMESPACE::cassandra</a> {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">static</span> std::unordered_map&lt;std::string, OptionTypeInfo&gt;</div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="};">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a4a26de566944eb4e8c42dadd8b1cad4c">   19</a></span>    <a class="code hl_variable" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a4a26de566944eb4e8c42dadd8b1cad4c">merge_operator_options_info</a> = {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        {<span class="stringliteral">&quot;gc_grace_period_in_seconds&quot;</span>,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>         {offsetof(<span class="keyword">struct</span> <a class="code hl_struct" href="../../d0/d2a/structROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraOptions.html">CassandraOptions</a>, gc_grace_period_in_seconds),</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca93b8fef3be50b11316a75c44e594cf56">OptionType::kUInt32T</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">OptionVerificationType::kNormal</a>,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">OptionTypeFlags::kNone</a>}},</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        {<span class="stringliteral">&quot;operands_limit&quot;</span>,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>         {offsetof(<span class="keyword">struct</span> <a class="code hl_struct" href="../../d0/d2a/structROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraOptions.html">CassandraOptions</a>, operands_limit), <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca163a628faf39b423222a9944b9b0deb9">OptionType::kSizeT</a>,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">OptionVerificationType::kNormal</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">OptionTypeFlags::kNone</a>}},</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>};</div>
+</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#a7bd3cd62235e7747f28f5f3fac3d16ea">   29</a></span><a class="code hl_function" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#a7bd3cd62235e7747f28f5f3fac3d16ea">CassandraValueMergeOperator::CassandraValueMergeOperator</a>(</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    int32_t gc_grace_period_in_seconds, <span class="keywordtype">size_t</span> operands_limit)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    : <a class="code hl_variable" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#acbaa6efe9227ff399258e5f4797ed20f">options_</a>(gc_grace_period_in_seconds, operands_limit) {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <a class="code hl_function" href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#a10a019263f3ea488ab059ec116085f8a">RegisterOptions</a>(&amp;<a class="code hl_variable" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#acbaa6efe9227ff399258e5f4797ed20f">options_</a>, &amp;<a class="code hl_variable" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a4a26de566944eb4e8c42dadd8b1cad4c">merge_operator_options_info</a>);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
+</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">// Implementation for the merge operation (merges two Cassandra values)</span></div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#aa98b90c59b9e784d75306e1b02b97439">   36</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#aa98b90c59b9e784d75306e1b02b97439">CassandraValueMergeOperator::FullMergeV2</a>(</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html">MergeOperationInput</a>&amp; merge_in,</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_struct" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html">MergeOperationOutput</a>* merge_out)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// Clear the *new_value for writing.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  merge_out-&gt;<a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">new_value</a>.clear();</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  std::vector&lt;RowValue&gt; row_values;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">if</span> (merge_in.<a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">existing_value</a>) {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    row_values.push_back(<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a826eb5363ed1cc7e892305b615a1d184">RowValue::Deserialize</a>(</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        merge_in.<a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">existing_value</a>-&gt;<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">data</a>(), merge_in.<a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">existing_value</a>-&gt;<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>()));</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; operand : merge_in.<a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a0cdff7031ad6dd4a7c277cb49d43e572">operand_list</a>) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    row_values.push_back(<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a826eb5363ed1cc7e892305b615a1d184">RowValue::Deserialize</a>(operand.data(), operand.size()));</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_class" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html">RowValue</a> merged = <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a70feed3a2adc29bfc7d7bc7981f0d62a">RowValue::Merge</a>(std::move(row_values));</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  merged = merged.<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ae47d05a3f818a76b35dc9088a904eb6d">RemoveTombstones</a>(<a class="code hl_variable" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#acbaa6efe9227ff399258e5f4797ed20f">options_</a>.gc_grace_period_in_seconds);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  merge_out-&gt;<a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">new_value</a>.reserve(merged.<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a76389fedcc64239413c9bceb39ede20d">Size</a>());</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  merged.<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a6694a40de02601c50dc84eb67ef81e53">Serialize</a>(&amp;(merge_out-&gt;<a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">new_value</a>));</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
+</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#a5619c080ef0aa07c113f1860aba90894">   59</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#a5619c080ef0aa07c113f1860aba90894">CassandraValueMergeOperator::PartialMergeMulti</a>(</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <span class="comment">/*key*/</span>, <span class="keyword">const</span> std::deque&lt;Slice&gt;&amp; operand_list,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    std::string* new_value, <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* <span class="comment">/*logger*/</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// Clear the *new_value for writing.</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  assert(new_value);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  new_value-&gt;clear();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  std::vector&lt;RowValue&gt; row_values;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; operand : operand_list) {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    row_values.push_back(<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a826eb5363ed1cc7e892305b615a1d184">RowValue::Deserialize</a>(operand.data(), operand.size()));</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <a class="code hl_class" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html">RowValue</a> merged = <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a70feed3a2adc29bfc7d7bc7981f0d62a">RowValue::Merge</a>(std::move(row_values));</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  new_value-&gt;reserve(merged.<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a76389fedcc64239413c9bceb39ede20d">Size</a>());</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  merged.<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a6694a40de02601c50dc84eb67ef81e53">Serialize</a>(new_value);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
+</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE::cassandra</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Configurable_html_a10a019263f3ea488ab059ec116085f8a"><div class="ttname"><a href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#a10a019263f3ea488ab059ec116085f8a">ROCKSDB_NAMESPACE::Configurable::RegisterOptions</a></div><div class="ttdeci">void RegisterOptions(T *opt_ptr, const std::unordered_map&lt; std::string, OptionTypeInfo &gt; *opt_map)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d0b/configurable_8h_source.html#l00376">configurable.h:376</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Logger_html"><div class="ttname"><a href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">ROCKSDB_NAMESPACE::Logger</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l01218">env.h:1218</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a47c51c16ecee27b619768f1b817a342c"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">ROCKSDB_NAMESPACE::Slice::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00060">slice.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a5230d45b66475f5e342a7654313d4c0e"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">ROCKSDB_NAMESPACE::Slice::data</a></div><div class="ttdeci">const char * data() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00057">slice.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator_html_a5619c080ef0aa07c113f1860aba90894"><div class="ttname"><a href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#a5619c080ef0aa07c113f1860aba90894">ROCKSDB_NAMESPACE::cassandra::CassandraValueMergeOperator::PartialMergeMulti</a></div><div class="ttdeci">bool PartialMergeMulti(const Slice &amp;key, const std::deque&lt; Slice &gt; &amp;operand_list, std::string *new_value, Logger *logger) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00059">merge_operator.cc:59</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator_html_a7bd3cd62235e7747f28f5f3fac3d16ea"><div class="ttname"><a href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#a7bd3cd62235e7747f28f5f3fac3d16ea">ROCKSDB_NAMESPACE::cassandra::CassandraValueMergeOperator::CassandraValueMergeOperator</a></div><div class="ttdeci">CassandraValueMergeOperator(int32_t gc_grace_period_in_seconds, size_t operands_limit=0)</div><div class="ttdef"><b>Definition</b> <a href="#l00029">merge_operator.cc:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator_html_aa98b90c59b9e784d75306e1b02b97439"><div class="ttname"><a href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#aa98b90c59b9e784d75306e1b02b97439">ROCKSDB_NAMESPACE::cassandra::CassandraValueMergeOperator::FullMergeV2</a></div><div class="ttdeci">bool FullMergeV2(const MergeOperationInput &amp;merge_in, MergeOperationOutput *merge_out) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00036">merge_operator.cc:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator_html_acbaa6efe9227ff399258e5f4797ed20f"><div class="ttname"><a href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#acbaa6efe9227ff399258e5f4797ed20f">ROCKSDB_NAMESPACE::cassandra::CassandraValueMergeOperator::options_</a></div><div class="ttdeci">CassandraOptions options_</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dd0/utilities_2cassandra_2merge__operator_8h_source.html#l00040">merge_operator.h:40</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html">ROCKSDB_NAMESPACE::cassandra::RowValue</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00147">format.h:147</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a6694a40de02601c50dc84eb67ef81e53"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a6694a40de02601c50dc84eb67ef81e53">ROCKSDB_NAMESPACE::cassandra::RowValue::Serialize</a></div><div class="ttdeci">void Serialize(std::string *dest) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00215">format.cc:215</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a70feed3a2adc29bfc7d7bc7981f0d62a"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a70feed3a2adc29bfc7d7bc7981f0d62a">ROCKSDB_NAMESPACE::cassandra::RowValue::Merge</a></div><div class="ttdeci">static RowValue Merge(std::vector&lt; RowValue &gt; &amp;&amp;values)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00314">format.cc:314</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a76389fedcc64239413c9bceb39ede20d"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a76389fedcc64239413c9bceb39ede20d">ROCKSDB_NAMESPACE::cassandra::RowValue::Size</a></div><div class="ttdeci">std::size_t Size() const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00194">format.cc:194</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a826eb5363ed1cc7e892305b615a1d184"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a826eb5363ed1cc7e892305b615a1d184">ROCKSDB_NAMESPACE::cassandra::RowValue::Deserialize</a></div><div class="ttdeci">static RowValue Deserialize(const char *src, std::size_t size)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00281">format.cc:281</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_ae47d05a3f818a76b35dc9088a904eb6d"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ae47d05a3f818a76b35dc9088a904eb6d">ROCKSDB_NAMESPACE::cassandra::RowValue::RemoveTombstones</a></div><div class="ttdeci">RowValue RemoveTombstones(int32_t gc_grace_period) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00262">format.cc:262</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2merge__operator_8h_html"><div class="ttname"><a href="../../d4/dca/include_2rocksdb_2merge__operator_8h.html">merge_operator.h</a></div></div>
+<div class="ttc" id="amerge__operators_8h_html"><div class="ttname"><a href="../../d4/daf/merge__operators_8h.html">merge_operators.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1cassandra_html"><div class="ttname"><a href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html">ROCKSDB_NAMESPACE::cassandra</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/dfc/cassandra__compaction__filter_8cc_source.html#l00016">cassandra_compaction_filter.cc:16</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1cassandra_html_a4a26de566944eb4e8c42dadd8b1cad4c"><div class="ttname"><a href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a4a26de566944eb4e8c42dadd8b1cad4c">ROCKSDB_NAMESPACE::cassandra::merge_operator_options_info</a></div><div class="ttdeci">static std::unordered_map&lt; std::string, OptionTypeInfo &gt; merge_operator_options_info</div><div class="ttdef"><b>Definition</b> <a href="#l00019">merge_operator.cc:19</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">ROCKSDB_NAMESPACE::OptionTypeFlags::kNone</a></div><div class="ttdeci">@ kNone</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00100">options_type.h:100</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a354442a8dee1acd0d0ea5a7f76ee5e5ca163a628faf39b423222a9944b9b0deb9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca163a628faf39b423222a9944b9b0deb9">ROCKSDB_NAMESPACE::OptionType::kSizeT</a></div><div class="ttdeci">@ kSizeT</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00042">options_type.h:42</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a354442a8dee1acd0d0ea5a7f76ee5e5ca93b8fef3be50b11316a75c44e594cf56"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca93b8fef3be50b11316a75c44e594cf56">ROCKSDB_NAMESPACE::OptionType::kUInt32T</a></div><div class="ttdeci">@ kUInt32T</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00040">options_type.h:40</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">ROCKSDB_NAMESPACE::OptionVerificationType::kNormal</a></div><div class="ttdeci">@ kNormal</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00066">options_type.h:66</a></div></div>
+<div class="ttc" id="aoptions__type_8h_html"><div class="ttname"><a href="../../d2/db1/options__type_8h.html">options_type.h</a></div></div>
+<div class="ttc" id="aslice_8h_html"><div class="ttname"><a href="../../d0/d48/slice_8h.html">slice.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00087">merge_operator.h:87</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html_a0cdff7031ad6dd4a7c277cb49d43e572"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a0cdff7031ad6dd4a7c277cb49d43e572">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput::operand_list</a></div><div class="ttdeci">const std::vector&lt; Slice &gt; &amp; operand_list</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00104">merge_operator.h:104</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html_a101d7be38d987960dbf587ed22dc77b5"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput::existing_value</a></div><div class="ttdeci">const Slice * existing_value</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00102">merge_operator.h:102</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput_html"><div class="ttname"><a href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutput</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00117">merge_operator.h:117</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput_html_a15377dc1ee93447a7bc1b58bbba70caf"><div class="ttname"><a href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutput::new_value</a></div><div class="ttdeci">std::string &amp; new_value</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00123">merge_operator.h:123</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraOptions_html"><div class="ttname"><a href="../../d0/d2a/structROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraOptions.html">ROCKSDB_NAMESPACE::cassandra::CassandraOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d3e/cassandra__options_8h_source.html#l00017">cassandra_options.h:17</a></div></div>
+<div class="ttc" id="autilities_2cassandra_2format_8h_html"><div class="ttname"><a href="../../df/d21/utilities_2cassandra_2format_8h.html">format.h</a></div></div>
+<div class="ttc" id="autilities_2cassandra_2merge__operator_8h_html"><div class="ttname"><a href="../../d4/dd0/utilities_2cassandra_2merge__operator_8h.html">merge_operator.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_4e4a4610226eb0ef406e45df788976ee.html">cassandra</a></li><li class="navelem"><a class="el" href="../../d7/d3e/utilities_2cassandra_2merge__operator_8cc.html">merge_operator.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+var structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle =
+[
+    [ "ImFlags", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a0aa0d8532c7942b349f106aeabe59e46", [
+      [ "IM_IS_HIGH_PRI", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a0aa0d8532c7942b349f106aeabe59e46aadf72016b8ab1a4843cea145a2caa0cd", null ],
+      [ "IM_IS_LOW_PRI", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a0aa0d8532c7942b349f106aeabe59e46ae068e514dd475b9ae56e2b56fbbb8376", null ],
+      [ "IM_IS_STANDALONE", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a0aa0d8532c7942b349f106aeabe59e46ac258ea83b50ab331e0d1e6134a6bd283", null ]
+    ] ],
+    [ "MFlags", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#ad699d1150f261347ba9c7aedb3ddfd46", [
+      [ "M_IN_CACHE", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#ad699d1150f261347ba9c7aedb3ddfd46ad91a8262f9d10036b8bd63118363989b", null ],
+      [ "M_HAS_HIT", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#ad699d1150f261347ba9c7aedb3ddfd46abd2f290a955ca8041e153a289cc31861", null ],
+      [ "M_IN_HIGH_PRI_POOL", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#ad699d1150f261347ba9c7aedb3ddfd46ad3513e1bdea28eddaa62455ef7a60428", null ],
+      [ "M_IN_LOW_PRI_POOL", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#ad699d1150f261347ba9c7aedb3ddfd46a822a92eff3cb8dcf25efcff3042063d5", null ]
+    ] ],
+    [ "CalcTotalCharge", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#ab9eeadf30a70df898074e610c2ab3476", null ],
+    [ "CalcuMetaCharge", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a2a924f98e05b8c27469fcfe67d976f6b", null ],
+    [ "Free", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#ac9451ca5537b8dc7ba201c7de3747984", null ],
+    [ "GetCharge", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a4c4e03eb6649a912d14ff86c5d703a5e", null ],
+    [ "GetHash", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a448c4552ecba51271c20542fbb79da3d", null ],
+    [ "HasHit", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#adab6627ef284ab73a74dc6e2b877c72d", null ],
+    [ "HasRefs", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#ab796adc2f0d44fafe3e0bc8a98e419b4", null ],
+    [ "InCache", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a628faf05b2f112df4787da82f3b45ead", null ],
+    [ "InHighPriPool", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a7403ec6938852413e981fbe4434032c0", null ],
+    [ "InLowPriPool", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a7fa13dbbae73b265b510d36f4e6bf4da", null ],
+    [ "IsHighPri", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#ace1d892811dcce43c91f20e794503a23", null ],
+    [ "IsLowPri", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a4740a00e80c9ad2a0233830974bf0f7e", null ],
+    [ "IsStandalone", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a138fe96fc1d54980045b149d57c99bb1", null ],
+    [ "key", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a92cbea2ad7af0e56d198c7d146baf91f", null ],
+    [ "Ref", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#aa9f59f9a51cc2510c2fb8cb6c7a40f08", null ],
+    [ "SetHit", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#acc8cfe47f56dc7f987432a0d61886693", null ],
+    [ "SetInCache", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a5e21676595f9757895d78ed2a4e37a66", null ],
+    [ "SetInHighPriPool", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a7a28cef02e239312f2ee4b58112db196", null ],
+    [ "SetInLowPriPool", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a705b9a160c603977d8c1370a1b9fa753", null ],
+    [ "SetIsStandalone", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#aee3bf9beca3107545466692448edb5c1", null ],
+    [ "SetPriority", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a298d9b61a423be32261ca2439d737be9", null ],
+    [ "Unref", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a0caaebdbba42e6ddf904522b88c4a321", null ],
+    [ "hash", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a15003f9f0c77470a840539183e1647a4", null ],
+    [ "helper", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a51400f941eda14486e750febe90e526b", null ],
+    [ "im_flags", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a8e33a5eb1f9118eb14eb90901d12b30e", null ],
+    [ "key_data", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a6f9d2dce9138bbbd33f8e79247580982", null ],
+    [ "key_length", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a7cbdcb7edf3eb67cc4348f30cb717652", null ],
+    [ "m_flags", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a8847ce9651e64bffabb4cf754027f274", null ],
+    [ "next", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#aa75de434a64690f918c2c486eb55cdad", null ],
+    [ "next_hash", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a8b3e6921af3e93e37bc461d8f292344b", null ],
+    [ "prev", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#af7da908bbf40e3067a3ff09af0b9977a", null ],
+    [ "refs", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#ac9b7e1a9a5b1aa6a32f98a247332057b", null ],
+    [ "total_charge", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a83ae2222385bc925a200977aff2c9540", null ],
+    [ "value", "d6/d5c/structROCKSDB__NAMESPACE_1_1lru__cache_1_1LRUHandle.html#a647620983bcfc7a0e56ee3742035c939", null ]
+];

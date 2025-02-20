@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/blob/blob_source.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d3/de4/blob__source_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">blob_source.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d3/de4/blob__source_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;cinttypes&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d42/cache__key_8h.html">cache/cache_key.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/d39/typed__cache_8h.html">cache/typed_cache.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/d04/blob__contents_8h.html">db/blob/blob_contents.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/dae/blob__file__cache_8h.html">db/blob/blob_file_cache.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/d89/blob__read__request_8h.html">db/blob/blob_read_request.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/d26/cache_8h.html">rocksdb/cache.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/df5/rocksdb__namespace_8h.html">rocksdb/rocksdb_namespace.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d7a/cachable__entry_8h.html">table/block_based/cachable_entry.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/dfc/autovector_8h.html">util/autovector.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">struct </span>ImmutableOptions;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">struct </span>MutableCFOptions;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">class </span>Status;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">class </span>FilePrefetchBuffer;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">class </span>Slice;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// BlobSource is a class that provides universal access to blobs, regardless of</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// whether they are in the blob cache, secondary cache, or (remote) storage.</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// Depending on user settings, it always fetch blobs from multi-tier cache and</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// storage with minimal cost.</span></div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html">   33</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1f01cbbb23e0068bed48e7ed0d7d634a">BlobSource</a> {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="comment">// NOTE: db_id, db_session_id, and blob_file_cache are saved by reference or</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="comment">// pointer.</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1f01cbbb23e0068bed48e7ed0d7d634a">BlobSource</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d8/dab/structROCKSDB__NAMESPACE_1_1ImmutableOptions.html">ImmutableOptions</a>&amp; immutable_options,</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>             <span class="keyword">const</span> <a class="code hl_struct" href="../../d4/d95/structROCKSDB__NAMESPACE_1_1MutableCFOptions.html">MutableCFOptions</a>&amp; mutable_cf_options,</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>             <span class="keyword">const</span> std::string&amp; db_id, <span class="keyword">const</span> std::string&amp; db_session_id,</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>             <a class="code hl_class" href="../../d0/d6e/classROCKSDB__NAMESPACE_1_1BlobFileCache.html">BlobFileCache</a>* blob_file_cache);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#adf2893bae584c0f5532e8670027c5765">   42</a></span>  <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#adf2893bae584c0f5532e8670027c5765">BlobSource</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1f01cbbb23e0068bed48e7ed0d7d634a">BlobSource</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#af1095f0e2e29e06b4cb6c393e26ef818">   43</a></span>  <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1f01cbbb23e0068bed48e7ed0d7d634a">BlobSource</a>&amp; <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#af1095f0e2e29e06b4cb6c393e26ef818">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1f01cbbb23e0068bed48e7ed0d7d634a">BlobSource</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a15699a0710397d1a9422279d7df169a3">   45</a></span>  <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a15699a0710397d1a9422279d7df169a3">~BlobSource</a>();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// Read a blob from the underlying cache or one blob file.</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// If successful, returns ok and sets &quot;*value&quot; to the newly retrieved</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// uncompressed blob. If there was an error while fetching the blob, sets</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// &quot;*value&quot; to empty and returns a non-ok status.</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// Note: For consistency, whether the blob is found in the cache or on disk,</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// sets &quot;*bytes_read&quot; to the size of on-disk (possibly compressed) blob</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="comment">// record.</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ab903bc9592935d5ff931aa9dd3e63f6f">GetBlob</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>&amp; read_options, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; user_key,</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                 uint64_t file_number, uint64_t offset, uint64_t file_size,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                 uint64_t value_size, <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5">CompressionType</a> compression_type,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                 <a class="code hl_class" href="../../d4/d8f/classROCKSDB__NAMESPACE_1_1FilePrefetchBuffer.html">FilePrefetchBuffer</a>* prefetch_buffer, <a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>* value,</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                 uint64_t* bytes_read);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// Read multiple blobs from the underlying cache or blob file(s).</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">// If successful, returns ok and sets &quot;result&quot; in the elements of &quot;blob_reqs&quot;</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// to the newly retrieved uncompressed blobs. If there was an error while</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">// fetching one of blobs, sets its &quot;result&quot; to empty and sets its</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="comment">// corresponding &quot;status&quot; to a non-ok status.</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">// Note:</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">//  - The main difference between this function and MultiGetBlobFromOneFile is</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">//    that this function can read multiple blobs from multiple blob files.</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">//  - For consistency, whether the blob is found in the cache or on disk, sets</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">//  &quot;*bytes_read&quot; to the total size of on-disk (possibly compressed) blob</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">//  records.</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a19374da09f857209a01908a02fdad16c">MultiGetBlob</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>&amp; read_options,</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                    <a class="code hl_class" href="../../d4/d5f/classROCKSDB__NAMESPACE_1_1autovector.html">autovector&lt;BlobFileReadRequests&gt;</a>&amp; blob_reqs,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                    uint64_t* bytes_read);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// Read multiple blobs from the underlying cache or one blob file.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">// If successful, returns ok and sets &quot;result&quot; in the elements of &quot;blob_reqs&quot;</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">// to the newly retrieved uncompressed blobs. If there was an error while</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">// fetching one of blobs, sets its &quot;result&quot; to empty and sets its</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="comment">// corresponding &quot;status&quot; to a non-ok status.</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">// Note:</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="comment">//  - The main difference between this function and MultiGetBlob is that this</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="comment">//  function is only used for the case where the demanded blobs are stored in</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="comment">//  one blob file. MultiGetBlob will call this function multiple times if the</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="comment">//  demanded blobs are stored in multiple blob files.</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">//  - For consistency, whether the blob is found in the cache or on disk, sets</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="comment">//  &quot;*bytes_read&quot; to the total size of on-disk (possibly compressed) blob</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="comment">//  records.</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#adee81fb2821e67cd3079b8ac8550ca4e">MultiGetBlobFromOneFile</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>&amp; read_options,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                               uint64_t file_number, uint64_t file_size,</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                               <a class="code hl_class" href="../../d4/d5f/classROCKSDB__NAMESPACE_1_1autovector.html">autovector&lt;BlobReadRequest&gt;</a>&amp; blob_reqs,</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                               uint64_t* bytes_read);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ae0256989183c348d0d846bfd59612127">  101</a></span>  <span class="keyword">inline</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ae0256989183c348d0d846bfd59612127">GetBlobFileReader</a>(</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      <span class="keyword">const</span> <a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>&amp; read_options, uint64_t blob_file_number,</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      <a class="code hl_class" href="../../d7/dcf/classROCKSDB__NAMESPACE_1_1CacheHandleGuard.html">CacheHandleGuard&lt;BlobFileReader&gt;</a>* blob_file_reader) {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a6c0b8865c12d78651852d759c3280f29">blob_file_cache_</a>-&gt;GetBlobFileReader(read_options, blob_file_number,</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                                               blob_file_reader);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  }</div>
+</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ae4dfef9ef12d6d16bb4eef38c2a081d2">  108</a></span>  <span class="keyword">inline</span> <a class="code hl_class" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html">Cache</a>* <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ae4dfef9ef12d6d16bb4eef38c2a081d2">GetBlobCache</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#aca7c413bd0ab8686ffee22972f168afb">blob_cache_</a>.get(); }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordtype">bool</span> TEST_BlobInCache(uint64_t file_number, uint64_t file_size,</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                        uint64_t offset, <span class="keywordtype">size_t</span>* charge = <span class="keyword">nullptr</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="comment">// For TypedSharedCacheInterface</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ac8464a1961f439b0dc032a570665089f">  114</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ac8464a1961f439b0dc032a570665089f">Create</a>(<a class="code hl_class" href="../../d1/d3c/classROCKSDB__NAMESPACE_1_1BlobContents.html">BlobContents</a>** out, <span class="keyword">const</span> <span class="keywordtype">char</span>* buf, <span class="keywordtype">size_t</span> size,</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>              <a class="code hl_class" href="../../d1/d8f/classROCKSDB__NAMESPACE_1_1MemoryAllocator.html">MemoryAllocator</a>* alloc);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a345e4670cd512f58ddebc05889e49497">  117</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a345e4670cd512f58ddebc05889e49497">SharedCacheInterface</a> =</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2ea6072ad086dab5881c10e4335038de">FullTypedSharedCacheInterface&lt;BlobContents, BlobContentsCreator&gt;</a>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#adc603da49773d371895f248273a697d3">  119</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#adc603da49773d371895f248273a697d3">TypedHandle</a> = SharedCacheInterface::TypedHandle;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a2572cd5bfde8c0c396b9e8f4cb3d192a">GetBlobFromCache</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; cache_key,</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                          <a class="code hl_class" href="../../d7/dcf/classROCKSDB__NAMESPACE_1_1CacheHandleGuard.html">CacheHandleGuard&lt;BlobContents&gt;</a>* cached_blob) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1440efc11becc31e02673027c400dbda">PutBlobIntoCache</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; cache_key,</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                          std::unique_ptr&lt;BlobContents&gt;* blob,</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                          <a class="code hl_class" href="../../d7/dcf/classROCKSDB__NAMESPACE_1_1CacheHandleGuard.html">CacheHandleGuard&lt;BlobContents&gt;</a>* cached_blob) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a55ea2907abe4102d901867ed61ad157a">PinCachedBlob</a>(<a class="code hl_class" href="../../d7/dcf/classROCKSDB__NAMESPACE_1_1CacheHandleGuard.html">CacheHandleGuard&lt;BlobContents&gt;</a>* cached_blob,</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                            <a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>* value);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ada7c78134c7bcf0bc7ba74b96115c35f">PinOwnedBlob</a>(std::unique_ptr&lt;BlobContents&gt;* owned_blob,</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                           <a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>* value);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <a class="code hl_typedef" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#adc603da49773d371895f248273a697d3">TypedHandle</a>* <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a3c7ce3db5307b94f37e37e2ae1617f13">GetEntryFromCache</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a29f0f56258b2fabc84f472223fc28c21">InsertEntryIntoCache</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, <a class="code hl_class" href="../../d1/d3c/classROCKSDB__NAMESPACE_1_1BlobContents.html">BlobContents</a>* value,</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                              <a class="code hl_typedef" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#adc603da49773d371895f248273a697d3">TypedHandle</a>** cache_handle,</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                              <a class="code hl_enumeration" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html#aae9756924748d66b8202bd4850e9d84d">Cache::Priority</a> priority) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="foldopen" id="foldopen00141" data-start="{" data-end="}">
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1cbc6291ea6853de6614c98f70acb7cf">  141</a></span>  <span class="keyword">inline</span> <a class="code hl_class" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html">CacheKey</a> <a class="code hl_function" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1cbc6291ea6853de6614c98f70acb7cf">GetCacheKey</a>(uint64_t file_number, uint64_t <span class="comment">/*file_size*/</span>,</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                              uint64_t offset)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <a class="code hl_class" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html">OffsetableCacheKey</a> base_cache_key(<a class="code hl_variable" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a51e0a8cff044598d9ef2330ab9cfe8ae">db_id_</a>, <a class="code hl_variable" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a5cae1f3ee79dcec6abd021dc29bdd0f0">db_session_id_</a>, file_number);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">return</span> base_cache_key.<a class="code hl_function" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#aca31b0a54bad6e5260205dddbbeb7c45">WithOffset</a>(offset);</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  }</div>
+</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a51e0a8cff044598d9ef2330ab9cfe8ae">  147</a></span>  <span class="keyword">const</span> std::string&amp; <a class="code hl_variable" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a51e0a8cff044598d9ef2330ab9cfe8ae">db_id_</a>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a5cae1f3ee79dcec6abd021dc29bdd0f0">  148</a></span>  <span class="keyword">const</span> std::string&amp; <a class="code hl_variable" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a5cae1f3ee79dcec6abd021dc29bdd0f0">db_session_id_</a>;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a4552cbfaaa5341e442dae89b1cd287be">  150</a></span>  <a class="code hl_class" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">Statistics</a>* <a class="code hl_variable" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a4552cbfaaa5341e442dae89b1cd287be">statistics_</a>;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="comment">// A cache to store blob file reader.</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a6c0b8865c12d78651852d759c3280f29">  153</a></span>  <a class="code hl_class" href="../../d0/d6e/classROCKSDB__NAMESPACE_1_1BlobFileCache.html">BlobFileCache</a>* <a class="code hl_variable" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a6c0b8865c12d78651852d759c3280f29">blob_file_cache_</a>;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="comment">// A cache to store uncompressed blobs.</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#aca7c413bd0ab8686ffee22972f168afb">  156</a></span>  <span class="keyword">mutable</span> <a class="code hl_typedef" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a345e4670cd512f58ddebc05889e49497">SharedCacheInterface</a> <a class="code hl_variable" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#aca7c413bd0ab8686ffee22972f168afb">blob_cache_</a>;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="comment">// The control option of how the cache tiers will be used. Currently rocksdb</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="comment">// support block/blob cache (volatile tier) and secondary cache (this tier</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="comment">// isn&#39;t strictly speaking a non-volatile tier since the compressed cache in</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="comment">// this tier is in volatile memory).</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a9613c5c1d2a84bdf91a2f52b0a9117e8">  162</a></span>  <span class="keyword">const</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8267448672a5161843bc6fd001fcae7">CacheTier</a> <a class="code hl_variable" href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a9613c5c1d2a84bdf91a2f52b0a9117e8">lowest_used_cache_tier_</a>;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>};</div>
+</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aautovector_8h_html"><div class="ttname"><a href="../../de/dfc/autovector_8h.html">autovector.h</a></div></div>
+<div class="ttc" id="ablob__contents_8h_html"><div class="ttname"><a href="../../db/d04/blob__contents_8h.html">blob_contents.h</a></div></div>
+<div class="ttc" id="ablob__file__cache_8h_html"><div class="ttname"><a href="../../d4/dae/blob__file__cache_8h.html">blob_file_cache.h</a></div></div>
+<div class="ttc" id="ablob__read__request_8h_html"><div class="ttname"><a href="../../db/d89/blob__read__request_8h.html">blob_read_request.h</a></div></div>
+<div class="ttc" id="acachable__entry_8h_html"><div class="ttname"><a href="../../d7/d7a/cachable__entry_8h.html">cachable_entry.h</a></div></div>
+<div class="ttc" id="acache_8h_html"><div class="ttname"><a href="../../d3/d26/cache_8h.html">cache.h</a></div></div>
+<div class="ttc" id="acache__key_8h_html"><div class="ttname"><a href="../../d0/d42/cache__key_8h.html">cache_key.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobContents_html"><div class="ttname"><a href="../../d1/d3c/classROCKSDB__NAMESPACE_1_1BlobContents.html">ROCKSDB_NAMESPACE::BlobContents</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d04/blob__contents_8h_source.html#l00019">blob_contents.h:19</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobFileCache_html"><div class="ttname"><a href="../../d0/d6e/classROCKSDB__NAMESPACE_1_1BlobFileCache.html">ROCKSDB_NAMESPACE::BlobFileCache</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dae/blob__file__cache_8h_source.html#l00025">blob_file_cache.h:25</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a1440efc11becc31e02673027c400dbda"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1440efc11becc31e02673027c400dbda">ROCKSDB_NAMESPACE::BlobSource::PutBlobIntoCache</a></div><div class="ttdeci">Status PutBlobIntoCache(const Slice &amp;cache_key, std::unique_ptr&lt; BlobContents &gt; *blob, CacheHandleGuard&lt; BlobContents &gt; *cached_blob) const</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d6c/blob__source_8cc_source.html#l00074">blob_source.cc:74</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a15699a0710397d1a9422279d7df169a3"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a15699a0710397d1a9422279d7df169a3">ROCKSDB_NAMESPACE::BlobSource::~BlobSource</a></div><div class="ttdeci">~BlobSource()</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a19374da09f857209a01908a02fdad16c"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a19374da09f857209a01908a02fdad16c">ROCKSDB_NAMESPACE::BlobSource::MultiGetBlob</a></div><div class="ttdeci">void MultiGetBlob(const ReadOptions &amp;read_options, autovector&lt; BlobFileReadRequests &gt; &amp;blob_reqs, uint64_t *bytes_read)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d6c/blob__source_8cc_source.html#l00260">blob_source.cc:260</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a1cbc6291ea6853de6614c98f70acb7cf"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1cbc6291ea6853de6614c98f70acb7cf">ROCKSDB_NAMESPACE::BlobSource::GetCacheKey</a></div><div class="ttdeci">CacheKey GetCacheKey(uint64_t file_number, uint64_t, uint64_t offset) const</div><div class="ttdef"><b>Definition</b> <a href="#l00141">blob_source.h:141</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a1f01cbbb23e0068bed48e7ed0d7d634a"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a1f01cbbb23e0068bed48e7ed0d7d634a">ROCKSDB_NAMESPACE::BlobSource::BlobSource</a></div><div class="ttdeci">BlobSource(const ImmutableOptions &amp;immutable_options, const MutableCFOptions &amp;mutable_cf_options, const std::string &amp;db_id, const std::string &amp;db_session_id, BlobFileCache *blob_file_cache)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d6c/blob__source_8cc_source.html#l00023">blob_source.cc:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a2572cd5bfde8c0c396b9e8f4cb3d192a"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a2572cd5bfde8c0c396b9e8f4cb3d192a">ROCKSDB_NAMESPACE::BlobSource::GetBlobFromCache</a></div><div class="ttdeci">Status GetBlobFromCache(const Slice &amp;cache_key, CacheHandleGuard&lt; BlobContents &gt; *cached_blob) const</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d6c/blob__source_8cc_source.html#l00046">blob_source.cc:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a29f0f56258b2fabc84f472223fc28c21"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a29f0f56258b2fabc84f472223fc28c21">ROCKSDB_NAMESPACE::BlobSource::InsertEntryIntoCache</a></div><div class="ttdeci">Status InsertEntryIntoCache(const Slice &amp;key, BlobContents *value, TypedHandle **cache_handle, Cache::Priority priority) const</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d6c/blob__source_8cc_source.html#l00150">blob_source.cc:150</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a345e4670cd512f58ddebc05889e49497"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a345e4670cd512f58ddebc05889e49497">ROCKSDB_NAMESPACE::BlobSource::SharedCacheInterface</a></div><div class="ttdeci">FullTypedSharedCacheInterface&lt; BlobContents, BlobContentsCreator &gt; SharedCacheInterface</div><div class="ttdef"><b>Definition</b> <a href="#l00117">blob_source.h:117</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a3c7ce3db5307b94f37e37e2ae1617f13"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a3c7ce3db5307b94f37e37e2ae1617f13">ROCKSDB_NAMESPACE::BlobSource::GetEntryFromCache</a></div><div class="ttdeci">TypedHandle * GetEntryFromCache(const Slice &amp;key) const</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d6c/blob__source_8cc_source.html#l00107">blob_source.cc:107</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a4552cbfaaa5341e442dae89b1cd287be"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a4552cbfaaa5341e442dae89b1cd287be">ROCKSDB_NAMESPACE::BlobSource::statistics_</a></div><div class="ttdeci">Statistics * statistics_</div><div class="ttdef"><b>Definition</b> <a href="#l00150">blob_source.h:150</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a51e0a8cff044598d9ef2330ab9cfe8ae"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a51e0a8cff044598d9ef2330ab9cfe8ae">ROCKSDB_NAMESPACE::BlobSource::db_id_</a></div><div class="ttdeci">const std::string &amp; db_id_</div><div class="ttdef"><b>Definition</b> <a href="#l00147">blob_source.h:147</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a55ea2907abe4102d901867ed61ad157a"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a55ea2907abe4102d901867ed61ad157a">ROCKSDB_NAMESPACE::BlobSource::PinCachedBlob</a></div><div class="ttdeci">static void PinCachedBlob(CacheHandleGuard&lt; BlobContents &gt; *cached_blob, PinnableSlice *value)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d6c/blob__source_8cc_source.html#l00113">blob_source.cc:113</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a5cae1f3ee79dcec6abd021dc29bdd0f0"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a5cae1f3ee79dcec6abd021dc29bdd0f0">ROCKSDB_NAMESPACE::BlobSource::db_session_id_</a></div><div class="ttdeci">const std::string &amp; db_session_id_</div><div class="ttdef"><b>Definition</b> <a href="#l00148">blob_source.h:148</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a6c0b8865c12d78651852d759c3280f29"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a6c0b8865c12d78651852d759c3280f29">ROCKSDB_NAMESPACE::BlobSource::blob_file_cache_</a></div><div class="ttdeci">BlobFileCache * blob_file_cache_</div><div class="ttdef"><b>Definition</b> <a href="#l00153">blob_source.h:153</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_a9613c5c1d2a84bdf91a2f52b0a9117e8"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#a9613c5c1d2a84bdf91a2f52b0a9117e8">ROCKSDB_NAMESPACE::BlobSource::lowest_used_cache_tier_</a></div><div class="ttdeci">const CacheTier lowest_used_cache_tier_</div><div class="ttdef"><b>Definition</b> <a href="#l00162">blob_source.h:162</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_ab903bc9592935d5ff931aa9dd3e63f6f"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ab903bc9592935d5ff931aa9dd3e63f6f">ROCKSDB_NAMESPACE::BlobSource::GetBlob</a></div><div class="ttdeci">Status GetBlob(const ReadOptions &amp;read_options, const Slice &amp;user_key, uint64_t file_number, uint64_t offset, uint64_t file_size, uint64_t value_size, CompressionType compression_type, FilePrefetchBuffer *prefetch_buffer, PinnableSlice *value, uint64_t *bytes_read)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d6c/blob__source_8cc_source.html#l00158">blob_source.cc:158</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_ac8464a1961f439b0dc032a570665089f"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ac8464a1961f439b0dc032a570665089f">ROCKSDB_NAMESPACE::BlobSource::Create</a></div><div class="ttdeci">void Create(BlobContents **out, const char *buf, size_t size, MemoryAllocator *alloc)</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_aca7c413bd0ab8686ffee22972f168afb"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#aca7c413bd0ab8686ffee22972f168afb">ROCKSDB_NAMESPACE::BlobSource::blob_cache_</a></div><div class="ttdeci">SharedCacheInterface blob_cache_</div><div class="ttdef"><b>Definition</b> <a href="#l00156">blob_source.h:156</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_ada7c78134c7bcf0bc7ba74b96115c35f"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ada7c78134c7bcf0bc7ba74b96115c35f">ROCKSDB_NAMESPACE::BlobSource::PinOwnedBlob</a></div><div class="ttdeci">static void PinOwnedBlob(std::unique_ptr&lt; BlobContents &gt; *owned_blob, PinnableSlice *value)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d6c/blob__source_8cc_source.html#l00132">blob_source.cc:132</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_adc603da49773d371895f248273a697d3"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#adc603da49773d371895f248273a697d3">ROCKSDB_NAMESPACE::BlobSource::TypedHandle</a></div><div class="ttdeci">SharedCacheInterface::TypedHandle TypedHandle</div><div class="ttdef"><b>Definition</b> <a href="#l00119">blob_source.h:119</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_adee81fb2821e67cd3079b8ac8550ca4e"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#adee81fb2821e67cd3079b8ac8550ca4e">ROCKSDB_NAMESPACE::BlobSource::MultiGetBlobFromOneFile</a></div><div class="ttdeci">void MultiGetBlobFromOneFile(const ReadOptions &amp;read_options, uint64_t file_number, uint64_t file_size, autovector&lt; BlobReadRequest &gt; &amp;blob_reqs, uint64_t *bytes_read)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d6c/blob__source_8cc_source.html#l00287">blob_source.cc:287</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_adf2893bae584c0f5532e8670027c5765"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#adf2893bae584c0f5532e8670027c5765">ROCKSDB_NAMESPACE::BlobSource::BlobSource</a></div><div class="ttdeci">BlobSource(const BlobSource &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_ae0256989183c348d0d846bfd59612127"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ae0256989183c348d0d846bfd59612127">ROCKSDB_NAMESPACE::BlobSource::GetBlobFileReader</a></div><div class="ttdeci">Status GetBlobFileReader(const ReadOptions &amp;read_options, uint64_t blob_file_number, CacheHandleGuard&lt; BlobFileReader &gt; *blob_file_reader)</div><div class="ttdef"><b>Definition</b> <a href="#l00101">blob_source.h:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_ae4dfef9ef12d6d16bb4eef38c2a081d2"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#ae4dfef9ef12d6d16bb4eef38c2a081d2">ROCKSDB_NAMESPACE::BlobSource::GetBlobCache</a></div><div class="ttdeci">Cache * GetBlobCache() const</div><div class="ttdef"><b>Definition</b> <a href="#l00108">blob_source.h:108</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobSource_html_af1095f0e2e29e06b4cb6c393e26ef818"><div class="ttname"><a href="../../d8/d37/classROCKSDB__NAMESPACE_1_1BlobSource.html#af1095f0e2e29e06b4cb6c393e26ef818">ROCKSDB_NAMESPACE::BlobSource::operator=</a></div><div class="ttdeci">BlobSource &amp; operator=(const BlobSource &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CacheHandleGuard_html"><div class="ttname"><a href="../../d7/dcf/classROCKSDB__NAMESPACE_1_1CacheHandleGuard.html">ROCKSDB_NAMESPACE::CacheHandleGuard</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/d5e/cache__helpers_8h_source.html#l00035">cache_helpers.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CacheKey_html"><div class="ttname"><a href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html">ROCKSDB_NAMESPACE::CacheKey</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d42/cache__key_8h_source.html#l00033">cache_key.h:33</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Cache_html"><div class="ttname"><a href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html">ROCKSDB_NAMESPACE::Cache</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00044">advanced_cache.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Cache_html_aae9756924748d66b8202bd4850e9d84d"><div class="ttname"><a href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html#aae9756924748d66b8202bd4850e9d84d">ROCKSDB_NAMESPACE::Cache::Priority</a></div><div class="ttdeci">Priority</div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00068">advanced_cache.h:68</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FilePrefetchBuffer_html"><div class="ttname"><a href="../../d4/d8f/classROCKSDB__NAMESPACE_1_1FilePrefetchBuffer.html">ROCKSDB_NAMESPACE::FilePrefetchBuffer</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d2d/file__prefetch__buffer_8h_source.html#l00166">file_prefetch_buffer.h:166</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MemoryAllocator_html"><div class="ttname"><a href="../../d1/d8f/classROCKSDB__NAMESPACE_1_1MemoryAllocator.html">ROCKSDB_NAMESPACE::MemoryAllocator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d02/memory__allocator_8h_source.html#l00019">memory_allocator.h:19</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OffsetableCacheKey_html"><div class="ttname"><a href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html">ROCKSDB_NAMESPACE::OffsetableCacheKey</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d42/cache__key_8h_source.html#l00083">cache_key.h:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OffsetableCacheKey_html_aca31b0a54bad6e5260205dddbbeb7c45"><div class="ttname"><a href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#aca31b0a54bad6e5260205dddbbeb7c45">ROCKSDB_NAMESPACE::OffsetableCacheKey::WithOffset</a></div><div class="ttdeci">CacheKey WithOffset(uint64_t offset) const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d42/cache__key_8h_source.html#l00125">cache_key.h:125</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableSlice_html"><div class="ttname"><a href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">ROCKSDB_NAMESPACE::PinnableSlice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00138">slice.h:138</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Statistics_html"><div class="ttname"><a href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">ROCKSDB_NAMESPACE::Statistics</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00727">statistics.h:727</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1autovector_html"><div class="ttname"><a href="../../d4/d5f/classROCKSDB__NAMESPACE_1_1autovector.html">ROCKSDB_NAMESPACE::autovector</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/dfc/autovector_8h_source.html#l00040">autovector.h:40</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a2ea6072ad086dab5881c10e4335038de"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2ea6072ad086dab5881c10e4335038de">ROCKSDB_NAMESPACE::FullTypedSharedCacheInterface</a></div><div class="ttdeci">FullTypedCacheInterface&lt; TValue, TCreateContext, kRole, std::shared_ptr&lt; Cache &gt; &gt; FullTypedSharedCacheInterface</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d39/typed__cache_8h_source.html#l00374">typed_cache.h:374</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa8267448672a5161843bc6fd001fcae7"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8267448672a5161843bc6fd001fcae7">ROCKSDB_NAMESPACE::CacheTier</a></div><div class="ttdeci">CacheTier</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d27/advanced__options_8h_source.html#l00124">advanced_options.h:124</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aacfc9de2946b33f6a70b6fce4aec79d5"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5">ROCKSDB_NAMESPACE::CompressionType</a></div><div class="ttdeci">CompressionType</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d17/compression__type_8h_source.html#l00018">compression_type.h:18</a></div></div>
+<div class="ttc" id="arocksdb__namespace_8h_html"><div class="ttname"><a href="../../da/df5/rocksdb__namespace_8h.html">rocksdb_namespace.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ImmutableOptions_html"><div class="ttname"><a href="../../d8/dab/structROCKSDB__NAMESPACE_1_1ImmutableOptions.html">ROCKSDB_NAMESPACE::ImmutableOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d27/cf__options_8h_source.html#l00087">cf_options.h:87</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MutableCFOptions_html"><div class="ttname"><a href="../../d4/d95/structROCKSDB__NAMESPACE_1_1MutableCFOptions.html">ROCKSDB_NAMESPACE::MutableCFOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d27/cf__options_8h_source.html#l00104">cf_options.h:104</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ReadOptions_html"><div class="ttname"><a href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ROCKSDB_NAMESPACE::ReadOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01680">options.h:1680</a></div></div>
+<div class="ttc" id="atyped__cache_8h_html"><div class="ttname"><a href="../../d2/d39/typed__cache_8h.html">typed_cache.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../dir_b850757ce2504bdef52f7eb2839ed90a.html">blob</a></li><li class="navelem"><a class="el" href="../../d3/de4/blob__source_8h.html">blob_source.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

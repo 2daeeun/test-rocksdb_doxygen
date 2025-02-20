@@ -1,0 +1,511 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: cache/cache_key.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d0/de8/cache__key_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">cache_key.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d0/de8/cache__key_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d42/cache__key_8h.html">cache/cache_key.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/db9/advanced__cache_8h.html">rocksdb/advanced_cache.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d82/unique__id__impl_8h.html">table/unique_id_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/dfb/hash_8h.html">util/hash.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/db1/math_8h.html">util/math.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// Value space plan for CacheKey:</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">//</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">// file_num_etc64_ | offset_etc64_ | Only generated by</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// ---------------+---------------+------------------------------------------</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">//              0 |             0 | Reserved for &quot;empty&quot; CacheKey()</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">//              0 |  &gt; 0, &lt; 1&lt;&lt;63 | CreateUniqueForCacheLifetime</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">//              0 |      &gt;= 1&lt;&lt;63 | CreateUniqueForProcessLifetime</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">//            &gt; 0 |           any | OffsetableCacheKey.WithOffset</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#a4f02920ff2f4bdcb31ee98a9a0256dbb">   27</a></span><a class="code hl_function" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ac302a8ec0f3ca6fd2b716b2f69a32f37">CacheKey</a> <a class="code hl_function" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#a4f02920ff2f4bdcb31ee98a9a0256dbb">CacheKey::CreateUniqueForCacheLifetime</a>(<a class="code hl_class" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html">Cache</a> *cache) {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// +1 so that we can reserve all zeros for &quot;unset&quot; cache key</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  uint64_t <span class="keywordtype">id</span> = cache-&gt;NewId() + 1;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="comment">// Ensure we don&#39;t collide with CreateUniqueForProcessLifetime</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  assert((<span class="keywordtype">id</span> &gt;&gt; 63) == 0U);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ac302a8ec0f3ca6fd2b716b2f69a32f37">CacheKey</a>(0, <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
+</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ac645ee9c71f197083f4e36589b0d49da">   35</a></span><a class="code hl_function" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ac302a8ec0f3ca6fd2b716b2f69a32f37">CacheKey</a> <a class="code hl_function" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ac645ee9c71f197083f4e36589b0d49da">CacheKey::CreateUniqueForProcessLifetime</a>() {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="comment">// To avoid colliding with CreateUniqueForCacheLifetime, assuming</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// Cache::NewId counts up from zero, here we count down from UINT64_MAX.</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="comment">// If this ever becomes a point of contention, we could sub-divide the</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// space and use CoreLocalArray.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">static</span> std::atomic&lt;uint64_t&gt; counter{UINT64_MAX};</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  uint64_t <span class="keywordtype">id</span> = counter.fetch_sub(1, std::memory_order_relaxed);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// Ensure we don&#39;t collide with CreateUniqueForCacheLifetime</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  assert((<span class="keywordtype">id</span> &gt;&gt; 63) == 1U);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ac302a8ec0f3ca6fd2b716b2f69a32f37">CacheKey</a>(0, <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">// How we generate CacheKeys and base OffsetableCacheKey, assuming that</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">// db_session_ids are generated from a base_session_id and</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">// session_id_counter (by SemiStructuredUniqueIdGen+EncodeSessionId</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">// in DBImpl::GenerateDbSessionId):</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">//</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">// Conceptual inputs:</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">//   db_id                   (unstructured, from GenerateRawUniqueId or equiv)</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">//                           * could be shared between cloned DBs but rare</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">//                           * could be constant, if session id suffices</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">//   base_session_id         (unstructured, from GenerateRawUniqueId)</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">//   session_id_counter      (structured)</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">//                           * usually much smaller than 2**24</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">//   orig_file_number        (structured)</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">//                           * usually smaller than 2**24</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">//   offset_in_file          (structured, might skip lots of values)</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">//                           * usually smaller than 2**32</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">//</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">// Overall approach (see https://github.com/pdillinger/unique_id for</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">// background):</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">//</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// First, we have three &quot;structured&quot; values, up to 64 bits each, that we</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">// need to fit, without losses, into 128 bits. In practice, the values will</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">// be small enough that they should fit. For example, applications generating</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">// large SST files (large offsets) will naturally produce fewer files (small</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">// file numbers). But we don&#39;t know ahead of time what bounds the values will</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">// have.</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">//</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">// Second, we have unstructured inputs that enable distinct RocksDB processes</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">// to pick a random point in space, likely very different from others. Xoring</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">// the structured with the unstructured give us a cache key that is</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">// structurally distinct between related keys (e.g. same file or same RocksDB</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">// process) and distinct with high probability between unrelated keys.</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">//</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">// The problem of packing three structured values into the space for two is</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">// complicated by the fact that we want to derive cache keys from SST unique</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">// IDs, which have already combined structured and unstructured inputs in a</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">// practically inseparable way. And we want a base cache key that works</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">// with an offset of any size. So basically, we need to encode these three</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">// structured values, each up to 64 bits, into 128 bits without knowing any</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">// of their sizes. The DownwardInvolution() function gives us a mechanism to</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">// accomplish this. (See its properties in math.h.) Specifically, for inputs</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">// a, b, and c:</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">//   lower64 = DownwardInvolution(a) ^ ReverseBits(b);</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">//   upper64 = c ^ ReverseBits(a);</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">// The 128-bit output is unique assuming there exist some i, j, and k</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">// where a &lt; 2**i, b &lt; 2**j, c &lt; 2**k, i &lt;= 64, j &lt;= 64, k &lt;= 64, and</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">// i + j + k &lt;= 128. In other words, as long as there exist some bounds</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">// that would allow us to pack the bits of a, b, and c into the output</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">// if we know the bound, we can generate unique outputs without knowing</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">// those bounds. To validate this claim, the inversion function (given</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">// the bounds) has been implemented in CacheKeyDecoder in</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">// db_block_cache_test.cc.</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">//</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">// With that in mind, the outputs in terms of the conceptual inputs look</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">// like this, using bitwise-xor of the constituent pieces, low bits on left:</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">//</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">// |------------------------- file_num_etc64 -------------------------|</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">// | +++++++++ base_session_id (lower 64 bits, involution) +++++++++ |</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">// |-----------------------------------------------------------------|</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">// | session_id_counter (involution) ..... |                         |</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">// |-----------------------------------------------------------------|</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">// | hash of: ++++++++++++++++++++++++++++++++++++++++++++++++++++++ |</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">// |  * base_session_id (upper ~39 bits)                             |</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">// |  * db_id (~122 bits entropy)                                    |</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">// |-----------------------------------------------------------------|</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">// |                             | ..... orig_file_number (reversed) |</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment">// |-----------------------------------------------------------------|</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment">//</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment">//</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="comment">// |------------------------- offset_etc64 --------------------------|</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment">// | ++++++++++ base_session_id (lower 64 bits, reversed) ++++++++++ |</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">// |-----------------------------------------------------------------|</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment">// |                           | ..... session_id_counter (reversed) |</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment">// |-----------------------------------------------------------------|</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment">// | offset_in_file ............... |                                |</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment">// |-----------------------------------------------------------------|</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment">//</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment">// Some oddities or inconveniences of this layout are due to deriving</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment">// the &quot;base&quot; cache key (without offset) from the SST unique ID (see</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment">// GetSstInternalUniqueId). Specifically,</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">// * Lower 64 of base_session_id occurs in both output words (ok but</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment">//   weird)</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">// * The inclusion of db_id is bad for the conditions under which we</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="comment">//   can guarantee uniqueness, but could be useful in some cases with</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">//   few small files per process, to make up for db session id only having</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">//   ~103 bits of entropy.</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">//</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">// In fact, if DB ids were not involved, we would be guaranteed unique</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">// cache keys for files generated in a single process until total bits for</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment">// biggest session_id_counter, orig_file_number, and offset_in_file</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment">// reach 128 bits.</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment">//</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment">// With the DB id limitation, we only have nice guaranteed unique cache</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="comment">// keys for files generated in a single process until biggest</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment">// session_id_counter and offset_in_file reach combined 64 bits. This</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment">// is quite good in practice because we can have millions of DB Opens</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment">// with terabyte size SST files, or billions of DB Opens with gigabyte</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">// size SST files.</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">//</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment">// One of the considerations in the translation between existing SST unique</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">// IDs and base cache keys is supporting better SST unique IDs in a future</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">// format_version. If we use a process-wide file counter instead of</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">// session counter and file numbers, we only need to combine two 64-bit values</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment">// instead of three. But we don&#39;t want to track unique ID versions in the</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">// manifest, so we want to keep the same translation layer between SST unique</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">// IDs and base cache keys, even with updated SST unique IDs. If the new</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment">// unique IDs put the file counter where the orig_file_number was, and</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment">// use no structured field where session_id_counter was, then our translation</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment">// layer works fine for two structured fields as well as three (for</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">// compatibility). The small computation for the translation (one</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">// DownwardInvolution(), two ReverseBits(), both ~log(64) instructions deep)</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">// is negligible for computing as part of SST file reader open.</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">//</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment">// More on how https://github.com/pdillinger/unique_id applies here:</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">// Every bit of output always includes &quot;unstructured&quot; uniqueness bits and</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">// often combines with &quot;structured&quot; uniqueness bits. The &quot;unstructured&quot; bits</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">// change infrequently: only when we cannot guarantee our state tracking for</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">// &quot;structured&quot; uniqueness hasn&#39;t been cloned. Using a static</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment">// SemiStructuredUniqueIdGen for db_session_ids, this means we only get an</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment">// &quot;all new&quot; session id when a new process uses RocksDB. (Between processes,</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment">// we don&#39;t know if a DB or other persistent storage has been cloned. We</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">// assume that if VM hot cloning is used, subsequently generated SST files</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment">// do not interact.) Within a process, only the session_lower of the</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">// db_session_id changes incrementally (&quot;structured&quot; uniqueness).</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment">//</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment">// This basically means that our offsets, counters and file numbers allow us</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment">// to do somewhat &quot;better than random&quot; (birthday paradox) while in the</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment">// degenerate case of completely new session for each tiny file, we still</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment">// have strong uniqueness properties from the birthday paradox, with ~103</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment">// bit session IDs or up to 128 bits entropy with different DB IDs sharing a</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="comment">// cache.</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="comment">//</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment">// More collision probability analysis:</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment">// Suppose a RocksDB host generates (generously) 2 GB/s (10TB data, 17 DWPD)</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment">// with average process/session lifetime of (pessimistically) 4 minutes.</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="comment">// In 180 days (generous allowable data lifespan), we generate 31 million GB</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="comment">// of data, or 2^55 bytes, and 2^16 &quot;all new&quot; session IDs.</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="comment">//</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="comment">// First, suppose this is in a single DB (lifetime 180 days):</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="comment">// 128 bits cache key size</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment">// - 55 &lt;- ideal size for byte offsets + file numbers</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment">// -  2 &lt;- bits for offsets and file numbers not exactly powers of two</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment">// +  2 &lt;- bits saved not using byte offsets in BlockBasedTable::GetCacheKey</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment">// ----</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">//   73 &lt;- bits remaining for distinguishing session IDs</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment">// The probability of a collision in 73 bits of session ID data is less than</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">// 1 in 2**(73 - (2 * 16)), or roughly 1 in a trillion. And this assumes all</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">// data from the last 180 days is in cache for potential collision, and that</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">// cache keys under each session id exhaustively cover the remaining 57 bits</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">// while in reality they&#39;ll only cover a small fraction of it.</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">//</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">// Although data could be transferred between hosts, each host has its own</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">// cache and we are already assuming a high rate of &quot;all new&quot; session ids.</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">// So this doesn&#39;t really change the collision calculation. Across a fleet</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">// of 1 million, each with &lt;1 in a trillion collision possibility,</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">// fleetwide collision probability is &lt;1 in a million.</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">//</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">// Now suppose we have many DBs per host, say 2**10, with same host-wide write</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">// rate and process/session lifetime. File numbers will be ~10 bits smaller</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">// and we will have 2**10 times as many session IDs because of simultaneous</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">// lifetimes. So now collision chance is less than 1 in 2**(83 - (2 * 26)),</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">// or roughly 1 in a billion.</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">//</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">// Suppose instead we generated random or hashed cache keys for each</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">// (compressed) block. For 1KB compressed block size, that is 2^45 cache keys</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="comment">// in 180 days. Collision probability is more easily estimated at roughly</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="comment">// 1 in 2**(128 - (2 * 45)) or roughly 1 in a trillion (assuming all</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="comment">// data from the last 180 days is in cache, but NOT the other assumption</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="comment">// for the 1 in a trillion estimate above).</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="comment">//</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">//</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">// Collision probability estimation through simulation:</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">// A tool ./cache_bench -stress_cache_key broadly simulates host-wide cache</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">// activity over many months, by making some pessimistic simplifying</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment">// assumptions. See class StressCacheKey in cache_bench_tool.cc for details.</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">// Here is some sample output with</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment">// `./cache_bench -stress_cache_key -sck_keep_bits=43`:</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="comment">//</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">//   Total cache or DBs size: 32TiB  Writing 925.926 MiB/s or 76.2939TiB/day</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">//   Multiply by 1.15292e+18 to correct for simulation losses (but still</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">//   assume whole file cached)</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">//</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment">// These come from default settings of 2.5M files per day of 32 MB each, and</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="comment">// `-sck_keep_bits=43` means that to represent a single file, we are only</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="comment">// keeping 43 bits of the 128-bit (base) cache key.  With file size of 2**25</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="comment">// contiguous keys (pessimistic), our simulation is about 2\*\*(128-43-25) or</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="comment">// about 1 billion billion times more prone to collision than reality.</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment">//</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="comment">// More default assumptions, relatively pessimistic:</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="comment">// * 100 DBs in same process (doesn&#39;t matter much)</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment">// * Re-open DB in same process (new session ID related to old session ID) on</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="comment">// average every 100 files generated</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="comment">// * Restart process (all new session IDs unrelated to old) 24 times per day</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="comment">//</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="comment">// After enough data, we get a result at the end (-sck_keep_bits=43):</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="comment">//</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span><span class="comment">//   (keep 43 bits)  18 collisions after 2 x 90 days, est 10 days between</span></div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="comment">//                   (1.15292e+19 corrected)</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="comment">//</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="comment">// If we believe the (pessimistic) simulation and the mathematical</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="comment">// extrapolation, we would need to run a billion machines all for 11 billion</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="comment">// days to expect a cache key collision. To help verify that our extrapolation</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="comment">// (&quot;corrected&quot;) is robust, we can make our simulation more precise by</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="comment">// increasing the &quot;keep&quot; bits, which takes more running time to get enough</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment">// collision data:</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="comment">//</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment">//   (keep 44 bits)  16 collisions after 5 x 90 days, est 28.125 days between</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment">//                   (1.6213e+19 corrected)</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="comment">//   (keep 45 bits)  15 collisions after 7 x 90 days, est 42 days between</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="comment">//                   (1.21057e+19 corrected)</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment">//   (keep 46 bits)  15 collisions after 17 x 90 days, est 102 days between</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="comment">//                   (1.46997e+19 corrected)</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="comment">//   (keep 47 bits)  15 collisions after 49 x 90 days, est 294 days between</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment">//                   (2.11849e+19 corrected)</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="comment">//</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="comment">// The extrapolated prediction seems to be within noise (sampling error).</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="comment">//</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="comment">// With the `-sck_randomize` option, we can see that typical workloads like</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="comment">// above have lower collision probability than &quot;random&quot; cache keys (note:</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="comment">// offsets still non-randomized) by a modest amount (roughly 2-3x less</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="comment">// collision prone than random), which should make us reasonably comfortable</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="comment">// even in &quot;degenerate&quot; cases (e.g. repeatedly launch a process to generate</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment">// one file with SstFileWriter):</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment">//</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment">//   (rand 43 bits) 22 collisions after 1 x 90 days, est 4.09091 days between</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment">//                  (4.7165e+18 corrected)</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment">//</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment">// We can see that with more frequent process restarts,</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment">// -sck_restarts_per_day=5000, which means more all-new session IDs, we get</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment">// closer to the &quot;random&quot; cache key performance:</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment">//</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment">// 15 collisions after 1 x 90 days, est 6 days between (6.91753e+18 corrected)</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment">//</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment">// And with less frequent process restarts and re-opens,</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment">// -sck_restarts_per_day=1 -sck_reopen_nfiles=1000, we get lower collision</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment">// probability:</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment">//</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment">// 18 collisions after 8 x 90 days, est 40 days between (4.61169e+19 corrected)</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment">//</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="comment">// Other tests have been run to validate other conditions behave as expected,</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment">// never behaving &quot;worse than random&quot; unless we start chopping off structured</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment">// data.</span></div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="comment">//</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="comment">// Conclusion: Even in extreme cases, rapidly burning through &quot;all new&quot; IDs</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="comment">// that only arise when a new process is started, the chance of any cache key</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="comment">// collisions in a giant fleet of machines is negligible. Especially when</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="comment">// processes live for hours or days, the chance of a cache key collision is</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="comment">// likely more plausibly due to bad hardware than to bad luck in random</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="comment">// session ID data. Software defects are surely more likely to cause corruption</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="comment">// than both of those.</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="comment">//</span></div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="comment">// TODO: Nevertheless / regardless, an efficient way to detect (and thus</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment">// quantify) block cache corruptions, including collisions, should be added.</span></div>
+<div class="foldopen" id="foldopen00300" data-start="{" data-end="}">
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#a0a225d7e3c0ea93208402537a5394238">  300</a></span><a class="code hl_function" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#ae2e698c07b8c8a5b75ecdb14b22fe1e2">OffsetableCacheKey::OffsetableCacheKey</a>(<span class="keyword">const</span> std::string &amp;db_id,</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>                                       <span class="keyword">const</span> std::string &amp;db_session_id,</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>                                       uint64_t file_number) {</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af4c4e4074a950ca9c8bc7e635a784bf7">UniqueId64x2</a> internal_id;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8bc946c45c55e81b2e5882270e5ad8c5">GetSstInternalUniqueId</a>(db_id, db_session_id, file_number,</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                                    &amp;internal_id, <span class="comment">/*force=*/</span><span class="keyword">true</span>);</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  *<span class="keyword">this</span> = <a class="code hl_function" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#aad5e18ad8a31d9f544d947f33556a167">FromInternalUniqueId</a>(&amp;internal_id);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>}</div>
+</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="foldopen" id="foldopen00310" data-start="{" data-end="}">
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno"><a class="line" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#aad5e18ad8a31d9f544d947f33556a167">  310</a></span><a class="code hl_function" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#ae2e698c07b8c8a5b75ecdb14b22fe1e2">OffsetableCacheKey</a> <a class="code hl_function" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#aad5e18ad8a31d9f544d947f33556a167">OffsetableCacheKey::FromInternalUniqueId</a>(<a class="code hl_struct" href="../../d2/d9f/structROCKSDB__NAMESPACE_1_1UniqueIdPtr.html">UniqueIdPtr</a> <span class="keywordtype">id</span>) {</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  uint64_t session_lower = <span class="keywordtype">id</span>.ptr[0];</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  uint64_t file_num_etc = <span class="keywordtype">id</span>.ptr[1];</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  <span class="keywordtype">bool</span> is_empty = session_lower == 0 &amp;&amp; file_num_etc == 0;</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  <span class="comment">// Although DBImpl guarantees (in recent versions) that session_lower is not</span></div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  <span class="comment">// zero, that&#39;s not entirely sufficient to guarantee that file_num_etc64_ is</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <span class="comment">// not zero (so that the 0 case can be used by CacheKey::CreateUnique*)</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  <span class="comment">// However, if we are given an &quot;empty&quot; id as input, then we should produce</span></div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  <span class="comment">// &quot;empty&quot; as output.</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  <span class="comment">// As a consequence, this function is only bijective assuming</span></div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  <span class="comment">// id[0] == 0 only if id[1] == 0.</span></div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  <span class="keywordflow">if</span> (session_lower == 0U) {</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    session_lower = file_num_etc;</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  }</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  <span class="comment">// See comments above for how DownwardInvolution and ReverseBits</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  <span class="comment">// make this function invertible under various assumptions.</span></div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  <a class="code hl_function" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#ae2e698c07b8c8a5b75ecdb14b22fe1e2">OffsetableCacheKey</a> rv;</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  rv.<a class="code hl_variable" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ace8802fb7458443c79fa2efc657de680">file_num_etc64_</a> =</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>      <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab507e735b89d32c59572bc9e30b8f64b">DownwardInvolution</a>(session_lower) ^ <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d19ce12faba0d9ab8f07f1d346173d7">ReverseBits</a>(file_num_etc);</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  rv.<a class="code hl_variable" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#a2e63ae25b80d1d495b5b8b58d209d5f8">offset_etc64_</a> = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d19ce12faba0d9ab8f07f1d346173d7">ReverseBits</a>(session_lower);</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  <span class="comment">// Because of these transformations and needing to allow arbitrary</span></div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  <span class="comment">// offset (thus, second 64 bits of cache key might be 0), we need to</span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  <span class="comment">// make some correction to ensure the first 64 bits is not 0.</span></div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  <span class="comment">// Fortunately, the transformation ensures the second 64 bits is not 0</span></div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  <span class="comment">// for non-empty base key, so we can swap in the case one is 0 without</span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  <span class="comment">// breaking bijectivity (assuming condition above).</span></div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>  assert(is_empty || rv.<a class="code hl_variable" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#a2e63ae25b80d1d495b5b8b58d209d5f8">offset_etc64_</a> &gt; 0);</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  <span class="keywordflow">if</span> (rv.<a class="code hl_variable" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ace8802fb7458443c79fa2efc657de680">file_num_etc64_</a> == 0) {</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    <a class="code hl_function" href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a>(rv.<a class="code hl_variable" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ace8802fb7458443c79fa2efc657de680">file_num_etc64_</a>, rv.<a class="code hl_variable" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#a2e63ae25b80d1d495b5b8b58d209d5f8">offset_etc64_</a>);</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  }</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>  assert(is_empty || rv.<a class="code hl_variable" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ace8802fb7458443c79fa2efc657de680">file_num_etc64_</a> &gt; 0);</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  <span class="keywordflow">return</span> rv;</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>}</div>
+</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="comment">// Inverse of FromInternalUniqueId (assuming file_num_etc64 == 0 only if</span></div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="comment">// offset_etc64 == 0)</span></div>
+<div class="foldopen" id="foldopen00352" data-start="{" data-end="}">
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno"><a class="line" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#a807fcc83dc4eea96ead1e3e66d6a1992">  352</a></span><a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af4c4e4074a950ca9c8bc7e635a784bf7">UniqueId64x2</a> <a class="code hl_function" href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#a807fcc83dc4eea96ead1e3e66d6a1992">OffsetableCacheKey::ToInternalUniqueId</a>() {</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  uint64_t a = <a class="code hl_variable" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ace8802fb7458443c79fa2efc657de680">file_num_etc64_</a>;</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>  uint64_t b = <a class="code hl_variable" href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#a2e63ae25b80d1d495b5b8b58d209d5f8">offset_etc64_</a>;</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  <span class="keywordflow">if</span> (b == 0) {</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    <a class="code hl_function" href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a>(a, b);</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  }</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af4c4e4074a950ca9c8bc7e635a784bf7">UniqueId64x2</a> rv;</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>  rv[0] = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d19ce12faba0d9ab8f07f1d346173d7">ReverseBits</a>(b);</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>  rv[1] = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d19ce12faba0d9ab8f07f1d346173d7">ReverseBits</a>(a ^ <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab507e735b89d32c59572bc9e30b8f64b">DownwardInvolution</a>(rv[0]));</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  <span class="keywordflow">return</span> rv;</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>}</div>
+</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aadvanced__cache_8h_html"><div class="ttname"><a href="../../d1/db9/advanced__cache_8h.html">advanced_cache.h</a></div></div>
+<div class="ttc" id="acache__key_8h_html"><div class="ttname"><a href="../../d0/d42/cache__key_8h.html">cache_key.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CacheKey_html_a2e63ae25b80d1d495b5b8b58d209d5f8"><div class="ttname"><a href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#a2e63ae25b80d1d495b5b8b58d209d5f8">ROCKSDB_NAMESPACE::CacheKey::offset_etc64_</a></div><div class="ttdeci">uint64_t offset_etc64_</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d42/cache__key_8h_source.html#l00066">cache_key.h:66</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CacheKey_html_a4f02920ff2f4bdcb31ee98a9a0256dbb"><div class="ttname"><a href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#a4f02920ff2f4bdcb31ee98a9a0256dbb">ROCKSDB_NAMESPACE::CacheKey::CreateUniqueForCacheLifetime</a></div><div class="ttdeci">static CacheKey CreateUniqueForCacheLifetime(Cache *cache)</div><div class="ttdef"><b>Definition</b> <a href="#l00027">cache_key.cc:27</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CacheKey_html_ac302a8ec0f3ca6fd2b716b2f69a32f37"><div class="ttname"><a href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ac302a8ec0f3ca6fd2b716b2f69a32f37">ROCKSDB_NAMESPACE::CacheKey::CacheKey</a></div><div class="ttdeci">CacheKey()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d42/cache__key_8h_source.html#l00037">cache_key.h:37</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CacheKey_html_ac645ee9c71f197083f4e36589b0d49da"><div class="ttname"><a href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ac645ee9c71f197083f4e36589b0d49da">ROCKSDB_NAMESPACE::CacheKey::CreateUniqueForProcessLifetime</a></div><div class="ttdeci">static CacheKey CreateUniqueForProcessLifetime()</div><div class="ttdef"><b>Definition</b> <a href="#l00035">cache_key.cc:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CacheKey_html_ace8802fb7458443c79fa2efc657de680"><div class="ttname"><a href="../../d3/d4c/classROCKSDB__NAMESPACE_1_1CacheKey.html#ace8802fb7458443c79fa2efc657de680">ROCKSDB_NAMESPACE::CacheKey::file_num_etc64_</a></div><div class="ttdeci">uint64_t file_num_etc64_</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d42/cache__key_8h_source.html#l00065">cache_key.h:65</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Cache_html"><div class="ttname"><a href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html">ROCKSDB_NAMESPACE::Cache</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00044">advanced_cache.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OffsetableCacheKey_html_a807fcc83dc4eea96ead1e3e66d6a1992"><div class="ttname"><a href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#a807fcc83dc4eea96ead1e3e66d6a1992">ROCKSDB_NAMESPACE::OffsetableCacheKey::ToInternalUniqueId</a></div><div class="ttdeci">UniqueId64x2 ToInternalUniqueId()</div><div class="ttdef"><b>Definition</b> <a href="#l00352">cache_key.cc:352</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OffsetableCacheKey_html_aad5e18ad8a31d9f544d947f33556a167"><div class="ttname"><a href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#aad5e18ad8a31d9f544d947f33556a167">ROCKSDB_NAMESPACE::OffsetableCacheKey::FromInternalUniqueId</a></div><div class="ttdeci">static OffsetableCacheKey FromInternalUniqueId(UniqueIdPtr id)</div><div class="ttdef"><b>Definition</b> <a href="#l00310">cache_key.cc:310</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OffsetableCacheKey_html_ae2e698c07b8c8a5b75ecdb14b22fe1e2"><div class="ttname"><a href="../../d5/df3/classROCKSDB__NAMESPACE_1_1OffsetableCacheKey.html#ae2e698c07b8c8a5b75ecdb14b22fe1e2">ROCKSDB_NAMESPACE::OffsetableCacheKey::OffsetableCacheKey</a></div><div class="ttdeci">OffsetableCacheKey()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d42/cache__key_8h_source.html#l00086">cache_key.h:86</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="ahash_8h_html"><div class="ttname"><a href="../../db/dfb/hash_8h.html">hash.h</a></div></div>
+<div class="ttc" id="amath_8h_html"><div class="ttname"><a href="../../df/db1/math_8h.html">math.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8bc946c45c55e81b2e5882270e5ad8c5"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8bc946c45c55e81b2e5882270e5ad8c5">ROCKSDB_NAMESPACE::GetSstInternalUniqueId</a></div><div class="ttdeci">Status GetSstInternalUniqueId(const std::string &amp;db_id, const std::string &amp;db_session_id, uint64_t file_number, UniqueIdPtr out, bool force)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/df5/unique__id_8cc_source.html#l00059">unique_id.cc:59</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8d19ce12faba0d9ab8f07f1d346173d7"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d19ce12faba0d9ab8f07f1d346173d7">ROCKSDB_NAMESPACE::ReverseBits</a></div><div class="ttdeci">T ReverseBits(T v)</div><div class="ttdef"><b>Definition</b> <a href="../../df/db1/math_8h_source.html#l00282">math.h:282</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab507e735b89d32c59572bc9e30b8f64b"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab507e735b89d32c59572bc9e30b8f64b">ROCKSDB_NAMESPACE::DownwardInvolution</a></div><div class="ttdeci">T DownwardInvolution(T v)</div><div class="ttdef"><b>Definition</b> <a href="../../df/db1/math_8h_source.html#l00318">math.h:318</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_af4c4e4074a950ca9c8bc7e635a784bf7"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af4c4e4074a950ca9c8bc7e635a784bf7">ROCKSDB_NAMESPACE::UniqueId64x2</a></div><div class="ttdeci">std::array&lt; uint64_t, 2 &gt; UniqueId64x2</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d82/unique__id__impl_8h_source.html#l00015">unique_id_impl.h:15</a></div></div>
+<div class="ttc" id="anamespacestd_html_ae634fddc996b9fd1d88a852ef8a90ca3"><div class="ttname"><a href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a></div><div class="ttdeci">void swap(ROCKSDB_NAMESPACE::port::WindowsThread &amp;th1, ROCKSDB_NAMESPACE::port::WindowsThread &amp;th2)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00111">win_thread.h:111</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1UniqueIdPtr_html"><div class="ttname"><a href="../../d2/d9f/structROCKSDB__NAMESPACE_1_1UniqueIdPtr.html">ROCKSDB_NAMESPACE::UniqueIdPtr</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d82/unique__id__impl_8h_source.html#l00028">unique_id_impl.h:28</a></div></div>
+<div class="ttc" id="aunique__id__impl_8h_html"><div class="ttname"><a href="../../d5/d82/unique__id__impl_8h.html">unique_id_impl.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_538dafc855c634b9f6cc516e21dfcdce.html">cache</a></li><li class="navelem"><a class="el" href="../../d0/de8/cache__key_8cc.html">cache_key.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

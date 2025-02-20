@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/fault_injection_secondary_cache.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d2/deb/fault__injection__secondary__cache_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">fault_injection_secondary_cache.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d2/deb/fault__injection__secondary__cache_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d97/secondary__cache_8h.html">rocksdb/secondary_cache.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d79/random_8h.html">util/random.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d7a/thread__local_8h.html">util/thread_local.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// This class implements a custom SecondaryCache that randomly injects an</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">// error status into Inserts/Lookups based on a specified probability.</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// Its used by db_stress to verify correctness in the presence of</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// secondary cache errors.</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">//</span></div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="};">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html">   17</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ac8b12a987c45d2dbdb6e4bc5b2455d9b">FaultInjectionSecondaryCache</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d6/d58/classROCKSDB__NAMESPACE_1_1SecondaryCache.html">SecondaryCache</a> {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ac8b12a987c45d2dbdb6e4bc5b2455d9b">   19</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ac8b12a987c45d2dbdb6e4bc5b2455d9b">FaultInjectionSecondaryCache</a>(</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>      <span class="keyword">const</span> std::shared_ptr&lt;SecondaryCache&gt;&amp; base, uint32_t seed, <span class="keywordtype">int</span> prob)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      : <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a1fc025b9c6c3dd3cb31eea66f7fbb571">base_</a>(base),</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a041778bb6f972b7a8d2a8b4f2f5492b1">seed_</a>(seed),</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a3f2e5ae182226bbbf48a20b60e77c1da">prob_</a>(prob),</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a8900c90fdcf7b6a46016b37b40deff47">thread_local_error_</a>(new <a class="code hl_class" href="../../d9/da5/classROCKSDB__NAMESPACE_1_1ThreadLocalPtr.html">ThreadLocalPtr</a>(<a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ae43678e44765e7cc4c71ead47c1488ff">DeleteThreadLocalErrorContext</a>)) {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordflow">if</span> (std::strcmp(<a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a1fc025b9c6c3dd3cb31eea66f7fbb571">base_</a>-&gt;Name(), <span class="stringliteral">&quot;CompressedSecondaryCache&quot;</span>) == 0) {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      base_is_compressed_sec_cache_ = true;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  }</div>
+</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ada0aa66f1fb3b7ad835a77123414599f">   30</a></span>  <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ada0aa66f1fb3b7ad835a77123414599f">~FaultInjectionSecondaryCache</a>()<span class="keyword"> override </span>{}</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a755eceee504d494dde8d74ad6d0568cc">   32</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a755eceee504d494dde8d74ad6d0568cc">Name</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;FaultInjectionSecondaryCache&quot;</span>; }</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> Insert(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, <a class="code hl_typedef" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html#adc5ed3b8e4b8707e1e3a39cc0a1337df">Cache::ObjectPtr</a> value,</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                <span class="keyword">const</span> <a class="code hl_struct" href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html">Cache::CacheItemHelper</a>* helper,</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                <span class="keywordtype">bool</span> force_insert) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#afa0482728784aed7b250ed3ae7597974">   38</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#afa0482728784aed7b250ed3ae7597974">InsertSaved</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <span class="comment">/*key*/</span>, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <span class="comment">/*saved*/</span>,</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                     <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5">CompressionType</a> <span class="comment">/*type*/</span>, <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8267448672a5161843bc6fd001fcae7">CacheTier</a> <span class="comment">/*source*/</span>)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  }</div>
+</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  std::unique_ptr&lt;SecondaryCacheResultHandle&gt; Lookup(</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, <span class="keyword">const</span> <a class="code hl_struct" href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html">Cache::CacheItemHelper</a>* helper,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <a class="code hl_struct" href="../../d4/d9b/structROCKSDB__NAMESPACE_1_1Cache_1_1CreateContext.html">Cache::CreateContext</a>* create_context, <span class="keywordtype">bool</span> wait, <span class="keywordtype">bool</span> advise_erase,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <a class="code hl_class" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">Statistics</a>* stats, <span class="keywordtype">bool</span>&amp; kept_in_sec_cache) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a3bedd153aec36be8abe38ca829bedf30">   48</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a3bedd153aec36be8abe38ca829bedf30">SupportForceErase</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a1fc025b9c6c3dd3cb31eea66f7fbb571">base_</a>-&gt;SupportForceErase(); }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> Erase(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordtype">void</span> WaitAll(std::vector&lt;SecondaryCacheResultHandle*&gt; handles) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#aad1dff361d82db8c1d583b7f41bf49f3">   54</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#aad1dff361d82db8c1d583b7f41bf49f3">SetCapacity</a>(<span class="keywordtype">size_t</span> capacity)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a1fc025b9c6c3dd3cb31eea66f7fbb571">base_</a>-&gt;SetCapacity(capacity);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
+</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#aac74296871d66cb68d0489240d796570">   58</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#aac74296871d66cb68d0489240d796570">GetCapacity</a>(<span class="keywordtype">size_t</span>&amp; capacity)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a1fc025b9c6c3dd3cb31eea66f7fbb571">base_</a>-&gt;GetCapacity(capacity);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
+</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a647a2a575cdd7b70fb8ab580f3bc719f">   62</a></span>  std::string <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a647a2a575cdd7b70fb8ab580f3bc719f">GetPrintableOptions</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a1fc025b9c6c3dd3cb31eea66f7fbb571">base_</a>-&gt;GetPrintableOptions();</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  }</div>
+</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> <span class="keyword">private</span>:</div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="};">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html">   67</a></span>  <span class="keyword">class </span><a class="code hl_function" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#ae5493ec24bfb37b4525bf9ac1948fe2f">ResultHandle</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d7/dc0/classROCKSDB__NAMESPACE_1_1SecondaryCacheResultHandle.html">SecondaryCacheResultHandle</a> {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>   <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00069" data-start="{" data-end="}">
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#ae5493ec24bfb37b4525bf9ac1948fe2f">   69</a></span>    <a class="code hl_function" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#ae5493ec24bfb37b4525bf9ac1948fe2f">ResultHandle</a>(<a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ac8b12a987c45d2dbdb6e4bc5b2455d9b">FaultInjectionSecondaryCache</a>* cache,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                 std::unique_ptr&lt;SecondaryCacheResultHandle&gt;&amp;&amp; base)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        : <a class="code hl_variable" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#acb3baa1bd94b16509b6d38b6f8eff52a">cache_</a>(cache), <a class="code hl_variable" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#ae91f32af7b4f79db6a7d0d10ff2766e2">base_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(base)), <a class="code hl_variable" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#af5100761143708de39ca9523bb0641ac">value_</a>(nullptr), <a class="code hl_variable" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#a1873cdc9ea8c6bd0a751a3e8c5209ad1">size_</a>(0) {}</div>
+</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#a2259db554a32f41b26b496229b65049e">   73</a></span>    <a class="code hl_function" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#a2259db554a32f41b26b496229b65049e">~ResultHandle</a>()<span class="keyword"> override </span>{}</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordtype">bool</span> IsReady() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordtype">void</span> Wait() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_typedef" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html#adc5ed3b8e4b8707e1e3a39cc0a1337df">Cache::ObjectPtr</a> Value() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordtype">size_t</span> Size() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a9ce972b1890be8daff97bcc8f66024aa">WaitAll</a>(<a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ac8b12a987c45d2dbdb6e4bc5b2455d9b">FaultInjectionSecondaryCache</a>* cache,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                        std::vector&lt;SecondaryCacheResultHandle*&gt; handles);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> UpdateHandleValue(<a class="code hl_class" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html">ResultHandle</a>* handle);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#acb3baa1bd94b16509b6d38b6f8eff52a">   89</a></span>    <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ac8b12a987c45d2dbdb6e4bc5b2455d9b">FaultInjectionSecondaryCache</a>* <a class="code hl_variable" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#acb3baa1bd94b16509b6d38b6f8eff52a">cache_</a>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#ae91f32af7b4f79db6a7d0d10ff2766e2">   90</a></span>    std::unique_ptr&lt;SecondaryCacheResultHandle&gt; <a class="code hl_variable" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#ae91f32af7b4f79db6a7d0d10ff2766e2">base_</a>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#af5100761143708de39ca9523bb0641ac">   91</a></span>    <a class="code hl_typedef" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html#adc5ed3b8e4b8707e1e3a39cc0a1337df">Cache::ObjectPtr</a> <a class="code hl_variable" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#af5100761143708de39ca9523bb0641ac">value_</a>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#a1873cdc9ea8c6bd0a751a3e8c5209ad1">   92</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#a1873cdc9ea8c6bd0a751a3e8c5209ad1">size_</a>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  };</div>
+</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ae43678e44765e7cc4c71ead47c1488ff">   95</a></span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ae43678e44765e7cc4c71ead47c1488ff">DeleteThreadLocalErrorContext</a>(<span class="keywordtype">void</span>* p) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <a class="code hl_struct" href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html">ErrorContext</a>* ctx = <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html">ErrorContext</a>*<span class="keyword">&gt;</span>(p);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keyword">delete</span> ctx;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  }</div>
+</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a1fc025b9c6c3dd3cb31eea66f7fbb571">  100</a></span>  <span class="keyword">const</span> std::shared_ptr&lt;SecondaryCache&gt; <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a1fc025b9c6c3dd3cb31eea66f7fbb571">base_</a>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a041778bb6f972b7a8d2a8b4f2f5492b1">  101</a></span>  uint32_t <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a041778bb6f972b7a8d2a8b4f2f5492b1">seed_</a>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a3f2e5ae182226bbbf48a20b60e77c1da">  102</a></span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a3f2e5ae182226bbbf48a20b60e77c1da">prob_</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a7a8c3bdb95cdbf474c9ce86e4564d58c">  103</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a7a8c3bdb95cdbf474c9ce86e4564d58c">base_is_compressed_sec_cache_</a>{<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="};">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html">  105</a></span>  <span class="keyword">struct </span><a class="code hl_function" href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html#aa324bd90f58cf0369ec559fc79af3d9d">ErrorContext</a> {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html#a0e8479e6351ebcd7efd2a5d7b7703550">  106</a></span>    <a class="code hl_class" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">Random</a> <a class="code hl_variable" href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html#a0e8479e6351ebcd7efd2a5d7b7703550">rand</a>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html#aa324bd90f58cf0369ec559fc79af3d9d">  108</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html#aa324bd90f58cf0369ec559fc79af3d9d">ErrorContext</a>(uint32_t seed) : <a class="code hl_variable" href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html#a0e8479e6351ebcd7efd2a5d7b7703550">rand</a>(seed) {}</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  };</div>
+</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a8900c90fdcf7b6a46016b37b40deff47">  110</a></span>  std::unique_ptr&lt;ThreadLocalPtr&gt; <a class="code hl_variable" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a8900c90fdcf7b6a46016b37b40deff47">thread_local_error_</a>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <a class="code hl_struct" href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html">ErrorContext</a>* <a class="code hl_function" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#aa9895b0fedd816e4d212d10118f41d07">GetErrorContext</a>();</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>};</div>
+</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Cache_html_adc5ed3b8e4b8707e1e3a39cc0a1337df"><div class="ttname"><a href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html#adc5ed3b8e4b8707e1e3a39cc0a1337df">ROCKSDB_NAMESPACE::Cache::ObjectPtr</a></div><div class="ttdeci">void * ObjectPtr</div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00052">advanced_cache.h:52</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle_html"><div class="ttname"><a href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::ResultHandle</a></div><div class="ttdef"><b>Definition</b> <a href="#l00067">fault_injection_secondary_cache.h:67</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle_html_a1873cdc9ea8c6bd0a751a3e8c5209ad1"><div class="ttname"><a href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#a1873cdc9ea8c6bd0a751a3e8c5209ad1">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::ResultHandle::size_</a></div><div class="ttdeci">size_t size_</div><div class="ttdef"><b>Definition</b> <a href="#l00092">fault_injection_secondary_cache.h:92</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle_html_a2259db554a32f41b26b496229b65049e"><div class="ttname"><a href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#a2259db554a32f41b26b496229b65049e">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::ResultHandle::~ResultHandle</a></div><div class="ttdeci">~ResultHandle() override</div><div class="ttdef"><b>Definition</b> <a href="#l00073">fault_injection_secondary_cache.h:73</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle_html_acb3baa1bd94b16509b6d38b6f8eff52a"><div class="ttname"><a href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#acb3baa1bd94b16509b6d38b6f8eff52a">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::ResultHandle::cache_</a></div><div class="ttdeci">FaultInjectionSecondaryCache * cache_</div><div class="ttdef"><b>Definition</b> <a href="#l00089">fault_injection_secondary_cache.h:89</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle_html_ae5493ec24bfb37b4525bf9ac1948fe2f"><div class="ttname"><a href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#ae5493ec24bfb37b4525bf9ac1948fe2f">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::ResultHandle::ResultHandle</a></div><div class="ttdeci">ResultHandle(FaultInjectionSecondaryCache *cache, std::unique_ptr&lt; SecondaryCacheResultHandle &gt; &amp;&amp;base)</div><div class="ttdef"><b>Definition</b> <a href="#l00069">fault_injection_secondary_cache.h:69</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle_html_ae91f32af7b4f79db6a7d0d10ff2766e2"><div class="ttname"><a href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#ae91f32af7b4f79db6a7d0d10ff2766e2">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::ResultHandle::base_</a></div><div class="ttdeci">std::unique_ptr&lt; SecondaryCacheResultHandle &gt; base_</div><div class="ttdef"><b>Definition</b> <a href="#l00090">fault_injection_secondary_cache.h:90</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle_html_af5100761143708de39ca9523bb0641ac"><div class="ttname"><a href="../../d0/da3/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ResultHandle.html#af5100761143708de39ca9523bb0641ac">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::ResultHandle::value_</a></div><div class="ttdeci">Cache::ObjectPtr value_</div><div class="ttdef"><b>Definition</b> <a href="#l00091">fault_injection_secondary_cache.h:91</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_a041778bb6f972b7a8d2a8b4f2f5492b1"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a041778bb6f972b7a8d2a8b4f2f5492b1">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::seed_</a></div><div class="ttdeci">uint32_t seed_</div><div class="ttdef"><b>Definition</b> <a href="#l00101">fault_injection_secondary_cache.h:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_a1fc025b9c6c3dd3cb31eea66f7fbb571"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a1fc025b9c6c3dd3cb31eea66f7fbb571">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::base_</a></div><div class="ttdeci">const std::shared_ptr&lt; SecondaryCache &gt; base_</div><div class="ttdef"><b>Definition</b> <a href="#l00100">fault_injection_secondary_cache.h:100</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_a3bedd153aec36be8abe38ca829bedf30"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a3bedd153aec36be8abe38ca829bedf30">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::SupportForceErase</a></div><div class="ttdeci">bool SupportForceErase() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00048">fault_injection_secondary_cache.h:48</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_a3f2e5ae182226bbbf48a20b60e77c1da"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a3f2e5ae182226bbbf48a20b60e77c1da">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::prob_</a></div><div class="ttdeci">int prob_</div><div class="ttdef"><b>Definition</b> <a href="#l00102">fault_injection_secondary_cache.h:102</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_a647a2a575cdd7b70fb8ab580f3bc719f"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a647a2a575cdd7b70fb8ab580f3bc719f">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::GetPrintableOptions</a></div><div class="ttdeci">std::string GetPrintableOptions() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00062">fault_injection_secondary_cache.h:62</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_a755eceee504d494dde8d74ad6d0568cc"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a755eceee504d494dde8d74ad6d0568cc">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::Name</a></div><div class="ttdeci">const char * Name() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00032">fault_injection_secondary_cache.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_a7a8c3bdb95cdbf474c9ce86e4564d58c"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a7a8c3bdb95cdbf474c9ce86e4564d58c">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::base_is_compressed_sec_cache_</a></div><div class="ttdeci">bool base_is_compressed_sec_cache_</div><div class="ttdef"><b>Definition</b> <a href="#l00103">fault_injection_secondary_cache.h:103</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_a8900c90fdcf7b6a46016b37b40deff47"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a8900c90fdcf7b6a46016b37b40deff47">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::thread_local_error_</a></div><div class="ttdeci">std::unique_ptr&lt; ThreadLocalPtr &gt; thread_local_error_</div><div class="ttdef"><b>Definition</b> <a href="#l00110">fault_injection_secondary_cache.h:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_a9ce972b1890be8daff97bcc8f66024aa"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#a9ce972b1890be8daff97bcc8f66024aa">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::WaitAll</a></div><div class="ttdeci">void WaitAll(std::vector&lt; SecondaryCacheResultHandle * &gt; handles) override</div><div class="ttdef"><b>Definition</b> <a href="../../de/d8e/fault__injection__secondary__cache_8cc_source.html#l00121">fault_injection_secondary_cache.cc:121</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_aa9895b0fedd816e4d212d10118f41d07"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#aa9895b0fedd816e4d212d10118f41d07">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::GetErrorContext</a></div><div class="ttdeci">ErrorContext * GetErrorContext()</div><div class="ttdef"><b>Definition</b> <a href="../../de/d8e/fault__injection__secondary__cache_8cc_source.html#l00069">fault_injection_secondary_cache.cc:69</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_aac74296871d66cb68d0489240d796570"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#aac74296871d66cb68d0489240d796570">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::GetCapacity</a></div><div class="ttdeci">Status GetCapacity(size_t &amp;capacity) override</div><div class="ttdef"><b>Definition</b> <a href="#l00058">fault_injection_secondary_cache.h:58</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_aad1dff361d82db8c1d583b7f41bf49f3"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#aad1dff361d82db8c1d583b7f41bf49f3">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::SetCapacity</a></div><div class="ttdeci">Status SetCapacity(size_t capacity) override</div><div class="ttdef"><b>Definition</b> <a href="#l00054">fault_injection_secondary_cache.h:54</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_ac8b12a987c45d2dbdb6e4bc5b2455d9b"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ac8b12a987c45d2dbdb6e4bc5b2455d9b">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::FaultInjectionSecondaryCache</a></div><div class="ttdeci">FaultInjectionSecondaryCache(const std::shared_ptr&lt; SecondaryCache &gt; &amp;base, uint32_t seed, int prob)</div><div class="ttdef"><b>Definition</b> <a href="#l00019">fault_injection_secondary_cache.h:19</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_ada0aa66f1fb3b7ad835a77123414599f"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ada0aa66f1fb3b7ad835a77123414599f">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::~FaultInjectionSecondaryCache</a></div><div class="ttdeci">~FaultInjectionSecondaryCache() override</div><div class="ttdef"><b>Definition</b> <a href="#l00030">fault_injection_secondary_cache.h:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_ae43678e44765e7cc4c71ead47c1488ff"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#ae43678e44765e7cc4c71ead47c1488ff">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::DeleteThreadLocalErrorContext</a></div><div class="ttdeci">static void DeleteThreadLocalErrorContext(void *p)</div><div class="ttdef"><b>Definition</b> <a href="#l00095">fault_injection_secondary_cache.h:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_html_afa0482728784aed7b250ed3ae7597974"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache.html#afa0482728784aed7b250ed3ae7597974">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::InsertSaved</a></div><div class="ttdeci">Status InsertSaved(const Slice &amp;, const Slice &amp;, CompressionType, CacheTier) override</div><div class="ttdef"><b>Definition</b> <a href="#l00038">fault_injection_secondary_cache.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Random_html"><div class="ttname"><a href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">ROCKSDB_NAMESPACE::Random</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d79/random_8h_source.html#l00023">random.h:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SecondaryCacheResultHandle_html"><div class="ttname"><a href="../../d7/dc0/classROCKSDB__NAMESPACE_1_1SecondaryCacheResultHandle.html">ROCKSDB_NAMESPACE::SecondaryCacheResultHandle</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d97/secondary__cache_8h_source.html#l00038">secondary_cache.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SecondaryCache_html"><div class="ttname"><a href="../../d6/d58/classROCKSDB__NAMESPACE_1_1SecondaryCache.html">ROCKSDB_NAMESPACE::SecondaryCache</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d97/secondary__cache_8h_source.html#l00066">secondary_cache.h:66</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Statistics_html"><div class="ttname"><a href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">ROCKSDB_NAMESPACE::Statistics</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00727">statistics.h:727</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ThreadLocalPtr_html"><div class="ttname"><a href="../../d9/da5/classROCKSDB__NAMESPACE_1_1ThreadLocalPtr.html">ROCKSDB_NAMESPACE::ThreadLocalPtr</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d7a/thread__local_8h_source.html#l00044">thread_local.h:44</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa8267448672a5161843bc6fd001fcae7"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8267448672a5161843bc6fd001fcae7">ROCKSDB_NAMESPACE::CacheTier</a></div><div class="ttdeci">CacheTier</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d27/advanced__options_8h_source.html#l00124">advanced_options.h:124</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aacfc9de2946b33f6a70b6fce4aec79d5"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5">ROCKSDB_NAMESPACE::CompressionType</a></div><div class="ttdeci">CompressionType</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d17/compression__type_8h_source.html#l00018">compression_type.h:18</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="arandom_8h_html"><div class="ttname"><a href="../../d1/d79/random_8h.html">random.h</a></div></div>
+<div class="ttc" id="asecondary__cache_8h_html"><div class="ttname"><a href="../../d9/d97/secondary__cache_8h.html">secondary_cache.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper_html"><div class="ttname"><a href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html">ROCKSDB_NAMESPACE::Cache::CacheItemHelper</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00132">advanced_cache.h:132</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Cache_1_1CreateContext_html"><div class="ttname"><a href="../../d4/d9b/structROCKSDB__NAMESPACE_1_1Cache_1_1CreateContext.html">ROCKSDB_NAMESPACE::Cache::CreateContext</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00056">advanced_cache.h:56</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext_html"><div class="ttname"><a href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::ErrorContext</a></div><div class="ttdef"><b>Definition</b> <a href="#l00105">fault_injection_secondary_cache.h:105</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext_html_a0e8479e6351ebcd7efd2a5d7b7703550"><div class="ttname"><a href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html#a0e8479e6351ebcd7efd2a5d7b7703550">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::ErrorContext::rand</a></div><div class="ttdeci">Random rand</div><div class="ttdef"><b>Definition</b> <a href="#l00106">fault_injection_secondary_cache.h:106</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext_html_aa324bd90f58cf0369ec559fc79af3d9d"><div class="ttname"><a href="../../d1/d32/structROCKSDB__NAMESPACE_1_1FaultInjectionSecondaryCache_1_1ErrorContext.html#aa324bd90f58cf0369ec559fc79af3d9d">ROCKSDB_NAMESPACE::FaultInjectionSecondaryCache::ErrorContext::ErrorContext</a></div><div class="ttdeci">ErrorContext(uint32_t seed)</div><div class="ttdef"><b>Definition</b> <a href="#l00108">fault_injection_secondary_cache.h:108</a></div></div>
+<div class="ttc" id="athread__local_8h_html"><div class="ttname"><a href="../../d8/d7a/thread__local_8h.html">thread_local.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../d2/deb/fault__injection__secondary__cache_8h.html">fault_injection_secondary_cache.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

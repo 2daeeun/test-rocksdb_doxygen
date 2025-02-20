@@ -1,0 +1,28 @@
+var classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper =
+[
+    [ "FSWritableFileWrapper", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#af4087d51bd2c31920e379e9e0780ccb5", null ],
+    [ "Allocate", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#ad9fe475923da346ee456eb368b07a4ea", null ],
+    [ "Append", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#af99bdd107f21717b7a20a06727cea21e", null ],
+    [ "Append", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a655d5d44b979549bad1c8b73172aa3d0", null ],
+    [ "Close", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a7041cdbabe5e1aa679fc1198f0752df3", null ],
+    [ "Flush", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a2bbb9d2c3a20392561a30f34abe5f411", null ],
+    [ "Fsync", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a9bd70b52c0d0e2fb29495a2769796c90", null ],
+    [ "GetFileSize", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a57e3d4709e71762bb1a6fade6d3a65c7", null ],
+    [ "GetPreallocationStatus", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a1163f28811e9c5ade94093f73abb6247", null ],
+    [ "GetRequiredBufferAlignment", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#aebfbb66e91e3c13b78d4a11c2e6ed07f", null ],
+    [ "GetUniqueId", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a8dabc1d5ce9eebc64ea32dd9141ea674", null ],
+    [ "GetWriteLifeTimeHint", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a3d8ad206a50c73f4d92d752723478192", null ],
+    [ "InvalidateCache", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a7e8b166f7a75ee381d5eb64cdaab3487", null ],
+    [ "IsSyncThreadSafe", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a0cc9bb739c5a7dc27afebb8ab299445c", null ],
+    [ "PositionedAppend", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a041fd39b87f4ffd5fdb81f855bb7f7d9", null ],
+    [ "PositionedAppend", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#abc299dc03e31e497e2f35223207e7cc5", null ],
+    [ "PrepareWrite", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a04f3d79b7d9eade8136fda0a91b26b33", null ],
+    [ "RangeSync", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#aabd3da1b1905d2538a3baa75ffcc8600", null ],
+    [ "SetPreallocationBlockSize", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#aee6130c8fd2cd16d46a958f7479eac65", null ],
+    [ "SetWriteLifeTimeHint", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#acf24c8d00c035be8e88fea7c8cf45ef6", null ],
+    [ "Sync", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a8b7822f3c4533b751308d0b654903196", null ],
+    [ "target", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a9f00d884fbe206944a6fa7dd4c7946d5", null ],
+    [ "Truncate", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a67143bd0af6ff8af079b3d7e392d4f62", null ],
+    [ "use_direct_io", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a5a56d1009370afe7b36e3fea494ec453", null ],
+    [ "target_", "d2/d84/classROCKSDB__NAMESPACE_1_1FSWritableFileWrapper.html#a85f25cf9a951d498dc95568906b60367", null ]
+];

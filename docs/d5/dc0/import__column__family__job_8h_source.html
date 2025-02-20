@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/import_column_family_job.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d5/dc0/import__column__family__job_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">import_column_family_job.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d5/dc0/import__column__family__job_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;unordered_set&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/dcd/column__family_8h.html">db/column_family.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d1e/external__sst__file__ingestion__job_8h.html">db/external_sst_file_ingestion_job.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/db9/snapshot__impl_8h.html">db/snapshot_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d9a/db__options_8h.html">options/db_options.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d43/include_2rocksdb_2db_8h.html">rocksdb/db.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d28/metadata_8h.html">rocksdb/metadata.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/dee/sst__file__writer_8h.html">rocksdb/sst_file_writer.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/dfc/autovector_8h.html">util/autovector.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">struct </span>EnvOptions;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">class </span>SystemClock;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">// Imports a set of sst files as is into a new column family. Logic is similar</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// to ExternalSstFileIngestionJob.</span></div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html">   27</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a8dee8a70dcc24e5e239a24f8b0b66d2b">ImportColumnFamilyJob</a> {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// All file information of an imported CF, mainly used to</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="comment">// calculate whether there is overlap between CFs</span></div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="};">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d2/d0b/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo.html">   30</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="../../d2/d0b/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo.html">ColumnFamilyIngestFileInfo</a> {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="comment">// Smallest internal key in cf</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../d2/d0b/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo.html#a077e5a81041bada7ad248d3c62579938">   32</a></span>    <a class="code hl_class" href="../../de/dab/classROCKSDB__NAMESPACE_1_1InternalKey.html">InternalKey</a> <a class="code hl_variable" href="../../d2/d0b/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo.html#a077e5a81041bada7ad248d3c62579938">smallest_internal_key</a>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="comment">// Largest internal key in cf</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../d2/d0b/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo.html#afb6f3fa19192452bbb2cf6848aaf0902">   34</a></span>    <a class="code hl_class" href="../../de/dab/classROCKSDB__NAMESPACE_1_1InternalKey.html">InternalKey</a> <a class="code hl_variable" href="../../d2/d0b/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo.html#afb6f3fa19192452bbb2cf6848aaf0902">largest_internal_key</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  };</div>
+</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a8dee8a70dcc24e5e239a24f8b0b66d2b">   38</a></span>  <a class="code hl_function" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a8dee8a70dcc24e5e239a24f8b0b66d2b">ImportColumnFamilyJob</a>(</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      <a class="code hl_class" href="../../d3/d11/classROCKSDB__NAMESPACE_1_1VersionSet.html">VersionSet</a>* versions, <a class="code hl_class" href="../../d4/d8d/classROCKSDB__NAMESPACE_1_1ColumnFamilyData.html">ColumnFamilyData</a>* cfd,</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      <span class="keyword">const</span> <a class="code hl_struct" href="../../d5/d2e/structROCKSDB__NAMESPACE_1_1ImmutableDBOptions.html">ImmutableDBOptions</a>&amp; db_options, <span class="keyword">const</span> <a class="code hl_struct" href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">EnvOptions</a>&amp; env_options,</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      <span class="keyword">const</span> <a class="code hl_struct" href="../../df/de1/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyOptions.html">ImportColumnFamilyOptions</a>&amp; import_options,</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keyword">const</span> std::vector&lt;std::vector&lt;LiveFileMetaData*&gt;&gt;&amp; metadatas,</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      <span class="keyword">const</span> std::shared_ptr&lt;IOTracer&gt;&amp; io_tracer)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      : <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a4916e77fee336e6c7ff0e0a584fff5a5">clock_</a>(db_options.clock),</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aebeb8b1e0b96d8b16501453cd5f95c8e">versions_</a>(versions),</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aa68215695f118a4babdf4d18e3c0cecf">cfd_</a>(cfd),</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#af3848bb8a2c1a13baa8ef8ecfb8d6be5">db_options_</a>(db_options),</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a130b4b88dedcba9862adb937da983d2f">fs_</a>(<a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#af3848bb8a2c1a13baa8ef8ecfb8d6be5">db_options_</a>.fs, io_tracer),</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aa47bc55b9522cea8e5402e8d1a4aa700">env_options_</a>(env_options),</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a65942a545e942ed3d11611550e5d9217">import_options_</a>(import_options),</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#ac29348cda40f160d38285ecdbab67d48">metadatas_</a>(metadatas),</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#ae815ccddf22d7592f49effa82019b896">io_tracer_</a>(io_tracer) {}</div>
+</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// Prepare the job by copying external files into the DB.</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> Prepare(uint64_t next_file_number, <a class="code hl_struct" href="../../d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html">SuperVersion</a>* sv);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// Will execute the import job and prepare edit() to be applied.</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// REQUIRES: Mutex held</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> Run();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">// Cleanup after successful/failed job</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">void</span> Cleanup(<span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a>&amp; status);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a214afd583bda70f30c4ab5afe92b4567">   64</a></span>  <a class="code hl_class" href="../../de/d3f/classROCKSDB__NAMESPACE_1_1VersionEdit.html">VersionEdit</a>* <a class="code hl_function" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a214afd583bda70f30c4ab5afe92b4567">edit</a>() { <span class="keywordflow">return</span> &amp;<a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a2b5ab5762e50dde2e5077130e8527878">edit_</a>; }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a6e05f66bcb216edb8c3a999329ee2356">   66</a></span>  <span class="keyword">const</span> std::vector&lt;std::vector&lt;IngestedFileInfo&gt;&gt;&amp; <a class="code hl_function" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a6e05f66bcb216edb8c3a999329ee2356">files_to_import</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a731a45f9c427345fcd867ddf634abc1e">files_to_import_</a>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  }</div>
+</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// Open the external file and populate `file_to_import` with all the</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">// external information we need to import this file.</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> GetIngestedFileInfo(<span class="keyword">const</span> std::string&amp; external_file,</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                             uint64_t new_file_number, <a class="code hl_struct" href="../../d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html">SuperVersion</a>* sv,</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                             <span class="keyword">const</span> <a class="code hl_struct" href="../../de/ded/structROCKSDB__NAMESPACE_1_1LiveFileMetaData.html">LiveFileMetaData</a>&amp; file_meta,</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                             <a class="code hl_struct" href="../../df/d7b/structROCKSDB__NAMESPACE_1_1IngestedFileInfo.html">IngestedFileInfo</a>* file_to_import);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a4916e77fee336e6c7ff0e0a584fff5a5">   78</a></span>  <a class="code hl_class" href="../../dc/d06/classROCKSDB__NAMESPACE_1_1SystemClock.html">SystemClock</a>* <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a4916e77fee336e6c7ff0e0a584fff5a5">clock_</a>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aebeb8b1e0b96d8b16501453cd5f95c8e">   79</a></span>  <a class="code hl_class" href="../../d3/d11/classROCKSDB__NAMESPACE_1_1VersionSet.html">VersionSet</a>* <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aebeb8b1e0b96d8b16501453cd5f95c8e">versions_</a>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aa68215695f118a4babdf4d18e3c0cecf">   80</a></span>  <a class="code hl_class" href="../../d4/d8d/classROCKSDB__NAMESPACE_1_1ColumnFamilyData.html">ColumnFamilyData</a>* <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aa68215695f118a4babdf4d18e3c0cecf">cfd_</a>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#af3848bb8a2c1a13baa8ef8ecfb8d6be5">   81</a></span>  <span class="keyword">const</span> <a class="code hl_struct" href="../../d5/d2e/structROCKSDB__NAMESPACE_1_1ImmutableDBOptions.html">ImmutableDBOptions</a>&amp; <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#af3848bb8a2c1a13baa8ef8ecfb8d6be5">db_options_</a>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a130b4b88dedcba9862adb937da983d2f">   82</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d2/df1/classROCKSDB__NAMESPACE_1_1FileSystemPtr.html">FileSystemPtr</a> <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a130b4b88dedcba9862adb937da983d2f">fs_</a>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aa47bc55b9522cea8e5402e8d1a4aa700">   83</a></span>  <span class="keyword">const</span> <a class="code hl_struct" href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">EnvOptions</a>&amp; <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aa47bc55b9522cea8e5402e8d1a4aa700">env_options_</a>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a731a45f9c427345fcd867ddf634abc1e">   84</a></span>  std::vector&lt;std::vector&lt;IngestedFileInfo&gt;&gt; <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a731a45f9c427345fcd867ddf634abc1e">files_to_import_</a>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a2b5ab5762e50dde2e5077130e8527878">   85</a></span>  <a class="code hl_class" href="../../de/d3f/classROCKSDB__NAMESPACE_1_1VersionEdit.html">VersionEdit</a> <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a2b5ab5762e50dde2e5077130e8527878">edit_</a>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a65942a545e942ed3d11611550e5d9217">   86</a></span>  <span class="keyword">const</span> <a class="code hl_struct" href="../../df/de1/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyOptions.html">ImportColumnFamilyOptions</a>&amp; <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a65942a545e942ed3d11611550e5d9217">import_options_</a>;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#ac29348cda40f160d38285ecdbab67d48">   87</a></span>  <span class="keyword">const</span> std::vector&lt;std::vector&lt;LiveFileMetaData*&gt;&gt; <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#ac29348cda40f160d38285ecdbab67d48">metadatas_</a>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#ae815ccddf22d7592f49effa82019b896">   88</a></span>  <span class="keyword">const</span> std::shared_ptr&lt;IOTracer&gt; <a class="code hl_variable" href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#ae815ccddf22d7592f49effa82019b896">io_tracer_</a>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>};</div>
+</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aautovector_8h_html"><div class="ttname"><a href="../../de/dfc/autovector_8h.html">autovector.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ColumnFamilyData_html"><div class="ttname"><a href="../../d4/d8d/classROCKSDB__NAMESPACE_1_1ColumnFamilyData.html">ROCKSDB_NAMESPACE::ColumnFamilyData</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/dcd/column__family_8h_source.html#l00295">column_family.h:295</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemPtr_html"><div class="ttname"><a href="../../d2/df1/classROCKSDB__NAMESPACE_1_1FileSystemPtr.html">ROCKSDB_NAMESPACE::FileSystemPtr</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d10/file__system__tracer_8h_source.html#l00100">file_system_tracer.h:100</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_a130b4b88dedcba9862adb937da983d2f"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a130b4b88dedcba9862adb937da983d2f">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::fs_</a></div><div class="ttdeci">const FileSystemPtr fs_</div><div class="ttdef"><b>Definition</b> <a href="#l00082">import_column_family_job.h:82</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_a214afd583bda70f30c4ab5afe92b4567"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a214afd583bda70f30c4ab5afe92b4567">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::edit</a></div><div class="ttdeci">VersionEdit * edit()</div><div class="ttdef"><b>Definition</b> <a href="#l00064">import_column_family_job.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_a2b5ab5762e50dde2e5077130e8527878"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a2b5ab5762e50dde2e5077130e8527878">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::edit_</a></div><div class="ttdeci">VersionEdit edit_</div><div class="ttdef"><b>Definition</b> <a href="#l00085">import_column_family_job.h:85</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_a4916e77fee336e6c7ff0e0a584fff5a5"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a4916e77fee336e6c7ff0e0a584fff5a5">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::clock_</a></div><div class="ttdeci">SystemClock * clock_</div><div class="ttdef"><b>Definition</b> <a href="#l00078">import_column_family_job.h:78</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_a65942a545e942ed3d11611550e5d9217"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a65942a545e942ed3d11611550e5d9217">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::import_options_</a></div><div class="ttdeci">const ImportColumnFamilyOptions &amp; import_options_</div><div class="ttdef"><b>Definition</b> <a href="#l00086">import_column_family_job.h:86</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_a6e05f66bcb216edb8c3a999329ee2356"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a6e05f66bcb216edb8c3a999329ee2356">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::files_to_import</a></div><div class="ttdeci">const std::vector&lt; std::vector&lt; IngestedFileInfo &gt; &gt; &amp; files_to_import() const</div><div class="ttdef"><b>Definition</b> <a href="#l00066">import_column_family_job.h:66</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_a731a45f9c427345fcd867ddf634abc1e"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a731a45f9c427345fcd867ddf634abc1e">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::files_to_import_</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; IngestedFileInfo &gt; &gt; files_to_import_</div><div class="ttdef"><b>Definition</b> <a href="#l00084">import_column_family_job.h:84</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_a8dee8a70dcc24e5e239a24f8b0b66d2b"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#a8dee8a70dcc24e5e239a24f8b0b66d2b">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::ImportColumnFamilyJob</a></div><div class="ttdeci">ImportColumnFamilyJob(VersionSet *versions, ColumnFamilyData *cfd, const ImmutableDBOptions &amp;db_options, const EnvOptions &amp;env_options, const ImportColumnFamilyOptions &amp;import_options, const std::vector&lt; std::vector&lt; LiveFileMetaData * &gt; &gt; &amp;metadatas, const std::shared_ptr&lt; IOTracer &gt; &amp;io_tracer)</div><div class="ttdef"><b>Definition</b> <a href="#l00038">import_column_family_job.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_aa47bc55b9522cea8e5402e8d1a4aa700"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aa47bc55b9522cea8e5402e8d1a4aa700">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::env_options_</a></div><div class="ttdeci">const EnvOptions &amp; env_options_</div><div class="ttdef"><b>Definition</b> <a href="#l00083">import_column_family_job.h:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_aa68215695f118a4babdf4d18e3c0cecf"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aa68215695f118a4babdf4d18e3c0cecf">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::cfd_</a></div><div class="ttdeci">ColumnFamilyData * cfd_</div><div class="ttdef"><b>Definition</b> <a href="#l00080">import_column_family_job.h:80</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_ac29348cda40f160d38285ecdbab67d48"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#ac29348cda40f160d38285ecdbab67d48">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::metadatas_</a></div><div class="ttdeci">const std::vector&lt; std::vector&lt; LiveFileMetaData * &gt; &gt; metadatas_</div><div class="ttdef"><b>Definition</b> <a href="#l00087">import_column_family_job.h:87</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_ae815ccddf22d7592f49effa82019b896"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#ae815ccddf22d7592f49effa82019b896">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::io_tracer_</a></div><div class="ttdeci">const std::shared_ptr&lt; IOTracer &gt; io_tracer_</div><div class="ttdef"><b>Definition</b> <a href="#l00088">import_column_family_job.h:88</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_aebeb8b1e0b96d8b16501453cd5f95c8e"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#aebeb8b1e0b96d8b16501453cd5f95c8e">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::versions_</a></div><div class="ttdeci">VersionSet * versions_</div><div class="ttdef"><b>Definition</b> <a href="#l00079">import_column_family_job.h:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_html_af3848bb8a2c1a13baa8ef8ecfb8d6be5"><div class="ttname"><a href="../../d2/dfa/classROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob.html#af3848bb8a2c1a13baa8ef8ecfb8d6be5">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::db_options_</a></div><div class="ttdeci">const ImmutableDBOptions &amp; db_options_</div><div class="ttdef"><b>Definition</b> <a href="#l00081">import_column_family_job.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalKey_html"><div class="ttname"><a href="../../de/dab/classROCKSDB__NAMESPACE_1_1InternalKey.html">ROCKSDB_NAMESPACE::InternalKey</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00430">dbformat.h:430</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SystemClock_html"><div class="ttname"><a href="../../dc/d06/classROCKSDB__NAMESPACE_1_1SystemClock.html">ROCKSDB_NAMESPACE::SystemClock</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d2f/system__clock_8h_source.html#l00030">system_clock.h:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VersionEdit_html"><div class="ttname"><a href="../../de/d3f/classROCKSDB__NAMESPACE_1_1VersionEdit.html">ROCKSDB_NAMESPACE::VersionEdit</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/d42/version__edit_8h_source.html#l00420">version_edit.h:420</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VersionSet_html"><div class="ttname"><a href="../../d3/d11/classROCKSDB__NAMESPACE_1_1VersionSet.html">ROCKSDB_NAMESPACE::VersionSet</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/dd5/version__set_8h_source.html#l01185">version_set.h:1185</a></div></div>
+<div class="ttc" id="acolumn__family_8h_html"><div class="ttname"><a href="../../de/dcd/column__family_8h.html">column_family.h</a></div></div>
+<div class="ttc" id="adb__options_8h_html"><div class="ttname"><a href="../../d7/d9a/db__options_8h.html">db_options.h</a></div></div>
+<div class="ttc" id="aexternal__sst__file__ingestion__job_8h_html"><div class="ttname"><a href="../../d7/d1e/external__sst__file__ingestion__job_8h.html">external_sst_file_ingestion_job.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2db_8h_html"><div class="ttname"><a href="../../d5/d43/include_2rocksdb_2db_8h.html">db.h</a></div></div>
+<div class="ttc" id="ametadata_8h_html"><div class="ttname"><a href="../../d9/d28/metadata_8h.html">metadata.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="asnapshot__impl_8h_html"><div class="ttname"><a href="../../d5/db9/snapshot__impl_8h.html">snapshot_impl.h</a></div></div>
+<div class="ttc" id="asst__file__writer_8h_html"><div class="ttname"><a href="../../d7/dee/sst__file__writer_8h.html">sst_file_writer.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1EnvOptions_html"><div class="ttname"><a href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">ROCKSDB_NAMESPACE::EnvOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00076">env.h:76</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ImmutableDBOptions_html"><div class="ttname"><a href="../../d5/d2e/structROCKSDB__NAMESPACE_1_1ImmutableDBOptions.html">ROCKSDB_NAMESPACE::ImmutableDBOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d9a/db__options_8h_source.html#l00016">db_options.h:16</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo_html"><div class="ttname"><a href="../../d2/d0b/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo.html">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::ColumnFamilyIngestFileInfo</a></div><div class="ttdef"><b>Definition</b> <a href="#l00030">import_column_family_job.h:30</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo_html_a077e5a81041bada7ad248d3c62579938"><div class="ttname"><a href="../../d2/d0b/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo.html#a077e5a81041bada7ad248d3c62579938">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::ColumnFamilyIngestFileInfo::smallest_internal_key</a></div><div class="ttdeci">InternalKey smallest_internal_key</div><div class="ttdef"><b>Definition</b> <a href="#l00032">import_column_family_job.h:32</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo_html_afb6f3fa19192452bbb2cf6848aaf0902"><div class="ttname"><a href="../../d2/d0b/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyJob_1_1ColumnFamilyIngestFileInfo.html#afb6f3fa19192452bbb2cf6848aaf0902">ROCKSDB_NAMESPACE::ImportColumnFamilyJob::ColumnFamilyIngestFileInfo::largest_internal_key</a></div><div class="ttdeci">InternalKey largest_internal_key</div><div class="ttdef"><b>Definition</b> <a href="#l00034">import_column_family_job.h:34</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ImportColumnFamilyOptions_html"><div class="ttname"><a href="../../df/de1/structROCKSDB__NAMESPACE_1_1ImportColumnFamilyOptions.html">ROCKSDB_NAMESPACE::ImportColumnFamilyOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l02324">options.h:2324</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IngestedFileInfo_html"><div class="ttname"><a href="../../df/d7b/structROCKSDB__NAMESPACE_1_1IngestedFileInfo.html">ROCKSDB_NAMESPACE::IngestedFileInfo</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1e/external__sst__file__ingestion__job_8h_source.html#l00093">external_sst_file_ingestion_job.h:93</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1LiveFileMetaData_html"><div class="ttname"><a href="../../de/ded/structROCKSDB__NAMESPACE_1_1LiveFileMetaData.html">ROCKSDB_NAMESPACE::LiveFileMetaData</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d28/metadata_8h_source.html#l00168">metadata.h:168</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SuperVersion_html"><div class="ttname"><a href="../../d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html">ROCKSDB_NAMESPACE::SuperVersion</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/dcd/column__family_8h_source.html#l00206">column_family.h:206</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../d5/dc0/import__column__family__job_8h.html">import_column_family_job.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

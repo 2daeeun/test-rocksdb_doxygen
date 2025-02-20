@@ -1,0 +1,434 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: table/internal_iterator.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d7/d33/internal__iterator_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">internal_iterator.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d7/d33/internal__iterator_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d73/dbformat_8h.html">db/dbformat.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/d80/readahead__file__info_8h.html">file/readahead_file_info.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/df8/include_2rocksdb_2comparator_8h.html">rocksdb/comparator.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d22/iterator_8h.html">rocksdb/iterator.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dd0/include_2rocksdb_2status_8h.html">rocksdb/status.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d01/table_2format_8h.html">table/format.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">class </span>PinnedIteratorsManager;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="};">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624">   22</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624">IterBoundCheck</a> : <span class="keywordtype">char</span> {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624a25c2dc47991b3df171ed5192bcf70390">   23</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6dbdf3f661cc1e2d620df8efee923bffa25c2dc47991b3df171ed5192bcf70390">kUnknown</a> = 0,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624ac42ea45dfeafd16f41b3e80dd4b92967">   24</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624ac42ea45dfeafd16f41b3e80dd4b92967">kOutOfBound</a>,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624a3eb68365571a8dd79f0d6800d843750f">   25</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624a3eb68365571a8dd79f0d6800d843750f">kInbound</a>,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>};</div>
+</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html">   28</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html">IterateResult</a> {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#a9111fbe2d34c8791f0bfa18e3493d984">   29</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_variable" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#a9111fbe2d34c8791f0bfa18e3493d984">key</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#ae95c57b5713c7d9ff0674a88f0e2ac1d">   30</a></span>  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624">IterBoundCheck</a> <a class="code hl_variable" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#ae95c57b5713c7d9ff0674a88f0e2ac1d">bound_check_result</a> = <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624a25c2dc47991b3df171ed5192bcf70390">IterBoundCheck::kUnknown</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment">// If false, PrepareValue() needs to be called before value().</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#afc165ae4966ba572e993eaf463a25237">   32</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#afc165ae4966ba572e993eaf463a25237">value_prepared</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>};</div>
+</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> TValue&gt;</div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="};">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html">   36</a></span><span class="keyword">class </span><a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a20678d3430e2f44f07066ed8c2d7303e">InternalIteratorBase</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../d7/d19/classROCKSDB__NAMESPACE_1_1Cleanable.html#ad337b75e1985ecf034b0855dd47f1537">Cleanable</a> {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a20678d3430e2f44f07066ed8c2d7303e">   38</a></span>  <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a20678d3430e2f44f07066ed8c2d7303e">InternalIteratorBase</a>() {}</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// No copying allowed</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a0fc4845be0635e56f09e1869c10d6cf1">   41</a></span>  <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a0fc4845be0635e56f09e1869c10d6cf1">InternalIteratorBase</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a20678d3430e2f44f07066ed8c2d7303e">InternalIteratorBase</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a9352ba7bef600f4a4827a21b78f407ac">   42</a></span>  <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a20678d3430e2f44f07066ed8c2d7303e">InternalIteratorBase</a>&amp; <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a9352ba7bef600f4a4827a21b78f407ac">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a20678d3430e2f44f07066ed8c2d7303e">InternalIteratorBase</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a0aecd44338514045cd8f2144f3df4bd9">   44</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a0aecd44338514045cd8f2144f3df4bd9">~InternalIteratorBase</a>() {}</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// This iterator will only process range tombstones with sequence</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// number &lt;= `read_seqno`.</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// Noop for most child classes.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// For range tombstone iterators (TruncatedRangeDelIterator,</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// FragmentedRangeTombstoneIterator), will only return range tombstones with</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// sequence number &lt;= `read_seqno`. For LevelIterator, it may open new table</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// files and create new range tombstone iterators during scanning. It will use</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// `read_seqno` as the sequence number for creating new range tombstone</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// iterators.</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a8ffcb3f2f57c2de7cd84f0d22a2b7f5c">   55</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a8ffcb3f2f57c2de7cd84f0d22a2b7f5c">SetRangeDelReadSeqno</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <span class="comment">/* read_seqno */</span>) {}</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// An iterator is either positioned at a key/value pair, or</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// not valid.  This method returns true iff the iterator is valid.</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">// Always returns false if !status().ok().</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a9b7c34b74b2c701336dc2d14f2f6778f">   60</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a9b7c34b74b2c701336dc2d14f2f6778f">Valid</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// Position at the first key in the source.  The iterator is Valid()</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">// after this call iff the source is not empty.</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a80704e9e0262e28fa8922e3bf37f540e">   64</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a80704e9e0262e28fa8922e3bf37f540e">SeekToFirst</a>() = 0;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">// Position at the last key in the source.  The iterator is</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="comment">// Valid() after this call iff the source is not empty.</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a6c469e4c94ec3cc1b74fc6eec5296829">   68</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a6c469e4c94ec3cc1b74fc6eec5296829">SeekToLast</a>() = 0;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// Position at the first key in the source that at or past target</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// The iterator is Valid() after this call iff the source contains</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">// an entry that comes at or past target.</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// All Seek*() methods clear any error status() that the iterator had prior to</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// the call; after the seek, status() indicates only the error (if any) that</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">// happened during the seek, not any past errors.</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// &#39;target&#39; contains user timestamp if timestamp is enabled.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aaf60c35c2d64d4c88ffc9409ae2538d4">   77</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aaf60c35c2d64d4c88ffc9409ae2538d4">Seek</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; target) = 0;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">// Position at the first key in the source that at or before target</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// The iterator is Valid() after this call iff the source contains</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">// an entry that comes at or before target.</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a71168b09448be62264b58fd089dbfb6d">   82</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a71168b09448be62264b58fd089dbfb6d">SeekForPrev</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; target) = 0;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">// Moves to the next entry in the source.  After this call, Valid() is</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="comment">// true iff the iterator was not positioned at the last entry in the source.</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="comment">// REQUIRES: Valid()</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a7b34ee1895287973f07632c7c7699c74">   87</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a7b34ee1895287973f07632c7c7699c74">Next</a>() = 0;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="comment">// Moves to the next entry in the source, and return result. Iterator</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="comment">// implementation should override this method to help methods inline better,</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="comment">// or when UpperBoundCheckResult() is non-trivial.</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="comment">// REQUIRES: Valid()</span></div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ade515163d8836e3f40509c3482a28852">   93</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ade515163d8836e3f40509c3482a28852">NextAndGetResult</a>(<a class="code hl_struct" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html">IterateResult</a>* result) {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a7b34ee1895287973f07632c7c7699c74">Next</a>();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordtype">bool</span> is_valid = <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a9b7c34b74b2c701336dc2d14f2f6778f">Valid</a>();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">if</span> (is_valid) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      result-&gt;<a class="code hl_variable" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#a9111fbe2d34c8791f0bfa18e3493d984">key</a> = <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ab6f9d83c153d1de1be8044e04df9a50e">key</a>();</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      <span class="comment">// Default may_be_out_of_upper_bound to true to avoid unnecessary virtual</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      <span class="comment">// call. If an implementation has non-trivial UpperBoundCheckResult(),</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      <span class="comment">// it should also override NextAndGetResult().</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      result-&gt;<a class="code hl_variable" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#ae95c57b5713c7d9ff0674a88f0e2ac1d">bound_check_result</a> = <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624a25c2dc47991b3df171ed5192bcf70390">IterBoundCheck::kUnknown</a>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      result-&gt;<a class="code hl_variable" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#afc165ae4966ba572e993eaf463a25237">value_prepared</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      assert(<a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a7aed860c3392b21dafbf0c67b9fa0f03">UpperBoundCheckResult</a>() != <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624ac42ea45dfeafd16f41b3e80dd4b92967">IterBoundCheck::kOutOfBound</a>);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">return</span> is_valid;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  }</div>
+</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="comment">// Moves to the previous entry in the source.  After this call, Valid() is</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="comment">// true iff the iterator was not positioned at the first entry in source.</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="comment">// REQUIRES: Valid()</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a910f332a346c6d31025978fde71ac43b">  111</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a910f332a346c6d31025978fde71ac43b">Prev</a>() = 0;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="comment">// Return the key for the current entry.  The underlying storage for</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="comment">// the returned slice is valid only until the next modification of</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="comment">// the iterator.</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="comment">// REQUIRES: Valid()</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ab6f9d83c153d1de1be8044e04df9a50e">  117</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ab6f9d83c153d1de1be8044e04df9a50e">key</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="comment">// Returns the approximate write time of this entry, which is deduced from</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="comment">// sequence number if sequence number to time mapping is available.</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="comment">// The default implementation returns maximum uint64_t and that indicates the</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// write time is unknown.</span></div>
+<div class="foldopen" id="foldopen00123" data-start="{" data-end="}">
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#abf24c5b3ed9171af6ff74d1cadac94c2">  123</a></span>  <span class="keyword">virtual</span> uint64_t <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#abf24c5b3ed9171af6ff74d1cadac94c2">write_unix_time</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keywordflow">return</span> std::numeric_limits&lt;uint64_t&gt;::max();</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  }</div>
+</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="comment">// Return user key for the current entry.</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="comment">// REQUIRES: Valid()</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a4c27c12134b977143e67106b20998b5e">  129</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a4c27c12134b977143e67106b20998b5e">user_key</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a46b9e5a882f55fc1e378d42ea0b0a206">ExtractUserKey</a>(<a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ab6f9d83c153d1de1be8044e04df9a50e">key</a>()); }</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="comment">// Return the value for the current entry.  The underlying storage for</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="comment">// the returned slice is valid only until the next modification of</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="comment">// the iterator.</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="comment">// REQUIRES: Valid()</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="comment">// REQUIRES: PrepareValue() has been called if needed (see PrepareValue()).</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aed47b650ae0f52bb1c4e6d5cdafecb99">  136</a></span>  <span class="keyword">virtual</span> TValue <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aed47b650ae0f52bb1c4e6d5cdafecb99">value</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="comment">// If an error has occurred, return it.  Else return an ok status.</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="comment">// If non-blocking IO is requested and this operation cannot be</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="comment">// satisfied without doing some IO, then this returns Status::Incomplete().</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aa0d228378d47a23e3992c195090ca8ee">  141</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aa0d228378d47a23e3992c195090ca8ee">status</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <span class="comment">// For some types of iterators, sometimes Seek()/Next()/SeekForPrev()/etc may</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="comment">// load key but not value (to avoid the IO cost of reading the value from disk</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="comment">// if it won&#39;t be not needed). This method loads the value in such situation.</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  <span class="comment">// Needs to be called before value() at least once after each iterator</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">// movement (except if IterateResult::value_prepared = true), for iterators</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">// created with allow_unprepared_value = true.</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="comment">// Returns false if an error occurred; in this case Valid() is also changed</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="comment">// to false, and status() is changed to non-ok.</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="comment">// REQUIRES: Valid()</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aa53cc74e9e3b451422feb2656ac21e2f">  154</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aa53cc74e9e3b451422feb2656ac21e2f">PrepareValue</a>() { <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="comment">// Keys return from this iterator can be smaller than iterate_lower_bound.</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a8a9f9c83827a72e94a8c715524ab9d75">  157</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a8a9f9c83827a72e94a8c715524ab9d75">MayBeOutOfLowerBound</a>() { <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="comment">// If the iterator has checked the key against iterate_upper_bound, returns</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="comment">// the result here. The function can be used by user of the iterator to skip</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="comment">// their own checks. If Valid() = true, IterBoundCheck::kUnknown is always</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="comment">// a valid value. If Valid() = false, IterBoundCheck::kOutOfBound indicates</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="comment">// that the iterator is filtered out by upper bound checks.</span></div>
+<div class="foldopen" id="foldopen00164" data-start="{" data-end="}">
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a7aed860c3392b21dafbf0c67b9fa0f03">  164</a></span>  <span class="keyword">virtual</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624">IterBoundCheck</a> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a7aed860c3392b21dafbf0c67b9fa0f03">UpperBoundCheckResult</a>() {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624a25c2dc47991b3df171ed5192bcf70390">IterBoundCheck::kUnknown</a>;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  }</div>
+</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="comment">// Pass the PinnedIteratorsManager to the Iterator, most Iterators don&#39;t</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="comment">// communicate with PinnedIteratorsManager so default implementation is no-op</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="comment">// but for Iterators that need to communicate with PinnedIteratorsManager</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="comment">// they will implement this function and use the passed pointer to communicate</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  <span class="comment">// with PinnedIteratorsManager.</span></div>
+<div class="foldopen" id="foldopen00173" data-start="{" data-end="}">
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#af092b3a31d94f85499f9159575b65760">  173</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#af092b3a31d94f85499f9159575b65760">SetPinnedItersMgr</a>(<a class="code hl_class" href="../../d0/d49/classROCKSDB__NAMESPACE_1_1PinnedIteratorsManager.html">PinnedIteratorsManager</a>* <span class="comment">/*pinned_iters_mgr*/</span>) {</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  }</div>
+</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="comment">// If true, this means that the Slice returned by key() is valid as long as</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <span class="comment">// PinnedIteratorsManager::ReleasePinnedData is not called and the</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="comment">// Iterator is not deleted.</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="comment">// IsKeyPinned() is guaranteed to always return true if</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <span class="comment">//  - Iterator is created with ReadOptions::pin_data = true</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="comment">//  - DB tables were created with BlockBasedTableOptions::use_delta_encoding</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <span class="comment">//    set to false.</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#af5eb994da9deee9f26ff26d27feff5d4">  184</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#af5eb994da9deee9f26ff26d27feff5d4">IsKeyPinned</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="comment">// If true, this means that the Slice returned by value() is valid as long as</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="comment">// PinnedIteratorsManager::ReleasePinnedData is not called and the</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <span class="comment">// Iterator is not deleted.</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="comment">// REQUIRES: Same as for value().</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a881f8cdf902c21b565b6b3ffd49667e8">  190</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a881f8cdf902c21b565b6b3ffd49667e8">IsValuePinned</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="foldopen" id="foldopen00192" data-start="{" data-end="}">
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a098bd352e06fe2cf4af40310cdce290d">  192</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a098bd352e06fe2cf4af40310cdce290d">GetProperty</a>(std::string <span class="comment">/*prop_name*/</span>, std::string* <span class="comment">/*prop*/</span>) {</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a80198f888172bfab4d714628b7bfaec5">Status::NotSupported</a>(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  }</div>
+</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="comment">// When iterator moves from one file to another file at same level, new file&#39;s</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="comment">// readahead state (details of last block read) is updated with previous</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="comment">// file&#39;s readahead state. This way internal readahead_size of Prefetch Buffer</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="comment">// doesn&#39;t start from scratch and can fall back to 8KB with no prefetch if</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="comment">// reads are not sequential.</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="comment">// Default implementation is no-op and its implemented by iterators.</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#adbcbb3d9790ca6093dabfde8a65acd72">  203</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#adbcbb3d9790ca6093dabfde8a65acd72">GetReadaheadState</a>(<a class="code hl_struct" href="../../dd/d35/structROCKSDB__NAMESPACE_1_1ReadaheadFileInfo.html">ReadaheadFileInfo</a>* <span class="comment">/*readahead_file_info*/</span>) {}</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="comment">// Default implementation is no-op and its implemented by iterators.</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a074dff099cd35a5457125b15e76e84c6">  206</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a074dff099cd35a5457125b15e76e84c6">SetReadaheadState</a>(<a class="code hl_struct" href="../../dd/d35/structROCKSDB__NAMESPACE_1_1ReadaheadFileInfo.html">ReadaheadFileInfo</a>* <span class="comment">/*readahead_file_info*/</span>) {}</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  <span class="comment">// When used under merging iterator, LevelIterator treats file boundaries</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="comment">// as sentinel keys to prevent it from moving to next SST file before range</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <span class="comment">// tombstones in the current SST file are no longer needed. This method makes</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  <span class="comment">// it cheap to check if the current key is a sentinel key. This should only be</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  <span class="comment">// used by MergingIterator and LevelIterator for now.</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ae08898f46b139a8151c75d53ed23ec2f">  213</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ae08898f46b139a8151c75d53ed23ec2f">IsDeleteRangeSentinelKey</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> <span class="keyword">protected</span>:</div>
+<div class="foldopen" id="foldopen00216" data-start="{" data-end="}">
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno"><a class="line" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ae4194c61972194cf40e0233aec1a394f">  216</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ae4194c61972194cf40e0233aec1a394f">SeekForPrevImpl</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; target, <span class="keyword">const</span> <a class="code hl_class" href="../../df/df1/classROCKSDB__NAMESPACE_1_1CompareInterface.html">CompareInterface</a>* cmp) {</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aaf60c35c2d64d4c88ffc9409ae2538d4">Seek</a>(target);</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a9b7c34b74b2c701336dc2d14f2f6778f">Valid</a>()) {</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>      <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a6c469e4c94ec3cc1b74fc6eec5296829">SeekToLast</a>();</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    }</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="keywordflow">while</span> (<a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a9b7c34b74b2c701336dc2d14f2f6778f">Valid</a>() &amp;&amp; cmp-&gt;<a class="code hl_function" href="../../df/df1/classROCKSDB__NAMESPACE_1_1CompareInterface.html#a3ade320bd39c9af6327110e65df81000">Compare</a>(target, <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ab6f9d83c153d1de1be8044e04df9a50e">key</a>()) &lt; 0) {</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>      <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a910f332a346c6d31025978fde71ac43b">Prev</a>();</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    }</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  }</div>
+</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>};</div>
+</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">  227</a></span><span class="keyword">using </span><a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">InternalIterator</a> = <a class="code hl_class" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html">InternalIteratorBase&lt;Slice&gt;</a>;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment">// Return an empty iterator (yields nothing).</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> TValue = Slice&gt;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><a class="code hl_class" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html">InternalIteratorBase&lt;TValue&gt;</a>* <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a330ae559358c99908aeb84354fbb9ac8">NewEmptyInternalIterator</a>();</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="comment">// Return an empty iterator with the specified status.</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> TValue = Slice&gt;</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><a class="code hl_class" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html">InternalIteratorBase&lt;TValue&gt;</a>* <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a12c817984577faebd4e55874a901a511">NewErrorInternalIterator</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a>&amp; status);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment">// Return an empty iterator with the specified status, allocated arena.</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> TValue = Slice&gt;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><a class="code hl_class" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html">InternalIteratorBase&lt;TValue&gt;</a>* <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a12c817984577faebd4e55874a901a511">NewErrorInternalIterator</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a>&amp; status,</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                                                       <a class="code hl_class" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html">Arena</a>* arena);</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html">ROCKSDB_NAMESPACE::Arena</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d0c/arena_8h_source.html#l00025">arena.h:25</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Cleanable_html_ad337b75e1985ecf034b0855dd47f1537"><div class="ttname"><a href="../../d7/d19/classROCKSDB__NAMESPACE_1_1Cleanable.html#ad337b75e1985ecf034b0855dd47f1537">ROCKSDB_NAMESPACE::Cleanable::Cleanable</a></div><div class="ttdeci">Cleanable()</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d00/cleanable_8cc_source.html#l00018">cleanable.cc:18</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompareInterface_html"><div class="ttname"><a href="../../df/df1/classROCKSDB__NAMESPACE_1_1CompareInterface.html">ROCKSDB_NAMESPACE::CompareInterface</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/df8/include_2rocksdb_2comparator_8h_source.html#l00022">comparator.h:22</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompareInterface_html_a3ade320bd39c9af6327110e65df81000"><div class="ttname"><a href="../../df/df1/classROCKSDB__NAMESPACE_1_1CompareInterface.html#a3ade320bd39c9af6327110e65df81000">ROCKSDB_NAMESPACE::CompareInterface::Compare</a></div><div class="ttdeci">virtual int Compare(const Slice &amp;a, const Slice &amp;b) const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html">ROCKSDB_NAMESPACE::InternalIteratorBase</a></div><div class="ttdef"><b>Definition</b> <a href="#l00036">internal_iterator.h:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a074dff099cd35a5457125b15e76e84c6"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a074dff099cd35a5457125b15e76e84c6">ROCKSDB_NAMESPACE::InternalIteratorBase::SetReadaheadState</a></div><div class="ttdeci">virtual void SetReadaheadState(ReadaheadFileInfo *)</div><div class="ttdef"><b>Definition</b> <a href="#l00206">internal_iterator.h:206</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a098bd352e06fe2cf4af40310cdce290d"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a098bd352e06fe2cf4af40310cdce290d">ROCKSDB_NAMESPACE::InternalIteratorBase::GetProperty</a></div><div class="ttdeci">virtual Status GetProperty(std::string, std::string *)</div><div class="ttdef"><b>Definition</b> <a href="#l00192">internal_iterator.h:192</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a0aecd44338514045cd8f2144f3df4bd9"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a0aecd44338514045cd8f2144f3df4bd9">ROCKSDB_NAMESPACE::InternalIteratorBase::~InternalIteratorBase</a></div><div class="ttdeci">virtual ~InternalIteratorBase()</div><div class="ttdef"><b>Definition</b> <a href="#l00044">internal_iterator.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a0fc4845be0635e56f09e1869c10d6cf1"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a0fc4845be0635e56f09e1869c10d6cf1">ROCKSDB_NAMESPACE::InternalIteratorBase::InternalIteratorBase</a></div><div class="ttdeci">InternalIteratorBase(const InternalIteratorBase &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a20678d3430e2f44f07066ed8c2d7303e"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a20678d3430e2f44f07066ed8c2d7303e">ROCKSDB_NAMESPACE::InternalIteratorBase::InternalIteratorBase</a></div><div class="ttdeci">InternalIteratorBase()</div><div class="ttdef"><b>Definition</b> <a href="#l00038">internal_iterator.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a4c27c12134b977143e67106b20998b5e"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a4c27c12134b977143e67106b20998b5e">ROCKSDB_NAMESPACE::InternalIteratorBase::user_key</a></div><div class="ttdeci">virtual Slice user_key() const</div><div class="ttdef"><b>Definition</b> <a href="#l00129">internal_iterator.h:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a6c469e4c94ec3cc1b74fc6eec5296829"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a6c469e4c94ec3cc1b74fc6eec5296829">ROCKSDB_NAMESPACE::InternalIteratorBase::SeekToLast</a></div><div class="ttdeci">virtual void SeekToLast()=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a71168b09448be62264b58fd089dbfb6d"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a71168b09448be62264b58fd089dbfb6d">ROCKSDB_NAMESPACE::InternalIteratorBase::SeekForPrev</a></div><div class="ttdeci">virtual void SeekForPrev(const Slice &amp;target)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a7aed860c3392b21dafbf0c67b9fa0f03"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a7aed860c3392b21dafbf0c67b9fa0f03">ROCKSDB_NAMESPACE::InternalIteratorBase&lt; Slice &gt;::UpperBoundCheckResult</a></div><div class="ttdeci">virtual IterBoundCheck UpperBoundCheckResult()</div><div class="ttdef"><b>Definition</b> <a href="#l00164">internal_iterator.h:164</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a7b34ee1895287973f07632c7c7699c74"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a7b34ee1895287973f07632c7c7699c74">ROCKSDB_NAMESPACE::InternalIteratorBase::Next</a></div><div class="ttdeci">virtual void Next()=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a80704e9e0262e28fa8922e3bf37f540e"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a80704e9e0262e28fa8922e3bf37f540e">ROCKSDB_NAMESPACE::InternalIteratorBase::SeekToFirst</a></div><div class="ttdeci">virtual void SeekToFirst()=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a881f8cdf902c21b565b6b3ffd49667e8"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a881f8cdf902c21b565b6b3ffd49667e8">ROCKSDB_NAMESPACE::InternalIteratorBase::IsValuePinned</a></div><div class="ttdeci">virtual bool IsValuePinned() const</div><div class="ttdef"><b>Definition</b> <a href="#l00190">internal_iterator.h:190</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a8a9f9c83827a72e94a8c715524ab9d75"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a8a9f9c83827a72e94a8c715524ab9d75">ROCKSDB_NAMESPACE::InternalIteratorBase::MayBeOutOfLowerBound</a></div><div class="ttdeci">virtual bool MayBeOutOfLowerBound()</div><div class="ttdef"><b>Definition</b> <a href="#l00157">internal_iterator.h:157</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a8ffcb3f2f57c2de7cd84f0d22a2b7f5c"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a8ffcb3f2f57c2de7cd84f0d22a2b7f5c">ROCKSDB_NAMESPACE::InternalIteratorBase::SetRangeDelReadSeqno</a></div><div class="ttdeci">virtual void SetRangeDelReadSeqno(SequenceNumber)</div><div class="ttdef"><b>Definition</b> <a href="#l00055">internal_iterator.h:55</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a910f332a346c6d31025978fde71ac43b"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a910f332a346c6d31025978fde71ac43b">ROCKSDB_NAMESPACE::InternalIteratorBase::Prev</a></div><div class="ttdeci">virtual void Prev()=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a9352ba7bef600f4a4827a21b78f407ac"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a9352ba7bef600f4a4827a21b78f407ac">ROCKSDB_NAMESPACE::InternalIteratorBase::operator=</a></div><div class="ttdeci">InternalIteratorBase &amp; operator=(const InternalIteratorBase &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a9b7c34b74b2c701336dc2d14f2f6778f"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a9b7c34b74b2c701336dc2d14f2f6778f">ROCKSDB_NAMESPACE::InternalIteratorBase::Valid</a></div><div class="ttdeci">virtual bool Valid() const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_aa0d228378d47a23e3992c195090ca8ee"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aa0d228378d47a23e3992c195090ca8ee">ROCKSDB_NAMESPACE::InternalIteratorBase::status</a></div><div class="ttdeci">virtual Status status() const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_aa53cc74e9e3b451422feb2656ac21e2f"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aa53cc74e9e3b451422feb2656ac21e2f">ROCKSDB_NAMESPACE::InternalIteratorBase::PrepareValue</a></div><div class="ttdeci">virtual bool PrepareValue()</div><div class="ttdef"><b>Definition</b> <a href="#l00154">internal_iterator.h:154</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_aaf60c35c2d64d4c88ffc9409ae2538d4"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aaf60c35c2d64d4c88ffc9409ae2538d4">ROCKSDB_NAMESPACE::InternalIteratorBase::Seek</a></div><div class="ttdeci">virtual void Seek(const Slice &amp;target)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_ab6f9d83c153d1de1be8044e04df9a50e"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ab6f9d83c153d1de1be8044e04df9a50e">ROCKSDB_NAMESPACE::InternalIteratorBase&lt; Slice &gt;::key</a></div><div class="ttdeci">virtual Slice key() const=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_abf24c5b3ed9171af6ff74d1cadac94c2"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#abf24c5b3ed9171af6ff74d1cadac94c2">ROCKSDB_NAMESPACE::InternalIteratorBase::write_unix_time</a></div><div class="ttdeci">virtual uint64_t write_unix_time() const</div><div class="ttdef"><b>Definition</b> <a href="#l00123">internal_iterator.h:123</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_adbcbb3d9790ca6093dabfde8a65acd72"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#adbcbb3d9790ca6093dabfde8a65acd72">ROCKSDB_NAMESPACE::InternalIteratorBase::GetReadaheadState</a></div><div class="ttdeci">virtual void GetReadaheadState(ReadaheadFileInfo *)</div><div class="ttdef"><b>Definition</b> <a href="#l00203">internal_iterator.h:203</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_ade515163d8836e3f40509c3482a28852"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ade515163d8836e3f40509c3482a28852">ROCKSDB_NAMESPACE::InternalIteratorBase::NextAndGetResult</a></div><div class="ttdeci">virtual bool NextAndGetResult(IterateResult *result)</div><div class="ttdef"><b>Definition</b> <a href="#l00093">internal_iterator.h:93</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_ae08898f46b139a8151c75d53ed23ec2f"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ae08898f46b139a8151c75d53ed23ec2f">ROCKSDB_NAMESPACE::InternalIteratorBase::IsDeleteRangeSentinelKey</a></div><div class="ttdeci">virtual bool IsDeleteRangeSentinelKey() const</div><div class="ttdef"><b>Definition</b> <a href="#l00213">internal_iterator.h:213</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_ae4194c61972194cf40e0233aec1a394f"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#ae4194c61972194cf40e0233aec1a394f">ROCKSDB_NAMESPACE::InternalIteratorBase::SeekForPrevImpl</a></div><div class="ttdeci">void SeekForPrevImpl(const Slice &amp;target, const CompareInterface *cmp)</div><div class="ttdef"><b>Definition</b> <a href="#l00216">internal_iterator.h:216</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_aed47b650ae0f52bb1c4e6d5cdafecb99"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#aed47b650ae0f52bb1c4e6d5cdafecb99">ROCKSDB_NAMESPACE::InternalIteratorBase::value</a></div><div class="ttdeci">virtual TValue value() const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_af092b3a31d94f85499f9159575b65760"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#af092b3a31d94f85499f9159575b65760">ROCKSDB_NAMESPACE::InternalIteratorBase::SetPinnedItersMgr</a></div><div class="ttdeci">virtual void SetPinnedItersMgr(PinnedIteratorsManager *)</div><div class="ttdef"><b>Definition</b> <a href="#l00173">internal_iterator.h:173</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_af5eb994da9deee9f26ff26d27feff5d4"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#af5eb994da9deee9f26ff26d27feff5d4">ROCKSDB_NAMESPACE::InternalIteratorBase::IsKeyPinned</a></div><div class="ttdeci">virtual bool IsKeyPinned() const</div><div class="ttdef"><b>Definition</b> <a href="#l00184">internal_iterator.h:184</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnedIteratorsManager_html"><div class="ttname"><a href="../../d0/d49/classROCKSDB__NAMESPACE_1_1PinnedIteratorsManager.html">ROCKSDB_NAMESPACE::PinnedIteratorsManager</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d4b/pinned__iterators__manager_8h_source.html#l00019">pinned_iterators_manager.h:19</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a80198f888172bfab4d714628b7bfaec5"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a80198f888172bfab4d714628b7bfaec5">ROCKSDB_NAMESPACE::Status::NotSupported</a></div><div class="ttdeci">static Status NotSupported(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00210">status.h:210</a></div></div>
+<div class="ttc" id="adbformat_8h_html"><div class="ttname"><a href="../../d1/d73/dbformat_8h.html">dbformat.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2comparator_8h_html"><div class="ttname"><a href="../../d3/df8/include_2rocksdb_2comparator_8h.html">comparator.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2status_8h_html"><div class="ttname"><a href="../../d9/dd0/include_2rocksdb_2status_8h.html">status.h</a></div></div>
+<div class="ttc" id="aiterator_8h_html"><div class="ttname"><a href="../../df/d22/iterator_8h.html">iterator.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a12c817984577faebd4e55874a901a511"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a12c817984577faebd4e55874a901a511">ROCKSDB_NAMESPACE::NewErrorInternalIterator</a></div><div class="ttdeci">InternalIteratorBase&lt; TValue &gt; * NewErrorInternalIterator(const Status &amp;status)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d31/iterator_8cc_source.html#l00095">iterator.cc:95</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a14421ad5fea786298ec0edd0f34bd96a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">ROCKSDB_NAMESPACE::SequenceNumber</a></div><div class="ttdeci">uint64_t SequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00022">types.h:22</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a330ae559358c99908aeb84354fbb9ac8"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a330ae559358c99908aeb84354fbb9ac8">ROCKSDB_NAMESPACE::NewEmptyInternalIterator</a></div><div class="ttdeci">InternalIteratorBase&lt; TValue &gt; * NewEmptyInternalIterator()</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d31/iterator_8cc_source.html#l00119">iterator.cc:119</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a46b9e5a882f55fc1e378d42ea0b0a206"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a46b9e5a882f55fc1e378d42ea0b0a206">ROCKSDB_NAMESPACE::ExtractUserKey</a></div><div class="ttdeci">Slice ExtractUserKey(const Slice &amp;internal_key)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00325">dbformat.h:325</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6dbdf3f661cc1e2d620df8efee923bffa25c2dc47991b3df171ed5192bcf70390"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6dbdf3f661cc1e2d620df8efee923bffa25c2dc47991b3df171ed5192bcf70390">ROCKSDB_NAMESPACE::FilePrefetchBufferUsage::kUnknown</a></div><div class="ttdeci">@ kUnknown</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d2d/file__prefetch__buffer_8h_source.html#l00137">file_prefetch_buffer.h:137</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab914b3e98761b03dc768578c4353c57a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">ROCKSDB_NAMESPACE::InternalIterator</a></div><div class="ttdeci">InternalIteratorBase&lt; Slice &gt; InternalIterator</div><div class="ttdef"><b>Definition</b> <a href="#l00227">internal_iterator.h:227</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_afda2ab7047e4882fae7f89d2521dd624"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624">ROCKSDB_NAMESPACE::IterBoundCheck</a></div><div class="ttdeci">IterBoundCheck</div><div class="ttdef"><b>Definition</b> <a href="#l00022">internal_iterator.h:22</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_afda2ab7047e4882fae7f89d2521dd624a25c2dc47991b3df171ed5192bcf70390"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624a25c2dc47991b3df171ed5192bcf70390">ROCKSDB_NAMESPACE::IterBoundCheck::kUnknown</a></div><div class="ttdeci">@ kUnknown</div><div class="ttdef"><b>Definition</b> <a href="#l00023">internal_iterator.h:23</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_afda2ab7047e4882fae7f89d2521dd624a3eb68365571a8dd79f0d6800d843750f"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624a3eb68365571a8dd79f0d6800d843750f">ROCKSDB_NAMESPACE::IterBoundCheck::kInbound</a></div><div class="ttdeci">@ kInbound</div><div class="ttdef"><b>Definition</b> <a href="#l00025">internal_iterator.h:25</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_afda2ab7047e4882fae7f89d2521dd624ac42ea45dfeafd16f41b3e80dd4b92967"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624ac42ea45dfeafd16f41b3e80dd4b92967">ROCKSDB_NAMESPACE::IterBoundCheck::kOutOfBound</a></div><div class="ttdeci">@ kOutOfBound</div><div class="ttdef"><b>Definition</b> <a href="#l00024">internal_iterator.h:24</a></div></div>
+<div class="ttc" id="areadahead__file__info_8h_html"><div class="ttname"><a href="../../d2/d80/readahead__file__info_8h.html">readahead_file_info.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IterateResult_html"><div class="ttname"><a href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html">ROCKSDB_NAMESPACE::IterateResult</a></div><div class="ttdef"><b>Definition</b> <a href="#l00028">internal_iterator.h:28</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IterateResult_html_a9111fbe2d34c8791f0bfa18e3493d984"><div class="ttname"><a href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#a9111fbe2d34c8791f0bfa18e3493d984">ROCKSDB_NAMESPACE::IterateResult::key</a></div><div class="ttdeci">Slice key</div><div class="ttdef"><b>Definition</b> <a href="#l00029">internal_iterator.h:29</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IterateResult_html_ae95c57b5713c7d9ff0674a88f0e2ac1d"><div class="ttname"><a href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#ae95c57b5713c7d9ff0674a88f0e2ac1d">ROCKSDB_NAMESPACE::IterateResult::bound_check_result</a></div><div class="ttdeci">IterBoundCheck bound_check_result</div><div class="ttdef"><b>Definition</b> <a href="#l00030">internal_iterator.h:30</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IterateResult_html_afc165ae4966ba572e993eaf463a25237"><div class="ttname"><a href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html#afc165ae4966ba572e993eaf463a25237">ROCKSDB_NAMESPACE::IterateResult::value_prepared</a></div><div class="ttdeci">bool value_prepared</div><div class="ttdef"><b>Definition</b> <a href="#l00032">internal_iterator.h:32</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ReadaheadFileInfo_html"><div class="ttname"><a href="../../dd/d35/structROCKSDB__NAMESPACE_1_1ReadaheadFileInfo.html">ROCKSDB_NAMESPACE::ReadaheadFileInfo</a></div><div class="ttdef"><b>Definition</b> <a href="../../d2/d80/readahead__file__info_8h_source.html#l00020">readahead_file_info.h:20</a></div></div>
+<div class="ttc" id="atable_2format_8h_html"><div class="ttname"><a href="../../d8/d01/table_2format_8h.html">format.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_7cea70ad8000b4ba25606f1df9c7574a.html">table</a></li><li class="navelem"><a class="el" href="../../d7/d33/internal__iterator_8h.html">internal_iterator.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

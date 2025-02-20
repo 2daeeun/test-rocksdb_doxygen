@@ -1,0 +1,512 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: port/port_posix.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d3/dd4/port__posix_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">port_posix.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d3/dd4/port__posix_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#if !defined(OS_WIN)</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d7c/port__posix_8h.html">port/port_posix.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#if defined(__i386__) || defined(__x86_64__)</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;cpuid.h&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;sched.h&gt;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;sys/resource.h&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;sys/time.h&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;cerrno&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;csignal&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &lt;cstring&gt;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &lt;fstream&gt;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/d70/string__util_8h.html">util/string_util.h</a>&quot;</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">// We want to give users opportunity to default all the mutexes to adaptive if</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">// not specified otherwise. This enables a quick way to conduct various</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">// performance related experiements.</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">//</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">// NB! Support for adaptive mutexes is turned on by definining</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">// ROCKSDB_PTHREAD_ADAPTIVE_MUTEX during the compilation. If you use RocksDB</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">// build environment then this happens automatically; otherwise it&#39;s up to the</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">// consumer to define the identifier.</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#ifdef ROCKSDB_DEFAULT_TO_ADAPTIVE_MUTEX</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a457611efe71c6e0a40e705d4cd0361c9">kDefaultToAdaptiveMutex</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a457611efe71c6e0a40e705d4cd0361c9">   46</a></span><span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a457611efe71c6e0a40e705d4cd0361c9">kDefaultToAdaptiveMutex</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html">port</a> {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">   51</a></span><span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* label, <span class="keywordtype">int</span> result) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">if</span> (result != 0 &amp;&amp; result != ETIMEDOUT &amp;&amp; result != EBUSY) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    fprintf(stderr, <span class="stringliteral">&quot;pthread %s: %s\n&quot;</span>, label, <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6e5c230f1e99b59de1e1880cfceef381">errnoStr</a>(result).c_str());</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    abort();</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
+</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a676ad97872b6b1ebc10b1c40f8e56d74">   59</a></span><a class="code hl_function" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#acc84bbc72b41437d0b5f1f1e9e184c7f">Mutex::Mutex</a>(<span class="keywordtype">bool</span> adaptive) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  (void)adaptive;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#ifdef ROCKSDB_PTHREAD_ADAPTIVE_MUTEX</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordflow">if</span> (!adaptive) {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;init mutex&quot;</span>, pthread_mutex_init(&amp;<a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a64cdfd7d724f16fc205d465fa48b6cf0">mu_</a>, <span class="keyword">nullptr</span>));</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    pthread_mutexattr_t mutex_attr;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;init mutex attr&quot;</span>, pthread_mutexattr_init(&amp;mutex_attr));</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;set mutex attr&quot;</span>, pthread_mutexattr_settype(</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                                      &amp;mutex_attr, PTHREAD_MUTEX_ADAPTIVE_NP));</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;init mutex&quot;</span>, pthread_mutex_init(&amp;<a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a64cdfd7d724f16fc205d465fa48b6cf0">mu_</a>, &amp;mutex_attr));</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;destroy mutex attr&quot;</span>, pthread_mutexattr_destroy(&amp;mutex_attr));</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;init mutex&quot;</span>, pthread_mutex_init(&amp;<a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a64cdfd7d724f16fc205d465fa48b6cf0">mu_</a>, <span class="keyword">nullptr</span>));</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#endif  </span><span class="comment">// ROCKSDB_PTHREAD_ADAPTIVE_MUTEX</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
+</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a57f5204365969fbabae29747af4c2ea1">   77</a></span><a class="code hl_function" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a57f5204365969fbabae29747af4c2ea1">Mutex::~Mutex</a>() { <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;destroy mutex&quot;</span>, pthread_mutex_destroy(&amp;<a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a64cdfd7d724f16fc205d465fa48b6cf0">mu_</a>)); }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a77f0e857ac42e525b68f9d026a7ac771">   79</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a77f0e857ac42e525b68f9d026a7ac771">Mutex::Lock</a>() {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;lock&quot;</span>, pthread_mutex_lock(&amp;<a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a64cdfd7d724f16fc205d465fa48b6cf0">mu_</a>));</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a055f940eeb4c9eb79b8e2ce6e95855c4">locked_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}</div>
+</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#ad9ee94ab05146b99d502432fc62f0b4a">   86</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#ad9ee94ab05146b99d502432fc62f0b4a">Mutex::Unlock</a>() {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a055f940eeb4c9eb79b8e2ce6e95855c4">locked_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;unlock&quot;</span>, pthread_mutex_unlock(&amp;<a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a64cdfd7d724f16fc205d465fa48b6cf0">mu_</a>));</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>}</div>
+</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#ab5e886c618e9f4f7c3350f5ef5fee69d">   93</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#ab5e886c618e9f4f7c3350f5ef5fee69d">Mutex::TryLock</a>() {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keywordtype">bool</span> ret = <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;trylock&quot;</span>, pthread_mutex_trylock(&amp;<a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a64cdfd7d724f16fc205d465fa48b6cf0">mu_</a>)) == 0;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordflow">if</span> (ret) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a055f940eeb4c9eb79b8e2ce6e95855c4">locked_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  }</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>}</div>
+</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a71c099f4c04c09798da0c0c89a9b4282">  103</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a71c099f4c04c09798da0c0c89a9b4282">Mutex::AssertHeld</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  assert(<a class="code hl_variable" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a055f940eeb4c9eb79b8e2ce6e95855c4">locked_</a>);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
+</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#aab0a612ae0d29646e651327dd932199f">  109</a></span><a class="code hl_function" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#aab0a612ae0d29646e651327dd932199f">CondVar::CondVar</a>(<a class="code hl_class" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">Mutex</a>* mu) : <a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a59eb5c6161bf05af5f4c084a74e31788">mu_</a>(mu) {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;init cv&quot;</span>, pthread_cond_init(&amp;<a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a2a7b021633ae482821d28ed6639e279a">cv_</a>, <span class="keyword">nullptr</span>));</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
+</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a99c84635179c5cbb783ec20b24bd3a4f">  113</a></span><a class="code hl_function" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a99c84635179c5cbb783ec20b24bd3a4f">CondVar::~CondVar</a>() { <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;destroy cv&quot;</span>, pthread_cond_destroy(&amp;<a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a2a7b021633ae482821d28ed6639e279a">cv_</a>)); }</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a38ba6ab3aa4995c0bbeeb41abeb6d582">  115</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a38ba6ab3aa4995c0bbeeb41abeb6d582">CondVar::Wait</a>() {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a59eb5c6161bf05af5f4c084a74e31788">mu_</a>-&gt;locked_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;wait&quot;</span>, pthread_cond_wait(&amp;<a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a2a7b021633ae482821d28ed6639e279a">cv_</a>, &amp;<a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a59eb5c6161bf05af5f4c084a74e31788">mu_</a>-&gt;mu_));</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a59eb5c6161bf05af5f4c084a74e31788">mu_</a>-&gt;locked_ = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>}</div>
+</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="foldopen" id="foldopen00125" data-start="{" data-end="}">
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a7c281bc60d1375189f15cdd51815a7a6">  125</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a7c281bc60d1375189f15cdd51815a7a6">CondVar::TimedWait</a>(uint64_t abs_time_us) {</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keyword">struct </span>timespec ts;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  ts.tv_sec = <span class="keyword">static_cast&lt;</span>time_t<span class="keyword">&gt;</span>(abs_time_us / 1000000);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  ts.tv_nsec = <span class="keyword">static_cast&lt;</span>suseconds_t<span class="keyword">&gt;</span>((abs_time_us % 1000000) * 1000);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a59eb5c6161bf05af5f4c084a74e31788">mu_</a>-&gt;locked_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="keywordtype">int</span> err = pthread_cond_timedwait(&amp;<a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a2a7b021633ae482821d28ed6639e279a">cv_</a>, &amp;<a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a59eb5c6161bf05af5f4c084a74e31788">mu_</a>-&gt;mu_, &amp;ts);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a59eb5c6161bf05af5f4c084a74e31788">mu_</a>-&gt;locked_ = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="keywordflow">if</span> (err == ETIMEDOUT) {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  }</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="keywordflow">if</span> (err != 0) {</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;timedwait&quot;</span>, err);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  }</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>}</div>
+</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a2296e355c17471289baefa30b3ac3178">  146</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a2296e355c17471289baefa30b3ac3178">CondVar::Signal</a>() { <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;signal&quot;</span>, pthread_cond_signal(&amp;<a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a2a7b021633ae482821d28ed6639e279a">cv_</a>)); }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="foldopen" id="foldopen00148" data-start="{" data-end="}">
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a30806715a30b9cfa206dfe26a4d73c4e">  148</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a30806715a30b9cfa206dfe26a4d73c4e">CondVar::SignalAll</a>() {</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;broadcast&quot;</span>, pthread_cond_broadcast(&amp;<a class="code hl_variable" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a2a7b021633ae482821d28ed6639e279a">cv_</a>));</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>}</div>
+</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="foldopen" id="foldopen00152" data-start="{" data-end="}">
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a6a2ee59107775f03136d376bcc219e73">  152</a></span><a class="code hl_function" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a6a2ee59107775f03136d376bcc219e73">RWMutex::RWMutex</a>() {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;init mutex&quot;</span>, pthread_rwlock_init(&amp;<a class="code hl_variable" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a88187ee33eeafe49606605ddc3615b7a">mu_</a>, <span class="keyword">nullptr</span>));</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>}</div>
+</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="foldopen" id="foldopen00156" data-start="{" data-end="}">
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#ab108bd093d0db19b709ec0d31984a4f1">  156</a></span><a class="code hl_function" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#ab108bd093d0db19b709ec0d31984a4f1">RWMutex::~RWMutex</a>() {</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;destroy mutex&quot;</span>, pthread_rwlock_destroy(&amp;<a class="code hl_variable" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a88187ee33eeafe49606605ddc3615b7a">mu_</a>));</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>}</div>
+</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="foldopen" id="foldopen00160" data-start="{" data-end="}">
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a2a6c3183737061c896ceebebe0a0780a">  160</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a2a6c3183737061c896ceebebe0a0780a">RWMutex::ReadLock</a>() {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;read lock&quot;</span>, pthread_rwlock_rdlock(&amp;<a class="code hl_variable" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a88187ee33eeafe49606605ddc3615b7a">mu_</a>));</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>}</div>
+</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="foldopen" id="foldopen00164" data-start="{" data-end="}">
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a89e009a88b3e4703dad17428b01a7aba">  164</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a89e009a88b3e4703dad17428b01a7aba">RWMutex::WriteLock</a>() {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;write lock&quot;</span>, pthread_rwlock_wrlock(&amp;<a class="code hl_variable" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a88187ee33eeafe49606605ddc3615b7a">mu_</a>));</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>}</div>
+</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="foldopen" id="foldopen00168" data-start="{" data-end="}">
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#ab8a375c45800c944fe404f08affeb99d">  168</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#ab8a375c45800c944fe404f08affeb99d">RWMutex::ReadUnlock</a>() {</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;read unlock&quot;</span>, pthread_rwlock_unlock(&amp;<a class="code hl_variable" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a88187ee33eeafe49606605ddc3615b7a">mu_</a>));</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>}</div>
+</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="foldopen" id="foldopen00172" data-start="{" data-end="}">
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a38b5347a511187d745a36e095133c8af">  172</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a38b5347a511187d745a36e095133c8af">RWMutex::WriteUnlock</a>() {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;write unlock&quot;</span>, pthread_rwlock_unlock(&amp;<a class="code hl_variable" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a88187ee33eeafe49606605ddc3615b7a">mu_</a>));</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>}</div>
+</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="foldopen" id="foldopen00176" data-start="{" data-end="}">
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a91f428e7329c21e03a9d2b674da897e6">  176</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a91f428e7329c21e03a9d2b674da897e6">PhysicalCoreID</a>() {</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="preprocessor">#if defined(ROCKSDB_SCHED_GETCPU_PRESENT) &amp;&amp; defined(__x86_64__) &amp;&amp; \</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="preprocessor">    (__GNUC__ &gt; 2 || (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ &gt;= 22))</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="comment">// sched_getcpu uses VDSO getcpu() syscall since 2.22. I believe Linux offers</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="comment">// VDSO support only on x86_64. This is the fastest/preferred method if</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <span class="comment">// available.</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="keywordtype">int</span> cpuno = sched_getcpu();</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <span class="keywordflow">if</span> (cpuno &lt; 0) {</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  }</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="keywordflow">return</span> cpuno;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="preprocessor">#elif defined(__x86_64__) || defined(__i386__)</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <span class="comment">// clang/gcc both provide cpuid.h, which defines __get_cpuid(), for x86_64 and</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="comment">// i386.</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <span class="keywordtype">unsigned</span> eax, ebx = 0, ecx, edx;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  <span class="keywordflow">if</span> (!__get_cpuid(1, &amp;eax, &amp;ebx, &amp;ecx, &amp;edx)) {</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  }</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="keywordflow">return</span> ebx &gt;&gt; 24;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="comment">// give up, the caller can generate a random number or something.</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>}</div>
+</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="foldopen" id="foldopen00201" data-start="{" data-end="}">
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a0d067ade8b5f23b28a86572a7e01426f">  201</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a0d067ade8b5f23b28a86572a7e01426f">InitOnce</a>(<a class="code hl_struct" href="../../d0/d6f/structROCKSDB__NAMESPACE_1_1port_1_1OnceType.html">OnceType</a>* once, <span class="keywordtype">void</span> (*initializer)()) {</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">PthreadCall</a>(<span class="stringliteral">&quot;once&quot;</span>, pthread_once(once, initializer));</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>}</div>
+</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="foldopen" id="foldopen00205" data-start="{" data-end="}">
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a9e120c9f7d0af367b4deea4247382e47">  205</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a9e120c9f7d0af367b4deea4247382e47">Crash</a>(<span class="keyword">const</span> std::string&amp; srcfile, <span class="keywordtype">int</span> srcline) {</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  fprintf(stdout, <span class="stringliteral">&quot;Crashing at %s:%d\n&quot;</span>, srcfile.c_str(), srcline);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  fflush(stdout);</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  kill(getpid(), SIGTERM);</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>}</div>
+</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="foldopen" id="foldopen00211" data-start="{" data-end="}">
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a105056c8c9ffb8d98826099c36014ac2">  211</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a105056c8c9ffb8d98826099c36014ac2">GetMaxOpenFiles</a>() {</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="preprocessor">#if defined(RLIMIT_NOFILE)</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  <span class="keyword">struct </span>rlimit no_files_limit;</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <span class="keywordflow">if</span> (getrlimit(RLIMIT_NOFILE, &amp;no_files_limit) != 0) {</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  }</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  <span class="comment">// protect against overflow</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span>uintmax_t<span class="keyword">&gt;</span>(no_files_limit.rlim_cur) &gt;=</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>      <span class="keyword">static_cast&lt;</span>uintmax_t<span class="keyword">&gt;</span>(std::numeric_limits&lt;int&gt;::max())) {</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keywordflow">return</span> std::numeric_limits&lt;int&gt;::max();</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  }</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(no_files_limit.rlim_cur);</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>}</div>
+</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="foldopen" id="foldopen00227" data-start="{" data-end="}">
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a9c44a2096e719dfccd0246a2d311fab9">  227</a></span><span class="keywordtype">void</span>* <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a9c44a2096e719dfccd0246a2d311fab9">cacheline_aligned_alloc</a>(<span class="keywordtype">size_t</span> size) {</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="preprocessor">#if __GNUC__ &lt; 5 &amp;&amp; defined(__SANITIZE_ADDRESS__)</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  <span class="keywordflow">return</span> malloc(size);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="preprocessor">#elif (_POSIX_C_SOURCE &gt;= 200112L || _XOPEN_SOURCE &gt;= 600 || defined(__APPLE__))</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <span class="keywordtype">void</span>* m;</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  errno = posix_memalign(&amp;m, <a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a>, size);</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <span class="keywordflow">return</span> errno ? nullptr : m;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="keywordflow">return</span> malloc(size);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>}</div>
+</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#af00ee65368cdbe180143f5658a39e719">  239</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#af00ee65368cdbe180143f5658a39e719">cacheline_aligned_free</a>(<span class="keywordtype">void</span>* memblock) { free(memblock); }</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
+<div class="foldopen" id="foldopen00241" data-start="{" data-end="}">
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a8c49f847d65e41790ab690624cfadcfe">  241</a></span><span class="keyword">static</span> <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a8c49f847d65e41790ab690624cfadcfe">GetPageSize</a>() {</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="preprocessor">#if defined(OS_LINUX) || defined(_SC_PAGESIZE)</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <span class="keywordtype">long</span> v = sysconf(_SC_PAGESIZE);</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  <span class="keywordflow">if</span> (v &gt;= 1024) {</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(v);</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  }</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <span class="comment">// Default assume 4KB</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="keywordflow">return</span> 4U * 1024U;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>}</div>
+</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a98a9997c73fce202a5210cc861d0d082">  252</a></span><span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a98a9997c73fce202a5210cc861d0d082">kPageSize</a> = <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a8c49f847d65e41790ab690624cfadcfe">GetPageSize</a>();</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="foldopen" id="foldopen00254" data-start="{" data-end="}">
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#acf0da10b7e5c003b874edc42cb9da85e">  254</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#acf0da10b7e5c003b874edc42cb9da85e">SetCpuPriority</a>(<a class="code hl_typedef" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#af91bfa2f8c0047cf7f3d9cb43f6aa5ec">ThreadId</a> <span class="keywordtype">id</span>, <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa36e5e0450403f0736a06e7f3458fddc">CpuPriority</a> priority) {</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="preprocessor">#ifdef OS_LINUX</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  sched_param param;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  param.sched_priority = 0;</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <span class="keywordflow">switch</span> (priority) {</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa36e5e0450403f0736a06e7f3458fddcaa022f15e910eb36278094efb6e808a07">CpuPriority::kHigh</a>:</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>      sched_setscheduler(<span class="keywordtype">id</span>, SCHED_OTHER, &amp;param);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>      setpriority(PRIO_PROCESS, <span class="keywordtype">id</span>, -20);</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa36e5e0450403f0736a06e7f3458fddca07fa7a19aa722c635a15e94cb7f50416">CpuPriority::kNormal</a>:</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>      sched_setscheduler(<span class="keywordtype">id</span>, SCHED_OTHER, &amp;param);</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>      setpriority(PRIO_PROCESS, <span class="keywordtype">id</span>, 0);</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa36e5e0450403f0736a06e7f3458fddcacd8fe42741a3bbc973bbf1d404afeff4">CpuPriority::kLow</a>:</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>      sched_setscheduler(<span class="keywordtype">id</span>, SCHED_OTHER, &amp;param);</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>      setpriority(PRIO_PROCESS, <span class="keywordtype">id</span>, 19);</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa36e5e0450403f0736a06e7f3458fddcaf5137a026a4b2f3b1c8a21cfc60dd14b">CpuPriority::kIdle</a>:</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>      sched_setscheduler(<span class="keywordtype">id</span>, SCHED_IDLE, &amp;param);</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>      assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  }</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  (void)<span class="keywordtype">id</span>;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  (void)priority;</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>}</div>
+</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a8b68dc1373a4cc93dc24daecb6c6db78">  283</a></span>int64_t <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a8b68dc1373a4cc93dc24daecb6c6db78">GetProcessID</a>() { <span class="keywordflow">return</span> getpid(); }</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
+<div class="foldopen" id="foldopen00285" data-start="{" data-end="}">
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno"><a class="line" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a6ba6b2e6fe7d8fe877493853721628dd">  285</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a6ba6b2e6fe7d8fe877493853721628dd">GenerateRfcUuid</a>(std::string* output) {</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  output-&gt;clear();</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  std::ifstream f(<span class="stringliteral">&quot;/proc/sys/kernel/random/uuid&quot;</span>);</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  std::getline(f, <span class="comment">/*&amp;*/</span> *output);</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  <span class="keywordflow">if</span> (output-&gt;size() == 36) {</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    output-&gt;clear();</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  }</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>}</div>
+</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>}  <span class="comment">// namespace port</span></div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1CondVar_html_a2296e355c17471289baefa30b3ac3178"><div class="ttname"><a href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a2296e355c17471289baefa30b3ac3178">ROCKSDB_NAMESPACE::port::CondVar::Signal</a></div><div class="ttdeci">void Signal()</div><div class="ttdef"><b>Definition</b> <a href="#l00146">port_posix.cc:146</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1CondVar_html_a2a7b021633ae482821d28ed6639e279a"><div class="ttname"><a href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a2a7b021633ae482821d28ed6639e279a">ROCKSDB_NAMESPACE::port::CondVar::cv_</a></div><div class="ttdeci">pthread_cond_t cv_</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00162">port_posix.h:162</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1CondVar_html_a30806715a30b9cfa206dfe26a4d73c4e"><div class="ttname"><a href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a30806715a30b9cfa206dfe26a4d73c4e">ROCKSDB_NAMESPACE::port::CondVar::SignalAll</a></div><div class="ttdeci">void SignalAll()</div><div class="ttdef"><b>Definition</b> <a href="#l00148">port_posix.cc:148</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1CondVar_html_a38ba6ab3aa4995c0bbeeb41abeb6d582"><div class="ttname"><a href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a38ba6ab3aa4995c0bbeeb41abeb6d582">ROCKSDB_NAMESPACE::port::CondVar::Wait</a></div><div class="ttdeci">void Wait()</div><div class="ttdef"><b>Definition</b> <a href="#l00115">port_posix.cc:115</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1CondVar_html_a59eb5c6161bf05af5f4c084a74e31788"><div class="ttname"><a href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a59eb5c6161bf05af5f4c084a74e31788">ROCKSDB_NAMESPACE::port::CondVar::mu_</a></div><div class="ttdeci">Mutex * mu_</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00163">port_posix.h:163</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1CondVar_html_a7c281bc60d1375189f15cdd51815a7a6"><div class="ttname"><a href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a7c281bc60d1375189f15cdd51815a7a6">ROCKSDB_NAMESPACE::port::CondVar::TimedWait</a></div><div class="ttdeci">bool TimedWait(uint64_t abs_time_us)</div><div class="ttdef"><b>Definition</b> <a href="#l00125">port_posix.cc:125</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1CondVar_html_a99c84635179c5cbb783ec20b24bd3a4f"><div class="ttname"><a href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#a99c84635179c5cbb783ec20b24bd3a4f">ROCKSDB_NAMESPACE::port::CondVar::~CondVar</a></div><div class="ttdeci">~CondVar()</div><div class="ttdef"><b>Definition</b> <a href="#l00113">port_posix.cc:113</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1CondVar_html_aab0a612ae0d29646e651327dd932199f"><div class="ttname"><a href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html#aab0a612ae0d29646e651327dd932199f">ROCKSDB_NAMESPACE::port::CondVar::CondVar</a></div><div class="ttdeci">CondVar(Mutex *mu)</div><div class="ttdef"><b>Definition</b> <a href="#l00109">port_posix.cc:109</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">ROCKSDB_NAMESPACE::port::Mutex</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d4a/port__example_8h_source.html#l00030">port_example.h:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html_a055f940eeb4c9eb79b8e2ce6e95855c4"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a055f940eeb4c9eb79b8e2ce6e95855c4">ROCKSDB_NAMESPACE::port::Mutex::locked_</a></div><div class="ttdeci">bool locked_</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00125">port_posix.h:125</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html_a57f5204365969fbabae29747af4c2ea1"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a57f5204365969fbabae29747af4c2ea1">ROCKSDB_NAMESPACE::port::Mutex::~Mutex</a></div><div class="ttdeci">~Mutex()</div><div class="ttdef"><b>Definition</b> <a href="#l00077">port_posix.cc:77</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html_a64cdfd7d724f16fc205d465fa48b6cf0"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a64cdfd7d724f16fc205d465fa48b6cf0">ROCKSDB_NAMESPACE::port::Mutex::mu_</a></div><div class="ttdeci">pthread_mutex_t mu_</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00123">port_posix.h:123</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html_a71c099f4c04c09798da0c0c89a9b4282"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a71c099f4c04c09798da0c0c89a9b4282">ROCKSDB_NAMESPACE::port::Mutex::AssertHeld</a></div><div class="ttdeci">void AssertHeld() const</div><div class="ttdef"><b>Definition</b> <a href="#l00103">port_posix.cc:103</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html_a77f0e857ac42e525b68f9d026a7ac771"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#a77f0e857ac42e525b68f9d026a7ac771">ROCKSDB_NAMESPACE::port::Mutex::Lock</a></div><div class="ttdeci">void Lock()</div><div class="ttdef"><b>Definition</b> <a href="#l00079">port_posix.cc:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html_ab5e886c618e9f4f7c3350f5ef5fee69d"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#ab5e886c618e9f4f7c3350f5ef5fee69d">ROCKSDB_NAMESPACE::port::Mutex::TryLock</a></div><div class="ttdeci">bool TryLock()</div><div class="ttdef"><b>Definition</b> <a href="#l00093">port_posix.cc:93</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html_acc84bbc72b41437d0b5f1f1e9e184c7f"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#acc84bbc72b41437d0b5f1f1e9e184c7f">ROCKSDB_NAMESPACE::port::Mutex::Mutex</a></div><div class="ttdeci">Mutex()</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html_ad9ee94ab05146b99d502432fc62f0b4a"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html#ad9ee94ab05146b99d502432fc62f0b4a">ROCKSDB_NAMESPACE::port::Mutex::Unlock</a></div><div class="ttdeci">void Unlock()</div><div class="ttdef"><b>Definition</b> <a href="#l00086">port_posix.cc:86</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1RWMutex_html_a2a6c3183737061c896ceebebe0a0780a"><div class="ttname"><a href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a2a6c3183737061c896ceebebe0a0780a">ROCKSDB_NAMESPACE::port::RWMutex::ReadLock</a></div><div class="ttdeci">void ReadLock()</div><div class="ttdef"><b>Definition</b> <a href="#l00160">port_posix.cc:160</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1RWMutex_html_a38b5347a511187d745a36e095133c8af"><div class="ttname"><a href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a38b5347a511187d745a36e095133c8af">ROCKSDB_NAMESPACE::port::RWMutex::WriteUnlock</a></div><div class="ttdeci">void WriteUnlock()</div><div class="ttdef"><b>Definition</b> <a href="#l00172">port_posix.cc:172</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1RWMutex_html_a6a2ee59107775f03136d376bcc219e73"><div class="ttname"><a href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a6a2ee59107775f03136d376bcc219e73">ROCKSDB_NAMESPACE::port::RWMutex::RWMutex</a></div><div class="ttdeci">RWMutex()</div><div class="ttdef"><b>Definition</b> <a href="#l00152">port_posix.cc:152</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1RWMutex_html_a88187ee33eeafe49606605ddc3615b7a"><div class="ttname"><a href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a88187ee33eeafe49606605ddc3615b7a">ROCKSDB_NAMESPACE::port::RWMutex::mu_</a></div><div class="ttdeci">pthread_rwlock_t mu_</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00145">port_posix.h:145</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1RWMutex_html_a89e009a88b3e4703dad17428b01a7aba"><div class="ttname"><a href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a89e009a88b3e4703dad17428b01a7aba">ROCKSDB_NAMESPACE::port::RWMutex::WriteLock</a></div><div class="ttdeci">void WriteLock()</div><div class="ttdef"><b>Definition</b> <a href="#l00164">port_posix.cc:164</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1RWMutex_html_ab108bd093d0db19b709ec0d31984a4f1"><div class="ttname"><a href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#ab108bd093d0db19b709ec0d31984a4f1">ROCKSDB_NAMESPACE::port::RWMutex::~RWMutex</a></div><div class="ttdeci">~RWMutex()</div><div class="ttdef"><b>Definition</b> <a href="#l00156">port_posix.cc:156</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1RWMutex_html_ab8a375c45800c944fe404f08affeb99d"><div class="ttname"><a href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#ab8a375c45800c944fe404f08affeb99d">ROCKSDB_NAMESPACE::port::RWMutex::ReadUnlock</a></div><div class="ttdeci">void ReadUnlock()</div><div class="ttdef"><b>Definition</b> <a href="#l00168">port_posix.cc:168</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html">ROCKSDB_NAMESPACE::port</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/d32/port__defs_8h_source.html#l00015">port_defs.h:15</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a0d067ade8b5f23b28a86572a7e01426f"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a0d067ade8b5f23b28a86572a7e01426f">ROCKSDB_NAMESPACE::port::InitOnce</a></div><div class="ttdeci">void InitOnce(port::OnceType *, void(*initializer)())</div><div class="ttdef"><b>Definition</b> <a href="#l00201">port_posix.cc:201</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a105056c8c9ffb8d98826099c36014ac2"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a105056c8c9ffb8d98826099c36014ac2">ROCKSDB_NAMESPACE::port::GetMaxOpenFiles</a></div><div class="ttdeci">int GetMaxOpenFiles()</div><div class="ttdef"><b>Definition</b> <a href="#l00211">port_posix.cc:211</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a6ba6b2e6fe7d8fe877493853721628dd"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a6ba6b2e6fe7d8fe877493853721628dd">ROCKSDB_NAMESPACE::port::GenerateRfcUuid</a></div><div class="ttdeci">bool GenerateRfcUuid(std::string *output)</div><div class="ttdef"><b>Definition</b> <a href="#l00285">port_posix.cc:285</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a8b68dc1373a4cc93dc24daecb6c6db78"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a8b68dc1373a4cc93dc24daecb6c6db78">ROCKSDB_NAMESPACE::port::GetProcessID</a></div><div class="ttdeci">int64_t GetProcessID()</div><div class="ttdef"><b>Definition</b> <a href="#l00283">port_posix.cc:283</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a8c49f847d65e41790ab690624cfadcfe"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a8c49f847d65e41790ab690624cfadcfe">ROCKSDB_NAMESPACE::port::GetPageSize</a></div><div class="ttdeci">static size_t GetPageSize()</div><div class="ttdef"><b>Definition</b> <a href="#l00241">port_posix.cc:241</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a91f428e7329c21e03a9d2b674da897e6"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a91f428e7329c21e03a9d2b674da897e6">ROCKSDB_NAMESPACE::port::PhysicalCoreID</a></div><div class="ttdeci">int PhysicalCoreID()</div><div class="ttdef"><b>Definition</b> <a href="#l00176">port_posix.cc:176</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a98a9997c73fce202a5210cc861d0d082"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a98a9997c73fce202a5210cc861d0d082">ROCKSDB_NAMESPACE::port::kPageSize</a></div><div class="ttdeci">const size_t kPageSize</div><div class="ttdef"><b>Definition</b> <a href="#l00252">port_posix.cc:252</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a9c44a2096e719dfccd0246a2d311fab9"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a9c44a2096e719dfccd0246a2d311fab9">ROCKSDB_NAMESPACE::port::cacheline_aligned_alloc</a></div><div class="ttdeci">void * cacheline_aligned_alloc(size_t size)</div><div class="ttdef"><b>Definition</b> <a href="#l00227">port_posix.cc:227</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a9e120c9f7d0af367b4deea4247382e47"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a9e120c9f7d0af367b4deea4247382e47">ROCKSDB_NAMESPACE::port::Crash</a></div><div class="ttdeci">void Crash(const std::string &amp;srcfile, int srcline)</div><div class="ttdef"><b>Definition</b> <a href="#l00205">port_posix.cc:205</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_ac3df7c3549d62451b277a42e1a7e0f6d"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#ac3df7c3549d62451b277a42e1a7e0f6d">ROCKSDB_NAMESPACE::port::PthreadCall</a></div><div class="ttdeci">static int PthreadCall(const char *label, int result)</div><div class="ttdef"><b>Definition</b> <a href="#l00051">port_posix.cc:51</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_acf0da10b7e5c003b874edc42cb9da85e"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#acf0da10b7e5c003b874edc42cb9da85e">ROCKSDB_NAMESPACE::port::SetCpuPriority</a></div><div class="ttdeci">void SetCpuPriority(ThreadId id, CpuPriority priority)</div><div class="ttdef"><b>Definition</b> <a href="#l00254">port_posix.cc:254</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_af00ee65368cdbe180143f5658a39e719"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#af00ee65368cdbe180143f5658a39e719">ROCKSDB_NAMESPACE::port::cacheline_aligned_free</a></div><div class="ttdeci">void cacheline_aligned_free(void *memblock)</div><div class="ttdef"><b>Definition</b> <a href="#l00239">port_posix.cc:239</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_af91bfa2f8c0047cf7f3d9cb43f6aa5ec"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#af91bfa2f8c0047cf7f3d9cb43f6aa5ec">ROCKSDB_NAMESPACE::port::ThreadId</a></div><div class="ttdeci">pid_t ThreadId</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00235">port_posix.h:235</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a457611efe71c6e0a40e705d4cd0361c9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a457611efe71c6e0a40e705d4cd0361c9">ROCKSDB_NAMESPACE::kDefaultToAdaptiveMutex</a></div><div class="ttdeci">const bool kDefaultToAdaptiveMutex</div><div class="ttdef"><b>Definition</b> <a href="#l00046">port_posix.cc:46</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6e5c230f1e99b59de1e1880cfceef381"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6e5c230f1e99b59de1e1880cfceef381">ROCKSDB_NAMESPACE::errnoStr</a></div><div class="ttdeci">std::string errnoStr(int err)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/string__util_8cc_source.html#l00528">string_util.cc:528</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa36e5e0450403f0736a06e7f3458fddc"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa36e5e0450403f0736a06e7f3458fddc">ROCKSDB_NAMESPACE::CpuPriority</a></div><div class="ttdeci">CpuPriority</div><div class="ttdef"><b>Definition</b> <a href="../../de/d32/port__defs_8h_source.html#l00019">port_defs.h:19</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa36e5e0450403f0736a06e7f3458fddca07fa7a19aa722c635a15e94cb7f50416"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa36e5e0450403f0736a06e7f3458fddca07fa7a19aa722c635a15e94cb7f50416">ROCKSDB_NAMESPACE::CpuPriority::kNormal</a></div><div class="ttdeci">@ kNormal</div><div class="ttdef"><b>Definition</b> <a href="../../de/d32/port__defs_8h_source.html#l00022">port_defs.h:22</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa36e5e0450403f0736a06e7f3458fddcaa022f15e910eb36278094efb6e808a07"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa36e5e0450403f0736a06e7f3458fddcaa022f15e910eb36278094efb6e808a07">ROCKSDB_NAMESPACE::CpuPriority::kHigh</a></div><div class="ttdeci">@ kHigh</div><div class="ttdef"><b>Definition</b> <a href="../../de/d32/port__defs_8h_source.html#l00023">port_defs.h:23</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa36e5e0450403f0736a06e7f3458fddcacd8fe42741a3bbc973bbf1d404afeff4"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa36e5e0450403f0736a06e7f3458fddcacd8fe42741a3bbc973bbf1d404afeff4">ROCKSDB_NAMESPACE::CpuPriority::kLow</a></div><div class="ttdeci">@ kLow</div><div class="ttdef"><b>Definition</b> <a href="../../de/d32/port__defs_8h_source.html#l00021">port_defs.h:21</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa36e5e0450403f0736a06e7f3458fddcaf5137a026a4b2f3b1c8a21cfc60dd14b"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa36e5e0450403f0736a06e7f3458fddcaf5137a026a4b2f3b1c8a21cfc60dd14b">ROCKSDB_NAMESPACE::CpuPriority::kIdle</a></div><div class="ttdeci">@ kIdle</div><div class="ttdef"><b>Definition</b> <a href="../../de/d32/port__defs_8h_source.html#l00020">port_defs.h:20</a></div></div>
+<div class="ttc" id="aport__posix_8h_html"><div class="ttname"><a href="../../dc/d7c/port__posix_8h.html">port_posix.h</a></div></div>
+<div class="ttc" id="aport__posix_8h_html_af89f60b07247176687889ade776c8e10"><div class="ttname"><a href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a></div><div class="ttdeci">#define CACHE_LINE_SIZE</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00205">port_posix.h:205</a></div></div>
+<div class="ttc" id="astring__util_8h_html"><div class="ttname"><a href="../../dd/d70/string__util_8h.html">string_util.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1port_1_1OnceType_html"><div class="ttname"><a href="../../d0/d6f/structROCKSDB__NAMESPACE_1_1port_1_1OnceType.html">ROCKSDB_NAMESPACE::port::OnceType</a></div><div class="ttdef"><b>Definition</b> <a href="../../dc/d20/port__win_8h_source.html#l00204">port_win.h:204</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_651562d8bf6cfd3e81eff5b570d7df50.html">port</a></li><li class="navelem"><a class="el" href="../../d3/dd4/port__posix_8cc.html">port_posix.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

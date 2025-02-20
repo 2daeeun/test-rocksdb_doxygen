@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/compaction_filters.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d7/d07/compaction__filters_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">compaction_filters.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d7/d07/compaction__filters_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/db6/compaction__filter_8h.html">rocksdb/compaction_filter.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d5b/options_8h.html">rocksdb/options.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/dbd/customizable__util_8h.html">rocksdb/utilities/customizable_util.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/db1/options__type_8h.html">rocksdb/utilities/options_type.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/d71/layered__compaction__filter__base_8h.html">utilities/compaction_filters/layered_compaction_filter_base.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d33/remove__emptyvalue__compactionfilter_8h.html">utilities/compaction_filters/remove_emptyvalue_compactionfilter.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5392a05399515fb62d8111d5dc8ecfde">   16</a></span><span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5392a05399515fb62d8111d5dc8ecfde">RegisterBuiltinCompactionFilters</a>(<a class="code hl_class" href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html">ObjectLibrary</a>&amp; library,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                                            <span class="keyword">const</span> std::string&amp; <span class="comment">/*arg*/</span>) {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  library.<a class="code hl_function" href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html#ad96a836de3ddda09e43fb2fd9868ea3a">AddFactory</a>&lt;<a class="code hl_class" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html">CompactionFilter</a>&gt;(</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      <a class="code hl_function" href="../../d7/d8b/classROCKSDB__NAMESPACE_1_1RemoveEmptyValueCompactionFilter.html#a24ef8cf54353e60e5f5a4e3a97ca49e6">RemoveEmptyValueCompactionFilter::kClassName</a>(),</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>      [](<span class="keyword">const</span> std::string&amp; <span class="comment">/*uri*/</span>,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>         std::unique_ptr&lt;CompactionFilter&gt;* <span class="comment">/*guard*/</span>,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>         std::string* <span class="comment">/*errmsg*/</span>) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="../../d7/d8b/classROCKSDB__NAMESPACE_1_1RemoveEmptyValueCompactionFilter.html">RemoveEmptyValueCompactionFilter</a>();</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      });</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}</div>
+</div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a6c382e841f2eab8657432e1ea79c88b2">   27</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a6c382e841f2eab8657432e1ea79c88b2">CompactionFilter::CreateFromString</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ConfigOptions</a>&amp; config_options,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                                          <span class="keyword">const</span> std::string&amp; value,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                                          <span class="keyword">const</span> <a class="code hl_class" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html">CompactionFilter</a>** result) {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">static</span> std::once_flag once;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  std::call_once(once, [&amp;]() {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5392a05399515fb62d8111d5dc8ecfde">RegisterBuiltinCompactionFilters</a>(*(<a class="code hl_function" href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html#ab2f94cad3debe942605b2728097ae5cf">ObjectLibrary::Default</a>().get()), <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  });</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_class" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html">CompactionFilter</a>* filter = <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html">CompactionFilter</a>*<span class="keyword">&gt;</span>(*result);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> status =</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0de51b1e68c31f055fedc9aa6f1defdb">LoadStaticObject&lt;CompactionFilter&gt;</a>(config_options, value, &amp;filter);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">if</span> (status.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    *result = <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html">CompactionFilter</a>*<span class="keyword">&gt;</span>(filter);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}</div>
+</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="../../da/daf/classROCKSDB__NAMESPACE_1_1CompactionFilterFactory.html#a3e9a9f0aa76bc768ddd0d3452ff86209">   43</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../da/daf/classROCKSDB__NAMESPACE_1_1CompactionFilterFactory.html#a3e9a9f0aa76bc768ddd0d3452ff86209">CompactionFilterFactory::CreateFromString</a>(</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ConfigOptions</a>&amp; config_options, <span class="keyword">const</span> std::string&amp; value,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    std::shared_ptr&lt;CompactionFilterFactory&gt;* result) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// Currently there are no builtin CompactionFilterFactories.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// If any are introduced, they need to be registered here.</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> status =</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5f544e5e674ac27eb40397dd7bdacbb3">LoadSharedObject&lt;CompactionFilterFactory&gt;</a>(config_options, value, result);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>}</div>
+</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilterFactory_html_a3e9a9f0aa76bc768ddd0d3452ff86209"><div class="ttname"><a href="../../da/daf/classROCKSDB__NAMESPACE_1_1CompactionFilterFactory.html#a3e9a9f0aa76bc768ddd0d3452ff86209">ROCKSDB_NAMESPACE::CompactionFilterFactory::CreateFromString</a></div><div class="ttdeci">static Status CreateFromString(const ConfigOptions &amp;config_options, const std::string &amp;name, std::shared_ptr&lt; CompactionFilterFactory &gt; *result)</div><div class="ttdef"><b>Definition</b> <a href="#l00043">compaction_filters.cc:43</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilter_html"><div class="ttname"><a href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html">ROCKSDB_NAMESPACE::CompactionFilter</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/db6/compaction__filter_8h_source.html#l00054">compaction_filter.h:54</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilter_html_a6c382e841f2eab8657432e1ea79c88b2"><div class="ttname"><a href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a6c382e841f2eab8657432e1ea79c88b2">ROCKSDB_NAMESPACE::CompactionFilter::CreateFromString</a></div><div class="ttdeci">static Status CreateFromString(const ConfigOptions &amp;config_options, const std::string &amp;name, const CompactionFilter **result)</div><div class="ttdef"><b>Definition</b> <a href="#l00027">compaction_filters.cc:27</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ObjectLibrary_html"><div class="ttname"><a href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html">ROCKSDB_NAMESPACE::ObjectLibrary</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/dc2/object__registry_8h_source.html#l00043">object_registry.h:43</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ObjectLibrary_html_ab2f94cad3debe942605b2728097ae5cf"><div class="ttname"><a href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html#ab2f94cad3debe942605b2728097ae5cf">ROCKSDB_NAMESPACE::ObjectLibrary::Default</a></div><div class="ttdeci">static std::shared_ptr&lt; ObjectLibrary &gt; &amp; Default()</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d74/object__registry_8cc_source.html#l00208">object_registry.cc:208</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ObjectLibrary_html_ad96a836de3ddda09e43fb2fd9868ea3a"><div class="ttname"><a href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html#ad96a836de3ddda09e43fb2fd9868ea3a">ROCKSDB_NAMESPACE::ObjectLibrary::AddFactory</a></div><div class="ttdeci">const FactoryFunc&lt; T &gt; &amp; AddFactory(const std::string &amp;name, const FactoryFunc&lt; T &gt; &amp;func)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/dc2/object__registry_8h_source.html#l00237">object_registry.h:237</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RemoveEmptyValueCompactionFilter_html"><div class="ttname"><a href="../../d7/d8b/classROCKSDB__NAMESPACE_1_1RemoveEmptyValueCompactionFilter.html">ROCKSDB_NAMESPACE::RemoveEmptyValueCompactionFilter</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d33/remove__emptyvalue__compactionfilter_8h_source.html#l00016">remove_emptyvalue_compactionfilter.h:16</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RemoveEmptyValueCompactionFilter_html_a24ef8cf54353e60e5f5a4e3a97ca49e6"><div class="ttname"><a href="../../d7/d8b/classROCKSDB__NAMESPACE_1_1RemoveEmptyValueCompactionFilter.html#a24ef8cf54353e60e5f5a4e3a97ca49e6">ROCKSDB_NAMESPACE::RemoveEmptyValueCompactionFilter::kClassName</a></div><div class="ttdeci">static const char * kClassName()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d33/remove__emptyvalue__compactionfilter_8h_source.html#l00018">remove_emptyvalue_compactionfilter.h:18</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="acompaction__filter_8h_html"><div class="ttname"><a href="../../d5/db6/compaction__filter_8h.html">compaction_filter.h</a></div></div>
+<div class="ttc" id="acustomizable__util_8h_html"><div class="ttname"><a href="../../dd/dbd/customizable__util_8h.html">customizable_util.h</a></div></div>
+<div class="ttc" id="alayered__compaction__filter__base_8h_html"><div class="ttname"><a href="../../d4/d71/layered__compaction__filter__base_8h.html">layered_compaction_filter_base.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0de51b1e68c31f055fedc9aa6f1defdb"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0de51b1e68c31f055fedc9aa6f1defdb">ROCKSDB_NAMESPACE::LoadStaticObject</a></div><div class="ttdeci">static Status LoadStaticObject(const ConfigOptions &amp;config_options, const std::string &amp;value, T **result)</div><div class="ttdef"><b>Definition</b> <a href="../../dd/dbd/customizable__util_8h_source.html#l00309">customizable_util.h:309</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a5392a05399515fb62d8111d5dc8ecfde"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5392a05399515fb62d8111d5dc8ecfde">ROCKSDB_NAMESPACE::RegisterBuiltinCompactionFilters</a></div><div class="ttdeci">static int RegisterBuiltinCompactionFilters(ObjectLibrary &amp;library, const std::string &amp;)</div><div class="ttdef"><b>Definition</b> <a href="#l00016">compaction_filters.cc:16</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a5f544e5e674ac27eb40397dd7bdacbb3"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5f544e5e674ac27eb40397dd7bdacbb3">ROCKSDB_NAMESPACE::LoadSharedObject</a></div><div class="ttdeci">static Status LoadSharedObject(const ConfigOptions &amp;config_options, const std::string &amp;value, std::shared_ptr&lt; T &gt; *result)</div><div class="ttdef"><b>Definition</b> <a href="../../dd/dbd/customizable__util_8h_source.html#l00141">customizable_util.h:141</a></div></div>
+<div class="ttc" id="aoptions_8h_html"><div class="ttname"><a href="../../d7/d5b/options_8h.html">options.h</a></div></div>
+<div class="ttc" id="aoptions__type_8h_html"><div class="ttname"><a href="../../d2/db1/options__type_8h.html">options_type.h</a></div></div>
+<div class="ttc" id="aremove__emptyvalue__compactionfilter_8h_html"><div class="ttname"><a href="../../d0/d33/remove__emptyvalue__compactionfilter_8h.html">remove_emptyvalue_compactionfilter.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ConfigOptions_html"><div class="ttname"><a href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ROCKSDB_NAMESPACE::ConfigOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/ddb/convenience_8h_source.html#l00034">convenience.h:34</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../d7/d07/compaction__filters_8cc.html">compaction_filters.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

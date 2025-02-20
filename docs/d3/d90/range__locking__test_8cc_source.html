@@ -1,0 +1,670 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/range/range_locking_test.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d3/d90/range__locking__test_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">range_locking_test.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d3/d90/range__locking__test_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#ifndef OS_WIN</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/d93/db__impl_8h.html">db/db_impl/db_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d00/port_8h.html">port/port.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d43/include_2rocksdb_2db_8h.html">rocksdb/db.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d5b/options_8h.html">rocksdb/options.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d57/perf__context_8h.html">rocksdb/perf_context.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/db6/transaction_8h.html">rocksdb/utilities/transaction.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d95/transaction__db_8h.html">rocksdb/utilities/transaction_db.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dc1/point__lock__manager__test_8h.html">utilities/transactions/lock/point/point_lock_manager_test.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d4e/pessimistic__transaction__db_8h.html">utilities/transactions/pessimistic_transaction_db.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d50/transaction__test_8h.html">utilities/transactions/transaction_test.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">using </span>std::string;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html">   28</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a3c2834ea50176aa9139a8bfc67acceee">RangeLockingTest</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../db/d9f/classtesting_1_1Test.html">::testing::Test</a> {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a46399d71542bf0c9a27075afe31af99d">   30</a></span>  <a class="code hl_class" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html">TransactionDB</a>* <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a46399d71542bf0c9a27075afe31af99d">db</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a8df9fba22aa943a7e09736d7669aa216">   31</a></span>  std::string <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a8df9fba22aa943a7e09736d7669aa216">dbname</a>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a6f494ab87b9fc03dd993d54b64e63259">   32</a></span>  <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a> <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a6f494ab87b9fc03dd993d54b64e63259">options</a>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a268d3ff28bf88c0979226dccf0a00d5f">   34</a></span>  std::shared_ptr&lt;RangeLockManagerHandle&gt; <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a268d3ff28bf88c0979226dccf0a00d5f">range_lock_mgr</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a67d9cdd95604b9f8f2e33fde47a0c232">   35</a></span>  <a class="code hl_struct" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html">TransactionDBOptions</a> <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a67d9cdd95604b9f8f2e33fde47a0c232">txn_db_options</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a3c2834ea50176aa9139a8bfc67acceee">   37</a></span>  <a class="code hl_function" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a3c2834ea50176aa9139a8bfc67acceee">RangeLockingTest</a>() : <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a46399d71542bf0c9a27075afe31af99d">db</a>(nullptr) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a6f494ab87b9fc03dd993d54b64e63259">options</a>.create_if_missing = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a8df9fba22aa943a7e09736d7669aa216">dbname</a> = <a class="code hl_function" href="../../de/d4f/namespaceROCKSDB__NAMESPACE_1_1test.html#a6830c127633c3e6557d9f6316b25a19b">test::PerThreadDBPath</a>(<span class="stringliteral">&quot;range_locking_testdb&quot;</span>);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18634f1aa447e30554266ec43f3a50f9">DestroyDB</a>(<a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a8df9fba22aa943a7e09736d7669aa216">dbname</a>, <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a6f494ab87b9fc03dd993d54b64e63259">options</a>));</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a268d3ff28bf88c0979226dccf0a00d5f">range_lock_mgr</a>.reset(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abbefde877ad9cd15e307b8c077058ded">NewRangeLockManager</a>(<span class="keyword">nullptr</span>));</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a67d9cdd95604b9f8f2e33fde47a0c232">txn_db_options</a>.lock_mgr_handle = <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a268d3ff28bf88c0979226dccf0a00d5f">range_lock_mgr</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">auto</span> s = <a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a6c0d0ca98e38a1d4e814f55d1f128cca">TransactionDB::Open</a>(<a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a6f494ab87b9fc03dd993d54b64e63259">options</a>, <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a67d9cdd95604b9f8f2e33fde47a0c232">txn_db_options</a>, <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a8df9fba22aa943a7e09736d7669aa216">dbname</a>, &amp;<a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a46399d71542bf0c9a27075afe31af99d">db</a>);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    assert(s.ok());</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
+</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#aeafeaba5fe764ea4f4fde5769795d8b8">   50</a></span>  <a class="code hl_function" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#aeafeaba5fe764ea4f4fde5769795d8b8">~RangeLockingTest</a>() {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a46399d71542bf0c9a27075afe31af99d">db</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a46399d71542bf0c9a27075afe31af99d">db</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="comment">// This is to skip the assert statement in FaultInjectionTestEnv. There</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="comment">// seems to be a bug in btrfs that the makes readdir return recently</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="comment">// unlink-ed files. By using the default fs we simply ignore errors resulted</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="comment">// from attempting to delete such files in DestroyDB.</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18634f1aa447e30554266ec43f3a50f9">DestroyDB</a>(<a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a8df9fba22aa943a7e09736d7669aa216">dbname</a>, <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a6f494ab87b9fc03dd993d54b64e63259">options</a>));</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  }</div>
+</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#ae542d6e2ae90938606662dc138cc4225">   60</a></span>  <a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>* <a class="code hl_function" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#ae542d6e2ae90938606662dc138cc4225">NewTxn</a>(</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      <a class="code hl_struct" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">TransactionOptions</a> txn_opt = <a class="code hl_struct" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">TransactionOptions</a>()) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn = <a class="code hl_variable" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a46399d71542bf0c9a27075afe31af99d">db</a>-&gt;BeginTransaction(<a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>(), txn_opt);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>*<span class="keyword">&gt;</span>(txn);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  }</div>
+</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>};</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// TODO: set a smaller lock wait timeout so that the test runs faster.</span></div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abaa1024202f7b0db7768c65dc5ce21ed">   68</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html">RangeLockingTest</a>, BasicRangeLocking) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a> write_options;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <a class="code hl_struct" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">TransactionOptions</a> txn_options;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  std::string value;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a> read_options;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">auto</span> cf = db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#aea67ec073a672333cad2d4df0c229cf0">DefaultColumnFamily</a>();</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn0 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(write_options, txn_options);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn1 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(write_options, txn_options);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">// Get a range lock</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;a&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;c&quot;</span>)));</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">// Check that range Lock inhibits an overlapping range lock</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">auto</span> s = txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;b&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;z&quot;</span>));</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.IsTimedOut());</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">// Check that range Lock inhibits an overlapping point lock</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keyword">auto</span> s = txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#aec37188fe57d4bf1e380826f928072e4">GetForUpdate</a>(read_options, cf, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<span class="stringliteral">&quot;b&quot;</span>), &amp;value);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.IsTimedOut());</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">// Get a point lock, check that it inhibits range locks</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#ab8251b13b43fefe9fe6e249461c72b97">Put</a>(cf, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<span class="stringliteral">&quot;n&quot;</span>), <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<span class="stringliteral">&quot;value&quot;</span>)));</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keyword">auto</span> s = txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;m&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;p&quot;</span>));</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.IsTimedOut());</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  }</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a14e2e2f042dfbc567a5ea7d3f90291c6">Commit</a>());</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a4e953512cccc6822ccf0c64dc93f2d2b">Rollback</a>();</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keyword">delete</span> txn0;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keyword">delete</span> txn1;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}</div>
+</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a805ffda1dedb418a5d471c37be78a5d3">  107</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html">RangeLockingTest</a>, MyRocksLikeUpdate) {</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a> write_options;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <a class="code hl_struct" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">TransactionOptions</a> txn_options;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn0 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(write_options, txn_options);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">auto</span> cf = db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#aea67ec073a672333cad2d4df0c229cf0">DefaultColumnFamily</a>();</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="comment">// Get a range lock for the range we are about to update</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;a&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;c&quot;</span>)));</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keywordtype">bool</span> try_range_lock_called = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()-&gt;<a class="code hl_function" href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#ac9d49ea2171e1dbc126e802829a9800b">SetCallBack</a>(</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      <span class="stringliteral">&quot;RangeTreeLockManager::TryRangeLock:enter&quot;</span>,</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      [&amp;](<span class="keywordtype">void</span>* <span class="comment">/*arg*/</span>) { try_range_lock_called = <span class="keyword">true</span>; });</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()-&gt;<a class="code hl_function" href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#ab0d23d3478bbb280eeb77699fd9276b7">EnableProcessing</a>();</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="comment">// For performance reasons, the following must NOT call lock_mgr-&gt;TryLock():</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="comment">// We verify that by checking the value of try_range_lock_called.</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#ab8251b13b43fefe9fe6e249461c72b97">Put</a>(cf, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<span class="stringliteral">&quot;b&quot;</span>), <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<span class="stringliteral">&quot;value&quot;</span>),</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                      <span class="comment">/*assume_tracked=*/</span><span class="keyword">true</span>));</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()-&gt;<a class="code hl_function" href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#a72127c903e750187200ebadf83741995">DisableProcessing</a>();</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()-&gt;<a class="code hl_function" href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#a4f4fd52385175198b2e19d6e703bc567">ClearAllCallBacks</a>();</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a8197fa52f3538588d20d8af4834c9003">ASSERT_FALSE</a>(try_range_lock_called);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a4e953512cccc6822ccf0c64dc93f2d2b">Rollback</a>();</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="keyword">delete</span> txn0;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>}</div>
+</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a556838535d8adfca69c6638dbbdb5a9d">  138</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html">RangeLockingTest</a>, UpgradeLockAndGetConflict) {</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a> write_options;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <a class="code hl_struct" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">TransactionOptions</a> txn_options;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="keyword">auto</span> cf = db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#aea67ec073a672333cad2d4df0c229cf0">DefaultColumnFamily</a>();</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  std::string value;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  txn_options.<a class="code hl_variable" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html#a0a5704ff92f53ee3d35eac84cc8b30fc">lock_timeout</a> = 10;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn0 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(write_options, txn_options);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn1 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(write_options, txn_options);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">// Get the shared lock in txn0</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  s = txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#aec37188fe57d4bf1e380826f928072e4">GetForUpdate</a>(<a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>(), cf, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<span class="stringliteral">&quot;a&quot;</span>), &amp;value,</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                         <span class="keyword">false</span> <span class="comment">/*exclusive*/</span>);</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#abad803bbeb3e3c84affdae4551f372d9">IsNotFound</a>());</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="comment">// Get the shared lock on the same key in txn1</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  s = txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#aec37188fe57d4bf1e380826f928072e4">GetForUpdate</a>(<a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>(), cf, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<span class="stringliteral">&quot;a&quot;</span>), &amp;value,</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                         <span class="keyword">false</span> <span class="comment">/*exclusive*/</span>);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#abad803bbeb3e3c84affdae4551f372d9">IsNotFound</a>());</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="comment">// Now, try getting an exclusive lock that overlaps with the above</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  s = txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;a&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;b&quot;</span>));</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#aebcc4cea65e7bd9a1a2960d502edae3b">IsTimedOut</a>());</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a4e953512cccc6822ccf0c64dc93f2d2b">Rollback</a>();</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a4e953512cccc6822ccf0c64dc93f2d2b">Rollback</a>();</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="keyword">delete</span> txn0;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="keyword">delete</span> txn1;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>}</div>
+</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="foldopen" id="foldopen00170" data-start="{" data-end="}">
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6e7b6930cbbd3002449fc4a045e09b6c">  170</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html">RangeLockingTest</a>, SnapshotValidation) {</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s;</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> key_slice = <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<span class="stringliteral">&quot;k&quot;</span>);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <a class="code hl_class" href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ColumnFamilyHandle</a>* cfh = db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#aea67ec073a672333cad2d4df0c229cf0">DefaultColumnFamily</a>();</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <span class="keyword">auto</span> txn0 = NewTxn();</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  txn0-&gt;Put(key_slice, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<span class="stringliteral">&quot;initial&quot;</span>));</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  txn0-&gt;Commit();</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="comment">// txn1</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="keyword">auto</span> txn1 = NewTxn();</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  txn1-&gt;SetSnapshot();</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  std::string val1;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn1-&gt;Get(<a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>(), cfh, key_slice, &amp;val1));</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(val1, <span class="stringliteral">&quot;initial&quot;</span>);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  val1 = val1 + std::string(<span class="stringliteral">&quot;-txn1&quot;</span>);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn1-&gt;Put(cfh, key_slice, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(val1)));</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="comment">// txn2</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <span class="keyword">auto</span> txn2 = NewTxn();</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  txn2-&gt;SetSnapshot();</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  std::string val2;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="comment">// This will see the original value as nothing is committed</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="comment">// This is also Get, so it is doesn&#39;t acquire any locks.</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn2-&gt;Get(<a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>(), cfh, key_slice, &amp;val2));</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(val2, <span class="stringliteral">&quot;initial&quot;</span>);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="comment">// txn1</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn1-&gt;Commit());</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="comment">// txn2</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  val2 = val2 + std::string(<span class="stringliteral">&quot;-txn2&quot;</span>);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <span class="comment">// Now, this call should do Snapshot Validation and fail:</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  s = txn2-&gt;Put(cfh, key_slice, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(val2));</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a2b212f951784edd811d0cb7028fc97df">IsBusy</a>());</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn2-&gt;Commit());</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="keyword">delete</span> txn0;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <span class="keyword">delete</span> txn1;</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  <span class="keyword">delete</span> txn2;</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>}</div>
+</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="foldopen" id="foldopen00214" data-start="{" data-end="}">
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a32fb67bd1f316b59e5d6d84244f50249">  214</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html">RangeLockingTest</a>, MultipleTrxLockStatusData) {</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a> write_options;</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <a class="code hl_struct" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">TransactionOptions</a> txn_options;</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  <span class="keyword">auto</span> cf = db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#aea67ec073a672333cad2d4df0c229cf0">DefaultColumnFamily</a>();</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn0 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(write_options, txn_options);</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn1 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(write_options, txn_options);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <span class="comment">// Get a range lock</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;z&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;z&quot;</span>)));</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;b&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;e&quot;</span>)));</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <span class="keyword">auto</span> s = range_lock_mgr-&gt;GetRangeLockStatusData();</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(s.size(), 2);</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = s.begin(); it != s.end(); ++it) {</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(it-&gt;first, cf-&gt;GetID());</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keyword">auto</span> val = it-&gt;second;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a8197fa52f3538588d20d8af4834c9003">ASSERT_FALSE</a>(val.start.inf_suffix);</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a8197fa52f3538588d20d8af4834c9003">ASSERT_FALSE</a>(val.end.inf_suffix);</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(val.exclusive);</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(val.ids.size(), 1);</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordflow">if</span> (val.ids[0] == txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a6296fe91efc2997ac9b57f566158a70c">GetID</a>()) {</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(val.start.slice, <span class="stringliteral">&quot;z&quot;</span>);</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(val.end.slice, <span class="stringliteral">&quot;z&quot;</span>);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (val.ids[0] == txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a6296fe91efc2997ac9b57f566158a70c">GetID</a>()) {</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(val.start.slice, <span class="stringliteral">&quot;b&quot;</span>);</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(val.end.slice, <span class="stringliteral">&quot;e&quot;</span>);</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a3e26a8d27caa386ed0ea7ce9d5b7c4ed">FAIL</a>();  <span class="comment">// Unknown transaction ID.</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    }</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  }</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  <span class="keyword">delete</span> txn0;</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <span class="keyword">delete</span> txn1;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>}</div>
+</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="preprocessor">#if defined(__has_feature)</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="preprocessor">#if __has_feature(thread_sanitizer)</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="preprocessor">#define SKIP_LOCK_ESCALATION_TEST 1</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno"><a class="line" href="../../d3/d90/range__locking__test_8cc.html#a41dd80bedd4a3d061f573cd17ededce9">  255</a></span><span class="preprocessor">#define SKIP_LOCK_ESCALATION_TEST 1</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="preprocessor">#ifndef SKIP_LOCK_ESCALATION_TEST</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(RangeLockingTest, BasicLockEscalation) {</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <span class="keyword">auto</span> cf = db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#aea67ec073a672333cad2d4df0c229cf0">DefaultColumnFamily</a>();</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <span class="keyword">auto</span> counters = range_lock_mgr-&gt;GetStatus();</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="comment">// Initially not using any lock memory</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(counters.current_lock_memory, 0);</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(counters.escalation_count, 0);</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0, range_lock_mgr-&gt;SetMaxLockMemory(2000));</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  <span class="comment">// Insert until we see lock escalations</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  <span class="keyword">auto</span> txn = NewTxn();</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  <span class="comment">// Get the locks until we hit an escalation</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 2020; i++) {</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    std::ostringstream buf;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    buf &lt;&lt; std::setw(8) &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; i;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    std::string buf_str = buf.str();</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn-&gt;GetRangeLock(cf, Endpoint(buf_str), Endpoint(buf_str)));</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  }</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  counters = range_lock_mgr-&gt;GetStatus();</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a16a882d4eafc9f8643867aea40879140">ASSERT_GT</a>(counters.escalation_count, 0);</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a775643748feff0b490aae651d041e971">ASSERT_LE</a>(counters.current_lock_memory, 2000);</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  <span class="keyword">delete</span> txn;</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>}</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment">// An escalation barrier function. Allow escalation iff the first two bytes are</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment">// identical.</span></div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="keyword">static</span> <span class="keywordtype">bool</span> escalation_barrier(<span class="keyword">const</span> Endpoint&amp; a, <span class="keyword">const</span> Endpoint&amp; b) {</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  assert(a.slice.size() &gt; 2);</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  assert(b.slice.size() &gt; 2);</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  <span class="keywordflow">if</span> (memcmp(a.slice.data(), b.slice.data(), 2)) {</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;  <span class="comment">// This is a barrier</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;  <span class="comment">// No barrier</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  }</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>}</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(RangeLockingTest, LockEscalationBarrier) {</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  <span class="keyword">auto</span> cf = db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#aea67ec073a672333cad2d4df0c229cf0">DefaultColumnFamily</a>();</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  <span class="keyword">auto</span> counters = range_lock_mgr-&gt;GetStatus();</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="comment">// Initially not using any lock memory</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(counters.escalation_count, 0);</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  range_lock_mgr-&gt;SetMaxLockMemory(8000);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  range_lock_mgr-&gt;SetEscalationBarrierFunc(escalation_barrier);</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  <span class="comment">// Insert enough locks to cause lock escalations to happen</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keyword">auto</span> txn = NewTxn();</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> N = 2000;</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; N; i++) {</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    std::ostringstream buf;</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    buf &lt;&lt; std::setw(4) &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; i;</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    std::string buf_str = buf.str();</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn-&gt;GetRangeLock(cf, Endpoint(buf_str), Endpoint(buf_str)));</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  }</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  counters = range_lock_mgr-&gt;GetStatus();</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a16a882d4eafc9f8643867aea40879140">ASSERT_GT</a>(counters.escalation_count, 0);</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  <span class="comment">// Check that lock escalation was not performed across escalation barriers:</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  <span class="comment">// Use another txn to acquire locks near the barriers.</span></div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  <span class="keyword">auto</span> txn2 = NewTxn();</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  range_lock_mgr-&gt;SetMaxLockMemory(500000);</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 100; i &lt; N; i += 100) {</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    std::ostringstream buf;</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    buf &lt;&lt; std::setw(4) &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; i - 1 &lt;&lt; <span class="stringliteral">&quot;-a&quot;</span>;</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    std::string buf_str = buf.str();</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    <span class="comment">// Check that we CAN get a lock near the escalation barrier</span></div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn2-&gt;GetRangeLock(cf, Endpoint(buf_str), Endpoint(buf_str)));</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  }</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  txn-&gt;Rollback();</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>  txn2-&gt;Rollback();</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  <span class="keyword">delete</span> txn;</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  <span class="keyword">delete</span> txn2;</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>}</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span> </div>
+<div class="foldopen" id="foldopen00342" data-start="{" data-end="}">
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#acc89ee82dcc3d9a75988c3db6d8ad171">  342</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html">RangeLockingTest</a>, LockWaitCount) {</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  <a class="code hl_struct" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">TransactionOptions</a> txn_options;</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  <span class="keyword">auto</span> cf = db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#aea67ec073a672333cad2d4df0c229cf0">DefaultColumnFamily</a>();</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  txn_options.<a class="code hl_variable" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html#a0a5704ff92f53ee3d35eac84cc8b30fc">lock_timeout</a> = 50;</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn0 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(<a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>(), txn_options);</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn1 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(<a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>(), txn_options);</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  <span class="comment">// Get a range lock</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;a&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;c&quot;</span>)));</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  uint64_t lock_waits1 = range_lock_mgr-&gt;GetStatus().lock_wait_count;</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  <span class="comment">// Attempt to get a conflicting lock</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>  <span class="keyword">auto</span> s = txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;b&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;z&quot;</span>));</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.IsTimedOut());</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  <span class="comment">// Check that the counter was incremented</span></div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>  uint64_t lock_waits2 = range_lock_mgr-&gt;GetStatus().lock_wait_count;</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(lock_waits1 + 1, lock_waits2);</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a4e953512cccc6822ccf0c64dc93f2d2b">Rollback</a>();</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>  txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a4e953512cccc6822ccf0c64dc93f2d2b">Rollback</a>();</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>  <span class="keyword">delete</span> txn0;</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  <span class="keyword">delete</span> txn1;</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>}</div>
+</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
+<div class="foldopen" id="foldopen00368" data-start="{" data-end="}">
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac3f44499825ba95cca5358a70231ed74">  368</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html">RangeLockingTest</a>, LockWaiteeAccess) {</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>  <a class="code hl_struct" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">TransactionOptions</a> txn_options;</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>  <span class="keyword">auto</span> cf = db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#aea67ec073a672333cad2d4df0c229cf0">DefaultColumnFamily</a>();</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>  txn_options.<a class="code hl_variable" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html#a0a5704ff92f53ee3d35eac84cc8b30fc">lock_timeout</a> = 60;</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn0 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(<a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>(), txn_options);</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn1 = db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(<a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>(), txn_options);</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span> </div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  <span class="comment">// Get a range lock</span></div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;a&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;c&quot;</span>)));</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  std::atomic&lt;bool&gt; reached(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()-&gt;<a class="code hl_function" href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#ac9d49ea2171e1dbc126e802829a9800b">SetCallBack</a>(</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>      <span class="stringliteral">&quot;RangeTreeLockManager::TryRangeLock:EnterWaitingTxn&quot;</span>, [&amp;](<span class="keywordtype">void</span>* <span class="comment">/*arg*/</span>) {</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>        reached.store(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>        std::this_thread::sleep_for(std::chrono::milliseconds(2000));</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>      });</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()-&gt;<a class="code hl_function" href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#ab0d23d3478bbb280eeb77699fd9276b7">EnableProcessing</a>();</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  <a class="code hl_typedef" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#afc6f29d029401f7520152663acb0fb61">port::Thread</a> t([&amp;]() {</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    <span class="comment">// Attempt to get a conflicting lock</span></div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    <span class="keyword">auto</span> s = txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">GetRangeLock</a>(cf, <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;b&quot;</span>), <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>(<span class="stringliteral">&quot;z&quot;</span>));</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.ok());</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    txn1-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a4e953512cccc6822ccf0c64dc93f2d2b">Rollback</a>();</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>  });</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>  <span class="keywordflow">while</span> (!reached.load()) {</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    std::this_thread::sleep_for(std::chrono::milliseconds(100));</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  }</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()-&gt;<a class="code hl_function" href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#a72127c903e750187200ebadf83741995">DisableProcessing</a>();</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()-&gt;<a class="code hl_function" href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#a4f4fd52385175198b2e19d6e703bc567">ClearAllCallBacks</a>();</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  <span class="comment">// Release locks and free the transaction</span></div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  txn0-&gt;<a class="code hl_function" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a4e953512cccc6822ccf0c64dc93f2d2b">Rollback</a>();</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  <span class="keyword">delete</span> txn0;</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  t.join();</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>  <span class="keyword">delete</span> txn1;</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>}</div>
+</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span> </div>
+<div class="foldopen" id="foldopen00408" data-start="{" data-end="}">
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno"><a class="line" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a790e7e1858ed75760a6c30d4ae8227d8">  408</a></span><span class="keywordtype">void</span> <a class="code hl_friend" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a790e7e1858ed75760a6c30d4ae8227d8">PointLockManagerTestExternalSetup</a>(<a class="code hl_class" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html">PointLockManagerTest</a>* self) {</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>  self-&gt;<a class="code hl_variable" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a7f73be881324b3b3df3f9eee35f7b600">env_</a> = <a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">Env::Default</a>();</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>  self-&gt;<a class="code hl_variable" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a3d9dd43c3885a1602165210e447058ef">db_dir_</a> = <a class="code hl_function" href="../../de/d4f/namespaceROCKSDB__NAMESPACE_1_1test.html#a6830c127633c3e6557d9f6316b25a19b">test::PerThreadDBPath</a>(<span class="stringliteral">&quot;point_lock_manager_test&quot;</span>);</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(self-&gt;<a class="code hl_variable" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a7f73be881324b3b3df3f9eee35f7b600">env_</a>-&gt;<a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a4791003af6e944a9708441186cd23a25">CreateDir</a>(self-&gt;<a class="code hl_variable" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a3d9dd43c3885a1602165210e447058ef">db_dir_</a>));</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span> </div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>  <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a> opt;</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>  opt.<a class="code hl_variable" href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#aa03c50d249ad3afef2c9b1039b407afb">create_if_missing</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>  <a class="code hl_struct" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html">TransactionDBOptions</a> txn_opt;</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>  txn_opt.<a class="code hl_variable" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#afb2936babf7423ca8b946af8a9738254">transaction_lock_timeout</a> = 0;</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span> </div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  <span class="keyword">auto</span> mutex_factory = std::make_shared&lt;TransactionDBMutexFactoryImpl&gt;();</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>  self-&gt;<a class="code hl_variable" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a0f6c2c998d4bd22671c341fd8d9b0bf1">locker_</a>.reset(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abbefde877ad9cd15e307b8c077058ded">NewRangeLockManager</a>(mutex_factory)-&gt;getLockManager());</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>  std::shared_ptr&lt;RangeLockManagerHandle&gt; range_lock_mgr =</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>      std::dynamic_pointer_cast&lt;RangeLockManagerHandle&gt;(self-&gt;<a class="code hl_variable" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a0f6c2c998d4bd22671c341fd8d9b0bf1">locker_</a>);</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>  txn_opt.<a class="code hl_variable" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a320e74940797857d8663ebc8725b8077">lock_mgr_handle</a> = range_lock_mgr;</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span> </div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a6c0d0ca98e38a1d4e814f55d1f128cca">TransactionDB::Open</a>(opt, txn_opt, self-&gt;<a class="code hl_variable" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a3d9dd43c3885a1602165210e447058ef">db_dir_</a>, &amp;self-&gt;<a class="code hl_variable" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a6d69f36f1242a581a561b532fcecb2cb">db_</a>));</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>  self-&gt;<a class="code hl_variable" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a4e8462c2f4965ccb698670f6a6b9ba38">wait_sync_point_name_</a> = <span class="stringliteral">&quot;RangeTreeLockManager::TryRangeLock:WaitingTxn&quot;</span>;</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>}</div>
+</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span> </div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3059aebd0eabe877ffbca6fec42dc698">  428</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a>(RangeLockManager, <a class="code hl_class" href="../../d4/d81/classROCKSDB__NAMESPACE_1_1AnyLockManagerTest.html">AnyLockManagerTest</a>,</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>                        <a class="code hl_function" href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">::testing::Values</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a156cb6abe4057b8f81deab15a6e47be5">PointLockManagerTestExternalSetup</a>));</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span> </div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span> </div>
+<div class="foldopen" id="foldopen00433" data-start="{" data-end="}">
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno"><a class="line" href="../../d3/d90/range__locking__test_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627">  433</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>  ROCKSDB_NAMESPACE::port::InstallStackTraceHandler();</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>  <a class="code hl_function" href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">::testing::InitGoogleTest</a>(&amp;argc, argv);</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a>();</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>}</div>
+</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span> </div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="preprocessor">#else  </span><span class="comment">// OS_WIN</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span> </div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span><span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<span class="keywordtype">int</span> <span class="comment">/*argc*/</span>, <span class="keywordtype">char</span>** <span class="comment">/*argv*/</span>) {</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>  fprintf(stderr, <span class="stringliteral">&quot;skipped as Range Locking is not supported on Windows\n&quot;</span>);</div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>  <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>}</div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> </div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span><span class="preprocessor">#endif  </span><span class="comment">// OS_WIN</span></div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span> </div>
+<div class="ttc" id="acache__bench_8cc_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/db4/cache__bench_8cc_source.html#l00011">cache_bench.cc:11</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AnyLockManagerTest_html"><div class="ttname"><a href="../../d4/d81/classROCKSDB__NAMESPACE_1_1AnyLockManagerTest.html">ROCKSDB_NAMESPACE::AnyLockManagerTest</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00088">point_lock_manager_test.h:89</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ColumnFamilyHandle_html"><div class="ttname"><a href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ROCKSDB_NAMESPACE::ColumnFamilyHandle</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l00081">db.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Endpoint_html"><div class="ttname"><a href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">ROCKSDB_NAMESPACE::Endpoint</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/db6/transaction_8h_source.html#l00085">transaction.h:85</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a4791003af6e944a9708441186cd23a25"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a4791003af6e944a9708441186cd23a25">ROCKSDB_NAMESPACE::Env::CreateDir</a></div><div class="ttdeci">virtual Status CreateDir(const std::string &amp;dirname)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a6ab2e37815691608582aa44201663888"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">ROCKSDB_NAMESPACE::Env::Default</a></div><div class="ttdeci">static Env * Default()</div><div class="ttdef"><b>Definition</b> <a href="../../de/d24/env__posix_8cc_source.html#l00498">env_posix.cc:498</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PessimisticTransaction_html"><div class="ttname"><a href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">ROCKSDB_NAMESPACE::PessimisticTransaction</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/dd5/pessimistic__transaction_8h_source.html#l00036">pessimistic_transaction.h:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockManagerTest_html"><div class="ttname"><a href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html">ROCKSDB_NAMESPACE::PointLockManagerTest</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00042">point_lock_manager_test.h:42</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockManagerTest_html_a0f6c2c998d4bd22671c341fd8d9b0bf1"><div class="ttname"><a href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a0f6c2c998d4bd22671c341fd8d9b0bf1">ROCKSDB_NAMESPACE::PointLockManagerTest::locker_</a></div><div class="ttdeci">std::shared_ptr&lt; LockManager &gt; locker_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00077">point_lock_manager_test.h:77</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockManagerTest_html_a3d9dd43c3885a1602165210e447058ef"><div class="ttname"><a href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a3d9dd43c3885a1602165210e447058ef">ROCKSDB_NAMESPACE::PointLockManagerTest::db_dir_</a></div><div class="ttdeci">std::string db_dir_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00082">point_lock_manager_test.h:82</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockManagerTest_html_a4e8462c2f4965ccb698670f6a6b9ba38"><div class="ttname"><a href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a4e8462c2f4965ccb698670f6a6b9ba38">ROCKSDB_NAMESPACE::PointLockManagerTest::wait_sync_point_name_</a></div><div class="ttdeci">const char * wait_sync_point_name_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00078">point_lock_manager_test.h:78</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockManagerTest_html_a6d69f36f1242a581a561b532fcecb2cb"><div class="ttname"><a href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a6d69f36f1242a581a561b532fcecb2cb">ROCKSDB_NAMESPACE::PointLockManagerTest::db_</a></div><div class="ttdeci">TransactionDB * db_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00083">point_lock_manager_test.h:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockManagerTest_html_a790e7e1858ed75760a6c30d4ae8227d8"><div class="ttname"><a href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a790e7e1858ed75760a6c30d4ae8227d8">ROCKSDB_NAMESPACE::PointLockManagerTest::PointLockManagerTestExternalSetup</a></div><div class="ttdeci">friend void PointLockManagerTestExternalSetup(PointLockManagerTest *)</div><div class="ttdef"><b>Definition</b> <a href="#l00408">range_locking_test.cc:408</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockManagerTest_html_a7f73be881324b3b3df3f9eee35f7b600"><div class="ttname"><a href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html#a7f73be881324b3b3df3f9eee35f7b600">ROCKSDB_NAMESPACE::PointLockManagerTest::env_</a></div><div class="ttdeci">Env * env_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00076">point_lock_manager_test.h:76</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockingTest_html"><div class="ttname"><a href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html">ROCKSDB_NAMESPACE::RangeLockingTest</a></div><div class="ttdef"><b>Definition</b> <a href="#l00028">range_locking_test.cc:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockingTest_html_a268d3ff28bf88c0979226dccf0a00d5f"><div class="ttname"><a href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a268d3ff28bf88c0979226dccf0a00d5f">ROCKSDB_NAMESPACE::RangeLockingTest::range_lock_mgr</a></div><div class="ttdeci">std::shared_ptr&lt; RangeLockManagerHandle &gt; range_lock_mgr</div><div class="ttdef"><b>Definition</b> <a href="#l00034">range_locking_test.cc:34</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockingTest_html_a3c2834ea50176aa9139a8bfc67acceee"><div class="ttname"><a href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a3c2834ea50176aa9139a8bfc67acceee">ROCKSDB_NAMESPACE::RangeLockingTest::RangeLockingTest</a></div><div class="ttdeci">RangeLockingTest()</div><div class="ttdef"><b>Definition</b> <a href="#l00037">range_locking_test.cc:37</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockingTest_html_a46399d71542bf0c9a27075afe31af99d"><div class="ttname"><a href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a46399d71542bf0c9a27075afe31af99d">ROCKSDB_NAMESPACE::RangeLockingTest::db</a></div><div class="ttdeci">TransactionDB * db</div><div class="ttdef"><b>Definition</b> <a href="#l00030">range_locking_test.cc:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockingTest_html_a67d9cdd95604b9f8f2e33fde47a0c232"><div class="ttname"><a href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a67d9cdd95604b9f8f2e33fde47a0c232">ROCKSDB_NAMESPACE::RangeLockingTest::txn_db_options</a></div><div class="ttdeci">TransactionDBOptions txn_db_options</div><div class="ttdef"><b>Definition</b> <a href="#l00035">range_locking_test.cc:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockingTest_html_a6f494ab87b9fc03dd993d54b64e63259"><div class="ttname"><a href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a6f494ab87b9fc03dd993d54b64e63259">ROCKSDB_NAMESPACE::RangeLockingTest::options</a></div><div class="ttdeci">Options options</div><div class="ttdef"><b>Definition</b> <a href="#l00032">range_locking_test.cc:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockingTest_html_a8df9fba22aa943a7e09736d7669aa216"><div class="ttname"><a href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#a8df9fba22aa943a7e09736d7669aa216">ROCKSDB_NAMESPACE::RangeLockingTest::dbname</a></div><div class="ttdeci">std::string dbname</div><div class="ttdef"><b>Definition</b> <a href="#l00031">range_locking_test.cc:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockingTest_html_ae542d6e2ae90938606662dc138cc4225"><div class="ttname"><a href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#ae542d6e2ae90938606662dc138cc4225">ROCKSDB_NAMESPACE::RangeLockingTest::NewTxn</a></div><div class="ttdeci">PessimisticTransaction * NewTxn(TransactionOptions txn_opt=TransactionOptions())</div><div class="ttdef"><b>Definition</b> <a href="#l00060">range_locking_test.cc:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockingTest_html_aeafeaba5fe764ea4f4fde5769795d8b8"><div class="ttname"><a href="../../dd/d97/classROCKSDB__NAMESPACE_1_1RangeLockingTest.html#aeafeaba5fe764ea4f4fde5769795d8b8">ROCKSDB_NAMESPACE::RangeLockingTest::~RangeLockingTest</a></div><div class="ttdeci">~RangeLockingTest()</div><div class="ttdef"><b>Definition</b> <a href="#l00050">range_locking_test.cc:50</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StackableDB_html_aea67ec073a672333cad2d4df0c229cf0"><div class="ttname"><a href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#aea67ec073a672333cad2d4df0c229cf0">ROCKSDB_NAMESPACE::StackableDB::DefaultColumnFamily</a></div><div class="ttdeci">ColumnFamilyHandle * DefaultColumnFamily() const override</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d2d/stackable__db_8h_source.html#l00578">stackable_db.h:578</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a2b212f951784edd811d0cb7028fc97df"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a2b212f951784edd811d0cb7028fc97df">ROCKSDB_NAMESPACE::Status::IsBusy</a></div><div class="ttdeci">bool IsBusy() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00404">status.h:404</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_abad803bbeb3e3c84affdae4551f372d9"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#abad803bbeb3e3c84affdae4551f372d9">ROCKSDB_NAMESPACE::Status::IsNotFound</a></div><div class="ttdeci">bool IsNotFound() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00340">status.h:340</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_aebcc4cea65e7bd9a1a2960d502edae3b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#aebcc4cea65e7bd9a1a2960d502edae3b">ROCKSDB_NAMESPACE::Status::IsTimedOut</a></div><div class="ttdeci">bool IsTimedOut() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00387">status.h:387</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SyncPoint_html_a4f4fd52385175198b2e19d6e703bc567"><div class="ttname"><a href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#a4f4fd52385175198b2e19d6e703bc567">ROCKSDB_NAMESPACE::SyncPoint::ClearAllCallBacks</a></div><div class="ttdeci">void ClearAllCallBacks()</div><div class="ttdef"><b>Definition</b> <a href="../../db/d23/sync__point_8cc_source.html#l00045">sync_point.cc:45</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SyncPoint_html_a72127c903e750187200ebadf83741995"><div class="ttname"><a href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#a72127c903e750187200ebadf83741995">ROCKSDB_NAMESPACE::SyncPoint::DisableProcessing</a></div><div class="ttdeci">void DisableProcessing()</div><div class="ttdef"><b>Definition</b> <a href="../../db/d23/sync__point_8cc_source.html#l00049">sync_point.cc:49</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SyncPoint_html_ab0d23d3478bbb280eeb77699fd9276b7"><div class="ttname"><a href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#ab0d23d3478bbb280eeb77699fd9276b7">ROCKSDB_NAMESPACE::SyncPoint::EnableProcessing</a></div><div class="ttdeci">void EnableProcessing()</div><div class="ttdef"><b>Definition</b> <a href="../../db/d23/sync__point_8cc_source.html#l00047">sync_point.cc:47</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SyncPoint_html_ac9d49ea2171e1dbc126e802829a9800b"><div class="ttname"><a href="../../d1/d1f/classROCKSDB__NAMESPACE_1_1SyncPoint.html#ac9d49ea2171e1dbc126e802829a9800b">ROCKSDB_NAMESPACE::SyncPoint::SetCallBack</a></div><div class="ttdeci">void SetCallBack(const std::string &amp;point, const std::function&lt; void(void *)&gt; &amp;callback)</div><div class="ttdef"><b>Definition</b> <a href="../../db/d23/sync__point_8cc_source.html#l00036">sync_point.cc:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TransactionDB_html"><div class="ttname"><a href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html">ROCKSDB_NAMESPACE::TransactionDB</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00420">transaction_db.h:420</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TransactionDB_html_a186a74b7fc3e2e810a4024bf5f6a7558"><div class="ttname"><a href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">ROCKSDB_NAMESPACE::TransactionDB::BeginTransaction</a></div><div class="ttdeci">virtual Transaction * BeginTransaction(const WriteOptions &amp;write_options, const TransactionOptions &amp;txn_options=TransactionOptions(), Transaction *old_txn=nullptr)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TransactionDB_html_a6c0d0ca98e38a1d4e814f55d1f128cca"><div class="ttname"><a href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a6c0d0ca98e38a1d4e814f55d1f128cca">ROCKSDB_NAMESPACE::TransactionDB::Open</a></div><div class="ttdeci">static Status Open(const Options &amp;options, const TransactionDBOptions &amp;txn_db_options, const std::string &amp;dbname, TransactionDB **dbptr)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/db9/pessimistic__transaction__db_8cc_source.html#l00207">pessimistic_transaction_db.cc:207</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Transaction_html"><div class="ttname"><a href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">ROCKSDB_NAMESPACE::Transaction</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/db6/transaction_8h_source.html#l00136">transaction.h:136</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Transaction_html_a14e2e2f042dfbc567a5ea7d3f90291c6"><div class="ttname"><a href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a14e2e2f042dfbc567a5ea7d3f90291c6">ROCKSDB_NAMESPACE::Transaction::Commit</a></div><div class="ttdeci">virtual Status Commit()=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Transaction_html_a4e953512cccc6822ccf0c64dc93f2d2b"><div class="ttname"><a href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a4e953512cccc6822ccf0c64dc93f2d2b">ROCKSDB_NAMESPACE::Transaction::Rollback</a></div><div class="ttdeci">virtual Status Rollback()=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Transaction_html_a6296fe91efc2997ac9b57f566158a70c"><div class="ttname"><a href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a6296fe91efc2997ac9b57f566158a70c">ROCKSDB_NAMESPACE::Transaction::GetID</a></div><div class="ttdeci">virtual TransactionID GetID() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/db6/transaction_8h_source.html#l00710">transaction.h:710</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Transaction_html_a9364b6549795ab688c063fa482c33f4e"><div class="ttname"><a href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#a9364b6549795ab688c063fa482c33f4e">ROCKSDB_NAMESPACE::Transaction::GetRangeLock</a></div><div class="ttdeci">virtual Status GetRangeLock(ColumnFamilyHandle *, const Endpoint &amp;, const Endpoint &amp;)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/db6/transaction_8h_source.html#l00420">transaction.h:420</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Transaction_html_ab8251b13b43fefe9fe6e249461c72b97"><div class="ttname"><a href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#ab8251b13b43fefe9fe6e249461c72b97">ROCKSDB_NAMESPACE::Transaction::Put</a></div><div class="ttdeci">virtual Status Put(ColumnFamilyHandle *column_family, const Slice &amp;key, const Slice &amp;value, const bool assume_tracked=false)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Transaction_html_aec37188fe57d4bf1e380826f928072e4"><div class="ttname"><a href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html#aec37188fe57d4bf1e380826f928072e4">ROCKSDB_NAMESPACE::Transaction::GetForUpdate</a></div><div class="ttdeci">virtual Status GetForUpdate(const ReadOptions &amp;options, ColumnFamilyHandle *column_family, const Slice &amp;key, std::string *value, bool exclusive=true, const bool do_validate=true)=0</div></div>
+<div class="ttc" id="aclasstesting_1_1Test_html"><div class="ttname"><a href="../../db/d9f/classtesting_1_1Test.html">testing::Test</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l20178">gtest.h:20178</a></div></div>
+<div class="ttc" id="adb__impl_8h_html"><div class="ttname"><a href="../../dd/d93/db__impl_8h.html">db_impl.h</a></div></div>
+<div class="ttc" id="agtest_8h_html_a0ee66d464d1a06c20c1929cae09d8758"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a></div><div class="ttdeci">#define TEST_F(test_fixture, test_name)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22085">gtest.h:22085</a></div></div>
+<div class="ttc" id="agtest_8h_html_a16a882d4eafc9f8643867aea40879140"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a16a882d4eafc9f8643867aea40879140">ASSERT_GT</a></div><div class="ttdeci">#define ASSERT_GT(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21789">gtest.h:21789</a></div></div>
+<div class="ttc" id="agtest_8h_html_a1a6db8b1338ee7040329322b77779086"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a></div><div class="ttdeci">#define ASSERT_EQ(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21769">gtest.h:21769</a></div></div>
+<div class="ttc" id="agtest_8h_html_a3e26a8d27caa386ed0ea7ce9d5b7c4ed"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a3e26a8d27caa386ed0ea7ce9d5b7c4ed">FAIL</a></div><div class="ttdeci">#define FAIL()</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21639">gtest.h:21639</a></div></div>
+<div class="ttc" id="agtest_8h_html_a775643748feff0b490aae651d041e971"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a775643748feff0b490aae651d041e971">ASSERT_LE</a></div><div class="ttdeci">#define ASSERT_LE(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21777">gtest.h:21777</a></div></div>
+<div class="ttc" id="agtest_8h_html_a8197fa52f3538588d20d8af4834c9003"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a8197fa52f3538588d20d8af4834c9003">ASSERT_FALSE</a></div><div class="ttdeci">#define ASSERT_FALSE(condition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21685">gtest.h:21685</a></div></div>
+<div class="ttc" id="agtest_8h_html_a853a3792807489591d3d4a2f2ff9359f"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a></div><div class="ttdeci">int RUN_ALL_TESTS() GTEST_MUST_USE_RESULT_</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22109">gtest.h:22109</a></div></div>
+<div class="ttc" id="agtest_8h_html_a9e411d086a08ba0cd14b73fb2f8d028f"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a></div><div class="ttdeci">#define INSTANTIATE_TEST_CASE_P(prefix, test_case_name, generator,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l18912">gtest.h:18912</a></div></div>
+<div class="ttc" id="agtest_8h_html_ae9244bfbda562e8b798789b001993fa5"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a></div><div class="ttdeci">#define ASSERT_TRUE(condition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21682">gtest.h:21682</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2db_8h_html"><div class="ttname"><a href="../../d5/d43/include_2rocksdb_2db_8h.html">db.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_afc6f29d029401f7520152663acb0fb61"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#afc6f29d029401f7520152663acb0fb61">ROCKSDB_NAMESPACE::port::Thread</a></div><div class="ttdeci">std::thread Thread</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00166">port_posix.h:166</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1test_html_a6830c127633c3e6557d9f6316b25a19b"><div class="ttname"><a href="../../de/d4f/namespaceROCKSDB__NAMESPACE_1_1test.html#a6830c127633c3e6557d9f6316b25a19b">ROCKSDB_NAMESPACE::test::PerThreadDBPath</a></div><div class="ttdeci">std::string PerThreadDBPath(std::string dir, std::string name)</div><div class="ttdef"><b>Definition</b> <a href="../../da/d18/testharness_8cc_source.html#l00041">testharness.cc:41</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a156cb6abe4057b8f81deab15a6e47be5"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a156cb6abe4057b8f81deab15a6e47be5">ROCKSDB_NAMESPACE::PointLockManagerTestExternalSetup</a></div><div class="ttdeci">void PointLockManagerTestExternalSetup(PointLockManagerTest *self)</div><div class="ttdef"><b>Definition</b> <a href="#l00408">range_locking_test.cc:408</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a18634f1aa447e30554266ec43f3a50f9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18634f1aa447e30554266ec43f3a50f9">ROCKSDB_NAMESPACE::DestroyDB</a></div><div class="ttdeci">Status DestroyDB(const std::string &amp;dbname, const Options &amp;options, const std::vector&lt; ColumnFamilyDescriptor &gt; &amp;column_families)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/db__impl_8cc_source.html#l05348">db_impl.cc:5348</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_abbefde877ad9cd15e307b8c077058ded"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abbefde877ad9cd15e307b8c077058ded">ROCKSDB_NAMESPACE::NewRangeLockManager</a></div><div class="ttdeci">RangeLockManagerHandle * NewRangeLockManager(std::shared_ptr&lt; TransactionDBMutexFactory &gt; mutex_factory)</div><div class="ttdef"><b>Definition</b> <a href="../../da/d76/range__tree__lock__manager_8cc_source.html#l00027">range_tree_lock_manager.cc:27</a></div></div>
+<div class="ttc" id="anamespacetesting_html_a0c5a07d0439f323cd4353c718e277a10"><div class="ttname"><a href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">testing::Values</a></div><div class="ttdeci">internal::ValueArray1&lt; T1 &gt; Values(T1 v1)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l17841">gtest.h:17841</a></div></div>
+<div class="ttc" id="anamespacetesting_html_aee3f6f99df893f576f705f66c0559482"><div class="ttname"><a href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">testing::InitGoogleTest</a></div><div class="ttdeci">void InitGoogleTest(int *argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d8c/gtest-all_8cc_source.html#l07404">gtest-all.cc:7404</a></div></div>
+<div class="ttc" id="aoptions_8h_html"><div class="ttname"><a href="../../d7/d5b/options_8h.html">options.h</a></div></div>
+<div class="ttc" id="aperf__context_8h_html"><div class="ttname"><a href="../../d6/d57/perf__context_8h.html">perf_context.h</a></div></div>
+<div class="ttc" id="apessimistic__transaction__db_8h_html"><div class="ttname"><a href="../../d6/d4e/pessimistic__transaction__db_8h.html">pessimistic_transaction_db.h</a></div></div>
+<div class="ttc" id="apoint__lock__manager__test_8h_html"><div class="ttname"><a href="../../d9/dc1/point__lock__manager__test_8h.html">point_lock_manager_test.h</a></div></div>
+<div class="ttc" id="aport_8h_html"><div class="ttname"><a href="../../da/d00/port_8h.html">port.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1DBOptions_html_aa03c50d249ad3afef2c9b1039b407afb"><div class="ttname"><a href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#aa03c50d249ad3afef2c9b1039b407afb">ROCKSDB_NAMESPACE::DBOptions::create_if_missing</a></div><div class="ttdeci">bool create_if_missing</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l00563">options.h:563</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Options_html"><div class="ttname"><a href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">ROCKSDB_NAMESPACE::Options</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01620">options.h:1620</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ReadOptions_html"><div class="ttname"><a href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ROCKSDB_NAMESPACE::ReadOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01680">options.h:1680</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionDBOptions_html"><div class="ttname"><a href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html">ROCKSDB_NAMESPACE::TransactionDBOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00150">transaction_db.h:150</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionDBOptions_html_a320e74940797857d8663ebc8725b8077"><div class="ttname"><a href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a320e74940797857d8663ebc8725b8077">ROCKSDB_NAMESPACE::TransactionDBOptions::lock_mgr_handle</a></div><div class="ttdeci">std::shared_ptr&lt; LockManagerHandle &gt; lock_mgr_handle</div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00211">transaction_db.h:211</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionDBOptions_html_afb2936babf7423ca8b946af8a9738254"><div class="ttname"><a href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#afb2936babf7423ca8b946af8a9738254">ROCKSDB_NAMESPACE::TransactionDBOptions::transaction_lock_timeout</a></div><div class="ttdeci">int64_t transaction_lock_timeout</div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00174">transaction_db.h:174</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionOptions_html"><div class="ttname"><a href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">ROCKSDB_NAMESPACE::TransactionOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00274">transaction_db.h:274</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionOptions_html_a0a5704ff92f53ee3d35eac84cc8b30fc"><div class="ttname"><a href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html#a0a5704ff92f53ee3d35eac84cc8b30fc">ROCKSDB_NAMESPACE::TransactionOptions::lock_timeout</a></div><div class="ttdeci">int64_t lock_timeout</div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00303">transaction_db.h:303</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1WriteOptions_html"><div class="ttname"><a href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">ROCKSDB_NAMESPACE::WriteOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01958">options.h:1958</a></div></div>
+<div class="ttc" id="atestharness_8h_html_a6892e90ee417adfb0c66aa7a49769895"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a></div><div class="ttdeci">#define ASSERT_OK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00082">testharness.h:82</a></div></div>
+<div class="ttc" id="atestharness_8h_html_a72818a1b73e08f703b93b673513ca08a"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a></div><div class="ttdeci">#define EXPECT_OK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00085">testharness.h:85</a></div></div>
+<div class="ttc" id="atransaction_8h_html"><div class="ttname"><a href="../../d0/db6/transaction_8h.html">transaction.h</a></div></div>
+<div class="ttc" id="atransaction__db_8h_html"><div class="ttname"><a href="../../df/d95/transaction__db_8h.html">transaction_db.h</a></div></div>
+<div class="ttc" id="atransaction__test_8h_html"><div class="ttname"><a href="../../dc/d50/transaction__test_8h.html">transaction_test.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../dir_3eff4fc1b9bdc927695daa6eaf220609.html">range</a></li><li class="navelem"><a class="el" href="../../d3/d90/range__locking__test_8cc.html">range_locking_test.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

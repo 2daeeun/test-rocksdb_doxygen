@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/range/range_tree/lib/db.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">db.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#ifndef _DB_H</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#define _DB_H</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;sys/types.h&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">   12</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../dd/d4b/struct____toku__dbt.html">__toku_dbt</a> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// port: this is currently not used</span></div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="../../d7/d85/structsimple__dbt.html">   15</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../d7/d85/structsimple__dbt.html">simple_dbt</a> {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="../../d7/d85/structsimple__dbt.html#a4266734897ab8fcb66967606035701ea">   16</a></span>  uint32_t <a class="code hl_variable" href="../../d7/d85/structsimple__dbt.html#a4266734897ab8fcb66967606035701ea">len</a>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="../../d7/d85/structsimple__dbt.html#a534f1bfda7e1c9ae03bb8a41b0a6f3be">   17</a></span>  <span class="keywordtype">void</span> *<a class="code hl_variable" href="../../d7/d85/structsimple__dbt.html#a534f1bfda7e1c9ae03bb8a41b0a6f3be">data</a>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>};</div>
+</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">// engine status info</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// engine status is passed to handlerton as an array of</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// TOKU_ENGINE_STATUS_ROW_S[]</span></div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532ae">   23</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aeada81ae9bb9a2c073c6a7f85366b24d0c">   24</a></span>  <a class="code hl_enumvalue" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aeada81ae9bb9a2c073c6a7f85366b24d0c">STATUS_FS_STATE</a> = 0,  <span class="comment">// interpret as file system state (redzone) enum</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea762505a2d301df6b33aaaf5da36fec71">   25</a></span>  <a class="code hl_enumvalue" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea762505a2d301df6b33aaaf5da36fec71">STATUS_UINT64</a>,        <span class="comment">// interpret as uint64_t</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea261ce3991553e11f7cb4f4b9b8c72732">   26</a></span>  <a class="code hl_enumvalue" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea261ce3991553e11f7cb4f4b9b8c72732">STATUS_CHARSTR</a>,       <span class="comment">// interpret as char *</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea3abad4fb7b93f4de460890b859f1a8e1">   27</a></span>  <a class="code hl_enumvalue" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea3abad4fb7b93f4de460890b859f1a8e1">STATUS_UNIXTIME</a>,      <span class="comment">// interpret as time_t</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea8e414df4ab05514df140e2daf95347c7">   28</a></span>  <a class="code hl_enumvalue" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea8e414df4ab05514df140e2daf95347c7">STATUS_TOKUTIME</a>,      <span class="comment">// interpret as tokutime_t</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea020c52e0312d7254327bafa3e32bcf4a">   29</a></span>  <a class="code hl_enumvalue" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea020c52e0312d7254327bafa3e32bcf4a">STATUS_PARCOUNT</a>,      <span class="comment">// interpret as PARTITIONED_COUNTER</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aead46ccc8a8061dbe37e917070c9fc8e69">   30</a></span>  <a class="code hl_enumvalue" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aead46ccc8a8061dbe37e917070c9fc8e69">STATUS_DOUBLE</a>         <span class="comment">// interpret as double</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>} <a class="code hl_enumeration" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532ae">toku_engine_status_display_type</a>;</div>
+</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a01c2ebf5fec936090754bfcdbf576fc2">   33</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a01c2ebf5fec936090754bfcdbf576fc2a1a77863ea1b24e577c574ba08d2f5379">   34</a></span>  <a class="code hl_enumvalue" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a01c2ebf5fec936090754bfcdbf576fc2a1a77863ea1b24e577c574ba08d2f5379">TOKU_ENGINE_STATUS</a> = (1ULL &lt;&lt; 0),  <span class="comment">// Include when asking for engine status</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a01c2ebf5fec936090754bfcdbf576fc2a18654761e776168612ba9653affbbe9b">   35</a></span>  <a class="code hl_enumvalue" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a01c2ebf5fec936090754bfcdbf576fc2a18654761e776168612ba9653affbbe9b">TOKU_GLOBAL_STATUS</a> =</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      (1ULL &lt;&lt; 1),  <span class="comment">// Include when asking for information_schema.global_status</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>} <a class="code hl_enumeration" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a01c2ebf5fec936090754bfcdbf576fc2">toku_engine_status_include_type</a>;</div>
+</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="foldopen" id="foldopen00039" data-start="{" data-end="};">
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html">   39</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../d8/d65/struct____toku__engine__status__row.html">__toku_engine_status_row</a> {</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#a9f9da613cf52b680a2658e01ba542375">   40</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#a9f9da613cf52b680a2658e01ba542375">keyname</a>;  <span class="comment">// info schema key, should not change across revisions</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                        <span class="comment">// without good reason</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keywordtype">char</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#ac125e0e2aeebd6d9e7a4d98550f7370b">   43</a></span>      *<a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#ac125e0e2aeebd6d9e7a4d98550f7370b">columnname</a>;  <span class="comment">// column for mysql, e.g. information_schema.global_status.</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                    <span class="comment">// TOKUDB_ will automatically be prefixed.</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#add8699aa106cba25fa321482d7393500">   45</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#add8699aa106cba25fa321482d7393500">legend</a>;  <span class="comment">// the text that will appear at user interface</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#ab4417bb87afdc6fbc0b1a0ccf55d955d">   46</a></span>  <a class="code hl_enumeration" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532ae">toku_engine_status_display_type</a> <a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#ab4417bb87afdc6fbc0b1a0ccf55d955d">type</a>;  <span class="comment">// how to interpret the value</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_enumeration" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a01c2ebf5fec936090754bfcdbf576fc2">toku_engine_status_include_type</a></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#a51b5ffebb2a7d3cb6ebaa6740f71a039">   48</a></span>      <a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#a51b5ffebb2a7d3cb6ebaa6740f71a039">include</a>;  <span class="comment">// which kinds of callers should get read this row?</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">union </span>{</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#a9db6f42b3c200599a1eecf0a7b063ae5">   50</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#a9db6f42b3c200599a1eecf0a7b063ae5">dnum</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#a072c523c152e64914055a65325532672">   51</a></span>    uint64_t <a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#a072c523c152e64914055a65325532672">num</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#a887db9dbfd8f514bebb9302ddaa4f1f5">   52</a></span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#a887db9dbfd8f514bebb9302ddaa4f1f5">str</a>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#a0f49b3556eb9b81dd72087f1918193ec">   53</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#a0f49b3556eb9b81dd72087f1918193ec">datebuf</a>[26];</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#a7595c5b79a7fcb14ccd9e06ef34c2aa3">   54</a></span>    <span class="keyword">struct </span>partitioned_counter *<a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#a7595c5b79a7fcb14ccd9e06ef34c2aa3">parcount</a>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../d8/d65/struct____toku__engine__status__row.html#af794038856a055f0e433984f7d73e718">   55</a></span>  } <a class="code hl_variable" href="../../d8/d65/struct____toku__engine__status__row.html#af794038856a055f0e433984f7d73e718">value</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#af171a1346f66cc39124fd57ea96e8297">   56</a></span>} * <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#af171a1346f66cc39124fd57ea96e8297">TOKU_ENGINE_STATUS_ROW</a>, <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aabf0a29806e6407db720cd592819c63d">TOKU_ENGINE_STATUS_ROW_S</a>;</div>
+</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#ab2ba5dfaa435810a2c2867e3aea54a71">   58</a></span><span class="preprocessor">#define DB_BUFFER_SMALL -30999</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a9528716f88f7bf50db730dcab4a9eae7">   59</a></span><span class="preprocessor">#define DB_LOCK_DEADLOCK -30995</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a467a81e98a4c76b7177219835d9fccb3">   60</a></span><span class="preprocessor">#define DB_LOCK_NOTGRANTED -30994</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a67ce6bf7e77da4e0c6eae5db7c356657">   61</a></span><span class="preprocessor">#define DB_NOTFOUND -30989</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a00c395af3fcba3a33d96add1577f1b19">   62</a></span><span class="preprocessor">#define DB_KEYEXIST -30996</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a9e53cc41610e3519211e9073bfdc80ec">   63</a></span><span class="preprocessor">#define DB_DBT_MALLOC 8</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a470c6f69f04687b961999763dbb61b6e">   64</a></span><span class="preprocessor">#define DB_DBT_REALLOC 64</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a575aec51104f62221eacf4756bf56226">   65</a></span><span class="preprocessor">#define DB_DBT_USERMEM 256</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">/* PerconaFT specific error codes */</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a758c62600d66fd34eafa4478f7f0583c">   68</a></span><span class="preprocessor">#define TOKUDB_OUT_OF_LOCKS -100000</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#ac7d3683ed537d08c57623cd3b12744d3">   70</a></span><span class="keyword">typedef</span> void (*<a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#ac7d3683ed537d08c57623cd3b12744d3">lock_wait_callback</a>)(<span class="keywordtype">void</span> *arg, uint64_t requesting_txnid,</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                                   uint64_t blocking_txnid);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="};">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../dd/d4b/struct____toku__dbt.html">   73</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../dd/d4b/struct____toku__dbt.html">__toku_dbt</a> {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../dd/d4b/struct____toku__dbt.html#a57e9e526b1b00059d9507871d6e0a919">   74</a></span>  <span class="keywordtype">void</span> *<a class="code hl_variable" href="../../dd/d4b/struct____toku__dbt.html#a57e9e526b1b00059d9507871d6e0a919">data</a>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="../../dd/d4b/struct____toku__dbt.html#a5db19246c62876876bb30c94dbb3a184">   75</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../dd/d4b/struct____toku__dbt.html#a5db19246c62876876bb30c94dbb3a184">size</a>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../dd/d4b/struct____toku__dbt.html#a1b9979466e95973310f441ce2c4a91a5">   76</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../dd/d4b/struct____toku__dbt.html#a1b9979466e95973310f441ce2c4a91a5">ulen</a>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">// One of DB_DBT_XXX flags</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../dd/d4b/struct____toku__dbt.html#af9424764f032168e4ce06a68320e74ab">   78</a></span>  uint32_t <a class="code hl_variable" href="../../dd/d4b/struct____toku__dbt.html#af9424764f032168e4ce06a68320e74ab">flags</a>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
+</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="astruct____toku__dbt_html"><div class="ttname"><a href="../../dd/d4b/struct____toku__dbt.html">__toku_dbt</a></div><div class="ttdef"><b>Definition</b> <a href="#l00073">db.h:73</a></div></div>
+<div class="ttc" id="astruct____toku__dbt_html_a1b9979466e95973310f441ce2c4a91a5"><div class="ttname"><a href="../../dd/d4b/struct____toku__dbt.html#a1b9979466e95973310f441ce2c4a91a5">__toku_dbt::ulen</a></div><div class="ttdeci">size_t ulen</div><div class="ttdef"><b>Definition</b> <a href="#l00076">db.h:76</a></div></div>
+<div class="ttc" id="astruct____toku__dbt_html_a57e9e526b1b00059d9507871d6e0a919"><div class="ttname"><a href="../../dd/d4b/struct____toku__dbt.html#a57e9e526b1b00059d9507871d6e0a919">__toku_dbt::data</a></div><div class="ttdeci">void * data</div><div class="ttdef"><b>Definition</b> <a href="#l00074">db.h:74</a></div></div>
+<div class="ttc" id="astruct____toku__dbt_html_a5db19246c62876876bb30c94dbb3a184"><div class="ttname"><a href="../../dd/d4b/struct____toku__dbt.html#a5db19246c62876876bb30c94dbb3a184">__toku_dbt::size</a></div><div class="ttdeci">size_t size</div><div class="ttdef"><b>Definition</b> <a href="#l00075">db.h:75</a></div></div>
+<div class="ttc" id="astruct____toku__dbt_html_af9424764f032168e4ce06a68320e74ab"><div class="ttname"><a href="../../dd/d4b/struct____toku__dbt.html#af9424764f032168e4ce06a68320e74ab">__toku_dbt::flags</a></div><div class="ttdeci">uint32_t flags</div><div class="ttdef"><b>Definition</b> <a href="#l00078">db.h:78</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html">__toku_engine_status_row</a></div><div class="ttdef"><b>Definition</b> <a href="#l00039">db.h:39</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_a072c523c152e64914055a65325532672"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#a072c523c152e64914055a65325532672">__toku_engine_status_row::num</a></div><div class="ttdeci">uint64_t num</div><div class="ttdef"><b>Definition</b> <a href="#l00051">db.h:51</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_a0f49b3556eb9b81dd72087f1918193ec"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#a0f49b3556eb9b81dd72087f1918193ec">__toku_engine_status_row::datebuf</a></div><div class="ttdeci">char datebuf[26]</div><div class="ttdef"><b>Definition</b> <a href="#l00053">db.h:53</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_a51b5ffebb2a7d3cb6ebaa6740f71a039"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#a51b5ffebb2a7d3cb6ebaa6740f71a039">__toku_engine_status_row::include</a></div><div class="ttdeci">toku_engine_status_include_type include</div><div class="ttdef"><b>Definition</b> <a href="#l00048">db.h:48</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_a7595c5b79a7fcb14ccd9e06ef34c2aa3"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#a7595c5b79a7fcb14ccd9e06ef34c2aa3">__toku_engine_status_row::parcount</a></div><div class="ttdeci">struct partitioned_counter * parcount</div><div class="ttdef"><b>Definition</b> <a href="#l00054">db.h:54</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_a887db9dbfd8f514bebb9302ddaa4f1f5"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#a887db9dbfd8f514bebb9302ddaa4f1f5">__toku_engine_status_row::str</a></div><div class="ttdeci">const char * str</div><div class="ttdef"><b>Definition</b> <a href="#l00052">db.h:52</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_a9db6f42b3c200599a1eecf0a7b063ae5"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#a9db6f42b3c200599a1eecf0a7b063ae5">__toku_engine_status_row::dnum</a></div><div class="ttdeci">double dnum</div><div class="ttdef"><b>Definition</b> <a href="#l00050">db.h:50</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_a9f9da613cf52b680a2658e01ba542375"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#a9f9da613cf52b680a2658e01ba542375">__toku_engine_status_row::keyname</a></div><div class="ttdeci">const char * keyname</div><div class="ttdef"><b>Definition</b> <a href="#l00040">db.h:40</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_ab4417bb87afdc6fbc0b1a0ccf55d955d"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#ab4417bb87afdc6fbc0b1a0ccf55d955d">__toku_engine_status_row::type</a></div><div class="ttdeci">toku_engine_status_display_type type</div><div class="ttdef"><b>Definition</b> <a href="#l00046">db.h:46</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_ac125e0e2aeebd6d9e7a4d98550f7370b"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#ac125e0e2aeebd6d9e7a4d98550f7370b">__toku_engine_status_row::columnname</a></div><div class="ttdeci">const char * columnname</div><div class="ttdef"><b>Definition</b> <a href="#l00043">db.h:43</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_add8699aa106cba25fa321482d7393500"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#add8699aa106cba25fa321482d7393500">__toku_engine_status_row::legend</a></div><div class="ttdeci">const char * legend</div><div class="ttdef"><b>Definition</b> <a href="#l00045">db.h:45</a></div></div>
+<div class="ttc" id="astruct____toku__engine__status__row_html_af794038856a055f0e433984f7d73e718"><div class="ttname"><a href="../../d8/d65/struct____toku__engine__status__row.html#af794038856a055f0e433984f7d73e718">__toku_engine_status_row::value</a></div><div class="ttdeci">union __toku_engine_status_row::@035203344107125170061226360234025043340072171020 value</div></div>
+<div class="ttc" id="astructsimple__dbt_html"><div class="ttname"><a href="../../d7/d85/structsimple__dbt.html">simple_dbt</a></div><div class="ttdef"><b>Definition</b> <a href="#l00015">db.h:15</a></div></div>
+<div class="ttc" id="astructsimple__dbt_html_a4266734897ab8fcb66967606035701ea"><div class="ttname"><a href="../../d7/d85/structsimple__dbt.html#a4266734897ab8fcb66967606035701ea">simple_dbt::len</a></div><div class="ttdeci">uint32_t len</div><div class="ttdef"><b>Definition</b> <a href="#l00016">db.h:16</a></div></div>
+<div class="ttc" id="astructsimple__dbt_html_a534f1bfda7e1c9ae03bb8a41b0a6f3be"><div class="ttname"><a href="../../d7/d85/structsimple__dbt.html#a534f1bfda7e1c9ae03bb8a41b0a6f3be">simple_dbt::data</a></div><div class="ttdeci">void * data</div><div class="ttdef"><b>Definition</b> <a href="#l00017">db.h:17</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_a01c2ebf5fec936090754bfcdbf576fc2"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a01c2ebf5fec936090754bfcdbf576fc2">toku_engine_status_include_type</a></div><div class="ttdeci">toku_engine_status_include_type</div><div class="ttdef"><b>Definition</b> <a href="#l00033">db.h:33</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_a01c2ebf5fec936090754bfcdbf576fc2a18654761e776168612ba9653affbbe9b"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a01c2ebf5fec936090754bfcdbf576fc2a18654761e776168612ba9653affbbe9b">TOKU_GLOBAL_STATUS</a></div><div class="ttdeci">@ TOKU_GLOBAL_STATUS</div><div class="ttdef"><b>Definition</b> <a href="#l00035">db.h:35</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_a01c2ebf5fec936090754bfcdbf576fc2a1a77863ea1b24e577c574ba08d2f5379"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a01c2ebf5fec936090754bfcdbf576fc2a1a77863ea1b24e577c574ba08d2f5379">TOKU_ENGINE_STATUS</a></div><div class="ttdeci">@ TOKU_ENGINE_STATUS</div><div class="ttdef"><b>Definition</b> <a href="#l00034">db.h:34</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_a2546b46f9811705f7d7bbe3a17c5f014"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a></div><div class="ttdeci">struct __toku_dbt DBT</div><div class="ttdef"><b>Definition</b> <a href="#l00012">db.h:12</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_aa5102075237a666e9f61536c6e2532ae"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532ae">toku_engine_status_display_type</a></div><div class="ttdeci">toku_engine_status_display_type</div><div class="ttdef"><b>Definition</b> <a href="#l00023">db.h:23</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_aa5102075237a666e9f61536c6e2532aea020c52e0312d7254327bafa3e32bcf4a"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea020c52e0312d7254327bafa3e32bcf4a">STATUS_PARCOUNT</a></div><div class="ttdeci">@ STATUS_PARCOUNT</div><div class="ttdef"><b>Definition</b> <a href="#l00029">db.h:29</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_aa5102075237a666e9f61536c6e2532aea261ce3991553e11f7cb4f4b9b8c72732"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea261ce3991553e11f7cb4f4b9b8c72732">STATUS_CHARSTR</a></div><div class="ttdeci">@ STATUS_CHARSTR</div><div class="ttdef"><b>Definition</b> <a href="#l00026">db.h:26</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_aa5102075237a666e9f61536c6e2532aea3abad4fb7b93f4de460890b859f1a8e1"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea3abad4fb7b93f4de460890b859f1a8e1">STATUS_UNIXTIME</a></div><div class="ttdeci">@ STATUS_UNIXTIME</div><div class="ttdef"><b>Definition</b> <a href="#l00027">db.h:27</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_aa5102075237a666e9f61536c6e2532aea762505a2d301df6b33aaaf5da36fec71"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea762505a2d301df6b33aaaf5da36fec71">STATUS_UINT64</a></div><div class="ttdeci">@ STATUS_UINT64</div><div class="ttdef"><b>Definition</b> <a href="#l00025">db.h:25</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_aa5102075237a666e9f61536c6e2532aea8e414df4ab05514df140e2daf95347c7"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aea8e414df4ab05514df140e2daf95347c7">STATUS_TOKUTIME</a></div><div class="ttdeci">@ STATUS_TOKUTIME</div><div class="ttdef"><b>Definition</b> <a href="#l00028">db.h:28</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_aa5102075237a666e9f61536c6e2532aead46ccc8a8061dbe37e917070c9fc8e69"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aead46ccc8a8061dbe37e917070c9fc8e69">STATUS_DOUBLE</a></div><div class="ttdeci">@ STATUS_DOUBLE</div><div class="ttdef"><b>Definition</b> <a href="#l00030">db.h:30</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_aa5102075237a666e9f61536c6e2532aeada81ae9bb9a2c073c6a7f85366b24d0c"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aa5102075237a666e9f61536c6e2532aeada81ae9bb9a2c073c6a7f85366b24d0c">STATUS_FS_STATE</a></div><div class="ttdeci">@ STATUS_FS_STATE</div><div class="ttdef"><b>Definition</b> <a href="#l00024">db.h:24</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_aabf0a29806e6407db720cd592819c63d"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#aabf0a29806e6407db720cd592819c63d">TOKU_ENGINE_STATUS_ROW_S</a></div><div class="ttdeci">struct __toku_engine_status_row TOKU_ENGINE_STATUS_ROW_S</div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_ac7d3683ed537d08c57623cd3b12744d3"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#ac7d3683ed537d08c57623cd3b12744d3">lock_wait_callback</a></div><div class="ttdeci">void(* lock_wait_callback)(void *arg, uint64_t requesting_txnid, uint64_t blocking_txnid)</div><div class="ttdef"><b>Definition</b> <a href="#l00070">db.h:70</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_af171a1346f66cc39124fd57ea96e8297"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#af171a1346f66cc39124fd57ea96e8297">TOKU_ENGINE_STATUS_ROW</a></div><div class="ttdeci">struct __toku_engine_status_row * TOKU_ENGINE_STATUS_ROW</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../dir_3eff4fc1b9bdc927695daa6eaf220609.html">range</a></li><li class="navelem"><a class="el" href="../../dir_1fdd669514be316dc6b9821c4ef31e1a.html">range_tree</a></li><li class="navelem"><a class="el" href="../../dir_103d03b151a8543e8b0cd5714558840a.html">lib</a></li><li class="navelem"><a class="el" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html">db.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

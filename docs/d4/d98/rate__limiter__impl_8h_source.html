@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: util/rate_limiter_impl.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d4/d98/rate__limiter__impl_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">rate_limiter_impl.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d4/d98/rate__limiter__impl_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;chrono&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;deque&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d00/port_8h.html">port/port.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d81/env_8h.html">rocksdb/env.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/d10/rate__limiter_8h.html">rocksdb/rate_limiter.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dd0/include_2rocksdb_2status_8h.html">rocksdb/status.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d2f/system__clock_8h.html">rocksdb/system_clock.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d50/mutexlock_8h.html">util/mutexlock.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d79/random_8h.html">util/random.h</a>&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html">   27</a></span><span class="keyword">class </span><a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a492480c6ed63a78b3a8c34be1289a3bd">GenericRateLimiter</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../d2/d54/classROCKSDB__NAMESPACE_1_1RateLimiter.html#a14e71cb237021a3ddfb35d36b2d8a4bc">RateLimiter</a> {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a492480c6ed63a78b3a8c34be1289a3bd">GenericRateLimiter</a>(int64_t refill_bytes, int64_t refill_period_us,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                     int32_t fairness, <a class="code hl_enumeration" href="../../d2/d54/classROCKSDB__NAMESPACE_1_1RateLimiter.html#ad6323743a2620efb8efc8b7029a15020">RateLimiter::Mode</a> mode,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                     <span class="keyword">const</span> std::shared_ptr&lt;SystemClock&gt;&amp; clock, <span class="keywordtype">bool</span> auto_tuned,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                     int64_t single_burst_bytes);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a492480c6ed63a78b3a8c34be1289a3bd">~GenericRateLimiter</a>();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="comment">// This API allows user to dynamically change rate limiter&#39;s bytes per second.</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a05c774399d1196bb7fc2f02449d4c5c3">SetBytesPerSecond</a>(int64_t bytes_per_second) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#ad34a333b7bf0ec29ad7520573d237e39">SetSingleBurstBytes</a>(int64_t single_burst_bytes) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="comment">// Request for token to write bytes. If this request can not be satisfied,</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// the call is blocked. Caller is responsible to make sure</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">// bytes &lt;= GetSingleBurstBytes() and bytes &gt;= 0. Negative bytes</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">// passed in will be rounded up to 0.</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">using </span><a class="code hl_function" href="../../d2/d54/classROCKSDB__NAMESPACE_1_1RateLimiter.html#a1f96da7f71ded730021c76770aa6640c">RateLimiter::Request</a>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#ace3cad923a5f519e63aaf33adbfd43d0">Request</a>(<span class="keyword">const</span> int64_t bytes, <span class="keyword">const</span> <a class="code hl_enumeration" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421">Env::IOPriority</a> pri,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>               <a class="code hl_class" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">Statistics</a>* stats) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a26fb9ead7b6367564f2b52b43b4f4cfd">   49</a></span>  int64_t <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a26fb9ead7b6367564f2b52b43b4f4cfd">GetSingleBurstBytes</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    int64_t raw_single_burst_bytes =</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a05a345e739bbd43e04721b9be734e78f">raw_single_burst_bytes_</a>.load(std::memory_order_relaxed);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (raw_single_burst_bytes == 0) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#af207f03ee941782fe37c38def86e77c3">refill_bytes_per_period_</a>.load(std::memory_order_relaxed);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">return</span> raw_single_burst_bytes;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
+</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a587dcfee40cae1dbef2de04cbb5591aa">   58</a></span>  int64_t <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a587dcfee40cae1dbef2de04cbb5591aa">GetTotalBytesThrough</a>(</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keyword">const</span> <a class="code hl_enumeration" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421">Env::IOPriority</a> pri = <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>)<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <a class="code hl_class" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html">MutexLock</a> g(&amp;<a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3be59fee4b638d28f776ccdb7885c61c">request_mutex_</a>);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">if</span> (pri == <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      int64_t total_bytes_through_sum = 0;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a8b1555d647ed7ea5150b031bf04b6137">Env::IO_LOW</a>; i &lt; <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>; ++i) {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        total_bytes_through_sum += <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a7a85f4cdbcd0574f773c8a5e51ebfa32">total_bytes_through_</a>[i];</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <span class="keywordflow">return</span> total_bytes_through_sum;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a7a85f4cdbcd0574f773c8a5e51ebfa32">total_bytes_through_</a>[pri];</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  }</div>
+</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a4cad29018ae7b56396cb224fbd895eea">   71</a></span>  int64_t <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a4cad29018ae7b56396cb224fbd895eea">GetTotalRequests</a>(</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="keyword">const</span> <a class="code hl_enumeration" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421">Env::IOPriority</a> pri = <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>)<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_class" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html">MutexLock</a> g(&amp;<a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3be59fee4b638d28f776ccdb7885c61c">request_mutex_</a>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">if</span> (pri == <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>) {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      int64_t total_requests_sum = 0;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a8b1555d647ed7ea5150b031bf04b6137">Env::IO_LOW</a>; i &lt; <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>; ++i) {</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        total_requests_sum += <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a0cfb926f9c79e2038126cdde64e58dfc">total_requests_</a>[i];</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>      <span class="keywordflow">return</span> total_requests_sum;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a0cfb926f9c79e2038126cdde64e58dfc">total_requests_</a>[pri];</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
+</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a8bf21cc1baeb49a7ca801d9fef8ac876">   84</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a8bf21cc1baeb49a7ca801d9fef8ac876">GetTotalPendingRequests</a>(</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      int64_t* total_pending_requests,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      <span class="keyword">const</span> <a class="code hl_enumeration" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421">Env::IOPriority</a> pri = <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>)<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    assert(total_pending_requests != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <a class="code hl_class" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html">MutexLock</a> g(&amp;<a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3be59fee4b638d28f776ccdb7885c61c">request_mutex_</a>);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">if</span> (pri == <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>) {</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      int64_t total_pending_requests_sum = 0;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a8b1555d647ed7ea5150b031bf04b6137">Env::IO_LOW</a>; i &lt; <a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>; ++i) {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        total_pending_requests_sum += <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a0e63795c532da27f1a53f19d00320ed1">queue_</a>[i].size());</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      }</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      *total_pending_requests = total_pending_requests_sum;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      *total_pending_requests = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a0e63795c532da27f1a53f19d00320ed1">queue_</a>[pri].size());</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
+</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a98d8815b449708ec6b0b6dafdf4a5e0e">  101</a></span>  int64_t <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a98d8815b449708ec6b0b6dafdf4a5e0e">GetBytesPerSecond</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a5c75ef6b65141db4146ecb0be286efa6">rate_bytes_per_sec_</a>.load(std::memory_order_relaxed);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  }</div>
+</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#acf332f3f68e3eb9ade050d86acac3ed9">  105</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#acf332f3f68e3eb9ade050d86acac3ed9">TEST_SetClock</a>(std::shared_ptr&lt;SystemClock&gt; clock) {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <a class="code hl_class" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html">MutexLock</a> g(&amp;<a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3be59fee4b638d28f776ccdb7885c61c">request_mutex_</a>);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a58611b9afae8c8aa3dca4cc311ae57ed">clock_</a> = std::move(clock);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#aee9f2fad65624cd6b2eeab674980da10">next_refill_us_</a> = <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a315545ce8188935afb4e640f2ee4173c">NowMicrosMonotonicLocked</a>();</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  }</div>
+</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a18d7ad6942216503318eb274b1305e7d">  112</a></span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a18d7ad6942216503318eb274b1305e7d">kMicrosecondsPerSecond</a> = 1000000;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a2b8313528c6648aa2e09767e217e1d37">RefillBytesAndGrantRequestsLocked</a>();</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  std::vector&lt;Env::IOPriority&gt; <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a4ed1cd71aeb47fbec78fc23f79526c92">GeneratePriorityIterationOrderLocked</a>();</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  int64_t <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#aa32c5f85bb97d38d068a8c9de467ddd3">CalculateRefillBytesPerPeriodLocked</a>(int64_t rate_bytes_per_sec);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a82ece8d010517f309abdef2ea91fbd51">TuneLocked</a>();</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#ae7b738ba0418a707ca326fe472dc101f">SetBytesPerSecondLocked</a>(int64_t bytes_per_second);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="foldopen" id="foldopen00119" data-start="{" data-end="}">
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a315545ce8188935afb4e640f2ee4173c">  119</a></span>  uint64_t <a class="code hl_function" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a315545ce8188935afb4e640f2ee4173c">NowMicrosMonotonicLocked</a>() {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a58611b9afae8c8aa3dca4cc311ae57ed">clock_</a>-&gt;NowNanos() / std::milli::den;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  }</div>
+</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="comment">// This mutex guard all internal states</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3be59fee4b638d28f776ccdb7885c61c">  124</a></span>  <span class="keyword">mutable</span> <a class="code hl_class" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">port::Mutex</a> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3be59fee4b638d28f776ccdb7885c61c">request_mutex_</a>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a429d71a59aa3e054e567927d8e5a49ed">  126</a></span>  <span class="keyword">const</span> int64_t <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a429d71a59aa3e054e567927d8e5a49ed">refill_period_us_</a>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a5c75ef6b65141db4146ecb0be286efa6">  128</a></span>  std::atomic&lt;int64_t&gt; <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a5c75ef6b65141db4146ecb0be286efa6">rate_bytes_per_sec_</a>;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#af207f03ee941782fe37c38def86e77c3">  129</a></span>  std::atomic&lt;int64_t&gt; <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#af207f03ee941782fe37c38def86e77c3">refill_bytes_per_period_</a>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="comment">// This value is validated but unsanitized (may be zero).</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a05a345e739bbd43e04721b9be734e78f">  131</a></span>  std::atomic&lt;int64_t&gt; <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a05a345e739bbd43e04721b9be734e78f">raw_single_burst_bytes_</a>;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a58611b9afae8c8aa3dca4cc311ae57ed">  132</a></span>  std::shared_ptr&lt;SystemClock&gt; <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a58611b9afae8c8aa3dca4cc311ae57ed">clock_</a>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#aef73f93ebc12eb36cb6e0407f897a1ab">  134</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#aef73f93ebc12eb36cb6e0407f897a1ab">stop_</a>;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3690f06d079c54034b9647c61fb9ada7">  135</a></span>  <a class="code hl_class" href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html">port::CondVar</a> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3690f06d079c54034b9647c61fb9ada7">exit_cv_</a>;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a15cde47cd4d1f9a6518dda3555ea1884">  136</a></span>  int32_t <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a15cde47cd4d1f9a6518dda3555ea1884">requests_to_wait_</a>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a0cfb926f9c79e2038126cdde64e58dfc">  138</a></span>  int64_t <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a0cfb926f9c79e2038126cdde64e58dfc">total_requests_</a>[<a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>];</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a7a85f4cdbcd0574f773c8a5e51ebfa32">  139</a></span>  int64_t <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a7a85f4cdbcd0574f773c8a5e51ebfa32">total_bytes_through_</a>[<a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>];</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a27b7f91bf0693f3393fb12f5c606ad80">  140</a></span>  int64_t <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a27b7f91bf0693f3393fb12f5c606ad80">available_bytes_</a>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#aee9f2fad65624cd6b2eeab674980da10">  141</a></span>  int64_t <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#aee9f2fad65624cd6b2eeab674980da10">next_refill_us_</a>;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a9f426b51c5bf241339c86f7f7deb793b">  143</a></span>  int32_t <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a9f426b51c5bf241339c86f7f7deb793b">fairness_</a>;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a78167f9c4cc685c2afa681df1a1aa47b">  144</a></span>  <a class="code hl_class" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">Random</a> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a78167f9c4cc685c2afa681df1a1aa47b">rnd_</a>;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="keyword">struct </span><a class="code hl_struct" href="../../de/d7a/structROCKSDB__NAMESPACE_1_1GenericRateLimiter_1_1Req.html">Req</a>;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a0e63795c532da27f1a53f19d00320ed1">  147</a></span>  std::deque&lt;Req*&gt; <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a0e63795c532da27f1a53f19d00320ed1">queue_</a>[<a class="code hl_enumvalue" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">Env::IO_TOTAL</a>];</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a8b0eb356b63f7a8802393e45bdc663e6">  148</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a8b0eb356b63f7a8802393e45bdc663e6">wait_until_refill_pending_</a>;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a10445f87f7dd10d6e12431301ed8691e">  150</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a10445f87f7dd10d6e12431301ed8691e">auto_tuned_</a>;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#ab0297d8f6a63574b6d2603f260acd9ee">  151</a></span>  int64_t <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#ab0297d8f6a63574b6d2603f260acd9ee">num_drains_</a>;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a4be0c5c89ea539aad9b8508e022686f8">  152</a></span>  <span class="keyword">const</span> int64_t <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a4be0c5c89ea539aad9b8508e022686f8">max_bytes_per_sec_</a>;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3bf9b70aaf3c465267749fbde000ff98">  153</a></span>  std::chrono::microseconds <a class="code hl_variable" href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3bf9b70aaf3c465267749fbde000ff98">tuned_time_</a>;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>};</div>
+</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_af5711f6a320c3e6dea56fe793cfa4421"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421">ROCKSDB_NAMESPACE::Env::IOPriority</a></div><div class="ttdeci">IOPriority</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00441">env.h:441</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a69e2d40b7337a966656d601ed231c96c">ROCKSDB_NAMESPACE::Env::IO_TOTAL</a></div><div class="ttdeci">@ IO_TOTAL</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00446">env.h:446</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_af5711f6a320c3e6dea56fe793cfa4421a8b1555d647ed7ea5150b031bf04b6137"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af5711f6a320c3e6dea56fe793cfa4421a8b1555d647ed7ea5150b031bf04b6137">ROCKSDB_NAMESPACE::Env::IO_LOW</a></div><div class="ttdeci">@ IO_LOW</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00442">env.h:442</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a05a345e739bbd43e04721b9be734e78f"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a05a345e739bbd43e04721b9be734e78f">ROCKSDB_NAMESPACE::GenericRateLimiter::raw_single_burst_bytes_</a></div><div class="ttdeci">std::atomic&lt; int64_t &gt; raw_single_burst_bytes_</div><div class="ttdef"><b>Definition</b> <a href="#l00131">rate_limiter_impl.h:131</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a05c774399d1196bb7fc2f02449d4c5c3"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a05c774399d1196bb7fc2f02449d4c5c3">ROCKSDB_NAMESPACE::GenericRateLimiter::SetBytesPerSecond</a></div><div class="ttdeci">void SetBytesPerSecond(int64_t bytes_per_second) override</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d38/rate__limiter_8cc_source.html#l00098">rate_limiter.cc:98</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a0cfb926f9c79e2038126cdde64e58dfc"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a0cfb926f9c79e2038126cdde64e58dfc">ROCKSDB_NAMESPACE::GenericRateLimiter::total_requests_</a></div><div class="ttdeci">int64_t total_requests_[Env::IO_TOTAL]</div><div class="ttdef"><b>Definition</b> <a href="#l00138">rate_limiter_impl.h:138</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a0e63795c532da27f1a53f19d00320ed1"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a0e63795c532da27f1a53f19d00320ed1">ROCKSDB_NAMESPACE::GenericRateLimiter::queue_</a></div><div class="ttdeci">std::deque&lt; Req * &gt; queue_[Env::IO_TOTAL]</div><div class="ttdef"><b>Definition</b> <a href="#l00147">rate_limiter_impl.h:147</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a10445f87f7dd10d6e12431301ed8691e"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a10445f87f7dd10d6e12431301ed8691e">ROCKSDB_NAMESPACE::GenericRateLimiter::auto_tuned_</a></div><div class="ttdeci">bool auto_tuned_</div><div class="ttdef"><b>Definition</b> <a href="#l00150">rate_limiter_impl.h:150</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a15cde47cd4d1f9a6518dda3555ea1884"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a15cde47cd4d1f9a6518dda3555ea1884">ROCKSDB_NAMESPACE::GenericRateLimiter::requests_to_wait_</a></div><div class="ttdeci">int32_t requests_to_wait_</div><div class="ttdef"><b>Definition</b> <a href="#l00136">rate_limiter_impl.h:136</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a18d7ad6942216503318eb274b1305e7d"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a18d7ad6942216503318eb274b1305e7d">ROCKSDB_NAMESPACE::GenericRateLimiter::kMicrosecondsPerSecond</a></div><div class="ttdeci">static constexpr int kMicrosecondsPerSecond</div><div class="ttdef"><b>Definition</b> <a href="#l00112">rate_limiter_impl.h:112</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a26fb9ead7b6367564f2b52b43b4f4cfd"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a26fb9ead7b6367564f2b52b43b4f4cfd">ROCKSDB_NAMESPACE::GenericRateLimiter::GetSingleBurstBytes</a></div><div class="ttdeci">int64_t GetSingleBurstBytes() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00049">rate_limiter_impl.h:49</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a27b7f91bf0693f3393fb12f5c606ad80"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a27b7f91bf0693f3393fb12f5c606ad80">ROCKSDB_NAMESPACE::GenericRateLimiter::available_bytes_</a></div><div class="ttdeci">int64_t available_bytes_</div><div class="ttdef"><b>Definition</b> <a href="#l00140">rate_limiter_impl.h:140</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a2b8313528c6648aa2e09767e217e1d37"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a2b8313528c6648aa2e09767e217e1d37">ROCKSDB_NAMESPACE::GenericRateLimiter::RefillBytesAndGrantRequestsLocked</a></div><div class="ttdeci">void RefillBytesAndGrantRequestsLocked()</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d38/rate__limiter_8cc_source.html#l00273">rate_limiter.cc:273</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a315545ce8188935afb4e640f2ee4173c"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a315545ce8188935afb4e640f2ee4173c">ROCKSDB_NAMESPACE::GenericRateLimiter::NowMicrosMonotonicLocked</a></div><div class="ttdeci">uint64_t NowMicrosMonotonicLocked()</div><div class="ttdef"><b>Definition</b> <a href="#l00119">rate_limiter_impl.h:119</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a3690f06d079c54034b9647c61fb9ada7"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3690f06d079c54034b9647c61fb9ada7">ROCKSDB_NAMESPACE::GenericRateLimiter::exit_cv_</a></div><div class="ttdeci">port::CondVar exit_cv_</div><div class="ttdef"><b>Definition</b> <a href="#l00135">rate_limiter_impl.h:135</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a3be59fee4b638d28f776ccdb7885c61c"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3be59fee4b638d28f776ccdb7885c61c">ROCKSDB_NAMESPACE::GenericRateLimiter::request_mutex_</a></div><div class="ttdeci">port::Mutex request_mutex_</div><div class="ttdef"><b>Definition</b> <a href="#l00124">rate_limiter_impl.h:124</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a3bf9b70aaf3c465267749fbde000ff98"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a3bf9b70aaf3c465267749fbde000ff98">ROCKSDB_NAMESPACE::GenericRateLimiter::tuned_time_</a></div><div class="ttdeci">std::chrono::microseconds tuned_time_</div><div class="ttdef"><b>Definition</b> <a href="#l00153">rate_limiter_impl.h:153</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a429d71a59aa3e054e567927d8e5a49ed"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a429d71a59aa3e054e567927d8e5a49ed">ROCKSDB_NAMESPACE::GenericRateLimiter::refill_period_us_</a></div><div class="ttdeci">const int64_t refill_period_us_</div><div class="ttdef"><b>Definition</b> <a href="#l00126">rate_limiter_impl.h:126</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a492480c6ed63a78b3a8c34be1289a3bd"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a492480c6ed63a78b3a8c34be1289a3bd">ROCKSDB_NAMESPACE::GenericRateLimiter::GenericRateLimiter</a></div><div class="ttdeci">GenericRateLimiter(int64_t refill_bytes, int64_t refill_period_us, int32_t fairness, RateLimiter::Mode mode, const std::shared_ptr&lt; SystemClock &gt; &amp;clock, bool auto_tuned, int64_t single_burst_bytes)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d38/rate__limiter_8cc_source.html#l00046">rate_limiter.cc:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a4be0c5c89ea539aad9b8508e022686f8"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a4be0c5c89ea539aad9b8508e022686f8">ROCKSDB_NAMESPACE::GenericRateLimiter::max_bytes_per_sec_</a></div><div class="ttdeci">const int64_t max_bytes_per_sec_</div><div class="ttdef"><b>Definition</b> <a href="#l00152">rate_limiter_impl.h:152</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a4cad29018ae7b56396cb224fbd895eea"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a4cad29018ae7b56396cb224fbd895eea">ROCKSDB_NAMESPACE::GenericRateLimiter::GetTotalRequests</a></div><div class="ttdeci">int64_t GetTotalRequests(const Env::IOPriority pri=Env::IO_TOTAL) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00071">rate_limiter_impl.h:71</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a4ed1cd71aeb47fbec78fc23f79526c92"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a4ed1cd71aeb47fbec78fc23f79526c92">ROCKSDB_NAMESPACE::GenericRateLimiter::GeneratePriorityIterationOrderLocked</a></div><div class="ttdeci">std::vector&lt; Env::IOPriority &gt; GeneratePriorityIterationOrderLocked()</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d38/rate__limiter_8cc_source.html#l00235">rate_limiter.cc:235</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a58611b9afae8c8aa3dca4cc311ae57ed"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a58611b9afae8c8aa3dca4cc311ae57ed">ROCKSDB_NAMESPACE::GenericRateLimiter::clock_</a></div><div class="ttdeci">std::shared_ptr&lt; SystemClock &gt; clock_</div><div class="ttdef"><b>Definition</b> <a href="#l00132">rate_limiter_impl.h:132</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a587dcfee40cae1dbef2de04cbb5591aa"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a587dcfee40cae1dbef2de04cbb5591aa">ROCKSDB_NAMESPACE::GenericRateLimiter::GetTotalBytesThrough</a></div><div class="ttdeci">int64_t GetTotalBytesThrough(const Env::IOPriority pri=Env::IO_TOTAL) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00058">rate_limiter_impl.h:58</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a5c75ef6b65141db4146ecb0be286efa6"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a5c75ef6b65141db4146ecb0be286efa6">ROCKSDB_NAMESPACE::GenericRateLimiter::rate_bytes_per_sec_</a></div><div class="ttdeci">std::atomic&lt; int64_t &gt; rate_bytes_per_sec_</div><div class="ttdef"><b>Definition</b> <a href="#l00128">rate_limiter_impl.h:128</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a78167f9c4cc685c2afa681df1a1aa47b"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a78167f9c4cc685c2afa681df1a1aa47b">ROCKSDB_NAMESPACE::GenericRateLimiter::rnd_</a></div><div class="ttdeci">Random rnd_</div><div class="ttdef"><b>Definition</b> <a href="#l00144">rate_limiter_impl.h:144</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a7a85f4cdbcd0574f773c8a5e51ebfa32"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a7a85f4cdbcd0574f773c8a5e51ebfa32">ROCKSDB_NAMESPACE::GenericRateLimiter::total_bytes_through_</a></div><div class="ttdeci">int64_t total_bytes_through_[Env::IO_TOTAL]</div><div class="ttdef"><b>Definition</b> <a href="#l00139">rate_limiter_impl.h:139</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a82ece8d010517f309abdef2ea91fbd51"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a82ece8d010517f309abdef2ea91fbd51">ROCKSDB_NAMESPACE::GenericRateLimiter::TuneLocked</a></div><div class="ttdeci">Status TuneLocked()</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d38/rate__limiter_8cc_source.html#l00327">rate_limiter.cc:327</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a8b0eb356b63f7a8802393e45bdc663e6"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a8b0eb356b63f7a8802393e45bdc663e6">ROCKSDB_NAMESPACE::GenericRateLimiter::wait_until_refill_pending_</a></div><div class="ttdeci">bool wait_until_refill_pending_</div><div class="ttdef"><b>Definition</b> <a href="#l00148">rate_limiter_impl.h:148</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a8bf21cc1baeb49a7ca801d9fef8ac876"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a8bf21cc1baeb49a7ca801d9fef8ac876">ROCKSDB_NAMESPACE::GenericRateLimiter::GetTotalPendingRequests</a></div><div class="ttdeci">Status GetTotalPendingRequests(int64_t *total_pending_requests, const Env::IOPriority pri=Env::IO_TOTAL) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00084">rate_limiter_impl.h:84</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a98d8815b449708ec6b0b6dafdf4a5e0e"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a98d8815b449708ec6b0b6dafdf4a5e0e">ROCKSDB_NAMESPACE::GenericRateLimiter::GetBytesPerSecond</a></div><div class="ttdeci">int64_t GetBytesPerSecond() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00101">rate_limiter_impl.h:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_a9f426b51c5bf241339c86f7f7deb793b"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#a9f426b51c5bf241339c86f7f7deb793b">ROCKSDB_NAMESPACE::GenericRateLimiter::fairness_</a></div><div class="ttdeci">int32_t fairness_</div><div class="ttdef"><b>Definition</b> <a href="#l00143">rate_limiter_impl.h:143</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_aa32c5f85bb97d38d068a8c9de467ddd3"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#aa32c5f85bb97d38d068a8c9de467ddd3">ROCKSDB_NAMESPACE::GenericRateLimiter::CalculateRefillBytesPerPeriodLocked</a></div><div class="ttdeci">int64_t CalculateRefillBytesPerPeriodLocked(int64_t rate_bytes_per_sec)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d38/rate__limiter_8cc_source.html#l00315">rate_limiter.cc:315</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_ab0297d8f6a63574b6d2603f260acd9ee"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#ab0297d8f6a63574b6d2603f260acd9ee">ROCKSDB_NAMESPACE::GenericRateLimiter::num_drains_</a></div><div class="ttdeci">int64_t num_drains_</div><div class="ttdef"><b>Definition</b> <a href="#l00151">rate_limiter_impl.h:151</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_ace3cad923a5f519e63aaf33adbfd43d0"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#ace3cad923a5f519e63aaf33adbfd43d0">ROCKSDB_NAMESPACE::GenericRateLimiter::Request</a></div><div class="ttdeci">void Request(const int64_t bytes, const Env::IOPriority pri, Statistics *stats) override</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d38/rate__limiter_8cc_source.html#l00122">rate_limiter.cc:122</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_acf332f3f68e3eb9ade050d86acac3ed9"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#acf332f3f68e3eb9ade050d86acac3ed9">ROCKSDB_NAMESPACE::GenericRateLimiter::TEST_SetClock</a></div><div class="ttdeci">virtual void TEST_SetClock(std::shared_ptr&lt; SystemClock &gt; clock)</div><div class="ttdef"><b>Definition</b> <a href="#l00105">rate_limiter_impl.h:105</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_ad34a333b7bf0ec29ad7520573d237e39"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#ad34a333b7bf0ec29ad7520573d237e39">ROCKSDB_NAMESPACE::GenericRateLimiter::SetSingleBurstBytes</a></div><div class="ttdeci">Status SetSingleBurstBytes(int64_t single_burst_bytes) override</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d38/rate__limiter_8cc_source.html#l00111">rate_limiter.cc:111</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_ae7b738ba0418a707ca326fe472dc101f"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#ae7b738ba0418a707ca326fe472dc101f">ROCKSDB_NAMESPACE::GenericRateLimiter::SetBytesPerSecondLocked</a></div><div class="ttdeci">void SetBytesPerSecondLocked(int64_t bytes_per_second)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d38/rate__limiter_8cc_source.html#l00103">rate_limiter.cc:103</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_aee9f2fad65624cd6b2eeab674980da10"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#aee9f2fad65624cd6b2eeab674980da10">ROCKSDB_NAMESPACE::GenericRateLimiter::next_refill_us_</a></div><div class="ttdeci">int64_t next_refill_us_</div><div class="ttdef"><b>Definition</b> <a href="#l00141">rate_limiter_impl.h:141</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_aef73f93ebc12eb36cb6e0407f897a1ab"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#aef73f93ebc12eb36cb6e0407f897a1ab">ROCKSDB_NAMESPACE::GenericRateLimiter::stop_</a></div><div class="ttdeci">bool stop_</div><div class="ttdef"><b>Definition</b> <a href="#l00134">rate_limiter_impl.h:134</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1GenericRateLimiter_html_af207f03ee941782fe37c38def86e77c3"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1GenericRateLimiter.html#af207f03ee941782fe37c38def86e77c3">ROCKSDB_NAMESPACE::GenericRateLimiter::refill_bytes_per_period_</a></div><div class="ttdeci">std::atomic&lt; int64_t &gt; refill_bytes_per_period_</div><div class="ttdef"><b>Definition</b> <a href="#l00129">rate_limiter_impl.h:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MutexLock_html"><div class="ttname"><a href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html">ROCKSDB_NAMESPACE::MutexLock</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d50/mutexlock_8h_source.html#l00035">mutexlock.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Random_html"><div class="ttname"><a href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">ROCKSDB_NAMESPACE::Random</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d79/random_8h_source.html#l00023">random.h:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RateLimiter_html_a14e71cb237021a3ddfb35d36b2d8a4bc"><div class="ttname"><a href="../../d2/d54/classROCKSDB__NAMESPACE_1_1RateLimiter.html#a14e71cb237021a3ddfb35d36b2d8a4bc">ROCKSDB_NAMESPACE::RateLimiter::RateLimiter</a></div><div class="ttdeci">RateLimiter(Mode mode=Mode::kWritesOnly)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d10/rate__limiter_8h_source.html#l00035">rate_limiter.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RateLimiter_html_a1f96da7f71ded730021c76770aa6640c"><div class="ttname"><a href="../../d2/d54/classROCKSDB__NAMESPACE_1_1RateLimiter.html#a1f96da7f71ded730021c76770aa6640c">ROCKSDB_NAMESPACE::RateLimiter::Request</a></div><div class="ttdeci">virtual void Request(const int64_t, const Env::IOPriority)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d10/rate__limiter_8h_source.html#l00062">rate_limiter.h:62</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RateLimiter_html_ad6323743a2620efb8efc8b7029a15020"><div class="ttname"><a href="../../d2/d54/classROCKSDB__NAMESPACE_1_1RateLimiter.html#ad6323743a2620efb8efc8b7029a15020">ROCKSDB_NAMESPACE::RateLimiter::Mode</a></div><div class="ttdeci">Mode</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d10/rate__limiter_8h_source.html#l00028">rate_limiter.h:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Statistics_html"><div class="ttname"><a href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">ROCKSDB_NAMESPACE::Statistics</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00727">statistics.h:727</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1CondVar_html"><div class="ttname"><a href="../../d5/d19/classROCKSDB__NAMESPACE_1_1port_1_1CondVar.html">ROCKSDB_NAMESPACE::port::CondVar</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d4a/port__example_8h_source.html#l00049">port_example.h:49</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">ROCKSDB_NAMESPACE::port::Mutex</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d4a/port__example_8h_source.html#l00030">port_example.h:30</a></div></div>
+<div class="ttc" id="aenv_8h_html"><div class="ttname"><a href="../../d5/d81/env_8h.html">env.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2status_8h_html"><div class="ttname"><a href="../../d9/dd0/include_2rocksdb_2status_8h.html">status.h</a></div></div>
+<div class="ttc" id="amutexlock_8h_html"><div class="ttname"><a href="../../d9/d50/mutexlock_8h.html">mutexlock.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="aport_8h_html"><div class="ttname"><a href="../../da/d00/port_8h.html">port.h</a></div></div>
+<div class="ttc" id="arandom_8h_html"><div class="ttname"><a href="../../d1/d79/random_8h.html">random.h</a></div></div>
+<div class="ttc" id="arate__limiter_8h_html"><div class="ttname"><a href="../../d3/d10/rate__limiter_8h.html">rate_limiter.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1GenericRateLimiter_1_1Req_html"><div class="ttname"><a href="../../de/d7a/structROCKSDB__NAMESPACE_1_1GenericRateLimiter_1_1Req.html">ROCKSDB_NAMESPACE::GenericRateLimiter::Req</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d38/rate__limiter_8cc_source.html#l00038">rate_limiter.cc:38</a></div></div>
+<div class="ttc" id="asystem__clock_8h_html"><div class="ttname"><a href="../../df/d2f/system__clock_8h.html">system_clock.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_23ec12649285f9fabf3a6b7380226c28.html">util</a></li><li class="navelem"><a class="el" href="../../d4/d98/rate__limiter__impl_8h.html">rate_limiter_impl.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

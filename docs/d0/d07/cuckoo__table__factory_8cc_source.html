@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: table/cuckoo/cuckoo_table_factory.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d0/d07/cuckoo__table__factory_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">cuckoo_table_factory.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d0/d07/cuckoo__table__factory_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc. All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d6f/cuckoo__table__factory_8h.html">table/cuckoo/cuckoo_table_factory.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d73/dbformat_8h.html">db/dbformat.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d98/configurable__helper_8h.html">options/configurable_helper.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/db1/options__type_8h.html">rocksdb/utilities/options_type.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/df9/cuckoo__table__builder_8h.html">table/cuckoo/cuckoo_table_builder.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/d76/cuckoo__table__reader_8h.html">table/cuckoo/cuckoo_table_reader.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a866fb3d13e86bc7f3c0c16020c57339b">   16</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a866fb3d13e86bc7f3c0c16020c57339b">CuckooTableFactory::NewTableReader</a>(</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keyword">const</span> <a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>&amp; <span class="comment">/*ro*/</span>, <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dad/structROCKSDB__NAMESPACE_1_1TableReaderOptions.html">TableReaderOptions</a>&amp; table_reader_options,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    std::unique_ptr&lt;RandomAccessFileReader&gt;&amp;&amp; <a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">file</a>, uint64_t file_size,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    std::unique_ptr&lt;TableReader&gt;* table,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordtype">bool</span> <span class="comment">/*prefetch_index_and_filter_in_cache*/</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  std::unique_ptr&lt;CuckooTableReader&gt; new_reader(<span class="keyword">new</span> <a class="code hl_class" href="../../d6/d62/classROCKSDB__NAMESPACE_1_1CuckooTableReader.html">CuckooTableReader</a>(</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      table_reader_options.<a class="code hl_variable" href="../../de/dad/structROCKSDB__NAMESPACE_1_1TableReaderOptions.html#ac2d1672bcdf0d64071fcb4f9b149a46b">ioptions</a>, std::move(<a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">file</a>), file_size,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      table_reader_options.<a class="code hl_variable" href="../../de/dad/structROCKSDB__NAMESPACE_1_1TableReaderOptions.html#ae86e9a9c991c86c51d9ae2611d04fa6c">internal_comparator</a>.<a class="code hl_function" href="../../df/df2/classROCKSDB__NAMESPACE_1_1InternalKeyComparator.html#a487b51c7b3b852cd12e426af48b5d010">user_comparator</a>(), <span class="keyword">nullptr</span>));</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = new_reader-&gt;status();</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keywordflow">if</span> (s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    *table = std::move(new_reader);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a80baab32735d0502ebd08cfdd0b49cba">   31</a></span><a class="code hl_class" href="../../d0/d52/classROCKSDB__NAMESPACE_1_1TableBuilder.html">TableBuilder</a>* <a class="code hl_function" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a80baab32735d0502ebd08cfdd0b49cba">CuckooTableFactory::NewTableBuilder</a>(</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html">TableBuilderOptions</a>&amp; table_builder_options,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <a class="code hl_class" href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html">WritableFileWriter</a>* <a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">file</a>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="comment">// TODO: change builder to take the option struct</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="../../de/d0d/classROCKSDB__NAMESPACE_1_1CuckooTableBuilder.html">CuckooTableBuilder</a>(</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">file</a>, <a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>.hash_table_ratio, 64,</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>.max_search_depth,</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      table_builder_options.<a class="code hl_variable" href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html#a0511561ad097e716d72b8580566fbc72">internal_comparator</a>.<a class="code hl_function" href="../../df/df2/classROCKSDB__NAMESPACE_1_1InternalKeyComparator.html#a487b51c7b3b852cd12e426af48b5d010">user_comparator</a>(),</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      <a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>.cuckoo_block_size, <a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>.use_module_hash,</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      <a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>.identity_as_first_hash, <span class="keyword">nullptr</span> <span class="comment">/* get_slice_hash */</span>,</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      table_builder_options.<a class="code hl_variable" href="../../d9/d76/structROCKSDB__NAMESPACE_1_1TablePropertiesCollectorFactory_1_1Context.html#a9b348dfac3ce262fd5ea5edff24145a7">column_family_id</a>,</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      table_builder_options.<a class="code hl_variable" href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html#a972c8ec61d3ef259877ed7229d78f1e7">column_family_name</a>, table_builder_options.<a class="code hl_variable" href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html#a59a2d21eb05309d63a9a1bb46702780a">db_id</a>,</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      table_builder_options.<a class="code hl_variable" href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html#ab7623272705e4e6b49822e3aaa3ff7f4">db_session_id</a>, table_builder_options.<a class="code hl_variable" href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html#a9b358012367e3bedd7a76eae32c94e6b">cur_file_num</a>);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
+</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a445a99680d11aa2276be90ae320365e2">   46</a></span>std::string <a class="code hl_function" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a445a99680d11aa2276be90ae320365e2">CuckooTableFactory::GetPrintableOptions</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  std::string ret;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  ret.reserve(2000);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> kBufferSize = 200;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">char</span> buffer[kBufferSize];</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  snprintf(buffer, kBufferSize, <span class="stringliteral">&quot;  hash_table_ratio: %lf\n&quot;</span>,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>           <a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>.hash_table_ratio);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  ret.append(buffer);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  snprintf(buffer, kBufferSize, <span class="stringliteral">&quot;  max_search_depth: %u\n&quot;</span>,</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>           <a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>.max_search_depth);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  ret.append(buffer);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  snprintf(buffer, kBufferSize, <span class="stringliteral">&quot;  cuckoo_block_size: %u\n&quot;</span>,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>           <a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>.cuckoo_block_size);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  ret.append(buffer);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  snprintf(buffer, kBufferSize, <span class="stringliteral">&quot;  identity_as_first_hash: %d\n&quot;</span>,</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>           <a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>.identity_as_first_hash);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  ret.append(buffer);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="};">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7cd2e875e2ea7e029d7cfa0af6489619">   67</a></span><span class="keyword">static</span> std::unordered_map&lt;std::string, OptionTypeInfo&gt; <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7cd2e875e2ea7e029d7cfa0af6489619">cuckoo_table_type_info</a> =</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        {<span class="stringliteral">&quot;hash_table_ratio&quot;</span>,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>         {offsetof(<span class="keyword">struct</span> <a class="code hl_struct" href="../../db/dce/structROCKSDB__NAMESPACE_1_1CuckooTableOptions.html">CuckooTableOptions</a>, hash_table_ratio),</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca7fb3efa35444cd88d5a31dc125ca9c28">OptionType::kDouble</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">OptionVerificationType::kNormal</a>,</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">OptionTypeFlags::kNone</a>}},</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        {<span class="stringliteral">&quot;max_search_depth&quot;</span>,</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>         {offsetof(<span class="keyword">struct</span> <a class="code hl_struct" href="../../db/dce/structROCKSDB__NAMESPACE_1_1CuckooTableOptions.html">CuckooTableOptions</a>, max_search_depth),</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca93b8fef3be50b11316a75c44e594cf56">OptionType::kUInt32T</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">OptionVerificationType::kNormal</a>,</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">OptionTypeFlags::kNone</a>}},</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        {<span class="stringliteral">&quot;cuckoo_block_size&quot;</span>,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>         {offsetof(<span class="keyword">struct</span> <a class="code hl_struct" href="../../db/dce/structROCKSDB__NAMESPACE_1_1CuckooTableOptions.html">CuckooTableOptions</a>, cuckoo_block_size),</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca93b8fef3be50b11316a75c44e594cf56">OptionType::kUInt32T</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">OptionVerificationType::kNormal</a>,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">OptionTypeFlags::kNone</a>}},</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        {<span class="stringliteral">&quot;identity_as_first_hash&quot;</span>,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>         {offsetof(<span class="keyword">struct</span> <a class="code hl_struct" href="../../db/dce/structROCKSDB__NAMESPACE_1_1CuckooTableOptions.html">CuckooTableOptions</a>, identity_as_first_hash),</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca57f58630ea0106aa965e5bf61a49d02c">OptionType::kBoolean</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">OptionVerificationType::kNormal</a>,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">OptionTypeFlags::kNone</a>}},</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        {<span class="stringliteral">&quot;use_module_hash&quot;</span>,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>         {offsetof(<span class="keyword">struct</span> <a class="code hl_struct" href="../../db/dce/structROCKSDB__NAMESPACE_1_1CuckooTableOptions.html">CuckooTableOptions</a>, use_module_hash),</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca57f58630ea0106aa965e5bf61a49d02c">OptionType::kBoolean</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">OptionVerificationType::kNormal</a>,</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">OptionTypeFlags::kNone</a>}},</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>};</div>
+</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#abd0ae636b1058d6dfbc58c8e89913101">   91</a></span><a class="code hl_function" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#abd0ae636b1058d6dfbc58c8e89913101">CuckooTableFactory::CuckooTableFactory</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../db/dce/structROCKSDB__NAMESPACE_1_1CuckooTableOptions.html">CuckooTableOptions</a>&amp; table_options)</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    : <a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>(table_options) {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <a class="code hl_function" href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#a10a019263f3ea488ab059ec116085f8a">RegisterOptions</a>(&amp;<a class="code hl_variable" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">table_options_</a>, &amp;<a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7cd2e875e2ea7e029d7cfa0af6489619">cuckoo_table_type_info</a>);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}</div>
+</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="foldopen" id="foldopen00096" data-start="{" data-end="}">
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0b00ce2e50d06c3738cf1717233f4cea">   96</a></span><a class="code hl_class" href="../../d4/dc3/classROCKSDB__NAMESPACE_1_1TableFactory.html">TableFactory</a>* <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0b00ce2e50d06c3738cf1717233f4cea">NewCuckooTableFactory</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../db/dce/structROCKSDB__NAMESPACE_1_1CuckooTableOptions.html">CuckooTableOptions</a>&amp; table_options) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html">CuckooTableFactory</a>(table_options);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
+</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Configurable_html_a10a019263f3ea488ab059ec116085f8a"><div class="ttname"><a href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#a10a019263f3ea488ab059ec116085f8a">ROCKSDB_NAMESPACE::Configurable::RegisterOptions</a></div><div class="ttdeci">void RegisterOptions(T *opt_ptr, const std::unordered_map&lt; std::string, OptionTypeInfo &gt; *opt_map)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d0b/configurable_8h_source.html#l00376">configurable.h:376</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CuckooTableBuilder_html"><div class="ttname"><a href="../../de/d0d/classROCKSDB__NAMESPACE_1_1CuckooTableBuilder.html">ROCKSDB_NAMESPACE::CuckooTableBuilder</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/df9/cuckoo__table__builder_8h_source.html#l00024">cuckoo_table_builder.h:24</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CuckooTableFactory_html"><div class="ttname"><a href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html">ROCKSDB_NAMESPACE::CuckooTableFactory</a></div><div class="ttdef"><b>Definition</b> <a href="../../dc/d6f/cuckoo__table__factory_8h_source.html#l00053">cuckoo_table_factory.h:53</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CuckooTableFactory_html_a445a99680d11aa2276be90ae320365e2"><div class="ttname"><a href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a445a99680d11aa2276be90ae320365e2">ROCKSDB_NAMESPACE::CuckooTableFactory::GetPrintableOptions</a></div><div class="ttdeci">std::string GetPrintableOptions() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00046">cuckoo_table_factory.cc:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CuckooTableFactory_html_a6e14c13eed3a7d8269fb155a0a39b440"><div class="ttname"><a href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a6e14c13eed3a7d8269fb155a0a39b440">ROCKSDB_NAMESPACE::CuckooTableFactory::table_options_</a></div><div class="ttdeci">CuckooTableOptions table_options_</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d6f/cuckoo__table__factory_8h_source.html#l00081">cuckoo_table_factory.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CuckooTableFactory_html_a80baab32735d0502ebd08cfdd0b49cba"><div class="ttname"><a href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a80baab32735d0502ebd08cfdd0b49cba">ROCKSDB_NAMESPACE::CuckooTableFactory::NewTableBuilder</a></div><div class="ttdeci">TableBuilder * NewTableBuilder(const TableBuilderOptions &amp;table_builder_options, WritableFileWriter *file) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00031">cuckoo_table_factory.cc:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CuckooTableFactory_html_a866fb3d13e86bc7f3c0c16020c57339b"><div class="ttname"><a href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#a866fb3d13e86bc7f3c0c16020c57339b">ROCKSDB_NAMESPACE::CuckooTableFactory::NewTableReader</a></div><div class="ttdeci">Status NewTableReader(const ReadOptions &amp;ro, const TableReaderOptions &amp;table_reader_options, std::unique_ptr&lt; RandomAccessFileReader &gt; &amp;&amp;file, uint64_t file_size, std::unique_ptr&lt; TableReader &gt; *table, bool prefetch_index_and_filter_in_cache=true) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00016">cuckoo_table_factory.cc:16</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CuckooTableFactory_html_abd0ae636b1058d6dfbc58c8e89913101"><div class="ttname"><a href="../../d8/d97/classROCKSDB__NAMESPACE_1_1CuckooTableFactory.html#abd0ae636b1058d6dfbc58c8e89913101">ROCKSDB_NAMESPACE::CuckooTableFactory::CuckooTableFactory</a></div><div class="ttdeci">CuckooTableFactory(const CuckooTableOptions &amp;table_option=CuckooTableOptions())</div><div class="ttdef"><b>Definition</b> <a href="#l00091">cuckoo_table_factory.cc:91</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CuckooTableReader_html"><div class="ttname"><a href="../../d6/d62/classROCKSDB__NAMESPACE_1_1CuckooTableReader.html">ROCKSDB_NAMESPACE::CuckooTableReader</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d76/cuckoo__table__reader_8h_source.html#l00027">cuckoo_table_reader.h:27</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalKeyComparator_html_a487b51c7b3b852cd12e426af48b5d010"><div class="ttname"><a href="../../df/df2/classROCKSDB__NAMESPACE_1_1InternalKeyComparator.html#a487b51c7b3b852cd12e426af48b5d010">ROCKSDB_NAMESPACE::InternalKeyComparator::user_comparator</a></div><div class="ttdeci">const Comparator * user_comparator() const</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00413">dbformat.h:413</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableBuilder_html"><div class="ttname"><a href="../../d0/d52/classROCKSDB__NAMESPACE_1_1TableBuilder.html">ROCKSDB_NAMESPACE::TableBuilder</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00175">table_builder.h:175</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableFactory_html"><div class="ttname"><a href="../../d4/dc3/classROCKSDB__NAMESPACE_1_1TableFactory.html">ROCKSDB_NAMESPACE::TableFactory</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/d98/table_8h_source.html#l00867">table.h:867</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritableFileWriter_html"><div class="ttname"><a href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html">ROCKSDB_NAMESPACE::WritableFileWriter</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d97/writable__file__writer_8h_source.html#l00040">writable_file_writer.h:40</a></div></div>
+<div class="ttc" id="aconfigurable__helper_8h_html"><div class="ttname"><a href="../../d8/d98/configurable__helper_8h.html">configurable_helper.h</a></div></div>
+<div class="ttc" id="acuckoo__table__builder_8h_html"><div class="ttname"><a href="../../d8/df9/cuckoo__table__builder_8h.html">cuckoo_table_builder.h</a></div></div>
+<div class="ttc" id="acuckoo__table__factory_8h_html"><div class="ttname"><a href="../../dc/d6f/cuckoo__table__factory_8h.html">cuckoo_table_factory.h</a></div></div>
+<div class="ttc" id="acuckoo__table__reader_8h_html"><div class="ttname"><a href="../../d4/d76/cuckoo__table__reader_8h.html">cuckoo_table_reader.h</a></div></div>
+<div class="ttc" id="adbformat_8h_html"><div class="ttname"><a href="../../d1/d73/dbformat_8h.html">dbformat.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0b00ce2e50d06c3738cf1717233f4cea"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0b00ce2e50d06c3738cf1717233f4cea">ROCKSDB_NAMESPACE::NewCuckooTableFactory</a></div><div class="ttdeci">TableFactory * NewCuckooTableFactory(const CuckooTableOptions &amp;table_options=CuckooTableOptions())</div><div class="ttdef"><b>Definition</b> <a href="#l00096">cuckoo_table_factory.cc:96</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">ROCKSDB_NAMESPACE::OptionTypeFlags::kNone</a></div><div class="ttdeci">@ kNone</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00100">options_type.h:100</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a354442a8dee1acd0d0ea5a7f76ee5e5ca57f58630ea0106aa965e5bf61a49d02c"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca57f58630ea0106aa965e5bf61a49d02c">ROCKSDB_NAMESPACE::OptionType::kBoolean</a></div><div class="ttdeci">@ kBoolean</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00034">options_type.h:34</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a354442a8dee1acd0d0ea5a7f76ee5e5ca7fb3efa35444cd88d5a31dc125ca9c28"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca7fb3efa35444cd88d5a31dc125ca9c28">ROCKSDB_NAMESPACE::OptionType::kDouble</a></div><div class="ttdeci">@ kDouble</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00043">options_type.h:43</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a354442a8dee1acd0d0ea5a7f76ee5e5ca93b8fef3be50b11316a75c44e594cf56"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca93b8fef3be50b11316a75c44e594cf56">ROCKSDB_NAMESPACE::OptionType::kUInt32T</a></div><div class="ttdeci">@ kUInt32T</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00040">options_type.h:40</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">ROCKSDB_NAMESPACE::OptionVerificationType::kNormal</a></div><div class="ttdeci">@ kNormal</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00066">options_type.h:66</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a7cd2e875e2ea7e029d7cfa0af6489619"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7cd2e875e2ea7e029d7cfa0af6489619">ROCKSDB_NAMESPACE::cuckoo_table_type_info</a></div><div class="ttdeci">static std::unordered_map&lt; std::string, OptionTypeInfo &gt; cuckoo_table_type_info</div><div class="ttdef"><b>Definition</b> <a href="#l00067">cuckoo_table_factory.cc:67</a></div></div>
+<div class="ttc" id="aoptions__type_8h_html"><div class="ttname"><a href="../../d2/db1/options__type_8h.html">options_type.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1CuckooTableOptions_html"><div class="ttname"><a href="../../db/dce/structROCKSDB__NAMESPACE_1_1CuckooTableOptions.html">ROCKSDB_NAMESPACE::CuckooTableOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/d98/table_8h_source.html#l00829">table.h:829</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ReadOptions_html"><div class="ttname"><a href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ROCKSDB_NAMESPACE::ReadOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01680">options.h:1680</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableBuilderOptions_html"><div class="ttname"><a href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html">ROCKSDB_NAMESPACE::TableBuilderOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00102">table_builder.h:102</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableBuilderOptions_html_a0511561ad097e716d72b8580566fbc72"><div class="ttname"><a href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html#a0511561ad097e716d72b8580566fbc72">ROCKSDB_NAMESPACE::TableBuilderOptions::internal_comparator</a></div><div class="ttdeci">const InternalKeyComparator &amp; internal_comparator</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00145">table_builder.h:145</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableBuilderOptions_html_a59a2d21eb05309d63a9a1bb46702780a"><div class="ttname"><a href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html#a59a2d21eb05309d63a9a1bb46702780a">ROCKSDB_NAMESPACE::TableBuilderOptions::db_id</a></div><div class="ttdeci">const std::string db_id</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00154">table_builder.h:154</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableBuilderOptions_html_a972c8ec61d3ef259877ed7229d78f1e7"><div class="ttname"><a href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html#a972c8ec61d3ef259877ed7229d78f1e7">ROCKSDB_NAMESPACE::TableBuilderOptions::column_family_name</a></div><div class="ttdeci">const std::string &amp; column_family_name</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00149">table_builder.h:149</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableBuilderOptions_html_a9b358012367e3bedd7a76eae32c94e6b"><div class="ttname"><a href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html#a9b358012367e3bedd7a76eae32c94e6b">ROCKSDB_NAMESPACE::TableBuilderOptions::cur_file_num</a></div><div class="ttdeci">const uint64_t cur_file_num</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00165">table_builder.h:165</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableBuilderOptions_html_ab7623272705e4e6b49822e3aaa3ff7f4"><div class="ttname"><a href="../../d9/d9c/structROCKSDB__NAMESPACE_1_1TableBuilderOptions.html#ab7623272705e4e6b49822e3aaa3ff7f4">ROCKSDB_NAMESPACE::TableBuilderOptions::db_session_id</a></div><div class="ttdeci">const std::string db_session_id</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00155">table_builder.h:155</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TablePropertiesCollectorFactory_1_1Context_html_a9b348dfac3ce262fd5ea5edff24145a7"><div class="ttname"><a href="../../d9/d76/structROCKSDB__NAMESPACE_1_1TablePropertiesCollectorFactory_1_1Context.html#a9b348dfac3ce262fd5ea5edff24145a7">ROCKSDB_NAMESPACE::TablePropertiesCollectorFactory::Context::column_family_id</a></div><div class="ttdeci">uint32_t column_family_id</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d15/table__properties_8h_source.html#l00161">table_properties.h:161</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableReaderOptions_html"><div class="ttname"><a href="../../de/dad/structROCKSDB__NAMESPACE_1_1TableReaderOptions.html">ROCKSDB_NAMESPACE::TableReaderOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00033">table_builder.h:33</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableReaderOptions_html_ac2d1672bcdf0d64071fcb4f9b149a46b"><div class="ttname"><a href="../../de/dad/structROCKSDB__NAMESPACE_1_1TableReaderOptions.html#ac2d1672bcdf0d64071fcb4f9b149a46b">ROCKSDB_NAMESPACE::TableReaderOptions::ioptions</a></div><div class="ttdeci">const ImmutableOptions &amp; ioptions</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00065">table_builder.h:65</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableReaderOptions_html_ae86e9a9c991c86c51d9ae2611d04fa6c"><div class="ttname"><a href="../../de/dad/structROCKSDB__NAMESPACE_1_1TableReaderOptions.html#ae86e9a9c991c86c51d9ae2611d04fa6c">ROCKSDB_NAMESPACE::TableReaderOptions::internal_comparator</a></div><div class="ttdeci">const InternalKeyComparator &amp; internal_comparator</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00068">table_builder.h:68</a></div></div>
+<div class="ttc" id="atoku__instrumentation_8h_html_a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac"><div class="ttname"><a href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">toku_instr_object_type::file</a></div><div class="ttdeci">@ file</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d8a/toku__instrumentation_8h_source.html#l00054">toku_instrumentation.h:54</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_7cea70ad8000b4ba25606f1df9c7574a.html">table</a></li><li class="navelem"><a class="el" href="../../dir_49f3fb9d1cc6a17cd9416cd53cf2583f.html">cuckoo</a></li><li class="navelem"><a class="el" href="../../d0/d07/cuckoo__table__factory_8cc.html">cuckoo_table_factory.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

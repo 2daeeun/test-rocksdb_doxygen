@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: include/rocksdb/snapshot.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d4/dc8/snapshot_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">snapshot.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d4/dc8/snapshot_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d49/types_8h.html">rocksdb/types.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">class </span>DB;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// Abstract handle to particular state of a DB.</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// A Snapshot is an immutable object and can therefore be safely</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// accessed from multiple threads without any external synchronization.</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">//</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// To Create a Snapshot, call DB::GetSnapshot().</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// To Destroy a Snapshot, call DB::ReleaseSnapshot(snapshot).</span></div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html">   20</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html">Snapshot</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#ab95b5cad0a70cdf230662f2eac460532">   22</a></span>  <span class="keyword">virtual</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_function" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#ab95b5cad0a70cdf230662f2eac460532">GetSequenceNumber</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="comment">// Returns unix time i.e. the number of seconds since the Epoch, 1970-01-01</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="comment">// 00:00:00 (UTC).</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#a1a36999f4d40bf023d5da1ba79351f4b">   26</a></span>  <span class="keyword">virtual</span> int64_t <a class="code hl_function" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#a1a36999f4d40bf023d5da1ba79351f4b">GetUnixTime</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#a65f35a52439e2198e7b2f6c792d62b78">   28</a></span>  <span class="keyword">virtual</span> uint64_t <a class="code hl_function" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#a65f35a52439e2198e7b2f6c792d62b78">GetTimestamp</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#a983ece9c66775940cd8f5effcad9fe43">   31</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#a983ece9c66775940cd8f5effcad9fe43">~Snapshot</a>();</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
+</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// Simple RAII wrapper class for Snapshot.</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">// Constructing this object will create a snapshot.  Destructing will</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">// release the snapshot.</span></div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="};">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html">   37</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#aa7e252262d41cd09688a634a9c619262">ManagedSnapshot</a> {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#aa7e252262d41cd09688a634a9c619262">ManagedSnapshot</a>(<a class="code hl_class" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html">DB</a>* db);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="comment">// Instead of creating a snapshot, take ownership of the input snapshot.</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_function" href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#aa7e252262d41cd09688a634a9c619262">ManagedSnapshot</a>(<a class="code hl_class" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html">DB</a>* db, <span class="keyword">const</span> <a class="code hl_class" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html">Snapshot</a>* _snapshot);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_function" href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#aa7e252262d41cd09688a634a9c619262">~ManagedSnapshot</a>();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html">Snapshot</a>* <a class="code hl_function" href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#af26f59e43f748ee48d7efa8c2c8717d1">snapshot</a>();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#a84fe6c55c5e38f1ee13714157b5fb153">   49</a></span>  <a class="code hl_class" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html">DB</a>* <a class="code hl_variable" href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#a84fe6c55c5e38f1ee13714157b5fb153">db_</a>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#a43ddf01ec7b653268d90a07e8aaa9870">   50</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html">Snapshot</a>* <a class="code hl_variable" href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#a43ddf01ec7b653268d90a07e8aaa9870">snapshot_</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
+</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DB_html"><div class="ttname"><a href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html">ROCKSDB_NAMESPACE::DB</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l00175">db.h:175</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ManagedSnapshot_html_a43ddf01ec7b653268d90a07e8aaa9870"><div class="ttname"><a href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#a43ddf01ec7b653268d90a07e8aaa9870">ROCKSDB_NAMESPACE::ManagedSnapshot::snapshot_</a></div><div class="ttdeci">const Snapshot * snapshot_</div><div class="ttdef"><b>Definition</b> <a href="#l00050">snapshot.h:50</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ManagedSnapshot_html_a84fe6c55c5e38f1ee13714157b5fb153"><div class="ttname"><a href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#a84fe6c55c5e38f1ee13714157b5fb153">ROCKSDB_NAMESPACE::ManagedSnapshot::db_</a></div><div class="ttdeci">DB * db_</div><div class="ttdef"><b>Definition</b> <a href="#l00049">snapshot.h:49</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ManagedSnapshot_html_aa7e252262d41cd09688a634a9c619262"><div class="ttname"><a href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#aa7e252262d41cd09688a634a9c619262">ROCKSDB_NAMESPACE::ManagedSnapshot::ManagedSnapshot</a></div><div class="ttdeci">ManagedSnapshot(DB *db)</div><div class="ttdef"><b>Definition</b> <a href="../../df/df5/snapshot__impl_8cc_source.html#l00011">snapshot_impl.cc:11</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ManagedSnapshot_html_af26f59e43f748ee48d7efa8c2c8717d1"><div class="ttname"><a href="../../d2/d92/classROCKSDB__NAMESPACE_1_1ManagedSnapshot.html#af26f59e43f748ee48d7efa8c2c8717d1">ROCKSDB_NAMESPACE::ManagedSnapshot::snapshot</a></div><div class="ttdeci">const Snapshot * snapshot()</div><div class="ttdef"><b>Definition</b> <a href="../../df/df5/snapshot__impl_8cc_source.html#l00023">snapshot_impl.cc:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Snapshot_html"><div class="ttname"><a href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html">ROCKSDB_NAMESPACE::Snapshot</a></div><div class="ttdef"><b>Definition</b> <a href="#l00020">snapshot.h:20</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Snapshot_html_a1a36999f4d40bf023d5da1ba79351f4b"><div class="ttname"><a href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#a1a36999f4d40bf023d5da1ba79351f4b">ROCKSDB_NAMESPACE::Snapshot::GetUnixTime</a></div><div class="ttdeci">virtual int64_t GetUnixTime() const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Snapshot_html_a65f35a52439e2198e7b2f6c792d62b78"><div class="ttname"><a href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#a65f35a52439e2198e7b2f6c792d62b78">ROCKSDB_NAMESPACE::Snapshot::GetTimestamp</a></div><div class="ttdeci">virtual uint64_t GetTimestamp() const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Snapshot_html_a983ece9c66775940cd8f5effcad9fe43"><div class="ttname"><a href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#a983ece9c66775940cd8f5effcad9fe43">ROCKSDB_NAMESPACE::Snapshot::~Snapshot</a></div><div class="ttdeci">virtual ~Snapshot()</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Snapshot_html_ab95b5cad0a70cdf230662f2eac460532"><div class="ttname"><a href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html#ab95b5cad0a70cdf230662f2eac460532">ROCKSDB_NAMESPACE::Snapshot::GetSequenceNumber</a></div><div class="ttdeci">virtual SequenceNumber GetSequenceNumber() const =0</div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a14421ad5fea786298ec0edd0f34bd96a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">ROCKSDB_NAMESPACE::SequenceNumber</a></div><div class="ttdeci">uint64_t SequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00022">types.h:22</a></div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="../../d9/d49/types_8h.html">types.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_8784722d8c2e7f3978e4945ad578533f.html">rocksdb</a></li><li class="navelem"><a class="el" href="../../d4/dc8/snapshot_8h.html">snapshot.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

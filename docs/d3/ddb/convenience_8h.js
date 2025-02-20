@@ -1,0 +1,27 @@
+var convenience_8h =
+[
+    [ "ROCKSDB_NAMESPACE::ConfigOptions", "d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html", "d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions" ],
+    [ "ROCKSDB_NAMESPACE::CancelAllBackgroundWork", "d1/d23/namespaceROCKSDB__NAMESPACE.html#acc12144cd08ee690e83f1a89333e942d", null ],
+    [ "ROCKSDB_NAMESPACE::DeleteFilesInRange", "d1/d23/namespaceROCKSDB__NAMESPACE.html#aa7255b734346bc8a862d274246bffa58", null ],
+    [ "ROCKSDB_NAMESPACE::DeleteFilesInRanges", "d1/d23/namespaceROCKSDB__NAMESPACE.html#acb63b10fbb7272ed6df0dad94affb5a3", null ],
+    [ "ROCKSDB_NAMESPACE::GetBlockBasedTableOptionsFromMap", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a4276d711e558660849addda9e8d9003f", null ],
+    [ "ROCKSDB_NAMESPACE::GetBlockBasedTableOptionsFromString", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a331784091214a1c99dfef59027f8eafb", null ],
+    [ "ROCKSDB_NAMESPACE::GetColumnFamilyOptionsFromMap", "d1/d23/namespaceROCKSDB__NAMESPACE.html#aa6b375b72e8d7c95f321fd8a9ec18eb1", null ],
+    [ "ROCKSDB_NAMESPACE::GetColumnFamilyOptionsFromString", "d1/d23/namespaceROCKSDB__NAMESPACE.html#aa1d69c3334328eb4d4664ebb529c646b", null ],
+    [ "ROCKSDB_NAMESPACE::GetDBOptionsFromMap", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a7c6d7e18460c17f3540b929ee6c49d14", null ],
+    [ "ROCKSDB_NAMESPACE::GetDBOptionsFromString", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a250fcf035d005628431891f60ce18f83", null ],
+    [ "ROCKSDB_NAMESPACE::GetMemTableRepFactoryFromString", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a3a9e14f3fdf346096a37504aaa8a6e50", null ],
+    [ "ROCKSDB_NAMESPACE::GetOptionsFromString", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a1fd66d14cc4b61dd247b4caee64bb4bf", null ],
+    [ "ROCKSDB_NAMESPACE::GetOptionsFromString", "d1/d23/namespaceROCKSDB__NAMESPACE.html#af64e4489d17564be7ac14b349f63633b", null ],
+    [ "ROCKSDB_NAMESPACE::GetPlainTableOptionsFromMap", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a979ce05c77ba662100a58d89dc7117e5", null ],
+    [ "ROCKSDB_NAMESPACE::GetPlainTableOptionsFromString", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a3887f0f5c54354aedf95efb7a91783ac", null ],
+    [ "ROCKSDB_NAMESPACE::GetStringFromColumnFamilyOptions", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d7b48aaedfb88aeebbb9b512031924a", null ],
+    [ "ROCKSDB_NAMESPACE::GetStringFromColumnFamilyOptions", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a303150a39ce74adaddbe90d6a6111f58", null ],
+    [ "ROCKSDB_NAMESPACE::GetStringFromCompressionType", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a379d8554815ac79385d7109b46d07351", null ],
+    [ "ROCKSDB_NAMESPACE::GetStringFromDBOptions", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a606fdb4ca2758597cb46be5ca76762e4", null ],
+    [ "ROCKSDB_NAMESPACE::GetStringFromDBOptions", "d1/d23/namespaceROCKSDB__NAMESPACE.html#aed2a91d473fd1bcc7b18e32358a7824a", null ],
+    [ "ROCKSDB_NAMESPACE::GetSupportedCompressions", "d1/d23/namespaceROCKSDB__NAMESPACE.html#adb408dae75ec7da9d2d5265a7498f80f", null ],
+    [ "ROCKSDB_NAMESPACE::StringToMap", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a22a185d2167e60fe01b648bc4788ada2", null ],
+    [ "ROCKSDB_NAMESPACE::VerifySstFileChecksum", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a0e1ebb2f8ab536c9917081fc56aaf6b7", null ],
+    [ "ROCKSDB_NAMESPACE::VerifySstFileChecksum", "d1/d23/namespaceROCKSDB__NAMESPACE.html#a6f3318493a367943053074bfd8cc6ab7", null ]
+];

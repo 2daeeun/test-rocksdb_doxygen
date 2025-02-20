@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/blob/blob_file_completion_callback.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d5/d31/blob__file__completion__callback_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">blob_file_completion_callback.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d5/d31/blob__file__completion__callback_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/dac/error__handler_8h.html">db/error_handler.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/d07/event__helpers_8h.html">db/event_helpers.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d3e/sst__file__manager__impl_8h.html">file/sst_file_manager_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dd0/include_2rocksdb_2status_8h.html">rocksdb/status.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html">   18</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#aad52cdd76e5748a9ecfe7449c1ddd962">BlobFileCompletionCallback</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#aad52cdd76e5748a9ecfe7449c1ddd962">   20</a></span>  <a class="code hl_function" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#aad52cdd76e5748a9ecfe7449c1ddd962">BlobFileCompletionCallback</a>(</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      <a class="code hl_class" href="../../d9/db9/classROCKSDB__NAMESPACE_1_1SstFileManager.html">SstFileManager</a>* sst_file_manager, <a class="code hl_class" href="../../d2/d7b/classROCKSDB__NAMESPACE_1_1InstrumentedMutex.html">InstrumentedMutex</a>* <a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a25a01bb859125507013a2fe9737d3c32">mutex</a>,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      <a class="code hl_class" href="../../dc/d6a/classROCKSDB__NAMESPACE_1_1ErrorHandler.html">ErrorHandler</a>* error_handler, <a class="code hl_class" href="../../da/d96/classROCKSDB__NAMESPACE_1_1EventLogger.html">EventLogger</a>* event_logger,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      <span class="keyword">const</span> std::vector&lt;std::shared_ptr&lt;EventListener&gt;&gt;&amp; listeners,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      <span class="keyword">const</span> std::string&amp; <a class="code hl_variable" href="../../d7/d62/c__test_8c.html#a75d845559336df6843f3b599960f89d2">dbname</a>)</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      : <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ae4c3d35d961d1cd43d5f26a952dfbcc5">event_logger_</a>(event_logger), <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#af4bbda7fec4693a819c235b00413a3e5">listeners_</a>(listeners), <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#adc61b8ddbbc51926129a204b605a1767">dbname_</a>(<a class="code hl_variable" href="../../d7/d62/c__test_8c.html#a75d845559336df6843f3b599960f89d2">dbname</a>) {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#a3d895c7ec5466aa005ee2ab0053deeff">sst_file_manager_</a> = sst_file_manager;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#aa0cef1e7b6faad37d03983a1f922a05c">mutex_</a> = <a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a25a01bb859125507013a2fe9737d3c32">mutex</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#a5124ca1306c88e09c4715ef9a9f978bb">error_handler_</a> = error_handler;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  }</div>
+</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ae39b9b00e19687bf1d0552dfe15757f4">   31</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ae39b9b00e19687bf1d0552dfe15757f4">OnBlobFileCreationStarted</a>(<span class="keyword">const</span> std::string&amp; file_name,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                                 <span class="keyword">const</span> std::string&amp; column_family_name,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                                 <span class="keywordtype">int</span> job_id,</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                                 <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad7545ec62ce62393146e37f37a0f73b9">BlobFileCreationReason</a> creation_reason) {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="comment">// Notify the listeners.</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_function" href="../../d3/da7/classROCKSDB__NAMESPACE_1_1EventHelpers.html#ad568523633de28abd00d40dd2ca1f7c4">EventHelpers::NotifyBlobFileCreationStarted</a>(<a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#af4bbda7fec4693a819c235b00413a3e5">listeners_</a>, <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#adc61b8ddbbc51926129a204b605a1767">dbname_</a>,</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                                                column_family_name, file_name,</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                                                job_id, creation_reason);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
+</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ab925b94c9f80be533bb1e72121f3833e">   41</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ab925b94c9f80be533bb1e72121f3833e">OnBlobFileCompleted</a>(<span class="keyword">const</span> std::string&amp; file_name,</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                             <span class="keyword">const</span> std::string&amp; column_family_name, <span class="keywordtype">int</span> job_id,</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                             uint64_t file_number,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                             <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad7545ec62ce62393146e37f37a0f73b9">BlobFileCreationReason</a> creation_reason,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                             <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a>&amp; report_status,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                             <span class="keyword">const</span> std::string&amp; checksum_value,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                             <span class="keyword">const</span> std::string&amp; checksum_method,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                             uint64_t blob_count, uint64_t blob_bytes) {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">auto</span> sfm = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="../../d1/d0d/classROCKSDB__NAMESPACE_1_1SstFileManagerImpl.html">SstFileManagerImpl</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#a3d895c7ec5466aa005ee2ab0053deeff">sst_file_manager_</a>);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (sfm) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="comment">// Report new blob files to SstFileManagerImpl</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      s = sfm-&gt;OnAddFile(file_name);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">if</span> (sfm-&gt;IsMaxAllowedSpaceReached()) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        s = <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a74ba4c7896a857f6e5f47baed9619732">Status::SpaceLimit</a>(<span class="stringliteral">&quot;Max allowed space was reached&quot;</span>);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <a class="code hl_define" href="../../d4/d8e/sync__point_8h.html#aea27634f18fba890fccd36a797846e54">TEST_SYNC_POINT</a>(</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            <span class="stringliteral">&quot;BlobFileCompletionCallback::CallBack::MaxAllowedSpaceReached&quot;</span>);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <a class="code hl_class" href="../../de/df3/classROCKSDB__NAMESPACE_1_1InstrumentedMutexLock.html">InstrumentedMutexLock</a> l(<a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#aa0cef1e7b6faad37d03983a1f922a05c">mutex_</a>);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#a5124ca1306c88e09c4715ef9a9f978bb">error_handler_</a>-&gt;SetBGError(s, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad04900a6c743b0677fc0f271eda42673aca41b2126085402810d2e01a463c51c0">BackgroundErrorReason::kFlush</a>);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">// Notify the listeners.</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_function" href="../../d3/da7/classROCKSDB__NAMESPACE_1_1EventHelpers.html#adec4dcfe22ef758fcecee313d5739486">EventHelpers::LogAndNotifyBlobFileCreationFinished</a>(</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ae4c3d35d961d1cd43d5f26a952dfbcc5">event_logger_</a>, <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#af4bbda7fec4693a819c235b00413a3e5">listeners_</a>, <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#adc61b8ddbbc51926129a204b605a1767">dbname_</a>, column_family_name, file_name,</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        job_id, file_number, creation_reason,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        (!report_status.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>() ? report_status : s),</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        (checksum_value.empty() ? <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a672d854bb1dc26d61bb50068ed0c1da8">kUnknownFileChecksum</a> : checksum_value),</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        (checksum_method.empty() ? <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a52367d6b018a5155144abe826a0a77a8">kUnknownFileChecksumFuncName</a></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                                 : checksum_method),</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        blob_count, blob_bytes);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  }</div>
+</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#a3d895c7ec5466aa005ee2ab0053deeff">   77</a></span>  <a class="code hl_class" href="../../d9/db9/classROCKSDB__NAMESPACE_1_1SstFileManager.html">SstFileManager</a>* <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#a3d895c7ec5466aa005ee2ab0053deeff">sst_file_manager_</a>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#aa0cef1e7b6faad37d03983a1f922a05c">   78</a></span>  <a class="code hl_class" href="../../d2/d7b/classROCKSDB__NAMESPACE_1_1InstrumentedMutex.html">InstrumentedMutex</a>* <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#aa0cef1e7b6faad37d03983a1f922a05c">mutex_</a>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#a5124ca1306c88e09c4715ef9a9f978bb">   79</a></span>  <a class="code hl_class" href="../../dc/d6a/classROCKSDB__NAMESPACE_1_1ErrorHandler.html">ErrorHandler</a>* <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#a5124ca1306c88e09c4715ef9a9f978bb">error_handler_</a>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ae4c3d35d961d1cd43d5f26a952dfbcc5">   80</a></span>  <a class="code hl_class" href="../../da/d96/classROCKSDB__NAMESPACE_1_1EventLogger.html">EventLogger</a>* <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ae4c3d35d961d1cd43d5f26a952dfbcc5">event_logger_</a>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#af4bbda7fec4693a819c235b00413a3e5">   81</a></span>  std::vector&lt;std::shared_ptr&lt;EventListener&gt;&gt; <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#af4bbda7fec4693a819c235b00413a3e5">listeners_</a>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#adc61b8ddbbc51926129a204b605a1767">   82</a></span>  std::string <a class="code hl_variable" href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#adc61b8ddbbc51926129a204b605a1767">dbname_</a>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>};</div>
+</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="ac__test_8c_html_a75d845559336df6843f3b599960f89d2"><div class="ttname"><a href="../../d7/d62/c__test_8c.html#a75d845559336df6843f3b599960f89d2">dbname</a></div><div class="ttdeci">static char dbname[200]</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d62/c__test_8c_source.html#l00036">c_test.c:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback_html_a3d895c7ec5466aa005ee2ab0053deeff"><div class="ttname"><a href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#a3d895c7ec5466aa005ee2ab0053deeff">ROCKSDB_NAMESPACE::BlobFileCompletionCallback::sst_file_manager_</a></div><div class="ttdeci">SstFileManager * sst_file_manager_</div><div class="ttdef"><b>Definition</b> <a href="#l00077">blob_file_completion_callback.h:77</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback_html_a5124ca1306c88e09c4715ef9a9f978bb"><div class="ttname"><a href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#a5124ca1306c88e09c4715ef9a9f978bb">ROCKSDB_NAMESPACE::BlobFileCompletionCallback::error_handler_</a></div><div class="ttdeci">ErrorHandler * error_handler_</div><div class="ttdef"><b>Definition</b> <a href="#l00079">blob_file_completion_callback.h:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback_html_aa0cef1e7b6faad37d03983a1f922a05c"><div class="ttname"><a href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#aa0cef1e7b6faad37d03983a1f922a05c">ROCKSDB_NAMESPACE::BlobFileCompletionCallback::mutex_</a></div><div class="ttdeci">InstrumentedMutex * mutex_</div><div class="ttdef"><b>Definition</b> <a href="#l00078">blob_file_completion_callback.h:78</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback_html_aad52cdd76e5748a9ecfe7449c1ddd962"><div class="ttname"><a href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#aad52cdd76e5748a9ecfe7449c1ddd962">ROCKSDB_NAMESPACE::BlobFileCompletionCallback::BlobFileCompletionCallback</a></div><div class="ttdeci">BlobFileCompletionCallback(SstFileManager *sst_file_manager, InstrumentedMutex *mutex, ErrorHandler *error_handler, EventLogger *event_logger, const std::vector&lt; std::shared_ptr&lt; EventListener &gt; &gt; &amp;listeners, const std::string &amp;dbname)</div><div class="ttdef"><b>Definition</b> <a href="#l00020">blob_file_completion_callback.h:20</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback_html_ab925b94c9f80be533bb1e72121f3833e"><div class="ttname"><a href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ab925b94c9f80be533bb1e72121f3833e">ROCKSDB_NAMESPACE::BlobFileCompletionCallback::OnBlobFileCompleted</a></div><div class="ttdeci">Status OnBlobFileCompleted(const std::string &amp;file_name, const std::string &amp;column_family_name, int job_id, uint64_t file_number, BlobFileCreationReason creation_reason, const Status &amp;report_status, const std::string &amp;checksum_value, const std::string &amp;checksum_method, uint64_t blob_count, uint64_t blob_bytes)</div><div class="ttdef"><b>Definition</b> <a href="#l00041">blob_file_completion_callback.h:41</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback_html_adc61b8ddbbc51926129a204b605a1767"><div class="ttname"><a href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#adc61b8ddbbc51926129a204b605a1767">ROCKSDB_NAMESPACE::BlobFileCompletionCallback::dbname_</a></div><div class="ttdeci">std::string dbname_</div><div class="ttdef"><b>Definition</b> <a href="#l00082">blob_file_completion_callback.h:82</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback_html_ae39b9b00e19687bf1d0552dfe15757f4"><div class="ttname"><a href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ae39b9b00e19687bf1d0552dfe15757f4">ROCKSDB_NAMESPACE::BlobFileCompletionCallback::OnBlobFileCreationStarted</a></div><div class="ttdeci">void OnBlobFileCreationStarted(const std::string &amp;file_name, const std::string &amp;column_family_name, int job_id, BlobFileCreationReason creation_reason)</div><div class="ttdef"><b>Definition</b> <a href="#l00031">blob_file_completion_callback.h:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback_html_ae4c3d35d961d1cd43d5f26a952dfbcc5"><div class="ttname"><a href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#ae4c3d35d961d1cd43d5f26a952dfbcc5">ROCKSDB_NAMESPACE::BlobFileCompletionCallback::event_logger_</a></div><div class="ttdeci">EventLogger * event_logger_</div><div class="ttdef"><b>Definition</b> <a href="#l00080">blob_file_completion_callback.h:80</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback_html_af4bbda7fec4693a819c235b00413a3e5"><div class="ttname"><a href="../../dd/d80/classROCKSDB__NAMESPACE_1_1BlobFileCompletionCallback.html#af4bbda7fec4693a819c235b00413a3e5">ROCKSDB_NAMESPACE::BlobFileCompletionCallback::listeners_</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; EventListener &gt; &gt; listeners_</div><div class="ttdef"><b>Definition</b> <a href="#l00081">blob_file_completion_callback.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ErrorHandler_html"><div class="ttname"><a href="../../dc/d6a/classROCKSDB__NAMESPACE_1_1ErrorHandler.html">ROCKSDB_NAMESPACE::ErrorHandler</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/dac/error__handler_8h_source.html#l00034">error_handler.h:34</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EventHelpers_html_ad568523633de28abd00d40dd2ca1f7c4"><div class="ttname"><a href="../../d3/da7/classROCKSDB__NAMESPACE_1_1EventHelpers.html#ad568523633de28abd00d40dd2ca1f7c4">ROCKSDB_NAMESPACE::EventHelpers::NotifyBlobFileCreationStarted</a></div><div class="ttdeci">static void NotifyBlobFileCreationStarted(const std::vector&lt; std::shared_ptr&lt; EventListener &gt; &gt; &amp;listeners, const std::string &amp;db_name, const std::string &amp;cf_name, const std::string &amp;file_path, int job_id, BlobFileCreationReason creation_reason)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/event__helpers_8cc_source.html#l00255">event_helpers.cc:255</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EventHelpers_html_adec4dcfe22ef758fcecee313d5739486"><div class="ttname"><a href="../../d3/da7/classROCKSDB__NAMESPACE_1_1EventHelpers.html#adec4dcfe22ef758fcecee313d5739486">ROCKSDB_NAMESPACE::EventHelpers::LogAndNotifyBlobFileCreationFinished</a></div><div class="ttdeci">static void LogAndNotifyBlobFileCreationFinished(EventLogger *event_logger, const std::vector&lt; std::shared_ptr&lt; EventListener &gt; &gt; &amp;listeners, const std::string &amp;db_name, const std::string &amp;cf_name, const std::string &amp;file_path, int job_id, uint64_t file_number, BlobFileCreationReason creation_reason, const Status &amp;s, const std::string &amp;file_checksum, const std::string &amp;file_checksum_func_name, uint64_t total_blob_count, uint64_t total_blob_bytes)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/event__helpers_8cc_source.html#l00270">event_helpers.cc:270</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EventLogger_html"><div class="ttname"><a href="../../da/d96/classROCKSDB__NAMESPACE_1_1EventLogger.html">ROCKSDB_NAMESPACE::EventLogger</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/de0/event__logger_8h_source.html#l00179">event_logger.h:179</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InstrumentedMutexLock_html"><div class="ttname"><a href="../../de/df3/classROCKSDB__NAMESPACE_1_1InstrumentedMutexLock.html">ROCKSDB_NAMESPACE::InstrumentedMutexLock</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d64/instrumented__mutex_8h_source.html#l00071">instrumented_mutex.h:71</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InstrumentedMutex_html"><div class="ttname"><a href="../../d2/d7b/classROCKSDB__NAMESPACE_1_1InstrumentedMutex.html">ROCKSDB_NAMESPACE::InstrumentedMutex</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d64/instrumented__mutex_8h_source.html#l00020">instrumented_mutex.h:20</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstFileManagerImpl_html"><div class="ttname"><a href="../../d1/d0d/classROCKSDB__NAMESPACE_1_1SstFileManagerImpl.html">ROCKSDB_NAMESPACE::SstFileManagerImpl</a></div><div class="ttdef"><b>Definition</b> <a href="../../dc/d3e/sst__file__manager__impl_8h_source.html#l00024">sst_file_manager_impl.h:24</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstFileManager_html"><div class="ttname"><a href="../../d9/db9/classROCKSDB__NAMESPACE_1_1SstFileManager.html">ROCKSDB_NAMESPACE::SstFileManager</a></div><div class="ttdef"><b>Definition</b> <a href="../../dc/d2e/sst__file__manager_8h_source.html#l00026">sst_file_manager.h:26</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a74ba4c7896a857f6e5f47baed9619732"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a74ba4c7896a857f6e5f47baed9619732">ROCKSDB_NAMESPACE::Status::SpaceLimit</a></div><div class="ttdeci">static Status SpaceLimit()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00302">status.h:302</a></div></div>
+<div class="ttc" id="aerror__handler_8h_html"><div class="ttname"><a href="../../d6/dac/error__handler_8h.html">error_handler.h</a></div></div>
+<div class="ttc" id="aevent__helpers_8h_html"><div class="ttname"><a href="../../dd/d07/event__helpers_8h.html">event_helpers.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2status_8h_html"><div class="ttname"><a href="../../d9/dd0/include_2rocksdb_2status_8h.html">status.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a52367d6b018a5155144abe826a0a77a8"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a52367d6b018a5155144abe826a0a77a8">ROCKSDB_NAMESPACE::kUnknownFileChecksumFuncName</a></div><div class="ttdeci">constexpr char kUnknownFileChecksumFuncName[]</div><div class="ttdef"><b>Definition</b> <a href="../../d3/de5/file__checksum_8h_source.html#l00025">file_checksum.h:25</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a672d854bb1dc26d61bb50068ed0c1da8"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a672d854bb1dc26d61bb50068ed0c1da8">ROCKSDB_NAMESPACE::kUnknownFileChecksum</a></div><div class="ttdeci">constexpr char kUnknownFileChecksum[]</div><div class="ttdef"><b>Definition</b> <a href="../../d3/de5/file__checksum_8h_source.html#l00023">file_checksum.h:23</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ad04900a6c743b0677fc0f271eda42673aca41b2126085402810d2e01a463c51c0"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad04900a6c743b0677fc0f271eda42673aca41b2126085402810d2e01a463c51c0">ROCKSDB_NAMESPACE::BackgroundErrorReason::kFlush</a></div><div class="ttdeci">@ kFlush</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d39/listener_8h_source.html#l00195">listener.h:195</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ad7545ec62ce62393146e37f37a0f73b9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad7545ec62ce62393146e37f37a0f73b9">ROCKSDB_NAMESPACE::BlobFileCreationReason</a></div><div class="ttdeci">BlobFileCreationReason</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00037">types.h:37</a></div></div>
+<div class="ttc" id="asst__file__manager__impl_8h_html"><div class="ttname"><a href="../../dc/d3e/sst__file__manager__impl_8h.html">sst_file_manager_impl.h</a></div></div>
+<div class="ttc" id="async__point_8h_html_aea27634f18fba890fccd36a797846e54"><div class="ttname"><a href="../../d4/d8e/sync__point_8h.html#aea27634f18fba890fccd36a797846e54">TEST_SYNC_POINT</a></div><div class="ttdeci">#define TEST_SYNC_POINT(x)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d8e/sync__point_8h_source.html#l00159">sync_point.h:159</a></div></div>
+<div class="ttc" id="atoku__instrumentation_8h_html_a76ce6633f10239d82f3a280e1924cd82a25a01bb859125507013a2fe9737d3c32"><div class="ttname"><a href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a25a01bb859125507013a2fe9737d3c32">toku_instr_object_type::mutex</a></div><div class="ttdeci">@ mutex</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d8a/toku__instrumentation_8h_source.html#l00054">toku_instrumentation.h:54</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../dir_b850757ce2504bdef52f7eb2839ed90a.html">blob</a></li><li class="navelem"><a class="el" href="../../d5/d31/blob__file__completion__callback_8h.html">blob_file_completion_callback.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

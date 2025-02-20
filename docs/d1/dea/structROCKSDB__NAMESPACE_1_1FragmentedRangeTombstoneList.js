@@ -1,0 +1,25 @@
+var structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList =
+[
+    [ "RangeTombstoneStack", "df/df5/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList_1_1RangeTombstoneStack.html", "df/df5/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList_1_1RangeTombstoneStack" ],
+    [ "FragmentedRangeTombstoneList", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a0c2b306b630f9eaa83b30a3a4e6f71c5", null ],
+    [ "begin", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a5936a38de75f99ed213e42f8c6d17a06", null ],
+    [ "ContainsRange", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a355a3cf2160c8b94fa0742a6bd89fd09", null ],
+    [ "empty", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a3cd03055571c3665698be0364e0e5fea", null ],
+    [ "end", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a570944ab747f0952876ccebefbb8f0a9", null ],
+    [ "FragmentTombstones", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#ad74b2a8d03a598b7e7fc9882cada6f17", null ],
+    [ "num_unfragmented_tombstones", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a7de25659ab864360e1e117cd870c1ea8", null ],
+    [ "seq_begin", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a74befd9655a6f6e497f41aa4f8da7f15", null ],
+    [ "seq_end", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a8e2bc07c9f9eae98641cbff3ccf90880", null ],
+    [ "seq_iter", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#af4b8b6e39b9d99d94566e7b2d42866ab", null ],
+    [ "total_tombstone_payload_bytes", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#ab8f4b7fcc7903901c9e8b9160e7fdb9f", null ],
+    [ "ts_iter", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a96b4f8da3ad24039f3fcb17e1edd5089", null ],
+    [ "num_unfragmented_tombstones_", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a5c6486681b1d7caeac5acebf88c1c7c6", null ],
+    [ "pinned_iters_mgr_", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a8960dea7d7d6701298ca1fb2ccf4173f", null ],
+    [ "pinned_slices_", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a1106dcc5b978e2b8853e44fd8680a6f6", null ],
+    [ "seq_set_", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#aac72232e9499e4c8de4a1b8a98891a42", null ],
+    [ "seq_set_init_once_flag_", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a06cd39b8c84bf0640c35e773972a295d", null ],
+    [ "tombstone_seqs_", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#abff1775dc66b8934c3f5ad4a35287222", null ],
+    [ "tombstone_timestamps_", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a3d306477487067f6ccad0d99e29b8caa", null ],
+    [ "tombstones_", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#a0196ffd7f69a830ca7b9570d2aff822d", null ],
+    [ "total_tombstone_payload_bytes_", "d1/dea/structROCKSDB__NAMESPACE_1_1FragmentedRangeTombstoneList.html#ae4c2e4081f02b318515c0dab5180b76b", null ]
+];

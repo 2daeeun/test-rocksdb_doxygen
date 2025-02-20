@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: tools/advisor/advisor/db_bench_runner.py 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d2/dbe/db__bench__runner_8py_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">db_bench_runner.py</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d2/dbe/db__bench__runner_8py.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="../../dd/dc1/namespaceadvisor_1_1db__bench__runner.html">    1</a></span><span class="comment"># Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">#  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">#  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">#  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">import</span> shutil</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">import</span> subprocess</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">import</span> time</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">from</span> <a class="code hl_namespace" href="../../dc/db4/namespaceadvisor_1_1bench__runner.html">advisor.bench_runner</a> <span class="keyword">import</span> BenchmarkRunner</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">from</span> <a class="code hl_namespace" href="../../d0/dd6/namespaceadvisor_1_1db__log__parser.html">advisor.db_log_parser</a> <span class="keyword">import</span> DatabaseLogs, DataSource, NO_COL_FAMILY</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">from</span> <a class="code hl_namespace" href="../../d5/d30/namespaceadvisor_1_1db__stats__fetcher.html">advisor.db_stats_fetcher</a> <span class="keyword">import</span> (</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    DatabasePerfContext,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    LogStatsParser,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    OdsStatsFetcher,</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="stringliteral">NOTE: This is not thread-safe, because the output file is simply overwritten.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="foldopen" id="foldopen00024" data-start="" data-end="">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html">   24</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html">DBBenchRunner</a>(<a class="code hl_class" href="../../d8/df8/classadvisor_1_1bench__runner_1_1BenchmarkRunner.html">BenchmarkRunner</a>):</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a1420c0409b75816284a0fe214cdfb2f6">   25</a></span>    OUTPUT_FILE = <span class="stringliteral">&quot;temp/dbbench_out.tmp&quot;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a0ec297ab1825d589a200e23128e5e050">   26</a></span>    ERROR_FILE = <span class="stringliteral">&quot;temp/dbbench_err.tmp&quot;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#afabbfe57fd4ce23eb2cf2f02f1977785">   27</a></span>    DB_PATH = <span class="stringliteral">&quot;DB path&quot;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a5f04a7e438eb5e4b98e5fed5e6aae0f8">   28</a></span>    THROUGHPUT = <span class="stringliteral">&quot;ops/sec&quot;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a305d5189ac0ba36393a112077e7d1962">   29</a></span>    PERF_CON = <span class="stringliteral">&quot; PERF_CONTEXT:&quot;</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="preprocessor">@staticmethod</span></div>
+<div class="foldopen" id="foldopen00032" data-start="" data-end="">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a74df88dde0aa841c623aa4e37f3bd651">   32</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a74df88dde0aa841c623aa4e37f3bd651">is_metric_better</a>(new_metric, old_metric):</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="comment"># for db_bench &#39;throughput&#39; is the metric returned by run_experiment</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keywordflow">return</span> new_metric &gt;= old_metric</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="preprocessor">@staticmethod</span></div>
+<div class="foldopen" id="foldopen00037" data-start="" data-end="">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a1ae24e6dfc2c106046000f0c0839c8a2">   37</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a1ae24e6dfc2c106046000f0c0839c8a2">get_opt_args_str</a>(misc_options_dict):</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="comment"># given a dictionary of options and their values, return a string</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="comment"># that can be appended as command-line arguments</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        optional_args_str = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keywordflow">for</span> option_name, option_value <span class="keywordflow">in</span> misc_options_dict.items():</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <span class="keywordflow">if</span> option_value:</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                optional_args_str += <span class="stringliteral">&quot; --&quot;</span> + option_name + <span class="stringliteral">&quot;=&quot;</span> + str(option_value)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">return</span> optional_args_str</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+</div>
+<div class="foldopen" id="foldopen00046" data-start="" data-end="">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a74981b1144de2c32fcea2d80bc278ac1">   46</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a74981b1144de2c32fcea2d80bc278ac1">__init__</a>(self, positional_args, ods_args=None):</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="comment"># parse positional_args list appropriately</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a3768393862e74a233df2573b8a802402">   48</a></span>        self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a3768393862e74a233df2573b8a802402">db_bench_binary</a> = positional_args[0]</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a806ca1337ca954b7454c94e06c5c182d">   49</a></span>        self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a806ca1337ca954b7454c94e06c5c182d">benchmark</a> = positional_args[1]</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac2ba719c0e012d76eeed4c5e0feb04e2">   50</a></span>        self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac2ba719c0e012d76eeed4c5e0feb04e2">db_bench_args</a> = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordflow">if</span> len(positional_args) &gt; 2:</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            <span class="comment"># options list with each option given as &quot;&lt;option&gt;=&lt;value&gt;&quot;</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac2ba719c0e012d76eeed4c5e0feb04e2">db_bench_args</a> = positional_args[2:]</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="comment"># save ods_args, if provided</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae2028fac314723fa05f69db35295d675">   55</a></span>        self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae2028fac314723fa05f69db35295d675">ods_args</a> = ods_args</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+</div>
+<div class="foldopen" id="foldopen00057" data-start="" data-end="">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a3f2c8543c053c745968582e86d9015df">   57</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a3f2c8543c053c745968582e86d9015df">_parse_output</a>(self, get_perf_context=False):</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="stringliteral">        Sample db_bench output after running &#39;readwhilewriting&#39; benchmark:</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="stringliteral">        DB path: [/tmp/rocksdbtest-155919/dbbench]\n</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="stringliteral">        readwhilewriting : 16.582 micros/op 60305 ops/sec; 4.2 MB/s (3433828\</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="stringliteral">        of 5427999 found)\n</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="stringliteral">        PERF_CONTEXT:\n</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="stringliteral">        user_key_comparison_count = 500466712, block_cache_hit_count = ...\n</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        output = {self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a5f04a7e438eb5e4b98e5fed5e6aae0f8">THROUGHPUT</a>: <span class="keywordtype">None</span>, self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#afabbfe57fd4ce23eb2cf2f02f1977785">DB_PATH</a>: <span class="keywordtype">None</span>, self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a305d5189ac0ba36393a112077e7d1962">PERF_CON</a>: <span class="keywordtype">None</span>}</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        perf_context_begins = <span class="keyword">False</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keyword">with</span> open(self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a1420c0409b75816284a0fe214cdfb2f6">OUTPUT_FILE</a>) <span class="keyword">as</span> fp:</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            <span class="keywordflow">for</span> line <span class="keywordflow">in</span> fp:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                <span class="keywordflow">if</span> line.startswith(self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a806ca1337ca954b7454c94e06c5c182d">benchmark</a>):</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                    <span class="comment"># line from sample output:</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                    <span class="comment"># readwhilewriting : 16.582 micros/op 60305 ops/sec; \</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                    <span class="comment"># 4.2 MB/s (3433828 of 5427999 found)\n</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                    print(line)  <span class="comment"># print output of the benchmark run</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                    token_list = line.strip().split()</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                    <span class="keywordflow">for</span> ix, token <span class="keywordflow">in</span> enumerate(token_list):</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                        <span class="keywordflow">if</span> token.startswith(self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a5f04a7e438eb5e4b98e5fed5e6aae0f8">THROUGHPUT</a>):</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                            <span class="comment"># in above example, throughput = 60305 ops/sec</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                            output[self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a5f04a7e438eb5e4b98e5fed5e6aae0f8">THROUGHPUT</a>] = float(token_list[ix - 1])</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                            <span class="keywordflow">break</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                <span class="keywordflow">elif</span> get_perf_context <span class="keywordflow">and</span> line.startswith(self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a305d5189ac0ba36393a112077e7d1962">PERF_CON</a>):</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                    <span class="comment"># the following lines in the output contain perf context</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                    <span class="comment"># statistics (refer example above)</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                    perf_context_begins = <span class="keyword">True</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                <span class="keywordflow">elif</span> get_perf_context <span class="keywordflow">and</span> perf_context_begins:</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                    <span class="comment"># Sample perf_context output:</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                    <span class="comment"># user_key_comparison_count = 500, block_cache_hit_count =\</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                    <span class="comment"># 468, block_read_count = 580, block_read_byte = 445, ...</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                    token_list = line.strip().split(<span class="stringliteral">&quot;,&quot;</span>)</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                    <span class="comment"># token_list = [&#39;user_key_comparison_count = 500&#39;,</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                    <span class="comment"># &#39;block_cache_hit_count = 468&#39;,&#39;block_read_count = 580&#39;...</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                    perf_context = {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                        tk.split(<span class="stringliteral">&quot;=&quot;</span>)[0].strip(): tk.split(<span class="stringliteral">&quot;=&quot;</span>)[1].strip()</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                        <span class="keywordflow">for</span> tk <span class="keywordflow">in</span> token_list</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                        <span class="keywordflow">if</span> tk</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                    }</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                    <span class="comment"># TODO(poojam23): this is a hack and should be replaced</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                    <span class="comment"># with the timestamp that db_bench will provide per printed</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                    <span class="comment"># perf_context</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                    timestamp = int(time.time())</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                    perf_context_ts = {}</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                    <span class="keywordflow">for</span> stat <span class="keywordflow">in</span> perf_context.keys():</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                        perf_context_ts[stat] = {timestamp: int(perf_context[stat])}</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                    output[self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a305d5189ac0ba36393a112077e7d1962">PERF_CON</a>] = perf_context_ts</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                    perf_context_begins = <span class="keyword">False</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                <span class="keywordflow">elif</span> line.startswith(self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#afabbfe57fd4ce23eb2cf2f02f1977785">DB_PATH</a>):</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                    <span class="comment"># line from sample output:</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                    <span class="comment"># DB path: [/tmp/rocksdbtest-155919/dbbench]\n</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                    output[self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#afabbfe57fd4ce23eb2cf2f02f1977785">DB_PATH</a>] = line.split(<span class="stringliteral">&quot;[&quot;</span>)[1].split(<span class="stringliteral">&quot;]&quot;</span>)[0]</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keywordflow">return</span> output</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+</div>
+<div class="foldopen" id="foldopen00112" data-start="" data-end="">
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a9839eedeacbe4f0c65c71f6570db758e">  112</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a9839eedeacbe4f0c65c71f6570db758e">get_log_options</a>(self, db_options, db_path):</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="comment"># get the location of the LOG file and the frequency at which stats are</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="comment"># dumped in the LOG file</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        log_dir_path = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        stats_freq_sec = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        logs_file_prefix = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="comment"># fetch frequency at which the stats are dumped in the Rocksdb logs</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        dump_period = <span class="stringliteral">&quot;DBOptions.stats_dump_period_sec&quot;</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="comment"># fetch the directory, if specified, in which the Rocksdb logs are</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="comment"># dumped, by default logs are dumped in same location as database</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        log_dir = <span class="stringliteral">&quot;DBOptions.db_log_dir&quot;</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        log_options = db_options.get_options([dump_period, log_dir])</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="keywordflow">if</span> dump_period <span class="keywordflow">in</span> log_options:</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>            stats_freq_sec = int(log_options[dump_period][NO_COL_FAMILY])</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keywordflow">if</span> log_dir <span class="keywordflow">in</span> log_options:</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            log_dir_path = log_options[log_dir][NO_COL_FAMILY]</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        log_file_name = DBBenchRunner.get_info_log_file_name(log_dir_path, db_path)</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> log_dir_path:</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>            log_dir_path = db_path</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> log_dir_path.endswith(<span class="stringliteral">&quot;/&quot;</span>):</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            log_dir_path += <span class="stringliteral">&quot;/&quot;</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        logs_file_prefix = log_dir_path + log_file_name</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <span class="keywordflow">return</span> (logs_file_prefix, stats_freq_sec)</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+</div>
+<div class="foldopen" id="foldopen00140" data-start="" data-end="">
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac1014c29f453a4a839fff04100a6efd6">  140</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac1014c29f453a4a839fff04100a6efd6">_get_options_command_line_args_str</a>(self, curr_options):</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="stringliteral">        This method uses the provided Rocksdb OPTIONS to create a string of</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="stringliteral">        command-line arguments for db_bench.</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="stringliteral">        The --options_file argument is always given and the options that are</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="stringliteral">        not supported by the OPTIONS file are given as separate arguments.</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        optional_args_str = DBBenchRunner.get_opt_args_str(</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            curr_options.get_misc_options()</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        )</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        <span class="comment"># generate an options configuration file</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        options_file = curr_options.generate_options_config(nonce=<span class="stringliteral">&quot;12345&quot;</span>)</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        optional_args_str += <span class="stringliteral">&quot; --options_file=&quot;</span> + options_file</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordflow">return</span> optional_args_str</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+</div>
+<div class="foldopen" id="foldopen00155" data-start="" data-end="">
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a090bdffffc0b33c6b766a7299e950ddc">  155</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a090bdffffc0b33c6b766a7299e950ddc">_setup_db_before_experiment</a>(self, curr_options, db_path):</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        <span class="comment"># remove destination directory if it already exists</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            shutil.rmtree(db_path, ignore_errors=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        <span class="keywordflow">except</span> OSError <span class="keyword">as</span> e:</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>            print(<span class="stringliteral">&quot;Error: rmdir &quot;</span> + e.filename + <span class="stringliteral">&quot; &quot;</span> + e.strerror)</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="comment"># setup database with a million keys using the fillrandom benchmark</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        command = <span class="stringliteral">&quot;{} --benchmarks=fillrandom --db={} --num=1000000&quot;</span>.format(</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a3768393862e74a233df2573b8a802402">db_bench_binary</a>,</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            db_path,</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        )</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        args_str = self.<a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac1014c29f453a4a839fff04100a6efd6">_get_options_command_line_args_str</a>(curr_options)</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        command += args_str</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        self.<a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac7e562bb9337b56a620efd76f3d9ee8e">_run_command</a>(command)</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+</div>
+<div class="foldopen" id="foldopen00170" data-start="" data-end="">
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae8c417e2e2ef3a17c6eabe969e028234">  170</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae8c417e2e2ef3a17c6eabe969e028234">_build_experiment_command</a>(self, curr_options, db_path):</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        command = <span class="stringliteral">&quot;{} --benchmarks={} --statistics --perf_level=3 --db={}&quot;</span>.format(</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>            self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a3768393862e74a233df2573b8a802402">db_bench_binary</a>,</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>            self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a806ca1337ca954b7454c94e06c5c182d">benchmark</a>,</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            db_path,</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        )</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <span class="comment"># fetch the command-line arguments string for providing Rocksdb options</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        args_str = self.<a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac1014c29f453a4a839fff04100a6efd6">_get_options_command_line_args_str</a>(curr_options)</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        <span class="comment"># handle the command-line args passed in the constructor, these</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        <span class="comment"># arguments are specific to db_bench</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        <span class="keywordflow">for</span> cmd_line_arg <span class="keywordflow">in</span> self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac2ba719c0e012d76eeed4c5e0feb04e2">db_bench_args</a>:</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>            args_str += <span class="stringliteral">&quot; --&quot;</span> + cmd_line_arg</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        command += args_str</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="keywordflow">return</span> command</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
+</div>
+<div class="foldopen" id="foldopen00185" data-start="" data-end="">
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac7e562bb9337b56a620efd76f3d9ee8e">  185</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac7e562bb9337b56a620efd76f3d9ee8e">_run_command</a>(self, command):</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        out_file = open(self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a1420c0409b75816284a0fe214cdfb2f6">OUTPUT_FILE</a>, <span class="stringliteral">&quot;w+&quot;</span>)</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        err_file = open(self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a0ec297ab1825d589a200e23128e5e050">ERROR_FILE</a>, <span class="stringliteral">&quot;w+&quot;</span>)</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        print(<span class="stringliteral">&quot;executing... - &quot;</span> + command)</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        subprocess.call(command, shell=<span class="keyword">True</span>, stdout=out_file, stderr=err_file)</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        out_file.close()</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        err_file.close()</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+</div>
+<div class="foldopen" id="foldopen00193" data-start="" data-end="">
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno"><a class="line" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a1871ad18dd919237e64f399f8574a80c">  193</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a1871ad18dd919237e64f399f8574a80c">run_experiment</a>(self, db_options, db_path):</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        <span class="comment"># setup the Rocksdb database before running experiment</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        self.<a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a090bdffffc0b33c6b766a7299e950ddc">_setup_db_before_experiment</a>(db_options, db_path)</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        <span class="comment"># get the command to run the experiment</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        command = self.<a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae8c417e2e2ef3a17c6eabe969e028234">_build_experiment_command</a>(db_options, db_path)</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        experiment_start_time = int(time.time())</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        <span class="comment"># run experiment</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        self.<a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac7e562bb9337b56a620efd76f3d9ee8e">_run_command</a>(command)</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        experiment_end_time = int(time.time())</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        <span class="comment"># parse the db_bench experiment output</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        parsed_output = self.<a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a3f2c8543c053c745968582e86d9015df">_parse_output</a>(get_perf_context=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        <span class="comment"># get the log files path prefix and frequency at which Rocksdb stats</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <span class="comment"># are dumped in the logs</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        logs_file_prefix, stats_freq_sec = self.<a class="code hl_function" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a9839eedeacbe4f0c65c71f6570db758e">get_log_options</a>(</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            db_options, parsed_output[self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#afabbfe57fd4ce23eb2cf2f02f1977785">DB_PATH</a>]</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        )</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        <span class="comment"># create the Rocksbd LOGS object</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        db_logs = <a class="code hl_class" href="../../d9/d18/classadvisor_1_1db__log__parser_1_1DatabaseLogs.html">DatabaseLogs</a>(logs_file_prefix, db_options.get_column_families())</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        <span class="comment"># Create the Log STATS object</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        db_log_stats = <a class="code hl_class" href="../../dc/dee/classadvisor_1_1db__stats__fetcher_1_1LogStatsParser.html">LogStatsParser</a>(logs_file_prefix, stats_freq_sec)</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="comment"># Create the PerfContext STATS object</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        db_perf_context = <a class="code hl_class" href="../../d7/d99/classadvisor_1_1db__stats__fetcher_1_1DatabasePerfContext.html">DatabasePerfContext</a>(parsed_output[self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a305d5189ac0ba36393a112077e7d1962">PERF_CON</a>], 0, <span class="keyword">False</span>)</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        <span class="comment"># create the data-sources dictionary</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        data_sources = {</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>            DataSource.Type.DB_OPTIONS: [db_options],</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>            DataSource.Type.LOG: [db_logs],</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>            DataSource.Type.TIME_SERIES: [db_log_stats, db_perf_context],</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        }</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        <span class="comment"># Create the ODS STATS object</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        <span class="keywordflow">if</span> self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae2028fac314723fa05f69db35295d675">ods_args</a>:</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>            key_prefix = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>            <span class="keywordflow">if</span> <span class="stringliteral">&quot;key_prefix&quot;</span> <span class="keywordflow">in</span> self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae2028fac314723fa05f69db35295d675">ods_args</a>:</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>                key_prefix = self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae2028fac314723fa05f69db35295d675">ods_args</a>[<span class="stringliteral">&quot;key_prefix&quot;</span>]</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>            data_sources[DataSource.Type.TIME_SERIES].append(</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>                <a class="code hl_class" href="../../d2/d2c/classadvisor_1_1db__stats__fetcher_1_1OdsStatsFetcher.html">OdsStatsFetcher</a>(</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>                    self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae2028fac314723fa05f69db35295d675">ods_args</a>[<span class="stringliteral">&quot;client_script&quot;</span>],</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                    self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae2028fac314723fa05f69db35295d675">ods_args</a>[<span class="stringliteral">&quot;entity&quot;</span>],</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                    experiment_start_time,</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                    experiment_end_time,</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>                    key_prefix,</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>                )</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>            )</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        <span class="comment"># return the experiment&#39;s data-sources and throughput</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        <span class="keywordflow">return</span> data_sources, parsed_output[self.<a class="code hl_variable" href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a5f04a7e438eb5e4b98e5fed5e6aae0f8">THROUGHPUT</a>]</div>
+</div>
+</div>
+<div class="ttc" id="aclassadvisor_1_1bench__runner_1_1BenchmarkRunner_html"><div class="ttname"><a href="../../d8/df8/classadvisor_1_1bench__runner_1_1BenchmarkRunner.html">advisor.bench_runner.BenchmarkRunner</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/dfc/bench__runner_8py_source.html#l00010">bench_runner.py:10</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html">advisor.db_bench_runner.DBBenchRunner</a></div><div class="ttdef"><b>Definition</b> <a href="#l00024">db_bench_runner.py:24</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a090bdffffc0b33c6b766a7299e950ddc"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a090bdffffc0b33c6b766a7299e950ddc">advisor.db_bench_runner.DBBenchRunner._setup_db_before_experiment</a></div><div class="ttdeci">_setup_db_before_experiment(self, curr_options, db_path)</div><div class="ttdef"><b>Definition</b> <a href="#l00155">db_bench_runner.py:155</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a0ec297ab1825d589a200e23128e5e050"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a0ec297ab1825d589a200e23128e5e050">advisor.db_bench_runner.DBBenchRunner.ERROR_FILE</a></div><div class="ttdeci">str ERROR_FILE</div><div class="ttdef"><b>Definition</b> <a href="#l00026">db_bench_runner.py:26</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a1420c0409b75816284a0fe214cdfb2f6"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a1420c0409b75816284a0fe214cdfb2f6">advisor.db_bench_runner.DBBenchRunner.OUTPUT_FILE</a></div><div class="ttdeci">str OUTPUT_FILE</div><div class="ttdef"><b>Definition</b> <a href="#l00025">db_bench_runner.py:25</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a1871ad18dd919237e64f399f8574a80c"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a1871ad18dd919237e64f399f8574a80c">advisor.db_bench_runner.DBBenchRunner.run_experiment</a></div><div class="ttdeci">run_experiment(self, db_options, db_path)</div><div class="ttdef"><b>Definition</b> <a href="#l00193">db_bench_runner.py:193</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a1ae24e6dfc2c106046000f0c0839c8a2"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a1ae24e6dfc2c106046000f0c0839c8a2">advisor.db_bench_runner.DBBenchRunner.get_opt_args_str</a></div><div class="ttdeci">get_opt_args_str(misc_options_dict)</div><div class="ttdef"><b>Definition</b> <a href="#l00037">db_bench_runner.py:37</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a305d5189ac0ba36393a112077e7d1962"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a305d5189ac0ba36393a112077e7d1962">advisor.db_bench_runner.DBBenchRunner.PERF_CON</a></div><div class="ttdeci">str PERF_CON</div><div class="ttdef"><b>Definition</b> <a href="#l00029">db_bench_runner.py:29</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a3768393862e74a233df2573b8a802402"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a3768393862e74a233df2573b8a802402">advisor.db_bench_runner.DBBenchRunner.db_bench_binary</a></div><div class="ttdeci">db_bench_binary</div><div class="ttdef"><b>Definition</b> <a href="#l00048">db_bench_runner.py:48</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a3f2c8543c053c745968582e86d9015df"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a3f2c8543c053c745968582e86d9015df">advisor.db_bench_runner.DBBenchRunner._parse_output</a></div><div class="ttdeci">_parse_output(self, get_perf_context=False)</div><div class="ttdef"><b>Definition</b> <a href="#l00057">db_bench_runner.py:57</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a5f04a7e438eb5e4b98e5fed5e6aae0f8"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a5f04a7e438eb5e4b98e5fed5e6aae0f8">advisor.db_bench_runner.DBBenchRunner.THROUGHPUT</a></div><div class="ttdeci">str THROUGHPUT</div><div class="ttdef"><b>Definition</b> <a href="#l00028">db_bench_runner.py:28</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a74981b1144de2c32fcea2d80bc278ac1"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a74981b1144de2c32fcea2d80bc278ac1">advisor.db_bench_runner.DBBenchRunner.__init__</a></div><div class="ttdeci">__init__(self, positional_args, ods_args=None)</div><div class="ttdef"><b>Definition</b> <a href="#l00046">db_bench_runner.py:46</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a74df88dde0aa841c623aa4e37f3bd651"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a74df88dde0aa841c623aa4e37f3bd651">advisor.db_bench_runner.DBBenchRunner.is_metric_better</a></div><div class="ttdeci">is_metric_better(new_metric, old_metric)</div><div class="ttdef"><b>Definition</b> <a href="#l00032">db_bench_runner.py:32</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a806ca1337ca954b7454c94e06c5c182d"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a806ca1337ca954b7454c94e06c5c182d">advisor.db_bench_runner.DBBenchRunner.benchmark</a></div><div class="ttdeci">benchmark</div><div class="ttdef"><b>Definition</b> <a href="#l00049">db_bench_runner.py:49</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_a9839eedeacbe4f0c65c71f6570db758e"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#a9839eedeacbe4f0c65c71f6570db758e">advisor.db_bench_runner.DBBenchRunner.get_log_options</a></div><div class="ttdeci">get_log_options(self, db_options, db_path)</div><div class="ttdef"><b>Definition</b> <a href="#l00112">db_bench_runner.py:112</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_ac1014c29f453a4a839fff04100a6efd6"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac1014c29f453a4a839fff04100a6efd6">advisor.db_bench_runner.DBBenchRunner._get_options_command_line_args_str</a></div><div class="ttdeci">_get_options_command_line_args_str(self, curr_options)</div><div class="ttdef"><b>Definition</b> <a href="#l00140">db_bench_runner.py:140</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_ac2ba719c0e012d76eeed4c5e0feb04e2"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac2ba719c0e012d76eeed4c5e0feb04e2">advisor.db_bench_runner.DBBenchRunner.db_bench_args</a></div><div class="ttdeci">db_bench_args</div><div class="ttdef"><b>Definition</b> <a href="#l00050">db_bench_runner.py:50</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_ac7e562bb9337b56a620efd76f3d9ee8e"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ac7e562bb9337b56a620efd76f3d9ee8e">advisor.db_bench_runner.DBBenchRunner._run_command</a></div><div class="ttdeci">_run_command(self, command)</div><div class="ttdef"><b>Definition</b> <a href="#l00185">db_bench_runner.py:185</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_ae2028fac314723fa05f69db35295d675"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae2028fac314723fa05f69db35295d675">advisor.db_bench_runner.DBBenchRunner.ods_args</a></div><div class="ttdeci">ods_args</div><div class="ttdef"><b>Definition</b> <a href="#l00055">db_bench_runner.py:55</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_ae8c417e2e2ef3a17c6eabe969e028234"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#ae8c417e2e2ef3a17c6eabe969e028234">advisor.db_bench_runner.DBBenchRunner._build_experiment_command</a></div><div class="ttdeci">_build_experiment_command(self, curr_options, db_path)</div><div class="ttdef"><b>Definition</b> <a href="#l00170">db_bench_runner.py:170</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__bench__runner_1_1DBBenchRunner_html_afabbfe57fd4ce23eb2cf2f02f1977785"><div class="ttname"><a href="../../d0/da1/classadvisor_1_1db__bench__runner_1_1DBBenchRunner.html#afabbfe57fd4ce23eb2cf2f02f1977785">advisor.db_bench_runner.DBBenchRunner.DB_PATH</a></div><div class="ttdeci">str DB_PATH</div><div class="ttdef"><b>Definition</b> <a href="#l00027">db_bench_runner.py:27</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__log__parser_1_1DatabaseLogs_html"><div class="ttname"><a href="../../d9/d18/classadvisor_1_1db__log__parser_1_1DatabaseLogs.html">advisor.db_log_parser.DatabaseLogs</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d35/db__log__parser_8py_source.html#l00093">db_log_parser.py:93</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__stats__fetcher_1_1DatabasePerfContext_html"><div class="ttname"><a href="../../d7/d99/classadvisor_1_1db__stats__fetcher_1_1DatabasePerfContext.html">advisor.db_stats_fetcher.DatabasePerfContext</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/dbb/db__stats__fetcher_8py_source.html#l00117">db_stats_fetcher.py:117</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__stats__fetcher_1_1LogStatsParser_html"><div class="ttname"><a href="../../dc/dee/classadvisor_1_1db__stats__fetcher_1_1LogStatsParser.html">advisor.db_stats_fetcher.LogStatsParser</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/dbb/db__stats__fetcher_8py_source.html#l00017">db_stats_fetcher.py:17</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1db__stats__fetcher_1_1OdsStatsFetcher_html"><div class="ttname"><a href="../../d2/d2c/classadvisor_1_1db__stats__fetcher_1_1OdsStatsFetcher.html">advisor.db_stats_fetcher.OdsStatsFetcher</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/dbb/db__stats__fetcher_8py_source.html#l00167">db_stats_fetcher.py:167</a></div></div>
+<div class="ttc" id="anamespaceadvisor_1_1bench__runner_html"><div class="ttname"><a href="../../dc/db4/namespaceadvisor_1_1bench__runner.html">advisor.bench_runner</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/dfc/bench__runner_8py_source.html#l00001">bench_runner.py:1</a></div></div>
+<div class="ttc" id="anamespaceadvisor_1_1db__log__parser_html"><div class="ttname"><a href="../../d0/dd6/namespaceadvisor_1_1db__log__parser.html">advisor.db_log_parser</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d35/db__log__parser_8py_source.html#l00001">db_log_parser.py:1</a></div></div>
+<div class="ttc" id="anamespaceadvisor_1_1db__stats__fetcher_html"><div class="ttname"><a href="../../d5/d30/namespaceadvisor_1_1db__stats__fetcher.html">advisor.db_stats_fetcher</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/dbb/db__stats__fetcher_8py_source.html#l00001">db_stats_fetcher.py:1</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_4eeb864c4eec08c7d6b9d3b0352cfdde.html">tools</a></li><li class="navelem"><a class="el" href="../../dir_b2ea55d115167396574e66fe944d853b.html">advisor</a></li><li class="navelem"><a class="el" href="../../dir_8dcb2fdd79ebee23e50e5ad2f2c103ad.html">advisor</a></li><li class="navelem"><a class="el" href="../../d2/dbe/db__bench__runner_8py.html">db_bench_runner.py</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

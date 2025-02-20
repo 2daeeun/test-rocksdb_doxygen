@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: port/win/win_thread.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d4/d78/win__thread_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">win_thread.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d4/d78/win__thread_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#ifndef _POSIX_THREADS</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/df5/rocksdb__namespace_8h.html">rocksdb/rocksdb_namespace.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html">port</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// This class is a replacement for std::thread</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// 2 reasons we do not like std::thread:</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">//  -- is that it dynamically allocates its internals that are automatically</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">//     freed when  the thread terminates and not on the destruction of the</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">//     object. This makes it difficult to control the source of memory</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">//     allocation</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">//  -  This implements Pimpl so we can easily replace the guts of the</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">//      object in our private version if necessary.</span></div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html">   31</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a> {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">struct </span>Data;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a1911fa8b4ab30ca2f2d1fe758fe1ea91">   34</a></span>  std::shared_ptr&lt;Data&gt; <a class="code hl_variable" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a1911fa8b4ab30ca2f2d1fe758fe1ea91">data_</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a402eaf365969fe70c246758914517348">   35</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a402eaf365969fe70c246758914517348">th_id_</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aa6e96c47c6414247fc6b38190ae624bb">   37</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aa6e96c47c6414247fc6b38190ae624bb">Init</a>(std::function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp;);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a8112b016662dbd27b93fccd6dacdb1ae">   40</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a8112b016662dbd27b93fccd6dacdb1ae">native_handle_type</a> = <span class="keywordtype">void</span>*;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// Construct with no thread</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">   43</a></span>  <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a>();</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// Template constructor</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// This templated constructor accomplishes several things</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// - Allows the class as whole to be not a template</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// - take &quot;universal&quot; references to support both _lvalues and _rvalues</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// -  because this constructor is a catchall case in many respects it</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">//    may prevent us from using both the default __ctor, the move __ctor.</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="comment">//    Also it may circumvent copy __ctor deletion. To work around this</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="comment">//    we make sure this one has at least one argument and eliminate</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">//    it from the overload  selection when WindowsThread is the first</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">//    argument.</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="comment">// - construct with Fx(Ax...) with a variable number of types/arguments.</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// - Gathers together the callable object with its arguments and constructs</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">//   a single callable entity</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// - Makes use of std::function to convert it to a specification-template</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">//   dependent type that both checks the signature conformance to ensure</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="comment">//   that all of the necessary arguments are provided and allows pimpl</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="comment">//   implementation.</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">template</span> &lt;<span class="keyword">class </span>Fn, <span class="keyword">class</span>... Args,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            <span class="keyword">class </span>= <span class="keyword">typename</span> std::enable_if&lt;!std::is_same&lt;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                <span class="keyword">typename</span> std::decay&lt;Fn&gt;::type, <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a>&gt;::value&gt;<a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">::type</a>&gt;</div>
+<div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a76653e4e0f194006d8f9cee518ae9538">   72</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a76653e4e0f194006d8f9cee518ae9538">WindowsThread</a>(Fn&amp;&amp; fx, Args&amp;&amp;... ax) : <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a>() {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment">// Use binder to create a single callable entity</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">auto</span> binder = std::bind(std::forward&lt;Fn&gt;(fx), std::forward&lt;Args&gt;(ax)...);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="comment">// Use std::function to take advantage of the type erasure</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="comment">// so we can still hide implementation within pimpl</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="comment">// This also makes sure that the binder signature is compliant</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    std::function&lt;void()&gt; target = binder;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aa6e96c47c6414247fc6b38190ae624bb">Init</a>(std::move(target));</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  }</div>
+</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a15554a27966bf5f3de1e7236d83fa2de">   83</a></span>  <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a15554a27966bf5f3de1e7236d83fa2de">~WindowsThread</a>();</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a24058417dcbad74a1fbff281ffaf598d">   85</a></span>  <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a24058417dcbad74a1fbff281ffaf598d">WindowsThread</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aef0b50214f87d6380114f1a28ea7edca">   87</a></span>  <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a>&amp; <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aef0b50214f87d6380114f1a28ea7edca">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a7f1bc243860cb9e2092ab95e992ae4e3">   89</a></span>  <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a7f1bc243860cb9e2092ab95e992ae4e3">WindowsThread</a>(<a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a>&amp;&amp;) noexcept;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aa3769c10e9cf6b0003b49b04b6f37440">   91</a></span>  <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a>&amp; operator=(<a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a>&amp;&amp;) noexcept;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#ab41b20ba51cd24b7921aa2385bfd02d8">   93</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#ab41b20ba51cd24b7921aa2385bfd02d8">joinable</a>() const;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aeb52dca2b02b327fd049fd6d49235693">   95</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aeb52dca2b02b327fd049fd6d49235693">get_id</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a402eaf365969fe70c246758914517348">th_id_</a>; }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a8ef6a984cbb5f82a19c343e0f8a0c93a">   97</a></span>  <a class="code hl_typedef" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a8112b016662dbd27b93fccd6dacdb1ae">native_handle_type</a> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a8ef6a984cbb5f82a19c343e0f8a0c93a">native_handle</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#ae8a45afeb7dc810e908696b1bef6b1ef">   99</a></span>  <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#ae8a45afeb7dc810e908696b1bef6b1ef">hardware_concurrency</a>();</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a17db7ce7c70e26362109ced0695e1a9c">  101</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a17db7ce7c70e26362109ced0695e1a9c">join</a>();</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a7513881715e47503b21a924f44ea3a41">  103</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a7513881715e47503b21a924f44ea3a41">detach</a>();</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a50b0a9ca1a24b0cc160d5c2afac685b5">  105</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a50b0a9ca1a24b0cc160d5c2afac685b5">swap</a>(<a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">WindowsThread</a>&amp;);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>};</div>
+</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}  <span class="comment">// namespace port</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../d8/dcc/namespacestd.html">  110</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a> {</div>
+<div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">  111</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">swap</a>(ROCKSDB_NAMESPACE::port::WindowsThread&amp; th1,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                 ROCKSDB_NAMESPACE::port::WindowsThread&amp; th2) {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  th1.<a class="code hl_function" href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a50b0a9ca1a24b0cc160d5c2afac685b5">swap</a>(th2);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>}</div>
+</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>}  <span class="comment">// namespace std</span></div>
+</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#endif  </span><span class="comment">// !_POSIX_THREADS</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a15554a27966bf5f3de1e7236d83fa2de"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a15554a27966bf5f3de1e7236d83fa2de">ROCKSDB_NAMESPACE::port::WindowsThread::~WindowsThread</a></div><div class="ttdeci">~WindowsThread()</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a17db7ce7c70e26362109ced0695e1a9c"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a17db7ce7c70e26362109ced0695e1a9c">ROCKSDB_NAMESPACE::port::WindowsThread::join</a></div><div class="ttdeci">void join()</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a1911fa8b4ab30ca2f2d1fe758fe1ea91"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a1911fa8b4ab30ca2f2d1fe758fe1ea91">ROCKSDB_NAMESPACE::port::WindowsThread::data_</a></div><div class="ttdeci">std::shared_ptr&lt; Data &gt; data_</div><div class="ttdef"><b>Definition</b> <a href="#l00034">win_thread.h:34</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a24058417dcbad74a1fbff281ffaf598d"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a24058417dcbad74a1fbff281ffaf598d">ROCKSDB_NAMESPACE::port::WindowsThread::WindowsThread</a></div><div class="ttdeci">WindowsThread(const WindowsThread &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a402eaf365969fe70c246758914517348"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a402eaf365969fe70c246758914517348">ROCKSDB_NAMESPACE::port::WindowsThread::th_id_</a></div><div class="ttdeci">unsigned int th_id_</div><div class="ttdef"><b>Definition</b> <a href="#l00035">win_thread.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a50b0a9ca1a24b0cc160d5c2afac685b5"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a50b0a9ca1a24b0cc160d5c2afac685b5">ROCKSDB_NAMESPACE::port::WindowsThread::swap</a></div><div class="ttdeci">void swap(WindowsThread &amp;)</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a636af4542dc00a20646c2167177d38dc"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a636af4542dc00a20646c2167177d38dc">ROCKSDB_NAMESPACE::port::WindowsThread::WindowsThread</a></div><div class="ttdeci">WindowsThread()</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a7513881715e47503b21a924f44ea3a41"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a7513881715e47503b21a924f44ea3a41">ROCKSDB_NAMESPACE::port::WindowsThread::detach</a></div><div class="ttdeci">bool detach()</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a76653e4e0f194006d8f9cee518ae9538"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a76653e4e0f194006d8f9cee518ae9538">ROCKSDB_NAMESPACE::port::WindowsThread::WindowsThread</a></div><div class="ttdeci">WindowsThread(Fn &amp;&amp;fx, Args &amp;&amp;... ax)</div><div class="ttdef"><b>Definition</b> <a href="#l00072">win_thread.h:72</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a7f1bc243860cb9e2092ab95e992ae4e3"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a7f1bc243860cb9e2092ab95e992ae4e3">ROCKSDB_NAMESPACE::port::WindowsThread::WindowsThread</a></div><div class="ttdeci">WindowsThread(WindowsThread &amp;&amp;) noexcept</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a8112b016662dbd27b93fccd6dacdb1ae"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a8112b016662dbd27b93fccd6dacdb1ae">ROCKSDB_NAMESPACE::port::WindowsThread::native_handle_type</a></div><div class="ttdeci">void * native_handle_type</div><div class="ttdef"><b>Definition</b> <a href="#l00040">win_thread.h:40</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_a8ef6a984cbb5f82a19c343e0f8a0c93a"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#a8ef6a984cbb5f82a19c343e0f8a0c93a">ROCKSDB_NAMESPACE::port::WindowsThread::native_handle</a></div><div class="ttdeci">native_handle_type native_handle() const</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_aa6e96c47c6414247fc6b38190ae624bb"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aa6e96c47c6414247fc6b38190ae624bb">ROCKSDB_NAMESPACE::port::WindowsThread::Init</a></div><div class="ttdeci">void Init(std::function&lt; void()&gt; &amp;&amp;)</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_ab41b20ba51cd24b7921aa2385bfd02d8"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#ab41b20ba51cd24b7921aa2385bfd02d8">ROCKSDB_NAMESPACE::port::WindowsThread::joinable</a></div><div class="ttdeci">bool joinable() const</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_ae8a45afeb7dc810e908696b1bef6b1ef"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#ae8a45afeb7dc810e908696b1bef6b1ef">ROCKSDB_NAMESPACE::port::WindowsThread::hardware_concurrency</a></div><div class="ttdeci">static unsigned hardware_concurrency()</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_aeb52dca2b02b327fd049fd6d49235693"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aeb52dca2b02b327fd049fd6d49235693">ROCKSDB_NAMESPACE::port::WindowsThread::get_id</a></div><div class="ttdeci">unsigned int get_id() const</div><div class="ttdef"><b>Definition</b> <a href="#l00095">win_thread.h:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1WindowsThread_html_aef0b50214f87d6380114f1a28ea7edca"><div class="ttname"><a href="../../dd/dde/classROCKSDB__NAMESPACE_1_1port_1_1WindowsThread.html#aef0b50214f87d6380114f1a28ea7edca">ROCKSDB_NAMESPACE::port::WindowsThread::operator=</a></div><div class="ttdeci">WindowsThread &amp; operator=(const WindowsThread &amp;)=delete</div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html">ROCKSDB_NAMESPACE::port</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/d32/port__defs_8h_source.html#l00015">port_defs.h:15</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="anamespacestd_html_ae634fddc996b9fd1d88a852ef8a90ca3"><div class="ttname"><a href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a></div><div class="ttdeci">void swap(ROCKSDB_NAMESPACE::port::WindowsThread &amp;th1, ROCKSDB_NAMESPACE::port::WindowsThread &amp;th2)</div><div class="ttdef"><b>Definition</b> <a href="#l00111">win_thread.h:111</a></div></div>
+<div class="ttc" id="arocksdb__namespace_8h_html"><div class="ttname"><a href="../../da/df5/rocksdb__namespace_8h.html">rocksdb_namespace.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1aligned__storage_html"><div class="ttname"><a href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">ROCKSDB_NAMESPACE::type</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_651562d8bf6cfd3e81eff5b570d7df50.html">port</a></li><li class="navelem"><a class="el" href="../../dir_76616454d8f6d998392a7d439283050d.html">win</a></li><li class="navelem"><a class="el" href="../../d4/d78/win__thread_8h.html">win_thread.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

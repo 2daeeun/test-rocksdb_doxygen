@@ -1,0 +1,596 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/cassandra/format.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d5/d1c/utilities_2cassandra_2format_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">format.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d5/d1c/utilities_2cassandra_2format_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2017-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d21/utilities_2cassandra_2format_8h.html">format.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d9d/serialize_8h.html">utilities/cassandra/serialize.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html">ROCKSDB_NAMESPACE::cassandra</a> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span>{</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">const</span> int32_t kDefaultLocalDeletionTime = std::numeric_limits&lt;int32_t&gt;::max();</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">const</span> int64_t kDefaultMarkedForDeleteAt = std::numeric_limits&lt;int64_t&gt;::min();</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}  <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a6c76620bc662b32b25e0cffdd813562a">   20</a></span><a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a6c76620bc662b32b25e0cffdd813562a">ColumnBase::ColumnBase</a>(int8_t mask, int8_t index)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    : <a class="code hl_variable" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#abdcc3c8d9cb89884506a22358f31a7cd">mask_</a>(mask), <a class="code hl_variable" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad0730381b6bbac8618af13b6d700986f">index_</a>(index) {}</div>
+</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a98c944f6e7033d0bd19376cb3b9e1ad4">   23</a></span>std::size_t <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a98c944f6e7033d0bd19376cb3b9e1ad4">ColumnBase::Size</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#abdcc3c8d9cb89884506a22358f31a7cd">mask_</a>) + <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad0730381b6bbac8618af13b6d700986f">index_</a>); }</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad1d8b54e262d49260708da5711d752c6">   25</a></span>int8_t <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad1d8b54e262d49260708da5711d752c6">ColumnBase::Mask</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#abdcc3c8d9cb89884506a22358f31a7cd">mask_</a>; }</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a6ae654a4d53cb350004a03dfad95e086">   27</a></span>int8_t <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a6ae654a4d53cb350004a03dfad95e086">ColumnBase::Index</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad0730381b6bbac8618af13b6d700986f">index_</a>; }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a133109f93ce19c8cb8102da34b000c9b">   29</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a133109f93ce19c8cb8102da34b000c9b">ColumnBase::Serialize</a>(std::string* dest)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  ROCKSDB_NAMESPACE::cassandra::Serialize&lt;int8_t&gt;(<a class="code hl_variable" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#abdcc3c8d9cb89884506a22358f31a7cd">mask_</a>, dest);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  ROCKSDB_NAMESPACE::cassandra::Serialize&lt;int8_t&gt;(<a class="code hl_variable" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad0730381b6bbac8618af13b6d700986f">index_</a>, dest);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
+</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad11b69cf267d4bc7f4fa32bbfbf8c558">   34</a></span>std::shared_ptr&lt;ColumnBase&gt; <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad11b69cf267d4bc7f4fa32bbfbf8c558">ColumnBase::Deserialize</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* src,</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                                                    std::size_t offset) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  int8_t mask = ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int8_t&gt;(src, offset);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">if</span> ((mask &amp; <a class="code hl_enumvalue" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a1bfd570948f30451efe3ca610769731baf6257c12a6d7bcffcb70d370152d578e">ColumnTypeMask::DELETION_MASK</a>) != 0) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#aac0f5503358594a94f788404189e6662">Tombstone::Deserialize</a>(src, offset);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((mask &amp; <a class="code hl_enumvalue" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a1bfd570948f30451efe3ca610769731ba1a106047a20d29e32d7f706c959cf69c">ColumnTypeMask::EXPIRATION_MASK</a>) != 0) {</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a0085a55e80cb613a12f5a129ea814140">ExpiringColumn::Deserialize</a>(src, offset);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#ad44665beceda3d7af96baebbda0cf2dd">Column::Deserialize</a>(src, offset);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
+</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#aba83e9584315f7ed1f4b312efbb41424">   46</a></span><a class="code hl_function" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#aba83e9584315f7ed1f4b312efbb41424">Column::Column</a>(int8_t mask, int8_t index, int64_t timestamp, int32_t value_size,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>               <span class="keyword">const</span> <span class="keywordtype">char</span>* value)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    : <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a6c76620bc662b32b25e0cffdd813562a">ColumnBase</a>(mask, index),</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a783314ab9f2f7193710169c5865d8b76">timestamp_</a>(timestamp),</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      <a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#ac8cd892f8fd9dc21002e0c47f86b21f3">value_size_</a>(value_size),</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a552d47f861ccee1b4d2cb5803238d150">value_</a>(value) {}</div>
+</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a70954c4b382735a7fdf6daea166406e7">   53</a></span>int64_t <a class="code hl_function" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a70954c4b382735a7fdf6daea166406e7">Column::Timestamp</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a783314ab9f2f7193710169c5865d8b76">timestamp_</a>; }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a7e79e2509c9f39b810ed7a8eac41afa0">   55</a></span>std::size_t <a class="code hl_function" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a7e79e2509c9f39b810ed7a8eac41afa0">Column::Size</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a98c944f6e7033d0bd19376cb3b9e1ad4">ColumnBase::Size</a>() + <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a783314ab9f2f7193710169c5865d8b76">timestamp_</a>) + <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#ac8cd892f8fd9dc21002e0c47f86b21f3">value_size_</a>) +</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>         <a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#ac8cd892f8fd9dc21002e0c47f86b21f3">value_size_</a>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
+</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a2a1384f99b4e7fb62348fb53bf56db58">   60</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a2a1384f99b4e7fb62348fb53bf56db58">Column::Serialize</a>(std::string* dest)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a133109f93ce19c8cb8102da34b000c9b">ColumnBase::Serialize</a>(dest);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  ROCKSDB_NAMESPACE::cassandra::Serialize&lt;int64_t&gt;(<a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a783314ab9f2f7193710169c5865d8b76">timestamp_</a>, dest);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  ROCKSDB_NAMESPACE::cassandra::Serialize&lt;int32_t&gt;(<a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#ac8cd892f8fd9dc21002e0c47f86b21f3">value_size_</a>, dest);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  dest-&gt;append(<a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a552d47f861ccee1b4d2cb5803238d150">value_</a>, <a class="code hl_variable" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#ac8cd892f8fd9dc21002e0c47f86b21f3">value_size_</a>);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#ad44665beceda3d7af96baebbda0cf2dd">   67</a></span>std::shared_ptr&lt;Column&gt; <a class="code hl_function" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#ad44665beceda3d7af96baebbda0cf2dd">Column::Deserialize</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* src,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                                            std::size_t offset) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  int8_t mask = ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int8_t&gt;(src, offset);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  offset += <span class="keyword">sizeof</span>(mask);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  int8_t index = ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int8_t&gt;(src, offset);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  offset += <span class="keyword">sizeof</span>(index);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  int64_t timestamp =</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int64_t&gt;(src, offset);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  offset += <span class="keyword">sizeof</span>(timestamp);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  int32_t value_size =</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>      ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int32_t&gt;(src, offset);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  offset += <span class="keyword">sizeof</span>(value_size);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">return</span> std::make_shared&lt;Column&gt;(mask, index, timestamp, value_size,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                                  src + offset);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
+</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ae2b0f2f678805a1447f11e35e83dfdaa">   83</a></span><a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ae2b0f2f678805a1447f11e35e83dfdaa">ExpiringColumn::ExpiringColumn</a>(int8_t mask, int8_t index, int64_t timestamp,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                               int32_t value_size, <span class="keyword">const</span> <span class="keywordtype">char</span>* value,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                               int32_t ttl)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    : <a class="code hl_function" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#aba83e9584315f7ed1f4b312efbb41424">Column</a>(mask, index, timestamp, value_size, value), <a class="code hl_variable" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ae7bdb2dfd026a5b45bde338b40c5f735">ttl_</a>(ttl) {}</div>
+</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ad91f61abc91be6b9e9512df69e275914">   88</a></span>std::size_t <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ad91f61abc91be6b9e9512df69e275914">ExpiringColumn::Size</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a7e79e2509c9f39b810ed7a8eac41afa0">Column::Size</a>() + <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ae7bdb2dfd026a5b45bde338b40c5f735">ttl_</a>);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>}</div>
+</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ab5628e38f97a0d01f9542d535ea2ca7c">   92</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ab5628e38f97a0d01f9542d535ea2ca7c">ExpiringColumn::Serialize</a>(std::string* dest)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <a class="code hl_function" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a2a1384f99b4e7fb62348fb53bf56db58">Column::Serialize</a>(dest);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  ROCKSDB_NAMESPACE::cassandra::Serialize&lt;int32_t&gt;(<a class="code hl_variable" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ae7bdb2dfd026a5b45bde338b40c5f735">ttl_</a>, dest);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>}</div>
+</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a1e0b9cf81a4f6177f6bfe7ea4944b2fe">   97</a></span>std::chrono::time_point&lt;std::chrono::system_clock&gt; <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a1e0b9cf81a4f6177f6bfe7ea4944b2fe">ExpiringColumn::TimePoint</a>()<span class="keyword"></span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="keyword">    const </span>{</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">return</span> std::chrono::time_point&lt;std::chrono::system_clock&gt;(</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      std::chrono::microseconds(<a class="code hl_function" href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a70954c4b382735a7fdf6daea166406e7">Timestamp</a>()));</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>}</div>
+</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a0cca128a6da42602cd1ad59731a8604c">  103</a></span>std::chrono::seconds <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a0cca128a6da42602cd1ad59731a8604c">ExpiringColumn::Ttl</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keywordflow">return</span> std::chrono::seconds(<a class="code hl_variable" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ae7bdb2dfd026a5b45bde338b40c5f735">ttl_</a>);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}</div>
+</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ac17b59cd8054a92440e12f641b0d0f55">  107</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ac17b59cd8054a92440e12f641b0d0f55">ExpiringColumn::Expired</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a1e0b9cf81a4f6177f6bfe7ea4944b2fe">TimePoint</a>() + <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a0cca128a6da42602cd1ad59731a8604c">Ttl</a>() &lt; std::chrono::system_clock::now();</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>}</div>
+</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a2e89087d9f815c7394ce8900cedd887f">  111</a></span>std::shared_ptr&lt;Tombstone&gt; <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a2e89087d9f815c7394ce8900cedd887f">ExpiringColumn::ToTombstone</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keyword">auto</span> expired_at = (<a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a1e0b9cf81a4f6177f6bfe7ea4944b2fe">TimePoint</a>() + <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a0cca128a6da42602cd1ad59731a8604c">Ttl</a>()).time_since_epoch();</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  int32_t local_deletion_time = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      std::chrono::duration_cast&lt;std::chrono::seconds&gt;(expired_at).count());</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  int64_t marked_for_delete_at =</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(expired_at).count();</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keywordflow">return</span> std::make_shared&lt;Tombstone&gt;(</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a1bfd570948f30451efe3ca610769731baf6257c12a6d7bcffcb70d370152d578e">ColumnTypeMask::DELETION_MASK</a>), <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a6ae654a4d53cb350004a03dfad95e086">Index</a>(),</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      local_deletion_time, marked_for_delete_at);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>}</div>
+</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="foldopen" id="foldopen00122" data-start="{" data-end="}">
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a0085a55e80cb613a12f5a129ea814140">  122</a></span>std::shared_ptr&lt;ExpiringColumn&gt; <a class="code hl_function" href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a0085a55e80cb613a12f5a129ea814140">ExpiringColumn::Deserialize</a>(</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* src, std::size_t offset) {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  int8_t mask = ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int8_t&gt;(src, offset);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  offset += <span class="keyword">sizeof</span>(mask);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  int8_t index = ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int8_t&gt;(src, offset);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  offset += <span class="keyword">sizeof</span>(index);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  int64_t timestamp =</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>      ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int64_t&gt;(src, offset);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  offset += <span class="keyword">sizeof</span>(timestamp);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  int32_t value_size =</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int32_t&gt;(src, offset);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  offset += <span class="keyword">sizeof</span>(value_size);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* value = src + offset;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  offset += value_size;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  int32_t ttl = ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int32_t&gt;(src, offset);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="keywordflow">return</span> std::make_shared&lt;ExpiringColumn&gt;(mask, index, timestamp, value_size,</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                                          value, ttl);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>}</div>
+</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="foldopen" id="foldopen00141" data-start="{" data-end="}">
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#adf10931b91261327f3a58de2e853a806">  141</a></span><a class="code hl_function" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#adf10931b91261327f3a58de2e853a806">Tombstone::Tombstone</a>(int8_t mask, int8_t index, int32_t local_deletion_time,</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                     int64_t marked_for_delete_at)</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    : <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a6c76620bc662b32b25e0cffdd813562a">ColumnBase</a>(mask, index),</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>      <a class="code hl_variable" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#af97f22e55d965298a670b03b651e4338">local_deletion_time_</a>(local_deletion_time),</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>      <a class="code hl_variable" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a5be671ca36d6c4e30111a678eb473836">marked_for_delete_at_</a>(marked_for_delete_at) {}</div>
+</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#ab63c2e6fda0595f30103d587b51f288c">  147</a></span>int64_t <a class="code hl_function" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#ab63c2e6fda0595f30103d587b51f288c">Tombstone::Timestamp</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a5be671ca36d6c4e30111a678eb473836">marked_for_delete_at_</a>; }</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="foldopen" id="foldopen00149" data-start="{" data-end="}">
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a4873d42a3055a4a0877760cca51fc3cc">  149</a></span>std::size_t <a class="code hl_function" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a4873d42a3055a4a0877760cca51fc3cc">Tombstone::Size</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a98c944f6e7033d0bd19376cb3b9e1ad4">ColumnBase::Size</a>() + <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#af97f22e55d965298a670b03b651e4338">local_deletion_time_</a>) +</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>         <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a5be671ca36d6c4e30111a678eb473836">marked_for_delete_at_</a>);</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>}</div>
+</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="foldopen" id="foldopen00154" data-start="{" data-end="}">
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a15cfb9cffc1bab8afd0c407f97028b9d">  154</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a15cfb9cffc1bab8afd0c407f97028b9d">Tombstone::Serialize</a>(std::string* dest)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a133109f93ce19c8cb8102da34b000c9b">ColumnBase::Serialize</a>(dest);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  ROCKSDB_NAMESPACE::cassandra::Serialize&lt;int32_t&gt;(<a class="code hl_variable" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#af97f22e55d965298a670b03b651e4338">local_deletion_time_</a>, dest);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  ROCKSDB_NAMESPACE::cassandra::Serialize&lt;int64_t&gt;(<a class="code hl_variable" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a5be671ca36d6c4e30111a678eb473836">marked_for_delete_at_</a>, dest);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>}</div>
+</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="foldopen" id="foldopen00160" data-start="{" data-end="}">
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a2d96b01c929fec51f5227cea0b860284">  160</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a2d96b01c929fec51f5227cea0b860284">Tombstone::Collectable</a>(int32_t gc_grace_period_in_seconds)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="keyword">auto</span> local_deleted_at = std::chrono::time_point&lt;std::chrono::system_clock&gt;(</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      std::chrono::seconds(<a class="code hl_variable" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#af97f22e55d965298a670b03b651e4338">local_deletion_time_</a>));</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="keyword">auto</span> gc_grace_period = std::chrono::seconds(gc_grace_period_in_seconds);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="keywordflow">return</span> local_deleted_at + gc_grace_period &lt; std::chrono::system_clock::now();</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>}</div>
+</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="foldopen" id="foldopen00167" data-start="{" data-end="}">
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#aac0f5503358594a94f788404189e6662">  167</a></span>std::shared_ptr&lt;Tombstone&gt; <a class="code hl_function" href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#aac0f5503358594a94f788404189e6662">Tombstone::Deserialize</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* src,</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>                                                  std::size_t offset) {</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  int8_t mask = ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int8_t&gt;(src, offset);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  offset += <span class="keyword">sizeof</span>(mask);</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  int8_t index = ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int8_t&gt;(src, offset);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  offset += <span class="keyword">sizeof</span>(index);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  int32_t local_deletion_time =</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>      ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int32_t&gt;(src, offset);</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  offset += <span class="keyword">sizeof</span>(int32_t);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  int64_t marked_for_delete_at =</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>      ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int64_t&gt;(src, offset);</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="keywordflow">return</span> std::make_shared&lt;Tombstone&gt;(mask, index, local_deletion_time,</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                                     marked_for_delete_at);</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>}</div>
+</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="foldopen" id="foldopen00182" data-start="{" data-end="}">
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">  182</a></span><a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue::RowValue</a>(int32_t local_deletion_time, int64_t marked_for_delete_at)</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    : <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#afae432d6b3a97c9187bd69971d6b167f">local_deletion_time_</a>(local_deletion_time),</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>      <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#af8f960a030a2a81c5fbea253195ec692">marked_for_delete_at_</a>(marked_for_delete_at),</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>      <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ad165469e915d6e76053f2b94c1210a94">columns_</a>(),</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>      <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#adb086fdf3a352c6676817cb051405010">last_modified_time_</a>(0) {}</div>
+</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="foldopen" id="foldopen00188" data-start="{" data-end="}">
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a836c61e6e89fcdbfb6ac8b227a3a8403">  188</a></span><a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue::RowValue</a>(<a class="code hl_typedef" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#ae67c4dd8d74c0670e92b8bae16a6d26e">Columns</a> columns, int64_t last_modified_time)</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    : <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#afae432d6b3a97c9187bd69971d6b167f">local_deletion_time_</a>(kDefaultLocalDeletionTime),</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>      <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#af8f960a030a2a81c5fbea253195ec692">marked_for_delete_at_</a>(kDefaultMarkedForDeleteAt),</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>      <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ad165469e915d6e76053f2b94c1210a94">columns_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(columns)),</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>      <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#adb086fdf3a352c6676817cb051405010">last_modified_time_</a>(last_modified_time) {}</div>
+</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="foldopen" id="foldopen00194" data-start="{" data-end="}">
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a76389fedcc64239413c9bceb39ede20d">  194</a></span>std::size_t <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a76389fedcc64239413c9bceb39ede20d">RowValue::Size</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  std::size_t size =</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#afae432d6b3a97c9187bd69971d6b167f">local_deletion_time_</a>) + <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#af8f960a030a2a81c5fbea253195ec692">marked_for_delete_at_</a>);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; column : <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ad165469e915d6e76053f2b94c1210a94">columns_</a>) {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    size += column-&gt;Size();</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  }</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keywordflow">return</span> size;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>}</div>
+</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="foldopen" id="foldopen00203" data-start="{" data-end="}">
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a0c74f47ee75e051bc310d04eccb7cc34">  203</a></span>int64_t <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a0c74f47ee75e051bc310d04eccb7cc34">RowValue::LastModifiedTime</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a65a500f6e09ea6462104ed5d5160ec8d">IsTombstone</a>()) {</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#af8f960a030a2a81c5fbea253195ec692">marked_for_delete_at_</a>;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#adb086fdf3a352c6676817cb051405010">last_modified_time_</a>;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  }</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>}</div>
+</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="foldopen" id="foldopen00211" data-start="{" data-end="}">
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a65a500f6e09ea6462104ed5d5160ec8d">  211</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a65a500f6e09ea6462104ed5d5160ec8d">RowValue::IsTombstone</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#af8f960a030a2a81c5fbea253195ec692">marked_for_delete_at_</a> &gt; kDefaultMarkedForDeleteAt;</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>}</div>
+</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
+<div class="foldopen" id="foldopen00215" data-start="{" data-end="}">
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a6694a40de02601c50dc84eb67ef81e53">  215</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a6694a40de02601c50dc84eb67ef81e53">RowValue::Serialize</a>(std::string* dest)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  ROCKSDB_NAMESPACE::cassandra::Serialize&lt;int32_t&gt;(<a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#afae432d6b3a97c9187bd69971d6b167f">local_deletion_time_</a>, dest);</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  ROCKSDB_NAMESPACE::cassandra::Serialize&lt;int64_t&gt;(<a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#af8f960a030a2a81c5fbea253195ec692">marked_for_delete_at_</a>, dest);</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; column : <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ad165469e915d6e76053f2b94c1210a94">columns_</a>) {</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    column-&gt;Serialize(dest);</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  }</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>}</div>
+</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
+<div class="foldopen" id="foldopen00223" data-start="{" data-end="}">
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a8e5b1175b25787a3f7954f871ddb1c6c">  223</a></span><a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a8e5b1175b25787a3f7954f871ddb1c6c">RowValue::RemoveExpiredColumns</a>(<span class="keywordtype">bool</span>* changed)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  *changed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  <a class="code hl_typedef" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#ae67c4dd8d74c0670e92b8bae16a6d26e">Columns</a> new_columns;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; column : <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ad165469e915d6e76053f2b94c1210a94">columns_</a>) {</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="keywordflow">if</span> (column-&gt;Mask() == <a class="code hl_enumvalue" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a1bfd570948f30451efe3ca610769731ba1a106047a20d29e32d7f706c959cf69c">ColumnTypeMask::EXPIRATION_MASK</a>) {</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>      std::shared_ptr&lt;ExpiringColumn&gt; expiring_column =</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>          std::static_pointer_cast&lt;ExpiringColumn&gt;(column);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>      <span class="keywordflow">if</span> (expiring_column-&gt;Expired()) {</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        *changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>      }</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    }</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    new_columns.push_back(column);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  }</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a>(std::move(new_columns), <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#adb086fdf3a352c6676817cb051405010">last_modified_time_</a>);</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>}</div>
+</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="foldopen" id="foldopen00242" data-start="{" data-end="}">
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#aed2e5dfe242a9102bb660f3c3831731c">  242</a></span><a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#aed2e5dfe242a9102bb660f3c3831731c">RowValue::ConvertExpiredColumnsToTombstones</a>(<span class="keywordtype">bool</span>* changed)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  *changed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  <a class="code hl_typedef" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#ae67c4dd8d74c0670e92b8bae16a6d26e">Columns</a> new_columns;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; column : <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ad165469e915d6e76053f2b94c1210a94">columns_</a>) {</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="keywordflow">if</span> (column-&gt;Mask() == <a class="code hl_enumvalue" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a1bfd570948f30451efe3ca610769731ba1a106047a20d29e32d7f706c959cf69c">ColumnTypeMask::EXPIRATION_MASK</a>) {</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>      std::shared_ptr&lt;ExpiringColumn&gt; expiring_column =</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>          std::static_pointer_cast&lt;ExpiringColumn&gt;(column);</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>      <span class="keywordflow">if</span> (expiring_column-&gt;Expired()) {</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        std::shared_ptr&lt;Tombstone&gt; tombstone = expiring_column-&gt;ToTombstone();</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        new_columns.push_back(tombstone);</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        *changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>      }</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    }</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    new_columns.push_back(column);</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  }</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a>(std::move(new_columns), <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#adb086fdf3a352c6676817cb051405010">last_modified_time_</a>);</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>}</div>
+</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
+<div class="foldopen" id="foldopen00262" data-start="{" data-end="}">
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ae47d05a3f818a76b35dc9088a904eb6d">  262</a></span><a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ae47d05a3f818a76b35dc9088a904eb6d">RowValue::RemoveTombstones</a>(int32_t gc_grace_period)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <a class="code hl_typedef" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#ae67c4dd8d74c0670e92b8bae16a6d26e">Columns</a> new_columns;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; column : <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ad165469e915d6e76053f2b94c1210a94">columns_</a>) {</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <span class="keywordflow">if</span> (column-&gt;Mask() == <a class="code hl_enumvalue" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a1bfd570948f30451efe3ca610769731baf6257c12a6d7bcffcb70d370152d578e">ColumnTypeMask::DELETION_MASK</a>) {</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>      std::shared_ptr&lt;Tombstone&gt; tombstone =</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>          std::static_pointer_cast&lt;Tombstone&gt;(column);</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>      <span class="keywordflow">if</span> (tombstone-&gt;Collectable(gc_grace_period)) {</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>      }</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    }</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    new_columns.push_back(column);</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  }</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a>(std::move(new_columns), <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#adb086fdf3a352c6676817cb051405010">last_modified_time_</a>);</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>}</div>
+</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a16710e26bbc90a22bbb7a7e1831d81d6">  279</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a16710e26bbc90a22bbb7a7e1831d81d6">RowValue::Empty</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ad165469e915d6e76053f2b94c1210a94">columns_</a>.empty(); }</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
+<div class="foldopen" id="foldopen00281" data-start="{" data-end="}">
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a826eb5363ed1cc7e892305b615a1d184">  281</a></span><a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a826eb5363ed1cc7e892305b615a1d184">RowValue::Deserialize</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* src, std::size_t size) {</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  std::size_t offset = 0;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  assert(size &gt;= <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#afae432d6b3a97c9187bd69971d6b167f">local_deletion_time_</a>) + <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#af8f960a030a2a81c5fbea253195ec692">marked_for_delete_at_</a>));</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  int32_t local_deletion_time =</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>      ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int32_t&gt;(src, offset);</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  offset += <span class="keyword">sizeof</span>(int32_t);</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  int64_t marked_for_delete_at =</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>      ROCKSDB_NAMESPACE::cassandra::Deserialize&lt;int64_t&gt;(src, offset);</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  offset += <span class="keyword">sizeof</span>(int64_t);</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  <span class="keywordflow">if</span> (offset == size) {</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a>(local_deletion_time, marked_for_delete_at);</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  }</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  assert(local_deletion_time == kDefaultLocalDeletionTime);</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  assert(marked_for_delete_at == kDefaultMarkedForDeleteAt);</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <a class="code hl_typedef" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#ae67c4dd8d74c0670e92b8bae16a6d26e">Columns</a> columns;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  int64_t last_modified_time = 0;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  <span class="keywordflow">while</span> (offset &lt; size) {</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <span class="keyword">auto</span> c = <a class="code hl_function" href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad11b69cf267d4bc7f4fa32bbfbf8c558">ColumnBase::Deserialize</a>(src, offset);</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    offset += c-&gt;Size();</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    assert(offset &lt;= size);</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    last_modified_time = std::max(last_modified_time, c-&gt;Timestamp());</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    columns.push_back(std::move(c));</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  }</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a>(std::move(columns), last_modified_time);</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>}</div>
+</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="comment">// Merge multiple row values into one.</span></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="comment">// For each column in rows with same index, we pick the one with latest</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span><span class="comment">// timestamp. And we also take row tombstone into consideration, by iterating</span></div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span><span class="comment">// each row from reverse timestamp order, and stop once we hit the first</span></div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span><span class="comment">// row tombstone.</span></div>
+<div class="foldopen" id="foldopen00314" data-start="{" data-end="}">
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno"><a class="line" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a70feed3a2adc29bfc7d7bc7981f0d62a">  314</a></span><a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a70feed3a2adc29bfc7d7bc7981f0d62a">RowValue::Merge</a>(std::vector&lt;RowValue&gt;&amp;&amp; values) {</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  assert(values.size() &gt; 0);</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  <span class="keywordflow">if</span> (values.size() == 1) {</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>    <span class="keywordflow">return</span> std::move(values[0]);</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  }</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <span class="comment">// Merge columns by their last modified time, and skip once we hit</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  <span class="comment">// a row tombstone.</span></div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  std::sort(values.begin(), values.end(),</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>            [](<span class="keyword">const</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a>&amp; r1, <span class="keyword">const</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a>&amp; r2) {</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>              return r1.LastModifiedTime() &gt; r2.LastModifiedTime();</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>            });</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  std::map&lt;int8_t, std::shared_ptr&lt;ColumnBase&gt;&gt; merged_columns;</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  int64_t tombstone_timestamp = 0;</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; value : values) {</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="keywordflow">if</span> (value.IsTombstone()) {</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>      <span class="keywordflow">if</span> (merged_columns.size() == 0) {</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        <span class="keywordflow">return</span> std::move(value);</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>      }</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>      tombstone_timestamp = value.LastModifiedTime();</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    }</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; column : value.columns_) {</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>      int8_t index = column-&gt;Index();</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>      <span class="keywordflow">if</span> (merged_columns.find(index) == merged_columns.end()) {</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>        merged_columns[index] = column;</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        <span class="keywordflow">if</span> (column-&gt;Timestamp() &gt; merged_columns[index]-&gt;Timestamp()) {</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>          merged_columns[index] = column;</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>        }</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>      }</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    }</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  }</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>  int64_t last_modified_time = 0;</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>  <a class="code hl_typedef" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#ae67c4dd8d74c0670e92b8bae16a6d26e">Columns</a> columns;</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; pair : merged_columns) {</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="comment">// For some row, its last_modified_time &gt; row tombstone_timestamp, but</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    <span class="comment">// it might have rows whose timestamp is ealier than tombstone, so we</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="comment">// ned to filter these rows.</span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    <span class="keywordflow">if</span> (pair.second-&gt;Timestamp() &lt;= tombstone_timestamp) {</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    }</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    last_modified_time = std::max(last_modified_time, pair.second-&gt;Timestamp());</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    columns.push_back(std::move(pair.second));</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  }</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">RowValue</a>(std::move(columns), last_modified_time);</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>}</div>
+</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> </div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE::cassandra</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase_html_a133109f93ce19c8cb8102da34b000c9b"><div class="ttname"><a href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a133109f93ce19c8cb8102da34b000c9b">ROCKSDB_NAMESPACE::cassandra::ColumnBase::Serialize</a></div><div class="ttdeci">virtual void Serialize(std::string *dest) const</div><div class="ttdef"><b>Definition</b> <a href="#l00029">format.cc:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase_html_a6ae654a4d53cb350004a03dfad95e086"><div class="ttname"><a href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a6ae654a4d53cb350004a03dfad95e086">ROCKSDB_NAMESPACE::cassandra::ColumnBase::Index</a></div><div class="ttdeci">virtual int8_t Index() const</div><div class="ttdef"><b>Definition</b> <a href="#l00027">format.cc:27</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase_html_a6c76620bc662b32b25e0cffdd813562a"><div class="ttname"><a href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a6c76620bc662b32b25e0cffdd813562a">ROCKSDB_NAMESPACE::cassandra::ColumnBase::ColumnBase</a></div><div class="ttdeci">ColumnBase(int8_t mask, int8_t index)</div><div class="ttdef"><b>Definition</b> <a href="#l00020">format.cc:20</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase_html_a98c944f6e7033d0bd19376cb3b9e1ad4"><div class="ttname"><a href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#a98c944f6e7033d0bd19376cb3b9e1ad4">ROCKSDB_NAMESPACE::cassandra::ColumnBase::Size</a></div><div class="ttdeci">virtual std::size_t Size() const</div><div class="ttdef"><b>Definition</b> <a href="#l00023">format.cc:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase_html_abdcc3c8d9cb89884506a22358f31a7cd"><div class="ttname"><a href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#abdcc3c8d9cb89884506a22358f31a7cd">ROCKSDB_NAMESPACE::cassandra::ColumnBase::mask_</a></div><div class="ttdeci">int8_t mask_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00088">format.h:88</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase_html_ad0730381b6bbac8618af13b6d700986f"><div class="ttname"><a href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad0730381b6bbac8618af13b6d700986f">ROCKSDB_NAMESPACE::cassandra::ColumnBase::index_</a></div><div class="ttdeci">int8_t index_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00089">format.h:89</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase_html_ad11b69cf267d4bc7f4fa32bbfbf8c558"><div class="ttname"><a href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad11b69cf267d4bc7f4fa32bbfbf8c558">ROCKSDB_NAMESPACE::cassandra::ColumnBase::Deserialize</a></div><div class="ttdeci">static std::shared_ptr&lt; ColumnBase &gt; Deserialize(const char *src, std::size_t offset)</div><div class="ttdef"><b>Definition</b> <a href="#l00034">format.cc:34</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase_html_ad1d8b54e262d49260708da5711d752c6"><div class="ttname"><a href="../../dd/d24/classROCKSDB__NAMESPACE_1_1cassandra_1_1ColumnBase.html#ad1d8b54e262d49260708da5711d752c6">ROCKSDB_NAMESPACE::cassandra::ColumnBase::Mask</a></div><div class="ttdeci">virtual int8_t Mask() const</div><div class="ttdef"><b>Definition</b> <a href="#l00025">format.cc:25</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Column_html_a2a1384f99b4e7fb62348fb53bf56db58"><div class="ttname"><a href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a2a1384f99b4e7fb62348fb53bf56db58">ROCKSDB_NAMESPACE::cassandra::Column::Serialize</a></div><div class="ttdeci">void Serialize(std::string *dest) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00060">format.cc:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Column_html_a552d47f861ccee1b4d2cb5803238d150"><div class="ttname"><a href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a552d47f861ccee1b4d2cb5803238d150">ROCKSDB_NAMESPACE::cassandra::Column::value_</a></div><div class="ttdeci">const char * value_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00106">format.h:106</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Column_html_a70954c4b382735a7fdf6daea166406e7"><div class="ttname"><a href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a70954c4b382735a7fdf6daea166406e7">ROCKSDB_NAMESPACE::cassandra::Column::Timestamp</a></div><div class="ttdeci">int64_t Timestamp() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00053">format.cc:53</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Column_html_a783314ab9f2f7193710169c5865d8b76"><div class="ttname"><a href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a783314ab9f2f7193710169c5865d8b76">ROCKSDB_NAMESPACE::cassandra::Column::timestamp_</a></div><div class="ttdeci">int64_t timestamp_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00104">format.h:104</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Column_html_a7e79e2509c9f39b810ed7a8eac41afa0"><div class="ttname"><a href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#a7e79e2509c9f39b810ed7a8eac41afa0">ROCKSDB_NAMESPACE::cassandra::Column::Size</a></div><div class="ttdeci">std::size_t Size() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00055">format.cc:55</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Column_html_aba83e9584315f7ed1f4b312efbb41424"><div class="ttname"><a href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#aba83e9584315f7ed1f4b312efbb41424">ROCKSDB_NAMESPACE::cassandra::Column::Column</a></div><div class="ttdeci">Column(int8_t mask, int8_t index, int64_t timestamp, int32_t value_size, const char *value)</div><div class="ttdef"><b>Definition</b> <a href="#l00046">format.cc:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Column_html_ac8cd892f8fd9dc21002e0c47f86b21f3"><div class="ttname"><a href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#ac8cd892f8fd9dc21002e0c47f86b21f3">ROCKSDB_NAMESPACE::cassandra::Column::value_size_</a></div><div class="ttdeci">int32_t value_size_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00105">format.h:105</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Column_html_ad44665beceda3d7af96baebbda0cf2dd"><div class="ttname"><a href="../../de/df6/classROCKSDB__NAMESPACE_1_1cassandra_1_1Column.html#ad44665beceda3d7af96baebbda0cf2dd">ROCKSDB_NAMESPACE::cassandra::Column::Deserialize</a></div><div class="ttdeci">static std::shared_ptr&lt; Column &gt; Deserialize(const char *src, std::size_t offset)</div><div class="ttdef"><b>Definition</b> <a href="#l00067">format.cc:67</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn_html_a0085a55e80cb613a12f5a129ea814140"><div class="ttname"><a href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a0085a55e80cb613a12f5a129ea814140">ROCKSDB_NAMESPACE::cassandra::ExpiringColumn::Deserialize</a></div><div class="ttdeci">static std::shared_ptr&lt; ExpiringColumn &gt; Deserialize(const char *src, std::size_t offset)</div><div class="ttdef"><b>Definition</b> <a href="#l00122">format.cc:122</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn_html_a0cca128a6da42602cd1ad59731a8604c"><div class="ttname"><a href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a0cca128a6da42602cd1ad59731a8604c">ROCKSDB_NAMESPACE::cassandra::ExpiringColumn::Ttl</a></div><div class="ttdeci">std::chrono::seconds Ttl() const</div><div class="ttdef"><b>Definition</b> <a href="#l00103">format.cc:103</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn_html_a1e0b9cf81a4f6177f6bfe7ea4944b2fe"><div class="ttname"><a href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a1e0b9cf81a4f6177f6bfe7ea4944b2fe">ROCKSDB_NAMESPACE::cassandra::ExpiringColumn::TimePoint</a></div><div class="ttdeci">std::chrono::time_point&lt; std::chrono::system_clock &gt; TimePoint() const</div><div class="ttdef"><b>Definition</b> <a href="#l00097">format.cc:97</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn_html_a2e89087d9f815c7394ce8900cedd887f"><div class="ttname"><a href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#a2e89087d9f815c7394ce8900cedd887f">ROCKSDB_NAMESPACE::cassandra::ExpiringColumn::ToTombstone</a></div><div class="ttdeci">std::shared_ptr&lt; Tombstone &gt; ToTombstone() const</div><div class="ttdef"><b>Definition</b> <a href="#l00111">format.cc:111</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn_html_ab5628e38f97a0d01f9542d535ea2ca7c"><div class="ttname"><a href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ab5628e38f97a0d01f9542d535ea2ca7c">ROCKSDB_NAMESPACE::cassandra::ExpiringColumn::Serialize</a></div><div class="ttdeci">void Serialize(std::string *dest) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00092">format.cc:92</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn_html_ac17b59cd8054a92440e12f641b0d0f55"><div class="ttname"><a href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ac17b59cd8054a92440e12f641b0d0f55">ROCKSDB_NAMESPACE::cassandra::ExpiringColumn::Expired</a></div><div class="ttdeci">bool Expired() const</div><div class="ttdef"><b>Definition</b> <a href="#l00107">format.cc:107</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn_html_ad91f61abc91be6b9e9512df69e275914"><div class="ttname"><a href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ad91f61abc91be6b9e9512df69e275914">ROCKSDB_NAMESPACE::cassandra::ExpiringColumn::Size</a></div><div class="ttdeci">std::size_t Size() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00088">format.cc:88</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn_html_ae2b0f2f678805a1447f11e35e83dfdaa"><div class="ttname"><a href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ae2b0f2f678805a1447f11e35e83dfdaa">ROCKSDB_NAMESPACE::cassandra::ExpiringColumn::ExpiringColumn</a></div><div class="ttdeci">ExpiringColumn(int8_t mask, int8_t index, int64_t timestamp, int32_t value_size, const char *value, int32_t ttl)</div><div class="ttdef"><b>Definition</b> <a href="#l00083">format.cc:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn_html_ae7bdb2dfd026a5b45bde338b40c5f735"><div class="ttname"><a href="../../d4/ddc/classROCKSDB__NAMESPACE_1_1cassandra_1_1ExpiringColumn.html#ae7bdb2dfd026a5b45bde338b40c5f735">ROCKSDB_NAMESPACE::cassandra::ExpiringColumn::ttl_</a></div><div class="ttdeci">int32_t ttl_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00140">format.h:140</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a0c74f47ee75e051bc310d04eccb7cc34"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a0c74f47ee75e051bc310d04eccb7cc34">ROCKSDB_NAMESPACE::cassandra::RowValue::LastModifiedTime</a></div><div class="ttdeci">int64_t LastModifiedTime() const</div><div class="ttdef"><b>Definition</b> <a href="#l00203">format.cc:203</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a16710e26bbc90a22bbb7a7e1831d81d6"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a16710e26bbc90a22bbb7a7e1831d81d6">ROCKSDB_NAMESPACE::cassandra::RowValue::Empty</a></div><div class="ttdeci">bool Empty() const</div><div class="ttdef"><b>Definition</b> <a href="#l00279">format.cc:279</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a356f3c5e30704310670cb455efacf078"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a356f3c5e30704310670cb455efacf078">ROCKSDB_NAMESPACE::cassandra::RowValue::RowValue</a></div><div class="ttdeci">RowValue(int32_t local_deletion_time, int64_t marked_for_delete_at)</div><div class="ttdef"><b>Definition</b> <a href="#l00182">format.cc:182</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a65a500f6e09ea6462104ed5d5160ec8d"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a65a500f6e09ea6462104ed5d5160ec8d">ROCKSDB_NAMESPACE::cassandra::RowValue::IsTombstone</a></div><div class="ttdeci">bool IsTombstone() const</div><div class="ttdef"><b>Definition</b> <a href="#l00211">format.cc:211</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a6694a40de02601c50dc84eb67ef81e53"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a6694a40de02601c50dc84eb67ef81e53">ROCKSDB_NAMESPACE::cassandra::RowValue::Serialize</a></div><div class="ttdeci">void Serialize(std::string *dest) const</div><div class="ttdef"><b>Definition</b> <a href="#l00215">format.cc:215</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a70feed3a2adc29bfc7d7bc7981f0d62a"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a70feed3a2adc29bfc7d7bc7981f0d62a">ROCKSDB_NAMESPACE::cassandra::RowValue::Merge</a></div><div class="ttdeci">static RowValue Merge(std::vector&lt; RowValue &gt; &amp;&amp;values)</div><div class="ttdef"><b>Definition</b> <a href="#l00314">format.cc:314</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a76389fedcc64239413c9bceb39ede20d"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a76389fedcc64239413c9bceb39ede20d">ROCKSDB_NAMESPACE::cassandra::RowValue::Size</a></div><div class="ttdeci">std::size_t Size() const</div><div class="ttdef"><b>Definition</b> <a href="#l00194">format.cc:194</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a826eb5363ed1cc7e892305b615a1d184"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a826eb5363ed1cc7e892305b615a1d184">ROCKSDB_NAMESPACE::cassandra::RowValue::Deserialize</a></div><div class="ttdeci">static RowValue Deserialize(const char *src, std::size_t size)</div><div class="ttdef"><b>Definition</b> <a href="#l00281">format.cc:281</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a8e5b1175b25787a3f7954f871ddb1c6c"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a8e5b1175b25787a3f7954f871ddb1c6c">ROCKSDB_NAMESPACE::cassandra::RowValue::RemoveExpiredColumns</a></div><div class="ttdeci">RowValue RemoveExpiredColumns(bool *changed) const</div><div class="ttdef"><b>Definition</b> <a href="#l00223">format.cc:223</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_ad165469e915d6e76053f2b94c1210a94"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ad165469e915d6e76053f2b94c1210a94">ROCKSDB_NAMESPACE::cassandra::RowValue::columns_</a></div><div class="ttdeci">Columns columns_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00178">format.h:178</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_adb086fdf3a352c6676817cb051405010"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#adb086fdf3a352c6676817cb051405010">ROCKSDB_NAMESPACE::cassandra::RowValue::last_modified_time_</a></div><div class="ttdeci">int64_t last_modified_time_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00179">format.h:179</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_ae47d05a3f818a76b35dc9088a904eb6d"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ae47d05a3f818a76b35dc9088a904eb6d">ROCKSDB_NAMESPACE::cassandra::RowValue::RemoveTombstones</a></div><div class="ttdeci">RowValue RemoveTombstones(int32_t gc_grace_period) const</div><div class="ttdef"><b>Definition</b> <a href="#l00262">format.cc:262</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_aed2e5dfe242a9102bb660f3c3831731c"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#aed2e5dfe242a9102bb660f3c3831731c">ROCKSDB_NAMESPACE::cassandra::RowValue::ConvertExpiredColumnsToTombstones</a></div><div class="ttdeci">RowValue ConvertExpiredColumnsToTombstones(bool *changed) const</div><div class="ttdef"><b>Definition</b> <a href="#l00242">format.cc:242</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_af8f960a030a2a81c5fbea253195ec692"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#af8f960a030a2a81c5fbea253195ec692">ROCKSDB_NAMESPACE::cassandra::RowValue::marked_for_delete_at_</a></div><div class="ttdeci">int64_t marked_for_delete_at_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00177">format.h:177</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_afae432d6b3a97c9187bd69971d6b167f"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#afae432d6b3a97c9187bd69971d6b167f">ROCKSDB_NAMESPACE::cassandra::RowValue::local_deletion_time_</a></div><div class="ttdeci">int32_t local_deletion_time_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00176">format.h:176</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone_html_a15cfb9cffc1bab8afd0c407f97028b9d"><div class="ttname"><a href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a15cfb9cffc1bab8afd0c407f97028b9d">ROCKSDB_NAMESPACE::cassandra::Tombstone::Serialize</a></div><div class="ttdeci">void Serialize(std::string *dest) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00154">format.cc:154</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone_html_a2d96b01c929fec51f5227cea0b860284"><div class="ttname"><a href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a2d96b01c929fec51f5227cea0b860284">ROCKSDB_NAMESPACE::cassandra::Tombstone::Collectable</a></div><div class="ttdeci">bool Collectable(int32_t gc_grace_period) const</div><div class="ttdef"><b>Definition</b> <a href="#l00160">format.cc:160</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone_html_a4873d42a3055a4a0877760cca51fc3cc"><div class="ttname"><a href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a4873d42a3055a4a0877760cca51fc3cc">ROCKSDB_NAMESPACE::cassandra::Tombstone::Size</a></div><div class="ttdeci">std::size_t Size() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00149">format.cc:149</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone_html_a5be671ca36d6c4e30111a678eb473836"><div class="ttname"><a href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#a5be671ca36d6c4e30111a678eb473836">ROCKSDB_NAMESPACE::cassandra::Tombstone::marked_for_delete_at_</a></div><div class="ttdeci">int64_t marked_for_delete_at_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00123">format.h:123</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone_html_aac0f5503358594a94f788404189e6662"><div class="ttname"><a href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#aac0f5503358594a94f788404189e6662">ROCKSDB_NAMESPACE::cassandra::Tombstone::Deserialize</a></div><div class="ttdeci">static std::shared_ptr&lt; Tombstone &gt; Deserialize(const char *src, std::size_t offset)</div><div class="ttdef"><b>Definition</b> <a href="#l00167">format.cc:167</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone_html_ab63c2e6fda0595f30103d587b51f288c"><div class="ttname"><a href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#ab63c2e6fda0595f30103d587b51f288c">ROCKSDB_NAMESPACE::cassandra::Tombstone::Timestamp</a></div><div class="ttdeci">int64_t Timestamp() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00147">format.cc:147</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone_html_adf10931b91261327f3a58de2e853a806"><div class="ttname"><a href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#adf10931b91261327f3a58de2e853a806">ROCKSDB_NAMESPACE::cassandra::Tombstone::Tombstone</a></div><div class="ttdeci">Tombstone(int8_t mask, int8_t index, int32_t local_deletion_time, int64_t marked_for_delete_at)</div><div class="ttdef"><b>Definition</b> <a href="#l00141">format.cc:141</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone_html_af97f22e55d965298a670b03b651e4338"><div class="ttname"><a href="../../df/dcd/classROCKSDB__NAMESPACE_1_1cassandra_1_1Tombstone.html#af97f22e55d965298a670b03b651e4338">ROCKSDB_NAMESPACE::cassandra::Tombstone::local_deletion_time_</a></div><div class="ttdeci">int32_t local_deletion_time_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00122">format.h:122</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1cassandra_html"><div class="ttname"><a href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html">ROCKSDB_NAMESPACE::cassandra</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/dfc/cassandra__compaction__filter_8cc_source.html#l00016">cassandra_compaction_filter.cc:16</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1cassandra_html_a1bfd570948f30451efe3ca610769731ba1a106047a20d29e32d7f706c959cf69c"><div class="ttname"><a href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a1bfd570948f30451efe3ca610769731ba1a106047a20d29e32d7f706c959cf69c">ROCKSDB_NAMESPACE::cassandra::EXPIRATION_MASK</a></div><div class="ttdeci">@ EXPIRATION_MASK</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00071">format.h:71</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1cassandra_html_a1bfd570948f30451efe3ca610769731baf6257c12a6d7bcffcb70d370152d578e"><div class="ttname"><a href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a1bfd570948f30451efe3ca610769731baf6257c12a6d7bcffcb70d370152d578e">ROCKSDB_NAMESPACE::cassandra::DELETION_MASK</a></div><div class="ttdeci">@ DELETION_MASK</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00070">format.h:70</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1cassandra_html_ae67c4dd8d74c0670e92b8bae16a6d26e"><div class="ttname"><a href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#ae67c4dd8d74c0670e92b8bae16a6d26e">ROCKSDB_NAMESPACE::cassandra::Columns</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; ColumnBase &gt; &gt; Columns</div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00145">format.h:145</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="aserialize_8h_html"><div class="ttname"><a href="../../df/d9d/serialize_8h.html">serialize.h</a></div></div>
+<div class="ttc" id="autilities_2cassandra_2format_8h_html"><div class="ttname"><a href="../../df/d21/utilities_2cassandra_2format_8h.html">format.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_4e4a4610226eb0ef406e45df788976ee.html">cassandra</a></li><li class="navelem"><a class="el" href="../../d5/d1c/utilities_2cassandra_2format_8cc.html">format.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

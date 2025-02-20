@@ -1,0 +1,597 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: util/math128.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d5/d27/math128_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">math128.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d5/d27/math128_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/de8/coding__lean_8h.html">util/coding_lean.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/db1/math_8h.html">util/math.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#ifdef TEST_UINT128_COMPAT</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#undef HAVE_UINT128_EXTENSION</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// Unsigned128 is a 128 bit value supporting (at least) bitwise operators,</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// shifts, and comparisons. __uint128_t is not always available.</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#ifdef HAVE_UINT128_EXTENSION</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">using </span>Unsigned128 = __uint128_t;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#else</span></div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">   23</a></span><span class="keyword">struct </span><a class="code hl_function" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a34de919162ad5d4d62e4d7c5c8e71330">Unsigned128</a> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">   24</a></span>  uint64_t <a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">   25</a></span>  uint64_t <a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a34de919162ad5d4d62e4d7c5c8e71330">   27</a></span>  <span class="keyword">inline</span> <a class="code hl_function" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a34de919162ad5d4d62e4d7c5c8e71330">Unsigned128</a>() {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(<a class="code hl_function" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a34de919162ad5d4d62e4d7c5c8e71330">Unsigned128</a>) == 2 * <span class="keyword">sizeof</span>(uint64_t),</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                  <span class="stringliteral">&quot;unexpected overhead in representation&quot;</span>);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> = 0;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> = 0;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  }</div>
+</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a812613c43341e4e2dd872931c32c3911">   34</a></span>  <span class="keyword">inline</span> <a class="code hl_function" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a812613c43341e4e2dd872931c32c3911">Unsigned128</a>(uint64_t lower) {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> = lower;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> = 0;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
+</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#acb86725f34301dd796e0db74a84c0546">   39</a></span>  <span class="keyword">inline</span> <a class="code hl_function" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#acb86725f34301dd796e0db74a84c0546">Unsigned128</a>(uint64_t lower, uint64_t upper) {</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> = lower;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> = upper;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  }</div>
+</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">// Convert to any integer 64 bits or less.</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_integral_v&lt;T&gt; &amp;&amp;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                                        <span class="keyword">sizeof</span>(T) &lt;= <span class="keyword">sizeof</span>(uint64_t)&gt; &gt;</div>
+<div class="foldopen" id="foldopen00048" data-start="{" data-end="}">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a886b2564132f56cc1c12081c3d8d881a">   48</a></span>  <span class="keyword">explicit</span> <span class="keyword">operator</span> T() {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
+</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
+</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a52370e07808d0b8e05b3140810c136ce">   53</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a140e1a17cda68907c5b700c9e536f970">operator&lt;&lt;</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keywordtype">unsigned</span> shift) {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  shift &amp;= 127;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> rv;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">if</span> (shift &gt;= 64) {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    rv.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> = 0;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    rv.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> = lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> &lt;&lt; (shift &amp; 63);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    uint64_t tmp = lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    rv.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> = tmp &lt;&lt; shift;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// Ensure shift==0 shifts away everything. (This avoids another</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// conditional branch on shift == 0.)</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    tmp = tmp &gt;&gt; 1 &gt;&gt; (63 - shift);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    rv.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> = tmp | (lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &lt;&lt; shift);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">return</span> rv;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae52a5b66cf89805b594eb57ceba4d1db">   70</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae52a5b66cf89805b594eb57ceba4d1db">operator&lt;&lt;=</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keywordtype">unsigned</span> shift) {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  lhs = lhs &lt;&lt; shift;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">return</span> lhs;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
+</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="foldopen" id="foldopen00075" data-start="{" data-end="}">
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8bef0a58b336974ae7992bb4b370fb9d">   75</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8bef0a58b336974ae7992bb4b370fb9d">operator&gt;&gt;</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keywordtype">unsigned</span> shift) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  shift &amp;= 127;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> rv;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordflow">if</span> (shift &gt;= 64) {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    rv.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> = 0;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    rv.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> = lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &gt;&gt; (shift &amp; 63);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    uint64_t tmp = lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    rv.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> = tmp &gt;&gt; shift;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="comment">// Ensure shift==0 shifts away everything</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    tmp = tmp &lt;&lt; 1 &lt;&lt; (63 - shift);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    rv.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> = tmp | (lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> &gt;&gt; shift);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordflow">return</span> rv;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
+</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac89b9beb748e15b6fe6c2c0d8d6274f0">   91</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac89b9beb748e15b6fe6c2c0d8d6274f0">operator&gt;&gt;=</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keywordtype">unsigned</span> shift) {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  lhs = lhs &gt;&gt; shift;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">return</span> lhs;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}</div>
+</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="foldopen" id="foldopen00096" data-start="{" data-end="}">
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3fcb45956f3c9e0a93ba4522a979d2cb">   96</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5e84a287b5563a69c016409a19631493">operator&amp;</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>(lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> &amp; rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>, lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &amp; rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a>);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
+</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="foldopen" id="foldopen00100" data-start="{" data-end="}">
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a51b0e740412153c249b0312da407914a">  100</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a51b0e740412153c249b0312da407914a">operator&amp;=</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  lhs = lhs &amp; rhs;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keywordflow">return</span> lhs;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>}</div>
+</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2ad22cb7ff56b0628399e5262e669dce">  105</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a4a94ce46e23282d8ec7bc6bc1fc96ff1">operator|</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>(lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> | rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>, lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> | rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a>);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
+</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a23c3fbc14e9b56d19fa5f4da0946094b">  109</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a23c3fbc14e9b56d19fa5f4da0946094b">operator|=</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  lhs = lhs | rhs;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordflow">return</span> lhs;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>}</div>
+</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="foldopen" id="foldopen00114" data-start="{" data-end="}">
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af7d741b5d64335260cd2d0b75f9669b7">  114</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af7d741b5d64335260cd2d0b75f9669b7">operator^</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>(lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> ^ rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>, lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> ^ rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a>);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>}</div>
+</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#acbca1f7b0613b8dd2637c9331d366119">  118</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#acbca1f7b0613b8dd2637c9331d366119">operator^=</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  lhs = lhs ^ rhs;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">return</span> lhs;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>}</div>
+</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="foldopen" id="foldopen00123" data-start="{" data-end="}">
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a116f84cd8109cac10f071f4c3eb7f87d">  123</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a116f84cd8109cac10f071f4c3eb7f87d">operator~</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; v) {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>(~v.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>, ~v.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a>);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
+</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="foldopen" id="foldopen00127" data-start="{" data-end="}">
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a674ed73866bb77e9f1af02ae6df2f2fa">  127</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1dc28f4d7734a6cd015a54e54a3d39a0">operator==</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keywordflow">return</span> lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> == rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> &amp;&amp; lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> == rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a>;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>}</div>
+</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="foldopen" id="foldopen00131" data-start="{" data-end="}">
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3b3db34197c1cc32fd01187104418bbe">  131</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6185c1ff5be0299f2d50183ebfd37c0e">operator!=</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="keywordflow">return</span> lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> != rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> || lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> != rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>}</div>
+</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="foldopen" id="foldopen00135" data-start="{" data-end="}">
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab424d5f1ef8a7c7d8708105a251d3cf7">  135</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab424d5f1ef8a7c7d8708105a251d3cf7">operator&gt;</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keywordflow">return</span> lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &gt; rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> || (lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> == rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &amp;&amp; lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> &gt; rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>}</div>
+</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="foldopen" id="foldopen00139" data-start="{" data-end="}">
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40722722f3929f05de92238f7cf12315">  139</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40722722f3929f05de92238f7cf12315">operator&lt;</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="keywordflow">return</span> lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &lt; rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> || (lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> == rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &amp;&amp; lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> &lt; rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
+</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a15362b5a1cd345479c85b65e6f19b143">  143</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a15362b5a1cd345479c85b65e6f19b143">operator&gt;=</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="keywordflow">return</span> lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &gt; rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> || (lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> == rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &amp;&amp; lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> &gt;= rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>);</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>}</div>
+</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="foldopen" id="foldopen00147" data-start="{" data-end="}">
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abbb93bc360ec1ea3d2c0fe2788408a62">  147</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abbb93bc360ec1ea3d2c0fe2788408a62">operator&lt;=</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>&amp; rhs) {</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="keywordflow">return</span> lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &lt; rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> || (lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> == rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a> &amp;&amp; lhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a> &lt;= rhs.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>}</div>
+</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="foldopen" id="foldopen00152" data-start="{" data-end="}">
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">  152</a></span><span class="keyword">inline</span> uint64_t <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> v) {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="preprocessor">#ifdef HAVE_UINT128_EXTENSION</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(v);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="keywordflow">return</span> v.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">lo</a>;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>}</div>
+</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="foldopen" id="foldopen00160" data-start="{" data-end="}">
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">  160</a></span><span class="keyword">inline</span> uint64_t <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> v) {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="preprocessor">#ifdef HAVE_UINT128_EXTENSION</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(v &gt;&gt; 64);</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="keywordflow">return</span> v.<a class="code hl_variable" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">hi</a>;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>}</div>
+</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">// This generally compiles down to a single fast instruction on 64-bit.</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment">// This doesn&#39;t really make sense as operator* because it&#39;s not a</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">// general 128x128 multiply and provides more output than 64x64 multiply.</span></div>
+<div class="foldopen" id="foldopen00171" data-start="{" data-end="}">
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa617c68735c6c29169cdfed5b39b6f33">  171</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa617c68735c6c29169cdfed5b39b6f33">Multiply64to128</a>(uint64_t a, uint64_t b) {</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="preprocessor">#ifdef HAVE_UINT128_EXTENSION</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>{a} * <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>{b};</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <span class="comment">// Full decomposition</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="comment">// NOTE: GCC seems to fully understand this code as 64-bit x 64-bit</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <span class="comment">// -&gt; 128-bit multiplication and optimize it appropriately.</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  uint64_t tmp = uint64_t{b &amp; 0xffffFFFF} * uint64_t{a &amp; 0xffffFFFF};</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  uint64_t lower = tmp &amp; 0xffffFFFF;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  tmp &gt;&gt;= 32;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  tmp += uint64_t{b &amp; 0xffffFFFF} * uint64_t{a &gt;&gt; 32};</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="comment">// Avoid overflow: first add lower 32 of tmp2, and later upper 32</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  uint64_t tmp2 = uint64_t{b &gt;&gt; 32} * uint64_t{a &amp; 0xffffFFFF};</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  tmp += tmp2 &amp; 0xffffFFFF;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  lower |= tmp &lt;&lt; 32;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  tmp &gt;&gt;= 32;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  tmp += tmp2 &gt;&gt; 32;</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  tmp += uint64_t{b &gt;&gt; 32} * uint64_t{a &gt;&gt; 32};</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>(lower, tmp);</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>}</div>
+</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00194" data-start="{" data-end="}">
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af5446da8916f863ee932633611c767c1">  194</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af600c4fa93d07ebb44f669e76582de94">BottomNBits</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> v, <span class="keywordtype">int</span> nbits) {</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="keywordflow">if</span> (nbits &lt; 64) {</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af600c4fa93d07ebb44f669e76582de94">BottomNBits</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(v), nbits);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="keywordflow">return</span> (<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>{<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af600c4fa93d07ebb44f669e76582de94">BottomNBits</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(v), nbits - 64)} &lt;&lt; 64) |</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>           <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(v);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  }</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>}</div>
+</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00204" data-start="{" data-end="}">
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae882f1fc670ee21aaabce0c858b85a1b">  204</a></span><span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74a1b2239413fa672392330a886188ec">FloorLog2</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> v) {</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(v) == 0) {</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74a1b2239413fa672392330a886188ec">FloorLog2</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(v));</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74a1b2239413fa672392330a886188ec">FloorLog2</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(v)) + 64;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  }</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>}</div>
+</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00213" data-start="{" data-end="}">
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae4eb03358a7ac916bc18bf61493da03d">  213</a></span><span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3933450e50aec49028d7de9261f7c78f">CountTrailingZeroBits</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> v) {</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(v) != 0) {</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3933450e50aec49028d7de9261f7c78f">CountTrailingZeroBits</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(v));</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3933450e50aec49028d7de9261f7c78f">CountTrailingZeroBits</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(v)) + 64;</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  }</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>}</div>
+</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00222" data-start="{" data-end="}">
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a45b492d7cadfcce47bfcb3fee2e0503f">  222</a></span><span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7dc11270c6a5e20e2d353a516cb86406">BitsSetToOne</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> v) {</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7dc11270c6a5e20e2d353a516cb86406">BitsSetToOne</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(v)) + <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7dc11270c6a5e20e2d353a516cb86406">BitsSetToOne</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(v));</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>}</div>
+</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00227" data-start="{" data-end="}">
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5ba2cbe63b999a25f60bc5c3ae608647">  227</a></span><span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0e02e5f02c6c652b5308563617966ce5">BitParity</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> v) {</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0e02e5f02c6c652b5308563617966ce5">BitParity</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(v) ^ <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(v));</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>}</div>
+</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00232" data-start="{" data-end="}">
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab50ba2eaf6345a0bec14ad9aab5c511c">  232</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9ccb7e4abb0fe1ff784499b7f7f49c7e">EndianSwapValue</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> v) {</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <span class="keywordflow">return</span> (<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>{<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9ccb7e4abb0fe1ff784499b7f7f49c7e">EndianSwapValue</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(v))} &lt;&lt; 64) |</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>         <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9ccb7e4abb0fe1ff784499b7f7f49c7e">EndianSwapValue</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(v));</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>}</div>
+</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00238" data-start="{" data-end="}">
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a54d07dde29500a2d043ddae211621f64">  238</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d19ce12faba0d9ab8f07f1d346173d7">ReverseBits</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> v) {</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keywordflow">return</span> (<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>{<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d19ce12faba0d9ab8f07f1d346173d7">ReverseBits</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(v))} &lt;&lt; 64) |</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>         <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d19ce12faba0d9ab8f07f1d346173d7">ReverseBits</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(v));</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>}</div>
+</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00244" data-start="{" data-end="}">
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aabd9f093a05f8fa959fa4097f8f6bf68">  244</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab507e735b89d32c59572bc9e30b8f64b">DownwardInvolution</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> v) {</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <span class="keywordflow">return</span> (<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>{<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab507e735b89d32c59572bc9e30b8f64b">DownwardInvolution</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(v))} &lt;&lt; 64) |</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>         <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab507e735b89d32c59572bc9e30b8f64b">DownwardInvolution</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(v) ^ <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(v));</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>}</div>
+</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> A&gt;</div>
+<div class="foldopen" id="foldopen00250" data-start="{" data-end="}">
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aaad02cc091bbaff375ecb04c9179224f">  250</a></span><span class="keyword">inline</span> std::remove_reference_t&lt;A&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aaad02cc091bbaff375ecb04c9179224f">BitwiseAnd</a>(A a, <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> b) {</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(A) &lt;= <span class="keyword">sizeof</span>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>));</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>A<span class="keyword">&gt;</span>(a &amp; b);</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>}</div>
+</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> B&gt;</div>
+<div class="foldopen" id="foldopen00256" data-start="{" data-end="}">
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a10e8916f05cecfc7fe433fa6f7694a64">  256</a></span><span class="keyword">inline</span> std::remove_reference_t&lt;B&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aaad02cc091bbaff375ecb04c9179224f">BitwiseAnd</a>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> a, B b) {</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(B) &lt;= <span class="keyword">sizeof</span>(<a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a>));</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>B<span class="keyword">&gt;</span>(a &amp; b);</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>}</div>
+</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00262" data-start="{" data-end="};">
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno"><a class="line" href="../../d5/de8/structROCKSDB__NAMESPACE_1_1IsUnsignedUpTo128.html">  262</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../d5/de8/structROCKSDB__NAMESPACE_1_1IsUnsignedUpTo128.html">IsUnsignedUpTo128</a></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    : std::integral_constant&lt;bool, std::is_unsigned&lt;T&gt;::value ||</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                                       std::is_same&lt;T, Unsigned128&gt;::value&gt; {};</div>
+</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
+<div class="foldopen" id="foldopen00266" data-start="{" data-end="}">
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a093fd3541d801bdb052ac6ba7c4da839">  266</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a093fd3541d801bdb052ac6ba7c4da839">EncodeFixed128</a>(<span class="keywordtype">char</span>* dst, <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> value) {</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac153d89dc9eb4259b8cc75827d9a1dfd">EncodeFixed64</a>(dst, <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">Lower64of128</a>(value));</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac153d89dc9eb4259b8cc75827d9a1dfd">EncodeFixed64</a>(dst + 8, <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">Upper64of128</a>(value));</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>}</div>
+</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="foldopen" id="foldopen00271" data-start="{" data-end="}">
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a897cee9bcbfdffa248762a223bed887c">  271</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a897cee9bcbfdffa248762a223bed887c">DecodeFixed128</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* ptr) {</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> rv = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a421b5c2517a97e33788c52ecabf6045e">DecodeFixed64</a>(ptr + 8);</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  <span class="keywordflow">return</span> (rv &lt;&lt; 64) | <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a421b5c2517a97e33788c52ecabf6045e">DecodeFixed64</a>(ptr);</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>}</div>
+</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment">// A version of EncodeFixed* for generic algorithms. Likely to be used</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment">// with Unsigned128, so lives here for now.</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00279" data-start="{" data-end="}">
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aba07c11ba0e36b27bc5d27df7cc5ee52">  279</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aba07c11ba0e36b27bc5d27df7cc5ee52">EncodeFixedGeneric</a>(<span class="keywordtype">char</span>* <span class="comment">/*dst*/</span>, T <span class="comment">/*value*/</span>) {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <span class="comment">// Unfortunately, GCC does not appear to optimize this simple code down</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  <span class="comment">// to a trivial load on Intel:</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  <span class="comment">// T ret_val = 0;</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  <span class="comment">// for (size_t i = 0; i &lt; sizeof(T); ++i) {</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  <span class="comment">//   ret_val |= (static_cast&lt;T&gt;(static_cast&lt;unsigned char&gt;(ptr[i])) &lt;&lt; (8 *</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  <span class="comment">//   i));</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  <span class="comment">// }</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  <span class="comment">// return ret_val;</span></div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  <span class="comment">// But does unroll the loop, and does optimize manually unrolled version</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  <span class="comment">// for specific sizes down to a trivial load. I have no idea why it doesn&#39;t</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  <span class="comment">// do both on this code.</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  <span class="comment">// So instead, we rely on specializations</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(T) == 0, <span class="stringliteral">&quot;No specialization provided for this type&quot;</span>);</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>}</div>
+</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00299" data-start="{" data-end="}">
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a98f80740d6eb11fc2add2610ef93aff6">  299</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aba07c11ba0e36b27bc5d27df7cc5ee52">EncodeFixedGeneric</a>(<span class="keywordtype">char</span>* dst, uint16_t value) {</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a63c3cb3320b66172f720cc8e9aef016c">EncodeFixed16</a>(dst, value);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>}</div>
+</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00303" data-start="{" data-end="}">
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac64f5193119ecc95e2471cc6e76512f7">  303</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aba07c11ba0e36b27bc5d27df7cc5ee52">EncodeFixedGeneric</a>(<span class="keywordtype">char</span>* dst, uint32_t value) {</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab737420aba13b6d2301d1da9682f036e">EncodeFixed32</a>(dst, value);</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>}</div>
+</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00307" data-start="{" data-end="}">
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a987a77bd0fd34bf1abd980b70ead0571">  307</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aba07c11ba0e36b27bc5d27df7cc5ee52">EncodeFixedGeneric</a>(<span class="keywordtype">char</span>* dst, uint64_t value) {</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac153d89dc9eb4259b8cc75827d9a1dfd">EncodeFixed64</a>(dst, value);</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>}</div>
+</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00311" data-start="{" data-end="}">
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a69adf3f7ebba39306ec518dabc530e3a">  311</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aba07c11ba0e36b27bc5d27df7cc5ee52">EncodeFixedGeneric</a>(<span class="keywordtype">char</span>* dst, <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> value) {</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a093fd3541d801bdb052ac6ba7c4da839">EncodeFixed128</a>(dst, value);</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>}</div>
+</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="comment">// A version of EncodeFixed* for generic algorithms.</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00317" data-start="{" data-end="}">
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a310d0ac507e8da3a5d33aafb572f4c34">  317</a></span><span class="keyword">inline</span> T <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a310d0ac507e8da3a5d33aafb572f4c34">DecodeFixedGeneric</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* <span class="comment">/*dst*/</span>) {</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(T) == 0, <span class="stringliteral">&quot;No specialization provided for this type&quot;</span>);</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>}</div>
+</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00322" data-start="{" data-end="}">
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad0ad30446278392e11b1d46a471390d9">  322</a></span><span class="keyword">inline</span> uint16_t <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a310d0ac507e8da3a5d33aafb572f4c34">DecodeFixedGeneric</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* dst) {</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a22bcef370c2d28e837dc31c5a226b846">DecodeFixed16</a>(dst);</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>}</div>
+</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00326" data-start="{" data-end="}">
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae3704902c87a9a0aa5284f2bff15e0ec">  326</a></span><span class="keyword">inline</span> uint32_t <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a310d0ac507e8da3a5d33aafb572f4c34">DecodeFixedGeneric</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* dst) {</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0afa96709ce3127ae462031b1009f797">DecodeFixed32</a>(dst);</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>}</div>
+</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00330" data-start="{" data-end="}">
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ade88d4a44b24011ac958cd576ca50b7c">  330</a></span><span class="keyword">inline</span> uint64_t <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a310d0ac507e8da3a5d33aafb572f4c34">DecodeFixedGeneric</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* dst) {</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a421b5c2517a97e33788c52ecabf6045e">DecodeFixed64</a>(dst);</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>}</div>
+</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00334" data-start="{" data-end="}">
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a61b0762b10175a988d3d6caf7dca527b">  334</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">Unsigned128</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a310d0ac507e8da3a5d33aafb572f4c34">DecodeFixedGeneric</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* dst) {</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a897cee9bcbfdffa248762a223bed887c">DecodeFixed128</a>(dst);</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>}</div>
+</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="acoding__lean_8h_html"><div class="ttname"><a href="../../d7/de8/coding__lean_8h.html">coding_lean.h</a></div></div>
+<div class="ttc" id="amath_8h_html"><div class="ttname"><a href="../../df/db1/math_8h.html">math.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a093fd3541d801bdb052ac6ba7c4da839"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a093fd3541d801bdb052ac6ba7c4da839">ROCKSDB_NAMESPACE::EncodeFixed128</a></div><div class="ttdeci">void EncodeFixed128(char *dst, Unsigned128 value)</div><div class="ttdef"><b>Definition</b> <a href="#l00266">math128.h:266</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0afa96709ce3127ae462031b1009f797"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0afa96709ce3127ae462031b1009f797">ROCKSDB_NAMESPACE::DecodeFixed32</a></div><div class="ttdeci">uint32_t DecodeFixed32(const char *ptr)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de8/coding__lean_8h_source.html#l00074">coding_lean.h:74</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0e02e5f02c6c652b5308563617966ce5"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0e02e5f02c6c652b5308563617966ce5">ROCKSDB_NAMESPACE::BitParity</a></div><div class="ttdeci">int BitParity(T v)</div><div class="ttdef"><b>Definition</b> <a href="../../df/db1/math_8h_source.html#l00227">math.h:227</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a116f84cd8109cac10f071f4c3eb7f87d"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a116f84cd8109cac10f071f4c3eb7f87d">ROCKSDB_NAMESPACE::operator~</a></div><div class="ttdeci">Unsigned128 operator~(const Unsigned128 &amp;v)</div><div class="ttdef"><b>Definition</b> <a href="#l00123">math128.h:123</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a140e1a17cda68907c5b700c9e536f970"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a140e1a17cda68907c5b700c9e536f970">ROCKSDB_NAMESPACE::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const BlobFileAddition &amp;blob_file_addition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d70/blob__file__addition_8cc_source.html#l00132">blob_file_addition.cc:132</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a15362b5a1cd345479c85b65e6f19b143"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a15362b5a1cd345479c85b65e6f19b143">ROCKSDB_NAMESPACE::operator&gt;=</a></div><div class="ttdeci">bool operator&gt;=(const Unsigned128 &amp;lhs, const Unsigned128 &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="#l00143">math128.h:143</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a1dc28f4d7734a6cd015a54e54a3d39a0"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1dc28f4d7734a6cd015a54e54a3d39a0">ROCKSDB_NAMESPACE::operator==</a></div><div class="ttdeci">bool operator==(const BlobFileAddition &amp;lhs, const BlobFileAddition &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d70/blob__file__addition_8cc_source.html#l00120">blob_file_addition.cc:120</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a22bcef370c2d28e837dc31c5a226b846"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a22bcef370c2d28e837dc31c5a226b846">ROCKSDB_NAMESPACE::DecodeFixed16</a></div><div class="ttdeci">uint16_t DecodeFixed16(const char *ptr)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de8/coding__lean_8h_source.html#l00062">coding_lean.h:62</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a23c3fbc14e9b56d19fa5f4da0946094b"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a23c3fbc14e9b56d19fa5f4da0946094b">ROCKSDB_NAMESPACE::operator|=</a></div><div class="ttdeci">Unsigned128 &amp; operator|=(Unsigned128 &amp;lhs, const Unsigned128 &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="#l00109">math128.h:109</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a310d0ac507e8da3a5d33aafb572f4c34"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a310d0ac507e8da3a5d33aafb572f4c34">ROCKSDB_NAMESPACE::DecodeFixedGeneric</a></div><div class="ttdeci">T DecodeFixedGeneric(const char *)</div><div class="ttdef"><b>Definition</b> <a href="#l00317">math128.h:317</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a3933450e50aec49028d7de9261f7c78f"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3933450e50aec49028d7de9261f7c78f">ROCKSDB_NAMESPACE::CountTrailingZeroBits</a></div><div class="ttdeci">int CountTrailingZeroBits(T v)</div><div class="ttdef"><b>Definition</b> <a href="../../df/db1/math_8h_source.html#l00103">math.h:103</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a40722722f3929f05de92238f7cf12315"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40722722f3929f05de92238f7cf12315">ROCKSDB_NAMESPACE::operator&lt;</a></div><div class="ttdeci">bool operator&lt;(const Unsigned128 &amp;lhs, const Unsigned128 &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="#l00139">math128.h:139</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a421b5c2517a97e33788c52ecabf6045e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a421b5c2517a97e33788c52ecabf6045e">ROCKSDB_NAMESPACE::DecodeFixed64</a></div><div class="ttdeci">uint64_t DecodeFixed64(const char *ptr)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de8/coding__lean_8h_source.html#l00088">coding_lean.h:88</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a4a94ce46e23282d8ec7bc6bc1fc96ff1"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a4a94ce46e23282d8ec7bc6bc1fc96ff1">ROCKSDB_NAMESPACE::operator|</a></div><div class="ttdeci">DB::SizeApproximationFlags operator|(DB::SizeApproximationFlags lhs, DB::SizeApproximationFlags rhs)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l02134">db.h:2134</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a51b0e740412153c249b0312da407914a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a51b0e740412153c249b0312da407914a">ROCKSDB_NAMESPACE::operator&amp;=</a></div><div class="ttdeci">Unsigned128 &amp; operator&amp;=(Unsigned128 &amp;lhs, const Unsigned128 &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="#l00100">math128.h:100</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a5e84a287b5563a69c016409a19631493"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5e84a287b5563a69c016409a19631493">ROCKSDB_NAMESPACE::operator&amp;</a></div><div class="ttdeci">DB::SizeApproximationFlags operator&amp;(DB::SizeApproximationFlags lhs, DB::SizeApproximationFlags rhs)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l02129">db.h:2129</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6185c1ff5be0299f2d50183ebfd37c0e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6185c1ff5be0299f2d50183ebfd37c0e">ROCKSDB_NAMESPACE::operator!=</a></div><div class="ttdeci">bool operator!=(const BlobFileAddition &amp;lhs, const BlobFileAddition &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d70/blob__file__addition_8cc_source.html#l00128">blob_file_addition.cc:128</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a63c3cb3320b66172f720cc8e9aef016c"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a63c3cb3320b66172f720cc8e9aef016c">ROCKSDB_NAMESPACE::EncodeFixed16</a></div><div class="ttdeci">void EncodeFixed16(char *buf, uint16_t value)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de8/coding__lean_8h_source.html#l00024">coding_lean.h:24</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a74a1b2239413fa672392330a886188ec"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74a1b2239413fa672392330a886188ec">ROCKSDB_NAMESPACE::FloorLog2</a></div><div class="ttdeci">int FloorLog2(T v)</div><div class="ttdef"><b>Definition</b> <a href="../../df/db1/math_8h_source.html#l00050">math.h:50</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a7dc11270c6a5e20e2d353a516cb86406"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7dc11270c6a5e20e2d353a516cb86406">ROCKSDB_NAMESPACE::BitsSetToOne</a></div><div class="ttdeci">int BitsSetToOne(T v)</div><div class="ttdef"><b>Definition</b> <a href="../../df/db1/math_8h_source.html#l00173">math.h:173</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a897cee9bcbfdffa248762a223bed887c"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a897cee9bcbfdffa248762a223bed887c">ROCKSDB_NAMESPACE::DecodeFixed128</a></div><div class="ttdeci">Unsigned128 DecodeFixed128(const char *ptr)</div><div class="ttdef"><b>Definition</b> <a href="#l00271">math128.h:271</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8bef0a58b336974ae7992bb4b370fb9d"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8bef0a58b336974ae7992bb4b370fb9d">ROCKSDB_NAMESPACE::operator&gt;&gt;</a></div><div class="ttdeci">Unsigned128 operator&gt;&gt;(const Unsigned128 &amp;lhs, unsigned shift)</div><div class="ttdef"><b>Definition</b> <a href="#l00075">math128.h:75</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8d19ce12faba0d9ab8f07f1d346173d7"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d19ce12faba0d9ab8f07f1d346173d7">ROCKSDB_NAMESPACE::ReverseBits</a></div><div class="ttdeci">T ReverseBits(T v)</div><div class="ttdef"><b>Definition</b> <a href="../../df/db1/math_8h_source.html#l00282">math.h:282</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a913096f51f31212f1b91820e45917b4c"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a913096f51f31212f1b91820e45917b4c">ROCKSDB_NAMESPACE::Upper64of128</a></div><div class="ttdeci">uint64_t Upper64of128(Unsigned128 v)</div><div class="ttdef"><b>Definition</b> <a href="#l00160">math128.h:160</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a9704ec50508970b22805383627b1318a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9704ec50508970b22805383627b1318a">ROCKSDB_NAMESPACE::Lower64of128</a></div><div class="ttdeci">uint64_t Lower64of128(Unsigned128 v)</div><div class="ttdef"><b>Definition</b> <a href="#l00152">math128.h:152</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a9ccb7e4abb0fe1ff784499b7f7f49c7e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9ccb7e4abb0fe1ff784499b7f7f49c7e">ROCKSDB_NAMESPACE::EndianSwapValue</a></div><div class="ttdeci">T EndianSwapValue(T v)</div><div class="ttdef"><b>Definition</b> <a href="../../df/db1/math_8h_source.html#l00251">math.h:251</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa617c68735c6c29169cdfed5b39b6f33"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa617c68735c6c29169cdfed5b39b6f33">ROCKSDB_NAMESPACE::Multiply64to128</a></div><div class="ttdeci">Unsigned128 Multiply64to128(uint64_t a, uint64_t b)</div><div class="ttdef"><b>Definition</b> <a href="#l00171">math128.h:171</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aaad02cc091bbaff375ecb04c9179224f"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aaad02cc091bbaff375ecb04c9179224f">ROCKSDB_NAMESPACE::BitwiseAnd</a></div><div class="ttdeci">std::remove_reference_t&lt; A &gt; BitwiseAnd(A a, Unsigned128 b)</div><div class="ttdef"><b>Definition</b> <a href="#l00250">math128.h:250</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab424d5f1ef8a7c7d8708105a251d3cf7"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab424d5f1ef8a7c7d8708105a251d3cf7">ROCKSDB_NAMESPACE::operator&gt;</a></div><div class="ttdeci">bool operator&gt;(const Unsigned128 &amp;lhs, const Unsigned128 &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="#l00135">math128.h:135</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab507e735b89d32c59572bc9e30b8f64b"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab507e735b89d32c59572bc9e30b8f64b">ROCKSDB_NAMESPACE::DownwardInvolution</a></div><div class="ttdeci">T DownwardInvolution(T v)</div><div class="ttdef"><b>Definition</b> <a href="../../df/db1/math_8h_source.html#l00318">math.h:318</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab737420aba13b6d2301d1da9682f036e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab737420aba13b6d2301d1da9682f036e">ROCKSDB_NAMESPACE::EncodeFixed32</a></div><div class="ttdeci">void EncodeFixed32(char *buf, uint32_t value)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de8/coding__lean_8h_source.html#l00033">coding_lean.h:33</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aba07c11ba0e36b27bc5d27df7cc5ee52"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aba07c11ba0e36b27bc5d27df7cc5ee52">ROCKSDB_NAMESPACE::EncodeFixedGeneric</a></div><div class="ttdeci">void EncodeFixedGeneric(char *, T)</div><div class="ttdef"><b>Definition</b> <a href="#l00279">math128.h:279</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_abbb93bc360ec1ea3d2c0fe2788408a62"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abbb93bc360ec1ea3d2c0fe2788408a62">ROCKSDB_NAMESPACE::operator&lt;=</a></div><div class="ttdeci">bool operator&lt;=(const Unsigned128 &amp;lhs, const Unsigned128 &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="#l00147">math128.h:147</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ac153d89dc9eb4259b8cc75827d9a1dfd"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac153d89dc9eb4259b8cc75827d9a1dfd">ROCKSDB_NAMESPACE::EncodeFixed64</a></div><div class="ttdeci">void EncodeFixed64(char *buf, uint64_t value)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de8/coding__lean_8h_source.html#l00044">coding_lean.h:44</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ac89b9beb748e15b6fe6c2c0d8d6274f0"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac89b9beb748e15b6fe6c2c0d8d6274f0">ROCKSDB_NAMESPACE::operator&gt;&gt;=</a></div><div class="ttdeci">Unsigned128 &amp; operator&gt;&gt;=(Unsigned128 &amp;lhs, unsigned shift)</div><div class="ttdef"><b>Definition</b> <a href="#l00091">math128.h:91</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_acbca1f7b0613b8dd2637c9331d366119"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#acbca1f7b0613b8dd2637c9331d366119">ROCKSDB_NAMESPACE::operator^=</a></div><div class="ttdeci">Unsigned128 &amp; operator^=(Unsigned128 &amp;lhs, const Unsigned128 &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="#l00118">math128.h:118</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ae52a5b66cf89805b594eb57ceba4d1db"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae52a5b66cf89805b594eb57ceba4d1db">ROCKSDB_NAMESPACE::operator&lt;&lt;=</a></div><div class="ttdeci">Unsigned128 &amp; operator&lt;&lt;=(Unsigned128 &amp;lhs, unsigned shift)</div><div class="ttdef"><b>Definition</b> <a href="#l00070">math128.h:70</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_af600c4fa93d07ebb44f669e76582de94"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af600c4fa93d07ebb44f669e76582de94">ROCKSDB_NAMESPACE::BottomNBits</a></div><div class="ttdeci">T BottomNBits(T v, int nbits)</div><div class="ttdef"><b>Definition</b> <a href="../../df/db1/math_8h_source.html#l00029">math.h:29</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_af7d741b5d64335260cd2d0b75f9669b7"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af7d741b5d64335260cd2d0b75f9669b7">ROCKSDB_NAMESPACE::operator^</a></div><div class="ttdeci">Unsigned128 operator^(const Unsigned128 &amp;lhs, const Unsigned128 &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="#l00114">math128.h:114</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IsUnsignedUpTo128_html"><div class="ttname"><a href="../../d5/de8/structROCKSDB__NAMESPACE_1_1IsUnsignedUpTo128.html">ROCKSDB_NAMESPACE::IsUnsignedUpTo128</a></div><div class="ttdef"><b>Definition</b> <a href="#l00262">math128.h:264</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unsigned128_html"><div class="ttname"><a href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html">ROCKSDB_NAMESPACE::Unsigned128</a></div><div class="ttdef"><b>Definition</b> <a href="#l00023">math128.h:23</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unsigned128_html_a1aadba093755c8ab19d1d5f760433a30"><div class="ttname"><a href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a1aadba093755c8ab19d1d5f760433a30">ROCKSDB_NAMESPACE::Unsigned128::lo</a></div><div class="ttdeci">uint64_t lo</div><div class="ttdef"><b>Definition</b> <a href="#l00024">math128.h:24</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unsigned128_html_a34de919162ad5d4d62e4d7c5c8e71330"><div class="ttname"><a href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a34de919162ad5d4d62e4d7c5c8e71330">ROCKSDB_NAMESPACE::Unsigned128::Unsigned128</a></div><div class="ttdeci">Unsigned128()</div><div class="ttdef"><b>Definition</b> <a href="#l00027">math128.h:27</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unsigned128_html_a812613c43341e4e2dd872931c32c3911"><div class="ttname"><a href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#a812613c43341e4e2dd872931c32c3911">ROCKSDB_NAMESPACE::Unsigned128::Unsigned128</a></div><div class="ttdeci">Unsigned128(uint64_t lower)</div><div class="ttdef"><b>Definition</b> <a href="#l00034">math128.h:34</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unsigned128_html_acb86725f34301dd796e0db74a84c0546"><div class="ttname"><a href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#acb86725f34301dd796e0db74a84c0546">ROCKSDB_NAMESPACE::Unsigned128::Unsigned128</a></div><div class="ttdeci">Unsigned128(uint64_t lower, uint64_t upper)</div><div class="ttdef"><b>Definition</b> <a href="#l00039">math128.h:39</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unsigned128_html_ad79b364fd0c3de31b653793e43580ac3"><div class="ttname"><a href="../../d7/d06/structROCKSDB__NAMESPACE_1_1Unsigned128.html#ad79b364fd0c3de31b653793e43580ac3">ROCKSDB_NAMESPACE::Unsigned128::hi</a></div><div class="ttdeci">uint64_t hi</div><div class="ttdef"><b>Definition</b> <a href="#l00025">math128.h:25</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_23ec12649285f9fabf3a6b7380226c28.html">util</a></li><li class="navelem"><a class="el" href="../../d5/d27/math128_8h.html">math128.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

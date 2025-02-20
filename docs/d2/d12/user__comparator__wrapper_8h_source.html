@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: util/user_comparator_wrapper.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d2/d12/user__comparator__wrapper_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">user_comparator_wrapper.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d2/d12/user__comparator__wrapper_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d93/perf__context__imp_8h.html">monitoring/perf_context_imp.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/df8/include_2rocksdb_2comparator_8h.html">rocksdb/comparator.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// Wrapper of user comparator, with auto increment to</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// perf_context.user_key_comparison_count.</span></div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html">   18</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a19e2b98fd4d1e99bb0244847185ea4b6">UserComparatorWrapper</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="comment">// `UserComparatorWrapper`s constructed with the default constructor are not</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="comment">// usable and will segfault on any attempt to use them for comparisons.</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a19e2b98fd4d1e99bb0244847185ea4b6">   22</a></span>  <a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a19e2b98fd4d1e99bb0244847185ea4b6">UserComparatorWrapper</a>() : <a class="code hl_variable" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">user_comparator_</a>(nullptr) {}</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a44e70341ea3f6b9c9fd4c8b8bd8f233e">   24</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a44e70341ea3f6b9c9fd4c8b8bd8f233e">UserComparatorWrapper</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1Comparator.html">Comparator</a>* <span class="keyword">const</span> user_cmp)</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      : <a class="code hl_variable" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">user_comparator_</a>(user_cmp) {}</div>
+</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#ab4bd6b016cb3c379cac8fed88e46a9cd">   27</a></span>  <a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#ab4bd6b016cb3c379cac8fed88e46a9cd">~UserComparatorWrapper</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#aaf71f87c0a35c52f83983efb2c70a414">   29</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1Comparator.html">Comparator</a>* <a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#aaf71f87c0a35c52f83983efb2c70a414">user_comparator</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">user_comparator_</a>; }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a513ea0131e227053044c66ebe529b7fb">   31</a></span>  <span class="keywordtype">int</span> <a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a513ea0131e227053044c66ebe529b7fb">Compare</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; a, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; b)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a40376d1f20b1e4f00e3c58408fdfe391">PERF_COUNTER_ADD</a>(user_key_comparison_count, 1);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">user_comparator_</a>-&gt;Compare(a, b);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  }</div>
+</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#ad50877d27676e4d567016713594bbc30">   36</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#ad50877d27676e4d567016713594bbc30">Equal</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; a, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; b)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a40376d1f20b1e4f00e3c58408fdfe391">PERF_COUNTER_ADD</a>(user_key_comparison_count, 1);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">user_comparator_</a>-&gt;Equal(a, b);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
+</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#ad58cbbb1f05a38f414f4dfef6a1b7ab0">   41</a></span>  <span class="keywordtype">int</span> <a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#ad58cbbb1f05a38f414f4dfef6a1b7ab0">CompareTimestamp</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; ts1, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; ts2)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">user_comparator_</a>-&gt;CompareTimestamp(ts1, ts2);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
+</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a591a0a1ad512312f8d9c598de3df8a3c">   45</a></span>  <span class="keywordtype">int</span> <a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a591a0a1ad512312f8d9c598de3df8a3c">CompareWithoutTimestamp</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; a, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; b)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a40376d1f20b1e4f00e3c58408fdfe391">PERF_COUNTER_ADD</a>(user_key_comparison_count, 1);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">user_comparator_</a>-&gt;CompareWithoutTimestamp(a, b);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
+</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a526bfabf0c395c70963dfd0163ac2845">   50</a></span>  <span class="keywordtype">int</span> <a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a526bfabf0c395c70963dfd0163ac2845">CompareWithoutTimestamp</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; a, <span class="keywordtype">bool</span> a_has_ts, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; b,</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                              <span class="keywordtype">bool</span> b_has_ts)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a40376d1f20b1e4f00e3c58408fdfe391">PERF_COUNTER_ADD</a>(user_key_comparison_count, 1);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">user_comparator_</a>-&gt;CompareWithoutTimestamp(a, a_has_ts, b, b_has_ts);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
+</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#aecbee940baae7d012acee8eed4c1f798">   56</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#aecbee940baae7d012acee8eed4c1f798">EqualWithoutTimestamp</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; a, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; b)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">user_comparator_</a>-&gt;EqualWithoutTimestamp(a, b);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  }</div>
+</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">   61</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1Comparator.html">Comparator</a>* <a class="code hl_variable" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">user_comparator_</a>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>};</div>
+</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Comparator_html"><div class="ttname"><a href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1Comparator.html">ROCKSDB_NAMESPACE::Comparator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/df8/include_2rocksdb_2comparator_8h_source.html#l00044">comparator.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_a07323345961c700474cf1278d372fb63"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a07323345961c700474cf1278d372fb63">ROCKSDB_NAMESPACE::UserComparatorWrapper::user_comparator_</a></div><div class="ttdeci">const Comparator * user_comparator_</div><div class="ttdef"><b>Definition</b> <a href="#l00061">user_comparator_wrapper.h:61</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_a19e2b98fd4d1e99bb0244847185ea4b6"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a19e2b98fd4d1e99bb0244847185ea4b6">ROCKSDB_NAMESPACE::UserComparatorWrapper::UserComparatorWrapper</a></div><div class="ttdeci">UserComparatorWrapper()</div><div class="ttdef"><b>Definition</b> <a href="#l00022">user_comparator_wrapper.h:22</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_a44e70341ea3f6b9c9fd4c8b8bd8f233e"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a44e70341ea3f6b9c9fd4c8b8bd8f233e">ROCKSDB_NAMESPACE::UserComparatorWrapper::UserComparatorWrapper</a></div><div class="ttdeci">UserComparatorWrapper(const Comparator *const user_cmp)</div><div class="ttdef"><b>Definition</b> <a href="#l00024">user_comparator_wrapper.h:24</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_a513ea0131e227053044c66ebe529b7fb"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a513ea0131e227053044c66ebe529b7fb">ROCKSDB_NAMESPACE::UserComparatorWrapper::Compare</a></div><div class="ttdeci">int Compare(const Slice &amp;a, const Slice &amp;b) const</div><div class="ttdef"><b>Definition</b> <a href="#l00031">user_comparator_wrapper.h:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_a526bfabf0c395c70963dfd0163ac2845"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a526bfabf0c395c70963dfd0163ac2845">ROCKSDB_NAMESPACE::UserComparatorWrapper::CompareWithoutTimestamp</a></div><div class="ttdeci">int CompareWithoutTimestamp(const Slice &amp;a, bool a_has_ts, const Slice &amp;b, bool b_has_ts) const</div><div class="ttdef"><b>Definition</b> <a href="#l00050">user_comparator_wrapper.h:50</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_a591a0a1ad512312f8d9c598de3df8a3c"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#a591a0a1ad512312f8d9c598de3df8a3c">ROCKSDB_NAMESPACE::UserComparatorWrapper::CompareWithoutTimestamp</a></div><div class="ttdeci">int CompareWithoutTimestamp(const Slice &amp;a, const Slice &amp;b) const</div><div class="ttdef"><b>Definition</b> <a href="#l00045">user_comparator_wrapper.h:45</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_aaf71f87c0a35c52f83983efb2c70a414"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#aaf71f87c0a35c52f83983efb2c70a414">ROCKSDB_NAMESPACE::UserComparatorWrapper::user_comparator</a></div><div class="ttdeci">const Comparator * user_comparator() const</div><div class="ttdef"><b>Definition</b> <a href="#l00029">user_comparator_wrapper.h:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_ab4bd6b016cb3c379cac8fed88e46a9cd"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#ab4bd6b016cb3c379cac8fed88e46a9cd">ROCKSDB_NAMESPACE::UserComparatorWrapper::~UserComparatorWrapper</a></div><div class="ttdeci">~UserComparatorWrapper()=default</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_ad50877d27676e4d567016713594bbc30"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#ad50877d27676e4d567016713594bbc30">ROCKSDB_NAMESPACE::UserComparatorWrapper::Equal</a></div><div class="ttdeci">bool Equal(const Slice &amp;a, const Slice &amp;b) const</div><div class="ttdef"><b>Definition</b> <a href="#l00036">user_comparator_wrapper.h:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_ad58cbbb1f05a38f414f4dfef6a1b7ab0"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#ad58cbbb1f05a38f414f4dfef6a1b7ab0">ROCKSDB_NAMESPACE::UserComparatorWrapper::CompareTimestamp</a></div><div class="ttdeci">int CompareTimestamp(const Slice &amp;ts1, const Slice &amp;ts2) const</div><div class="ttdef"><b>Definition</b> <a href="#l00041">user_comparator_wrapper.h:41</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html_aecbee940baae7d012acee8eed4c1f798"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html#aecbee940baae7d012acee8eed4c1f798">ROCKSDB_NAMESPACE::UserComparatorWrapper::EqualWithoutTimestamp</a></div><div class="ttdeci">bool EqualWithoutTimestamp(const Slice &amp;a, const Slice &amp;b) const</div><div class="ttdef"><b>Definition</b> <a href="#l00056">user_comparator_wrapper.h:56</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2comparator_8h_html"><div class="ttname"><a href="../../d3/df8/include_2rocksdb_2comparator_8h.html">comparator.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="aperf__context__imp_8h_html"><div class="ttname"><a href="../../d7/d93/perf__context__imp_8h.html">perf_context_imp.h</a></div></div>
+<div class="ttc" id="aperf__context__imp_8h_html_a40376d1f20b1e4f00e3c58408fdfe391"><div class="ttname"><a href="../../d7/d93/perf__context__imp_8h.html#a40376d1f20b1e4f00e3c58408fdfe391">PERF_COUNTER_ADD</a></div><div class="ttdeci">#define PERF_COUNTER_ADD(metric, value)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d93/perf__context__imp_8h_source.html#l00080">perf_context_imp.h:80</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_23ec12649285f9fabf3a6b7380226c28.html">util</a></li><li class="navelem"><a class="el" href="../../d2/d12/user__comparator__wrapper_8h.html">user_comparator_wrapper.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

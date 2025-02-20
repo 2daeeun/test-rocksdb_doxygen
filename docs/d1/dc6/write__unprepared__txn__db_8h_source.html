@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/write_unprepared_txn_db.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d1/dc6/write__unprepared__txn__db_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">write_unprepared_txn_db.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d1/dc6/write__unprepared__txn__db_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/df3/write__prepared__txn__db_8h.html">utilities/transactions/write_prepared_txn_db.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/dd3/write__unprepared__txn_8h.html">utilities/transactions/write_unprepared_txn.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">class </span>WriteUnpreparedTxn;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html">   15</a></span><span class="keyword">class </span><a class="code hl_friend" href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html#adeb697cad6e6721d2548f5ea1b939f2b">WriteUnpreparedTxnDB</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html#af83aaee57d38250b1836d5db27ef1263">WritePreparedTxnDB</a> {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">using </span><a class="code hl_function" href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html#af83aaee57d38250b1836d5db27ef1263">WritePreparedTxnDB::WritePreparedTxnDB</a>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html#af1a35d9049b3e33070890ba67cf485e0">Initialize</a>(<span class="keyword">const</span> std::vector&lt;size_t&gt;&amp; compaction_enabled_cf_indices,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                    <span class="keyword">const</span> std::vector&lt;ColumnFamilyHandle*&gt;&amp; handles) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* <a class="code hl_function" href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html#ab6866bf314ddbfeee730434eea329042">BeginTransaction</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp; write_options,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                                <span class="keyword">const</span> <a class="code hl_struct" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">TransactionOptions</a>&amp; txn_options,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                                <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* old_txn) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// Struct to hold ownership of snapshot and read callback for cleanup.</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">struct </span><a class="code hl_struct" href="../../d6/d27/structROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB_1_1IteratorState.html">IteratorState</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keyword">using </span><a class="code hl_function" href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html#aeabb05c6c71a7c767925d0c5a777610d">WritePreparedTxnDB::NewIterator</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <a class="code hl_class" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html">Iterator</a>* <a class="code hl_function" href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html#a19640451d5a4fe02b7c9f99ad2b95ffc">NewIterator</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>&amp; _read_options,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                        <a class="code hl_class" href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ColumnFamilyHandle</a>* column_family,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                        <a class="code hl_friend" href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html#ad439548bc6bd669bcbba06326159370e">WriteUnpreparedTxn</a>* txn);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html#ac3d065078d6770ab5df22a2ee1340dab">RollbackRecoveredTransaction</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d3/df8/structROCKSDB__NAMESPACE_1_1DBImpl_1_1RecoveredTransaction.html">DBImpl::RecoveredTransaction</a>* rtxn);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>};</div>
+</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="};">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html">   38</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#ab94611702f43c9501797a8bf3c6cc282">WriteUnpreparedCommitEntryPreReleaseCallback</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d1/d06/classROCKSDB__NAMESPACE_1_1PreReleaseCallback.html">PreReleaseCallback</a> {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// TODO(lth): Reduce code duplication with</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// WritePreparedCommitEntryPreReleaseCallback</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// includes_data indicates that the commit also writes non-empty</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">// CommitTimeWriteBatch to memtable, which needs to be committed separately.</span></div>
+<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#ab94611702f43c9501797a8bf3c6cc282">   44</a></span>  <a class="code hl_function" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#ab94611702f43c9501797a8bf3c6cc282">WriteUnpreparedCommitEntryPreReleaseCallback</a>(</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <a class="code hl_class" href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html">WritePreparedTxnDB</a>* db, <a class="code hl_class" href="../../d4/d18/classROCKSDB__NAMESPACE_1_1DBImpl.html">DBImpl</a>* db_impl,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="keyword">const</span> std::map&lt;SequenceNumber, size_t&gt;&amp; unprep_seqs,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordtype">size_t</span> data_batch_cnt = 0, <span class="keywordtype">bool</span> publish_seq = <span class="keyword">true</span>)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      : <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a3d7683e303e67dfe420ce1d6c2cf13a6">db_</a>(db),</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a7d5750c51052a681e9123e12ffcd1d0e">db_impl_</a>(db_impl),</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a8f3e3f67f2a69acc51bc779c2e3d24ec">unprep_seqs_</a>(unprep_seqs),</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a000151f507183723a2d20ca2cbfda622">data_batch_cnt_</a>(data_batch_cnt),</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#aff2dfb53fba035f79fbd1e02046f691b">includes_data_</a>(<a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a000151f507183723a2d20ca2cbfda622">data_batch_cnt_</a> &gt; 0),</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#aeb564e1a6a9772cd4e0dec894af8f17a">publish_seq_</a>(publish_seq) {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    assert(unprep_seqs.size() &gt; 0);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  }</div>
+</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a9f98289a294908b89220bd364f1a921a">   57</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a9f98289a294908b89220bd364f1a921a">Callback</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> commit_seq,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                  <span class="keywordtype">bool</span> is_mem_disabled <a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a>((__unused__)), uint64_t,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                  <span class="keywordtype">size_t</span> <span class="comment">/*index*/</span>, <span class="keywordtype">size_t</span> <span class="comment">/*total*/</span>)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">const</span> uint64_t last_commit_seq = <a class="code hl_define" href="../../d6/dd6/likely_8h.html#affde14445f49f65ff4f5b592e44ee71a">LIKELY</a>(<a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a000151f507183723a2d20ca2cbfda622">data_batch_cnt_</a> &lt;= 1)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                                         ? commit_seq</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                                         : commit_seq + <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a000151f507183723a2d20ca2cbfda622">data_batch_cnt_</a> - 1;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// Recall that unprep_seqs maps (un)prepared_seq =&gt; prepare_batch_cnt.</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; s : <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a8f3e3f67f2a69acc51bc779c2e3d24ec">unprep_seqs_</a>) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; s.second; i++) {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a3d7683e303e67dfe420ce1d6c2cf13a6">db_</a>-&gt;AddCommitted(s.first + i, last_commit_seq);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#aff2dfb53fba035f79fbd1e02046f691b">includes_data_</a>) {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      assert(<a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a000151f507183723a2d20ca2cbfda622">data_batch_cnt_</a>);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="comment">// Commit the data that is accompanied with the commit request</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a000151f507183723a2d20ca2cbfda622">data_batch_cnt_</a>; i++) {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="comment">// For commit seq of each batch use the commit seq of the last batch.</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="comment">// This would make debugging easier by having all the batches having</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="comment">// the same sequence number.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a3d7683e303e67dfe420ce1d6c2cf13a6">db_</a>-&gt;AddCommitted(commit_seq + i, last_commit_seq);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a7d5750c51052a681e9123e12ffcd1d0e">db_impl_</a>-&gt;immutable_db_options().two_write_queues &amp;&amp; <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#aeb564e1a6a9772cd4e0dec894af8f17a">publish_seq_</a>) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      assert(is_mem_disabled);  <span class="comment">// implies the 2nd queue</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      <span class="comment">// Publish the sequence number. We can do that here assuming the callback</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      <span class="comment">// is invoked only from one write queue, which would guarantee that the</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      <span class="comment">// publish sequence numbers will be in order, i.e., once a seq is</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      <span class="comment">// published all the seq prior to that are also publishable.</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a7d5750c51052a681e9123e12ffcd1d0e">db_impl_</a>-&gt;SetLastPublishedSequence(last_commit_seq);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="comment">// else SequenceNumber that is updated as part of the write already does the</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="comment">// publishing</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
+</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a3d7683e303e67dfe420ce1d6c2cf13a6">   94</a></span>  <a class="code hl_class" href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html">WritePreparedTxnDB</a>* <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a3d7683e303e67dfe420ce1d6c2cf13a6">db_</a>;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a7d5750c51052a681e9123e12ffcd1d0e">   95</a></span>  <a class="code hl_class" href="../../d4/d18/classROCKSDB__NAMESPACE_1_1DBImpl.html">DBImpl</a>* <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a7d5750c51052a681e9123e12ffcd1d0e">db_impl_</a>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a8f3e3f67f2a69acc51bc779c2e3d24ec">   96</a></span>  <span class="keyword">const</span> std::map&lt;SequenceNumber, size_t&gt;&amp; <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a8f3e3f67f2a69acc51bc779c2e3d24ec">unprep_seqs_</a>;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a000151f507183723a2d20ca2cbfda622">   97</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a000151f507183723a2d20ca2cbfda622">data_batch_cnt_</a>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="comment">// Either because it is commit without prepare or it has a</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="comment">// CommitTimeWriteBatch</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#aff2dfb53fba035f79fbd1e02046f691b">  100</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#aff2dfb53fba035f79fbd1e02046f691b">includes_data_</a>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="comment">// Should the callback also publishes the commit seq number</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#aeb564e1a6a9772cd4e0dec894af8f17a">  102</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#aeb564e1a6a9772cd4e0dec894af8f17a">publish_seq_</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>};</div>
+</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ColumnFamilyHandle_html"><div class="ttname"><a href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ROCKSDB_NAMESPACE::ColumnFamilyHandle</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l00081">db.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DBImpl_html"><div class="ttname"><a href="../../d4/d18/classROCKSDB__NAMESPACE_1_1DBImpl.html">ROCKSDB_NAMESPACE::DBImpl</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/d93/db__impl_8h_source.html#l00178">db_impl.h:178</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Iterator_html"><div class="ttname"><a href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html">ROCKSDB_NAMESPACE::Iterator</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d22/iterator_8h_source.html#l00028">iterator.h:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PreReleaseCallback_html"><div class="ttname"><a href="../../d1/d06/classROCKSDB__NAMESPACE_1_1PreReleaseCallback.html">ROCKSDB_NAMESPACE::PreReleaseCallback</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d78/pre__release__callback_8h_source.html#l00013">pre_release_callback.h:13</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Transaction_html"><div class="ttname"><a href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">ROCKSDB_NAMESPACE::Transaction</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/db6/transaction_8h_source.html#l00136">transaction.h:136</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritePreparedTxnDB_html"><div class="ttname"><a href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html">ROCKSDB_NAMESPACE::WritePreparedTxnDB</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/df3/write__prepared__txn__db_8h_source.html#l00038">write_prepared_txn_db.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritePreparedTxnDB_html_ad439548bc6bd669bcbba06326159370e"><div class="ttname"><a href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html#ad439548bc6bd669bcbba06326159370e">ROCKSDB_NAMESPACE::WritePreparedTxnDB::WriteUnpreparedTxn</a></div><div class="ttdeci">friend class WriteUnpreparedTxn</div><div class="ttdef"><b>Definition</b> <a href="../../d0/df3/write__prepared__txn__db_8h_source.html#l00525">write_prepared_txn_db.h:525</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritePreparedTxnDB_html_adeb697cad6e6721d2548f5ea1b939f2b"><div class="ttname"><a href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html#adeb697cad6e6721d2548f5ea1b939f2b">ROCKSDB_NAMESPACE::WritePreparedTxnDB::WriteUnpreparedTxnDB</a></div><div class="ttdeci">friend class WriteUnpreparedTxnDB</div><div class="ttdef"><b>Definition</b> <a href="../../d0/df3/write__prepared__txn__db_8h_source.html#l00526">write_prepared_txn_db.h:526</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritePreparedTxnDB_html_aeabb05c6c71a7c767925d0c5a777610d"><div class="ttname"><a href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html#aeabb05c6c71a7c767925d0c5a777610d">ROCKSDB_NAMESPACE::WritePreparedTxnDB::NewIterator</a></div><div class="ttdeci">Iterator * NewIterator(const ReadOptions &amp;_read_options, ColumnFamilyHandle *column_family) override</div><div class="ttdef"><b>Definition</b> <a href="../../d9/df9/write__prepared__txn__db_8cc_source.html#l00392">write_prepared_txn_db.cc:392</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritePreparedTxnDB_html_af83aaee57d38250b1836d5db27ef1263"><div class="ttname"><a href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html#af83aaee57d38250b1836d5db27ef1263">ROCKSDB_NAMESPACE::WritePreparedTxnDB::WritePreparedTxnDB</a></div><div class="ttdeci">WritePreparedTxnDB(DB *db, const TransactionDBOptions &amp;txn_db_options)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/df3/write__prepared__txn__db_8h_source.html#l00040">write_prepared_txn_db.h:40</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback_html_a000151f507183723a2d20ca2cbfda622"><div class="ttname"><a href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a000151f507183723a2d20ca2cbfda622">ROCKSDB_NAMESPACE::WriteUnpreparedCommitEntryPreReleaseCallback::data_batch_cnt_</a></div><div class="ttdeci">size_t data_batch_cnt_</div><div class="ttdef"><b>Definition</b> <a href="#l00097">write_unprepared_txn_db.h:97</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback_html_a3d7683e303e67dfe420ce1d6c2cf13a6"><div class="ttname"><a href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a3d7683e303e67dfe420ce1d6c2cf13a6">ROCKSDB_NAMESPACE::WriteUnpreparedCommitEntryPreReleaseCallback::db_</a></div><div class="ttdeci">WritePreparedTxnDB * db_</div><div class="ttdef"><b>Definition</b> <a href="#l00094">write_unprepared_txn_db.h:94</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback_html_a7d5750c51052a681e9123e12ffcd1d0e"><div class="ttname"><a href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a7d5750c51052a681e9123e12ffcd1d0e">ROCKSDB_NAMESPACE::WriteUnpreparedCommitEntryPreReleaseCallback::db_impl_</a></div><div class="ttdeci">DBImpl * db_impl_</div><div class="ttdef"><b>Definition</b> <a href="#l00095">write_unprepared_txn_db.h:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback_html_a8f3e3f67f2a69acc51bc779c2e3d24ec"><div class="ttname"><a href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a8f3e3f67f2a69acc51bc779c2e3d24ec">ROCKSDB_NAMESPACE::WriteUnpreparedCommitEntryPreReleaseCallback::unprep_seqs_</a></div><div class="ttdeci">const std::map&lt; SequenceNumber, size_t &gt; &amp; unprep_seqs_</div><div class="ttdef"><b>Definition</b> <a href="#l00096">write_unprepared_txn_db.h:96</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback_html_a9f98289a294908b89220bd364f1a921a"><div class="ttname"><a href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#a9f98289a294908b89220bd364f1a921a">ROCKSDB_NAMESPACE::WriteUnpreparedCommitEntryPreReleaseCallback::Callback</a></div><div class="ttdeci">Status Callback(SequenceNumber commit_seq, bool is_mem_disabled __attribute__((__unused__)), uint64_t, size_t, size_t) override</div><div class="ttdef"><b>Definition</b> <a href="#l00057">write_unprepared_txn_db.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback_html_ab94611702f43c9501797a8bf3c6cc282"><div class="ttname"><a href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#ab94611702f43c9501797a8bf3c6cc282">ROCKSDB_NAMESPACE::WriteUnpreparedCommitEntryPreReleaseCallback::WriteUnpreparedCommitEntryPreReleaseCallback</a></div><div class="ttdeci">WriteUnpreparedCommitEntryPreReleaseCallback(WritePreparedTxnDB *db, DBImpl *db_impl, const std::map&lt; SequenceNumber, size_t &gt; &amp;unprep_seqs, size_t data_batch_cnt=0, bool publish_seq=true)</div><div class="ttdef"><b>Definition</b> <a href="#l00044">write_unprepared_txn_db.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback_html_aeb564e1a6a9772cd4e0dec894af8f17a"><div class="ttname"><a href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#aeb564e1a6a9772cd4e0dec894af8f17a">ROCKSDB_NAMESPACE::WriteUnpreparedCommitEntryPreReleaseCallback::publish_seq_</a></div><div class="ttdeci">bool publish_seq_</div><div class="ttdef"><b>Definition</b> <a href="#l00102">write_unprepared_txn_db.h:102</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback_html_aff2dfb53fba035f79fbd1e02046f691b"><div class="ttname"><a href="../../d4/df7/classROCKSDB__NAMESPACE_1_1WriteUnpreparedCommitEntryPreReleaseCallback.html#aff2dfb53fba035f79fbd1e02046f691b">ROCKSDB_NAMESPACE::WriteUnpreparedCommitEntryPreReleaseCallback::includes_data_</a></div><div class="ttdeci">bool includes_data_</div><div class="ttdef"><b>Definition</b> <a href="#l00100">write_unprepared_txn_db.h:100</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB_html_a19640451d5a4fe02b7c9f99ad2b95ffc"><div class="ttname"><a href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html#a19640451d5a4fe02b7c9f99ad2b95ffc">ROCKSDB_NAMESPACE::WriteUnpreparedTxnDB::NewIterator</a></div><div class="ttdeci">Iterator * NewIterator(const ReadOptions &amp;_read_options, ColumnFamilyHandle *column_family, WriteUnpreparedTxn *txn)</div><div class="ttdef"><b>Definition</b> <a href="../../de/d77/write__unprepared__txn__db_8cc_source.html#l00391">write_unprepared_txn_db.cc:391</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB_html_ab6866bf314ddbfeee730434eea329042"><div class="ttname"><a href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html#ab6866bf314ddbfeee730434eea329042">ROCKSDB_NAMESPACE::WriteUnpreparedTxnDB::BeginTransaction</a></div><div class="ttdeci">Transaction * BeginTransaction(const WriteOptions &amp;write_options, const TransactionOptions &amp;txn_options, Transaction *old_txn) override</div><div class="ttdef"><b>Definition</b> <a href="../../de/d77/write__unprepared__txn__db_8cc_source.html#l00360">write_unprepared_txn_db.cc:360</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB_html_ac3d065078d6770ab5df22a2ee1340dab"><div class="ttname"><a href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html#ac3d065078d6770ab5df22a2ee1340dab">ROCKSDB_NAMESPACE::WriteUnpreparedTxnDB::RollbackRecoveredTransaction</a></div><div class="ttdeci">Status RollbackRecoveredTransaction(const DBImpl::RecoveredTransaction *rtxn)</div><div class="ttdef"><b>Definition</b> <a href="../../de/d77/write__unprepared__txn__db_8cc_source.html#l00018">write_unprepared_txn_db.cc:18</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB_html_af1a35d9049b3e33070890ba67cf485e0"><div class="ttname"><a href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html#af1a35d9049b3e33070890ba67cf485e0">ROCKSDB_NAMESPACE::WriteUnpreparedTxnDB::Initialize</a></div><div class="ttdeci">Status Initialize(const std::vector&lt; size_t &gt; &amp;compaction_enabled_cf_indices, const std::vector&lt; ColumnFamilyHandle * &gt; &amp;handles) override</div><div class="ttdef"><b>Definition</b> <a href="../../de/d77/write__unprepared__txn__db_8cc_source.html#l00199">write_unprepared_txn_db.cc:199</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB_html_af83aaee57d38250b1836d5db27ef1263"><div class="ttname"><a href="../../d6/d0c/classROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB.html#af83aaee57d38250b1836d5db27ef1263">ROCKSDB_NAMESPACE::WriteUnpreparedTxnDB::WritePreparedTxnDB</a></div><div class="ttdeci">WritePreparedTxnDB(DB *db, const TransactionDBOptions &amp;txn_db_options)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/df3/write__prepared__txn__db_8h_source.html#l00040">write_prepared_txn_db.h:40</a></div></div>
+<div class="ttc" id="alikely_8h_html_affde14445f49f65ff4f5b592e44ee71a"><div class="ttname"><a href="../../d6/dd6/likely_8h.html#affde14445f49f65ff4f5b592e44ee71a">LIKELY</a></div><div class="ttdeci">#define LIKELY(x)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/dd6/likely_8h_source.html#l00016">likely.h:16</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a14421ad5fea786298ec0edd0f34bd96a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">ROCKSDB_NAMESPACE::SequenceNumber</a></div><div class="ttdeci">uint64_t SequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00022">types.h:22</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1DBImpl_1_1RecoveredTransaction_html"><div class="ttname"><a href="../../d3/df8/structROCKSDB__NAMESPACE_1_1DBImpl_1_1RecoveredTransaction.html">ROCKSDB_NAMESPACE::DBImpl::RecoveredTransaction</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/d93/db__impl_8h_source.html#l00954">db_impl.h:954</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ReadOptions_html"><div class="ttname"><a href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ROCKSDB_NAMESPACE::ReadOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01680">options.h:1680</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionOptions_html"><div class="ttname"><a href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">ROCKSDB_NAMESPACE::TransactionOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00274">transaction_db.h:274</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1WriteOptions_html"><div class="ttname"><a href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">ROCKSDB_NAMESPACE::WriteOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01958">options.h:1958</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB_1_1IteratorState_html"><div class="ttname"><a href="../../d6/d27/structROCKSDB__NAMESPACE_1_1WriteUnpreparedTxnDB_1_1IteratorState.html">ROCKSDB_NAMESPACE::WriteUnpreparedTxnDB::IteratorState</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/d77/write__unprepared__txn__db_8cc_source.html#l00372">write_unprepared_txn_db.cc:372</a></div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a76c9b09b31a6cc23044f5574d9545a79"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a></div><div class="ttdeci">__attribute__((const, always_inline)) static inline intptr_t which_cache_line(intptr_t addr)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/dfb/toku__atomic_8h_source.html#l00063">toku_atomic.h:63</a></div></div>
+<div class="ttc" id="awrite__prepared__txn__db_8h_html"><div class="ttname"><a href="../../d0/df3/write__prepared__txn__db_8h.html">write_prepared_txn_db.h</a></div></div>
+<div class="ttc" id="awrite__unprepared__txn_8h_html"><div class="ttname"><a href="../../d0/dd3/write__unprepared__txn_8h.html">write_unprepared_txn.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../d1/dc6/write__unprepared__txn__db_8h.html">write_unprepared_txn_db.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

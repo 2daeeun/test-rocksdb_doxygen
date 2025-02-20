@@ -1,0 +1,25 @@
+var structROCKSDB__NAMESPACE_1_1MutableDBOptions =
+[
+    [ "MutableDBOptions", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a78c8a579868863b3f308d9dd77783124", null ],
+    [ "MutableDBOptions", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a3e285d8c670feeefbf6263196d4e506a", null ],
+    [ "Dump", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#abd576b212ddb66bf98e90500869239d3", null ],
+    [ "kName", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a4ae540658faf4758b225419cbde3058a", null ],
+    [ "avoid_flush_during_shutdown", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#ad75aeaeb327cf3e5539005315b4a6907", null ],
+    [ "bytes_per_sync", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a7c17efdf7673324176785ccd1eefe923", null ],
+    [ "compaction_readahead_size", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#acf2f200b8723d2f58af961a9728c9c20", null ],
+    [ "daily_offpeak_time_utc", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a782a6bafd4241683f37442d201fe3211", null ],
+    [ "delayed_write_rate", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a4569c76779c753b82ea7b5dc2ae0b043", null ],
+    [ "delete_obsolete_files_period_micros", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a2cb32f2f958ec587664f9bf95b4dba04", null ],
+    [ "max_background_compactions", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a756605a8666252901a87ef4255d8da83", null ],
+    [ "max_background_flushes", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a62ba3e8ec137be73f1e956bc59434367", null ],
+    [ "max_background_jobs", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a2c53373b3f28eb3a999c3bbd314c9ff9", null ],
+    [ "max_open_files", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#adcd16b1c7e55d535161ac74c791a3d5f", null ],
+    [ "max_subcompactions", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a01eaab32624f4e11c4178f82ea9aac7a", null ],
+    [ "max_total_wal_size", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a3a4ceb79c8d4b1066c725e5dc5ce91ce", null ],
+    [ "stats_dump_period_sec", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a4a354a14141d306dacfb25788d54b837", null ],
+    [ "stats_history_buffer_size", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#acccaf7ac8cde158167bc5a024fb80428", null ],
+    [ "stats_persist_period_sec", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#ae26a6f7b2ae865c8b22f06f6456fffab", null ],
+    [ "strict_bytes_per_sync", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#aa27451af8cb530a1239afa065d48f997", null ],
+    [ "wal_bytes_per_sync", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#aa577965b2068902862107dc4aeed3cff", null ],
+    [ "writable_file_max_buffer_size", "d1/dc3/structROCKSDB__NAMESPACE_1_1MutableDBOptions.html#a3f3bb279b1e8e5f08304bb2512a6ba68", null ]
+];

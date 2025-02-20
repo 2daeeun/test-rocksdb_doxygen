@@ -1,0 +1,28 @@
+var classROCKSDB__NAMESPACE_1_1Footer =
+[
+    [ "Footer", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a0f1056f1d42be5fb607d79dbf1235f33", null ],
+    [ "base_context_checksum", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a75e39a97d335beb178d5833be30a688e", null ],
+    [ "checksum_type", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#ab874b3ee59ceb063edcfe0e0edc4a31f", null ],
+    [ "DecodeFrom", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a3a9c377afdd06e0def8d08cccc4a1826", null ],
+    [ "format_version", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a236b4cb493bcb9e148fa52610fa845db", null ],
+    [ "GetBlockTrailerSize", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a042df49c890b05e02448df5e4c0d1276", null ],
+    [ "index_handle", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#acb9380aca15211e4213537a183a1440c", null ],
+    [ "metaindex_handle", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a588a0b1349c613bf3a5f6447e0f76dcf", null ],
+    [ "Reset", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a393138cba98feb2e5d30075088595f88", null ],
+    [ "table_magic_number", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a1db5a363c00d7387dbc84c0356eeedac", null ],
+    [ "ToString", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a2164df4302c1a5d1058546ac7e6f184a", null ],
+    [ "base_context_checksum_", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a2f167017d7566ee760706642574ae6f4", null ],
+    [ "block_trailer_size_", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#abcc00426613d165d4a4db569d73a20bc", null ],
+    [ "checksum_type_", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a65d72b05ed186d1d4df9694e917919bc", null ],
+    [ "format_version_", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#ad2527878d11ffbe0efb89f331f88af49", null ],
+    [ "index_handle_", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a33f9729af7eea9a17108c8f27700b6cf", null ],
+    [ "kInvalidChecksumType", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a6f9d48b88ea99e08e2a22e694aa9f735", null ],
+    [ "kInvalidFormatVersion", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a50f21a0318a67d6e8746fb1b128bea3d", null ],
+    [ "kMaxEncodedLength", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#acafcafeace6ee1a1d7cffd142f8b68e4", null ],
+    [ "kMinEncodedLength", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#ac5eb232c9c110d2a197160777abb13b0", null ],
+    [ "kNewVersionsEncodedLength", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a366bbc2bc0d245b385cc9b592d9670c5", null ],
+    [ "kNullTableMagicNumber", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#ae4bd07e370867a153b944002f1656f03", null ],
+    [ "kVersion0EncodedLength", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a396493fb4b180497f8dc10002e82868b", null ],
+    [ "metaindex_handle_", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a17b1f91fcd45c04f9a49aa919147b67d", null ],
+    [ "table_magic_number_", "d3/d18/classROCKSDB__NAMESPACE_1_1Footer.html#a9d5eb8e41a1a74390dfd86b4812272fc", null ]
+];

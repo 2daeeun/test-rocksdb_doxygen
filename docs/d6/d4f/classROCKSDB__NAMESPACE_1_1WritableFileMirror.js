@@ -1,0 +1,25 @@
+var classROCKSDB__NAMESPACE_1_1WritableFileMirror =
+[
+    [ "WritableFileMirror", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a26c80bbcdb5add26152d3e1a5a805d8b", null ],
+    [ "Allocate", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a0979104590e258b35e3da61dd2df3169", null ],
+    [ "Append", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#af6a17bc9165a2bd90f778583ce77420d", null ],
+    [ "Append", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a886efd3f21e84e85fbeae45941f6fbfb", null ],
+    [ "Close", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#adeaee1c192af54e41f8c4ec0cc89c3ec", null ],
+    [ "Flush", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#ac8acc073fdead4e77be842348a4a414d", null ],
+    [ "Fsync", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#af58c9e9fee4dc2e5263c5e73c855444a", null ],
+    [ "GetFileSize", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a1bbfdd60dc74e3754492ae230ab67d11", null ],
+    [ "GetIOPriority", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#aa237cab62c3266abf8dd8520b3e35d9f", null ],
+    [ "GetPreallocationStatus", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a3f9ff80214b6716aef2af41b47e337e7", null ],
+    [ "GetUniqueId", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a8084492cced9f516353545a4211e8b56", null ],
+    [ "InvalidateCache", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a5b6fcc16ae018037affb808830ffdadf", null ],
+    [ "IsSyncThreadSafe", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#acf07632f134593ac9a258aacbd368862", null ],
+    [ "PositionedAppend", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a91d363d5ec288652f22bca13c21715af", null ],
+    [ "PositionedAppend", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a73851dce43232d5f34d93196a34522ca", null ],
+    [ "RangeSync", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#aaae2a6c58470e26cc60df5882e5e4a70", null ],
+    [ "SetIOPriority", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a39f59ce4ad6f7959144e82b6e27b3097", null ],
+    [ "Sync", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a733deaef9bae20455ab2533df7f53816", null ],
+    [ "Truncate", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#aec2dd7df09fea7ee00a36dab76a42d3f", null ],
+    [ "a_", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#aa671df1160e2cdf11479523d4787eae1", null ],
+    [ "b_", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a1d217de963379e9d819f8395760f908d", null ],
+    [ "fname", "d6/d4f/classROCKSDB__NAMESPACE_1_1WritableFileMirror.html#a79e3256d39da1dfa11246568e32ae349", null ]
+];

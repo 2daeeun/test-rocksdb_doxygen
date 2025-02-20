@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/coalescing_iterator.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d6/dd1/coalescing__iterator_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">coalescing_iterator.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d6/dd1/coalescing__iterator_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d42/coalescing__iterator_8h.html">db/coalescing_iterator.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/d48/wide__columns__helper_8h.html">db/wide/wide_columns_helper.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="}">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a3b45e3006c50e54cfcd10c04ef0c2b8f">   12</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a3b45e3006c50e54cfcd10c04ef0c2b8f">CoalescingIterator::Coalesce</a>(</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5f/classROCKSDB__NAMESPACE_1_1autovector.html">autovector&lt;MultiCfIteratorInfo&gt;</a>&amp; items) {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  assert(<a class="code hl_variable" href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a5741fac0b4c0ea709ee26fb00b7fba4c">wide_columns_</a>.empty());</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <a class="code hl_typedef" href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a5175a27419992ce50d2fa02259b5fe36">MinHeap</a> heap;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; item : items) {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    assert(item.iterator);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; column : item.iterator-&gt;columns()) {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      heap.<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a5a12cbc1a5842acf3459b6ce3be75963">push</a>(<a class="code hl_struct" href="../../d7/dd3/structROCKSDB__NAMESPACE_1_1CoalescingIterator_1_1WideColumnWithOrder.html">WideColumnWithOrder</a>{&amp;column, item.order});</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    }</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  }</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordflow">if</span> (heap.<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">empty</a>()) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  }</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_variable" href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a5741fac0b4c0ea709ee26fb00b7fba4c">wide_columns_</a>.reserve(heap.<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a78b6e9ccfaeb66b7d7e310b579aef4de">size</a>());</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keyword">auto</span> current = heap.<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a09ae12744ed6c785cacf467c02401e5a">top</a>();</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  heap.<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a62960ce36f9e8a611af84feb347eee9d">pop</a>();</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">while</span> (!heap.<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">empty</a>()) {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">int</span> comparison = current.column-&gt;name().compare(heap.<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a09ae12744ed6c785cacf467c02401e5a">top</a>().<a class="code hl_variable" href="../../d7/dd3/structROCKSDB__NAMESPACE_1_1CoalescingIterator_1_1WideColumnWithOrder.html#a1cd19ab270a9e011dcb48713f0491e3d">column</a>-&gt;<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">name</a>());</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">if</span> (comparison &lt; 0) {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      <a class="code hl_variable" href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a5741fac0b4c0ea709ee26fb00b7fba4c">wide_columns_</a>.push_back(*current.column);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (comparison &gt; 0) {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      <span class="comment">// Shouldn&#39;t reach here.</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      <span class="comment">// Current item in the heap is greater than the top item in the min heap</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    current = heap.<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a09ae12744ed6c785cacf467c02401e5a">top</a>();</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    heap.<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a62960ce36f9e8a611af84feb347eee9d">pop</a>();</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_variable" href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a5741fac0b4c0ea709ee26fb00b7fba4c">wide_columns_</a>.push_back(*current.column);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d7/dbf/classROCKSDB__NAMESPACE_1_1WideColumnsHelper.html#a97ee022c7bb69b6bc2960989f46721e3">WideColumnsHelper::HasDefaultColumn</a>(<a class="code hl_variable" href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a5741fac0b4c0ea709ee26fb00b7fba4c">wide_columns_</a>)) {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_variable" href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a2c122663af4e37dd482f34ba0b70c635">value_</a> = <a class="code hl_function" href="../../d7/dbf/classROCKSDB__NAMESPACE_1_1WideColumnsHelper.html#a984987aab71afca210cf6a3e5dc59cd2">WideColumnsHelper::GetDefaultColumn</a>(<a class="code hl_variable" href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a5741fac0b4c0ea709ee26fb00b7fba4c">wide_columns_</a>);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a09ae12744ed6c785cacf467c02401e5a"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a09ae12744ed6c785cacf467c02401e5a">ROCKSDB_NAMESPACE::BinaryHeap::top</a></div><div class="ttdeci">const T &amp; top() const</div><div class="ttdef"><b>Definition</b> <a href="../../da/ddb/heap_8h_source.html#l00057">heap.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a5a12cbc1a5842acf3459b6ce3be75963"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a5a12cbc1a5842acf3459b6ce3be75963">ROCKSDB_NAMESPACE::BinaryHeap::push</a></div><div class="ttdeci">void push(const T &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="../../da/ddb/heap_8h_source.html#l00047">heap.h:47</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a62960ce36f9e8a611af84feb347eee9d"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a62960ce36f9e8a611af84feb347eee9d">ROCKSDB_NAMESPACE::BinaryHeap::pop</a></div><div class="ttdeci">void pop()</div><div class="ttdef"><b>Definition</b> <a href="../../da/ddb/heap_8h_source.html#l00074">heap.h:74</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a78b6e9ccfaeb66b7d7e310b579aef4de"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a78b6e9ccfaeb66b7d7e310b579aef4de">ROCKSDB_NAMESPACE::BinaryHeap::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="../../da/ddb/heap_8h_source.html#l00103">heap.h:103</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_ae0a26624a9466df908fa930f14bddb5d"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">ROCKSDB_NAMESPACE::BinaryHeap::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdef"><b>Definition</b> <a href="../../da/ddb/heap_8h_source.html#l00101">heap.h:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CoalescingIterator_html_a2c122663af4e37dd482f34ba0b70c635"><div class="ttname"><a href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a2c122663af4e37dd482f34ba0b70c635">ROCKSDB_NAMESPACE::CoalescingIterator::value_</a></div><div class="ttdeci">Slice value_</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d42/coalescing__iterator_8h_source.html#l00080">coalescing_iterator.h:80</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CoalescingIterator_html_a3b45e3006c50e54cfcd10c04ef0c2b8f"><div class="ttname"><a href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a3b45e3006c50e54cfcd10c04ef0c2b8f">ROCKSDB_NAMESPACE::CoalescingIterator::Coalesce</a></div><div class="ttdeci">void Coalesce(const autovector&lt; MultiCfIteratorInfo &gt; &amp;items)</div><div class="ttdef"><b>Definition</b> <a href="#l00012">coalescing_iterator.cc:12</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CoalescingIterator_html_a5175a27419992ce50d2fa02259b5fe36"><div class="ttname"><a href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a5175a27419992ce50d2fa02259b5fe36">ROCKSDB_NAMESPACE::CoalescingIterator::MinHeap</a></div><div class="ttdeci">BinaryHeap&lt; WideColumnWithOrder, WideColumnWithOrderComparator &gt; MinHeap</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d42/coalescing__iterator_8h_source.html#l00098">coalescing_iterator.h:98</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CoalescingIterator_html_a5741fac0b4c0ea709ee26fb00b7fba4c"><div class="ttname"><a href="../../d2/d27/classROCKSDB__NAMESPACE_1_1CoalescingIterator.html#a5741fac0b4c0ea709ee26fb00b7fba4c">ROCKSDB_NAMESPACE::CoalescingIterator::wide_columns_</a></div><div class="ttdeci">WideColumns wide_columns_</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d42/coalescing__iterator_8h_source.html#l00081">coalescing_iterator.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html_a5206e33b779540de290ec6d48f668d3a"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">ROCKSDB_NAMESPACE::WideColumn::name</a></div><div class="ttdeci">const Slice &amp; name() const</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dde/wide__columns_8h_source.html#l00056">wide_columns.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumnsHelper_html_a97ee022c7bb69b6bc2960989f46721e3"><div class="ttname"><a href="../../d7/dbf/classROCKSDB__NAMESPACE_1_1WideColumnsHelper.html#a97ee022c7bb69b6bc2960989f46721e3">ROCKSDB_NAMESPACE::WideColumnsHelper::HasDefaultColumn</a></div><div class="ttdeci">static bool HasDefaultColumn(const WideColumns &amp;columns)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d48/wide__columns__helper_8h_source.html#l00025">wide_columns_helper.h:25</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumnsHelper_html_a984987aab71afca210cf6a3e5dc59cd2"><div class="ttname"><a href="../../d7/dbf/classROCKSDB__NAMESPACE_1_1WideColumnsHelper.html#a984987aab71afca210cf6a3e5dc59cd2">ROCKSDB_NAMESPACE::WideColumnsHelper::GetDefaultColumn</a></div><div class="ttdeci">static const Slice &amp; GetDefaultColumn(const WideColumns &amp;columns)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d48/wide__columns__helper_8h_source.html#l00034">wide_columns_helper.h:34</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1autovector_html"><div class="ttname"><a href="../../d4/d5f/classROCKSDB__NAMESPACE_1_1autovector.html">ROCKSDB_NAMESPACE::autovector</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/dfc/autovector_8h_source.html#l00040">autovector.h:40</a></div></div>
+<div class="ttc" id="acoalescing__iterator_8h_html"><div class="ttname"><a href="../../d8/d42/coalescing__iterator_8h.html">coalescing_iterator.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1CoalescingIterator_1_1WideColumnWithOrder_html"><div class="ttname"><a href="../../d7/dd3/structROCKSDB__NAMESPACE_1_1CoalescingIterator_1_1WideColumnWithOrder.html">ROCKSDB_NAMESPACE::CoalescingIterator::WideColumnWithOrder</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d42/coalescing__iterator_8h_source.html#l00083">coalescing_iterator.h:83</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1CoalescingIterator_1_1WideColumnWithOrder_html_a1cd19ab270a9e011dcb48713f0491e3d"><div class="ttname"><a href="../../d7/dd3/structROCKSDB__NAMESPACE_1_1CoalescingIterator_1_1WideColumnWithOrder.html#a1cd19ab270a9e011dcb48713f0491e3d">ROCKSDB_NAMESPACE::CoalescingIterator::WideColumnWithOrder::column</a></div><div class="ttdeci">const WideColumn * column</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d42/coalescing__iterator_8h_source.html#l00084">coalescing_iterator.h:84</a></div></div>
+<div class="ttc" id="awide__columns__helper_8h_html"><div class="ttname"><a href="../../d4/d48/wide__columns__helper_8h.html">wide_columns_helper.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../d6/dd1/coalescing__iterator_8cc.html">coalescing_iterator.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

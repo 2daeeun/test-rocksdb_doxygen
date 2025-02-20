@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: env/env_chroot.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d2/d1d/env__chroot_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">env_chroot.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d2/d1d/env__chroot_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2016-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#if !defined(OS_WIN)</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/dc3/env__chroot_8h.html">env/env_chroot.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;unistd.h&gt;</span>  <span class="comment">// geteuid</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;cerrno&gt;</span>   <span class="comment">// errno</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;cstdlib&gt;</span>  <span class="comment">// realpath, free</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/df0/composite__env__wrapper_8h.html">env/composite_env_wrapper.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/d17/fs__remap_8h.html">env/fs_remap.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/db1/options__type_8h.html">rocksdb/utilities/options_type.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/d70/string__util_8h.html">util/string_util.h</a>&quot;</span>  <span class="comment">// errnoStr</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span>{</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">static</span> std::unordered_map&lt;std::string, OptionTypeInfo&gt; chroot_fs_type_info = {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    {<span class="stringliteral">&quot;chroot_dir&quot;</span>, {0, OptionType::kString}}};</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>}  <span class="comment">// namespace</span></div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#ac6ca3caf2dfec3f9d9d2360189c87927">   25</a></span><a class="code hl_function" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#ac6ca3caf2dfec3f9d9d2360189c87927">ChrootFileSystem::ChrootFileSystem</a>(<span class="keyword">const</span> std::shared_ptr&lt;FileSystem&gt;&amp; base,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                                   <span class="keyword">const</span> std::string&amp; chroot_dir)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    : <a class="code hl_function" href="../../d0/d6e/classROCKSDB__NAMESPACE_1_1RemapFileSystem.html#abef249ff7632493af986dc6ea7101fcb">RemapFileSystem</a>(base), <a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a>(chroot_dir) {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <a class="code hl_function" href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#a10a019263f3ea488ab059ec116085f8a">RegisterOptions</a>(<span class="stringliteral">&quot;chroot_dir&quot;</span>, &amp;<a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a>, &amp;chroot_fs_type_info);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#ad176c61875c9b2d7f120b3f7645cdb31">   31</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#ad176c61875c9b2d7f120b3f7645cdb31">ChrootFileSystem::PrepareOptions</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ConfigOptions</a>&amp; options) {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#aad348ffd9413db703ca3c71c9bb5a3c3">FileSystemWrapper::PrepareOptions</a>(options);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a>.empty()) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    s = <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fdd2c6692215a7d1894f2052ffc5609">Status::InvalidArgument</a>(<span class="stringliteral">&quot;ChRootFileSystem requires a chroot dir&quot;</span>);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    s = <a class="code hl_variable" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a752ebcd74be2d5c157b00f54e9e163ee">target_</a>-&gt;FileExists(<a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a>, <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">if</span> (s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#if defined(OS_AIX)</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">char</span> resolvedName[PATH_MAX];</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">char</span>* real_chroot_dir = realpath(<a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a>.c_str(), resolvedName);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">char</span>* real_chroot_dir = realpath(<a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a>.c_str(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">// chroot_dir must exist so realpath() returns non-nullptr.</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    assert(real_chroot_dir != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a> = real_chroot_dir;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#if !defined(OS_AIX)</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    free(real_chroot_dir);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a711b96bcf150ca1407c92df3d5fbe821">   57</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a711b96bcf150ca1407c92df3d5fbe821">ChrootFileSystem::GetTestDirectory</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                                            std::string* path,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                                            <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="comment">// Adapted from PosixEnv&#39;s implementation since it doesn&#39;t provide a way to</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">// create directory in the chroot.</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">char</span> buf[256];</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  snprintf(buf, <span class="keyword">sizeof</span>(buf), <span class="stringliteral">&quot;/rocksdbtest-%d&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(geteuid()));</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  *path = buf;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">// Directory may already exist, so ignore return</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d0/d6e/classROCKSDB__NAMESPACE_1_1RemapFileSystem.html#aa3d0f6fb4e64cad2eb53104b4abb448b">CreateDirIfMissing</a>(*path, options, dbg);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">// Returns status and expanded absolute path including the chroot directory.</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">// Checks whether the provided path breaks out of the chroot. If it returns</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">// non-OK status, the returned path should not be used.</span></div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#aaee1ac2c80bd68bd12c022d1e4943700">   73</a></span>std::pair&lt;IOStatus, std::string&gt; <a class="code hl_function" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#aaee1ac2c80bd68bd12c022d1e4943700">ChrootFileSystem::EncodePath</a>(</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">const</span> std::string&amp; path) {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">if</span> (path.empty() || path[0] != <span class="charliteral">&#39;/&#39;</span>) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">return</span> {<a class="code hl_function" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html#a9ff9c91929673737623fe65fff3d8036">IOStatus::InvalidArgument</a>(path, <span class="stringliteral">&quot;Not an absolute path&quot;</span>), <span class="stringliteral">&quot;&quot;</span>};</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  std::pair&lt;IOStatus, std::string&gt; res;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  res.second = <a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a> + path;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#if defined(OS_AIX)</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordtype">char</span> resolvedName[PATH_MAX];</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordtype">char</span>* normalized_path = realpath(res.second.c_str(), resolvedName);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keywordtype">char</span>* normalized_path = realpath(res.second.c_str(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordflow">if</span> (normalized_path == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    res.first = <a class="code hl_function" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html#a6930036ac55d0dee5d118f15a33bfe0b">IOStatus::NotFound</a>(res.second, <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6e5c230f1e99b59de1e1880cfceef381">errnoStr</a>(errno).c_str());</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strlen(normalized_path) &lt; <a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a>.size() ||</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>             strncmp(normalized_path, <a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a>.c_str(),</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                     <a class="code hl_variable" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">chroot_dir_</a>.size()) != 0) {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    res.first = <a class="code hl_function" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html#aadc632fd9808d36813af5af0d34b67f5">IOStatus::IOError</a>(res.second,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                                  <span class="stringliteral">&quot;Attempted to access path outside chroot&quot;</span>);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    res.first = <a class="code hl_function" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html#a197a3172fe0309568260c75b5c84cfc9">IOStatus::OK</a>();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">#if !defined(OS_AIX)</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  free(normalized_path);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}</div>
+</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">// Similar to EncodePath() except assumes the basename in the path hasn&#39;t been</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">// created yet.</span></div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a98d822c4bea0d5e19016556ac2d99897">  104</a></span>std::pair&lt;IOStatus, std::string&gt; <a class="code hl_function" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a98d822c4bea0d5e19016556ac2d99897">ChrootFileSystem::EncodePathWithNewBasename</a>(</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keyword">const</span> std::string&amp; path) {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordflow">if</span> (path.empty() || path[0] != <span class="charliteral">&#39;/&#39;</span>) {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">return</span> {<a class="code hl_function" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html#a9ff9c91929673737623fe65fff3d8036">IOStatus::InvalidArgument</a>(path, <span class="stringliteral">&quot;Not an absolute path&quot;</span>), <span class="stringliteral">&quot;&quot;</span>};</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="comment">// Basename may be followed by trailing slashes</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordtype">size_t</span> final_idx = path.find_last_not_of(<span class="charliteral">&#39;/&#39;</span>);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordflow">if</span> (final_idx == std::string::npos) {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="comment">// It&#39;s only slashes so no basename to extract</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#aaee1ac2c80bd68bd12c022d1e4943700">EncodePath</a>(path);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  }</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="comment">// Pull off the basename temporarily since realname(3) (used by</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="comment">// EncodePath()) requires a path that exists</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="keywordtype">size_t</span> base_sep = path.rfind(<span class="charliteral">&#39;/&#39;</span>, final_idx);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keyword">auto</span> status_and_enc_path = <a class="code hl_function" href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#aaee1ac2c80bd68bd12c022d1e4943700">EncodePath</a>(path.substr(0, base_sep + 1));</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  status_and_enc_path.second.append(path.substr(base_sep + 1));</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="keywordflow">return</span> status_and_enc_path;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>}</div>
+</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afb5a8d1a6dec989c0b712c73ed173bef">  124</a></span>std::shared_ptr&lt;FileSystem&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afb5a8d1a6dec989c0b712c73ed173bef">NewChrootFileSystem</a>(</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keyword">const</span> std::shared_ptr&lt;FileSystem&gt;&amp; base, <span class="keyword">const</span> std::string&amp; chroot_dir) {</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keyword">auto</span> chroot_fs = std::make_shared&lt;ChrootFileSystem&gt;(base, chroot_dir);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = chroot_fs-&gt;PrepareOptions(<a class="code hl_struct" href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ConfigOptions</a>());</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keywordflow">if</span> (s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">return</span> chroot_fs;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>}</div>
+</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="foldopen" id="foldopen00135" data-start="{" data-end="}">
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a51cfe498c546bf39a6fc6023cee725c1">  135</a></span><a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a51cfe498c546bf39a6fc6023cee725c1">NewChrootEnv</a>(<a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* base_env, <span class="keyword">const</span> std::string&amp; chroot_dir) {</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keywordflow">if</span> (!base_env-&gt;<a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af57b0deed23176c890dc764d7f8e5142">FileExists</a>(chroot_dir).<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  }</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="keyword">auto</span> chroot_fs = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afb5a8d1a6dec989c0b712c73ed173bef">NewChrootFileSystem</a>(base_env-&gt;<a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a1be4ed1309b173fc7b7cad85e5ed1086">GetFileSystem</a>(), chroot_dir);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="keywordflow">if</span> (chroot_fs != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="../../d6/d89/classROCKSDB__NAMESPACE_1_1CompositeEnvWrapper.html">CompositeEnvWrapper</a>(base_env, chroot_fs);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  }</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>}</div>
+</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="preprocessor">#endif  </span><span class="comment">//  !defined(OS_WIN)</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ChrootFileSystem_html_a0720993e428ee1c60a1699e0a81a6a79"><div class="ttname"><a href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a0720993e428ee1c60a1699e0a81a6a79">ROCKSDB_NAMESPACE::ChrootFileSystem::chroot_dir_</a></div><div class="ttdeci">std::string chroot_dir_</div><div class="ttdef"><b>Definition</b> <a href="../../da/dc3/env__chroot_8h_source.html#l00041">env_chroot.h:41</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ChrootFileSystem_html_a711b96bcf150ca1407c92df3d5fbe821"><div class="ttname"><a href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a711b96bcf150ca1407c92df3d5fbe821">ROCKSDB_NAMESPACE::ChrootFileSystem::GetTestDirectory</a></div><div class="ttdeci">IOStatus GetTestDirectory(const IOOptions &amp;options, std::string *path, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00057">env_chroot.cc:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ChrootFileSystem_html_a98d822c4bea0d5e19016556ac2d99897"><div class="ttname"><a href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#a98d822c4bea0d5e19016556ac2d99897">ROCKSDB_NAMESPACE::ChrootFileSystem::EncodePathWithNewBasename</a></div><div class="ttdeci">std::pair&lt; IOStatus, std::string &gt; EncodePathWithNewBasename(const std::string &amp;path) override</div><div class="ttdef"><b>Definition</b> <a href="#l00104">env_chroot.cc:104</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ChrootFileSystem_html_aaee1ac2c80bd68bd12c022d1e4943700"><div class="ttname"><a href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#aaee1ac2c80bd68bd12c022d1e4943700">ROCKSDB_NAMESPACE::ChrootFileSystem::EncodePath</a></div><div class="ttdeci">std::pair&lt; IOStatus, std::string &gt; EncodePath(const std::string &amp;path) override</div><div class="ttdef"><b>Definition</b> <a href="#l00073">env_chroot.cc:73</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ChrootFileSystem_html_ac6ca3caf2dfec3f9d9d2360189c87927"><div class="ttname"><a href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#ac6ca3caf2dfec3f9d9d2360189c87927">ROCKSDB_NAMESPACE::ChrootFileSystem::ChrootFileSystem</a></div><div class="ttdeci">ChrootFileSystem(const std::shared_ptr&lt; FileSystem &gt; &amp;base, const std::string &amp;chroot_dir)</div><div class="ttdef"><b>Definition</b> <a href="#l00025">env_chroot.cc:25</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ChrootFileSystem_html_ad176c61875c9b2d7f120b3f7645cdb31"><div class="ttname"><a href="../../d7/d5e/classROCKSDB__NAMESPACE_1_1ChrootFileSystem.html#ad176c61875c9b2d7f120b3f7645cdb31">ROCKSDB_NAMESPACE::ChrootFileSystem::PrepareOptions</a></div><div class="ttdeci">Status PrepareOptions(const ConfigOptions &amp;options) override</div><div class="ttdef"><b>Definition</b> <a href="#l00031">env_chroot.cc:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompositeEnvWrapper_html"><div class="ttname"><a href="../../d6/d89/classROCKSDB__NAMESPACE_1_1CompositeEnvWrapper.html">ROCKSDB_NAMESPACE::CompositeEnvWrapper</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/df0/composite__env__wrapper_8h_source.html#l00274">composite_env_wrapper.h:274</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Configurable_html_a10a019263f3ea488ab059ec116085f8a"><div class="ttname"><a href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#a10a019263f3ea488ab059ec116085f8a">ROCKSDB_NAMESPACE::Configurable::RegisterOptions</a></div><div class="ttdeci">void RegisterOptions(T *opt_ptr, const std::unordered_map&lt; std::string, OptionTypeInfo &gt; *opt_map)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d0b/configurable_8h_source.html#l00376">configurable.h:376</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">ROCKSDB_NAMESPACE::Env</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00154">env.h:154</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a1be4ed1309b173fc7b7cad85e5ed1086"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a1be4ed1309b173fc7b7cad85e5ed1086">ROCKSDB_NAMESPACE::Env::GetFileSystem</a></div><div class="ttdeci">const std::shared_ptr&lt; FileSystem &gt; &amp; GetFileSystem() const</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d7d/env_8cc_source.html#l01173">env.cc:1173</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_af57b0deed23176c890dc764d7f8e5142"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#af57b0deed23176c890dc764d7f8e5142">ROCKSDB_NAMESPACE::Env::FileExists</a></div><div class="ttdeci">virtual Status FileExists(const std::string &amp;fname)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a752ebcd74be2d5c157b00f54e9e163ee"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a752ebcd74be2d5c157b00f54e9e163ee">ROCKSDB_NAMESPACE::FileSystemWrapper::target_</a></div><div class="ttdeci">std::shared_ptr&lt; FileSystem &gt; target_</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01641">file_system.h:1641</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_aad348ffd9413db703ca3c71c9bb5a3c3"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#aad348ffd9413db703ca3c71c9bb5a3c3">ROCKSDB_NAMESPACE::FileSystemWrapper::PrepareOptions</a></div><div class="ttdeci">Status PrepareOptions(const ConfigOptions &amp;options) override</div><div class="ttdef"><b>Definition</b> <a href="../../dd/dac/file__system_8cc_source.html#l00245">file_system.cc:245</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IOStatus_html"><div class="ttname"><a href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">ROCKSDB_NAMESPACE::IOStatus</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dcd/io__status_8h_source.html#l00028">io_status.h:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IOStatus_html_a197a3172fe0309568260c75b5c84cfc9"><div class="ttname"><a href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html#a197a3172fe0309568260c75b5c84cfc9">ROCKSDB_NAMESPACE::IOStatus::OK</a></div><div class="ttdeci">static IOStatus OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dcd/io__status_8h_source.html#l00063">io_status.h:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IOStatus_html_a6930036ac55d0dee5d118f15a33bfe0b"><div class="ttname"><a href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html#a6930036ac55d0dee5d118f15a33bfe0b">ROCKSDB_NAMESPACE::IOStatus::NotFound</a></div><div class="ttdeci">static IOStatus NotFound(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dcd/io__status_8h_source.html#l00073">io_status.h:73</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IOStatus_html_a9ff9c91929673737623fe65fff3d8036"><div class="ttname"><a href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html#a9ff9c91929673737623fe65fff3d8036">ROCKSDB_NAMESPACE::IOStatus::InvalidArgument</a></div><div class="ttdeci">static IOStatus InvalidArgument(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dcd/io__status_8h_source.html#l00088">io_status.h:88</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IOStatus_html_aadc632fd9808d36813af5af0d34b67f5"><div class="ttname"><a href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html#aadc632fd9808d36813af5af0d34b67f5">ROCKSDB_NAMESPACE::IOStatus::IOError</a></div><div class="ttdeci">static IOStatus IOError(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dcd/io__status_8h_source.html#l00096">io_status.h:96</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RemapFileSystem_html_aa3d0f6fb4e64cad2eb53104b4abb448b"><div class="ttname"><a href="../../d0/d6e/classROCKSDB__NAMESPACE_1_1RemapFileSystem.html#aa3d0f6fb4e64cad2eb53104b4abb448b">ROCKSDB_NAMESPACE::RemapFileSystem::CreateDirIfMissing</a></div><div class="ttdeci">IOStatus CreateDirIfMissing(const std::string &amp;dirname, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d5/da8/fs__remap_8cc_source.html#l00219">fs_remap.cc:219</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RemapFileSystem_html_abef249ff7632493af986dc6ea7101fcb"><div class="ttname"><a href="../../d0/d6e/classROCKSDB__NAMESPACE_1_1RemapFileSystem.html#abef249ff7632493af986dc6ea7101fcb">ROCKSDB_NAMESPACE::RemapFileSystem::RemapFileSystem</a></div><div class="ttdeci">RemapFileSystem(const std::shared_ptr&lt; FileSystem &gt; &amp;base)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/da8/fs__remap_8cc_source.html#l00011">fs_remap.cc:11</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a5fdd2c6692215a7d1894f2052ffc5609"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fdd2c6692215a7d1894f2052ffc5609">ROCKSDB_NAMESPACE::Status::InvalidArgument</a></div><div class="ttdeci">static Status InvalidArgument(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00217">status.h:217</a></div></div>
+<div class="ttc" id="acomposite__env__wrapper_8h_html"><div class="ttname"><a href="../../d6/df0/composite__env__wrapper_8h.html">composite_env_wrapper.h</a></div></div>
+<div class="ttc" id="aenv__chroot_8h_html"><div class="ttname"><a href="../../da/dc3/env__chroot_8h.html">env_chroot.h</a></div></div>
+<div class="ttc" id="afs__remap_8h_html"><div class="ttname"><a href="../../d2/d17/fs__remap_8h.html">fs_remap.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a51cfe498c546bf39a6fc6023cee725c1"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a51cfe498c546bf39a6fc6023cee725c1">ROCKSDB_NAMESPACE::NewChrootEnv</a></div><div class="ttdeci">Env * NewChrootEnv(Env *base_env, const std::string &amp;chroot_dir)</div><div class="ttdef"><b>Definition</b> <a href="#l00135">env_chroot.cc:135</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6e5c230f1e99b59de1e1880cfceef381"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6e5c230f1e99b59de1e1880cfceef381">ROCKSDB_NAMESPACE::errnoStr</a></div><div class="ttdeci">std::string errnoStr(int err)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/string__util_8cc_source.html#l00528">string_util.cc:528</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_afb5a8d1a6dec989c0b712c73ed173bef"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afb5a8d1a6dec989c0b712c73ed173bef">ROCKSDB_NAMESPACE::NewChrootFileSystem</a></div><div class="ttdeci">std::shared_ptr&lt; FileSystem &gt; NewChrootFileSystem(const std::shared_ptr&lt; FileSystem &gt; &amp;base, const std::string &amp;chroot_dir)</div><div class="ttdef"><b>Definition</b> <a href="#l00124">env_chroot.cc:124</a></div></div>
+<div class="ttc" id="aoptions__type_8h_html"><div class="ttname"><a href="../../d2/db1/options__type_8h.html">options_type.h</a></div></div>
+<div class="ttc" id="astring__util_8h_html"><div class="ttname"><a href="../../dd/d70/string__util_8h.html">string_util.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ConfigOptions_html"><div class="ttname"><a href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ROCKSDB_NAMESPACE::ConfigOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/ddb/convenience_8h_source.html#l00034">convenience.h:34</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IODebugContext_html"><div class="ttname"><a href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">ROCKSDB_NAMESPACE::IODebugContext</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00216">file_system.h:216</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IOOptions_html"><div class="ttname"><a href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">ROCKSDB_NAMESPACE::IOOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00097">file_system.h:97</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_e51542386d3b21171ca4996d416c0411.html">env</a></li><li class="navelem"><a class="el" href="../../d2/d1d/env__chroot_8cc.html">env_chroot.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

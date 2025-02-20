@@ -1,0 +1,28 @@
+var classROCKSDB__NAMESPACE_1_1ConcurrentArena =
+[
+    [ "Shard", "d6/d3a/structROCKSDB__NAMESPACE_1_1ConcurrentArena_1_1Shard.html", "d6/d3a/structROCKSDB__NAMESPACE_1_1ConcurrentArena_1_1Shard" ],
+    [ "ConcurrentArena", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#afc82bf962f66e7c2f7381790ec8dbdf1", null ],
+    [ "ConcurrentArena", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a37efe3e4b574349249b403df22262460", null ],
+    [ "Allocate", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#ab55119a81a009632adc1f3a890226140", null ],
+    [ "AllocateAligned", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a653777a0b1faa4be8b9000dcfb273a25", null ],
+    [ "AllocatedAndUnused", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a5801d8ee5e63facdc99451ddddfd1422", null ],
+    [ "AllocateImpl", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a79e46ce8edd5213ae87eda677284c4fb", null ],
+    [ "ApproximateMemoryUsage", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a5a8bb77eb79f14bd302dbc640c1a2f97", null ],
+    [ "BlockSize", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#aee7edb18fed2db068d3a939dd70c0fdc", null ],
+    [ "Fixup", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a4f0665107fc2c7ca750d4fcfd32433d3", null ],
+    [ "IrregularBlockNum", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#af38ea0f172ed3c4067728fc15d3d16d0", null ],
+    [ "MemoryAllocatedBytes", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a059c1715daefadcd7af55e4b31cfcdcb", null ],
+    [ "operator=", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a6b0fd619bcd1a293d2091f5162825fff", null ],
+    [ "Repick", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#aa876fbf9dfd2e2ab0fcec2ec195a7e24", null ],
+    [ "ShardAllocatedAndUnused", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a23c133c6fa4520078329a1e139d621ba", null ],
+    [ "arena_", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#aae3c69570c3027e97846fb0ec3f5debf", null ],
+    [ "arena_allocated_and_unused_", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#ad0e587624ff2ed4fb834bd0fa61a2317", null ],
+    [ "arena_mutex_", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a87832ec640c06c934d979192f73f5100", null ],
+    [ "irregular_block_num_", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#ad85889f3dbcc6feb100cacb1472df0f9", null ],
+    [ "memory_allocated_bytes_", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#ace3a0fce5a0b34ce9cf347d12f074456", null ],
+    [ "ROCKSDB_FIELD_UNUSED", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#ac490eb1191dc437372596d9b9409ced5", null ],
+    [ "ROCKSDB_FIELD_UNUSED", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a0b45f7b39754d270c24cb4b0ceaf257f", null ],
+    [ "shard_block_size_", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#a5c48486004ace3c0bdba58423534de06", null ],
+    [ "shards_", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#ab50816a2837f4b583fa1ff94aad03ddb", null ],
+    [ "tls_cpuid", "d3/d45/classROCKSDB__NAMESPACE_1_1ConcurrentArena.html#af8bd8a1f1c24de3707b8d34e7285c0b0", null ]
+];

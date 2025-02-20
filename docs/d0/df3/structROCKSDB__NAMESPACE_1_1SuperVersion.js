@@ -1,0 +1,25 @@
+var structROCKSDB__NAMESPACE_1_1SuperVersion =
+[
+    [ "SuperVersion", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#ae36002862c9e3c9c8f5d1320bd9fc7c2", null ],
+    [ "~SuperVersion", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#a565a24e4deddd1fc5c6b72cfcb95b437", null ],
+    [ "Cleanup", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#a3d585b2cc93a0d0e1fdb9d2b71610022", null ],
+    [ "GetSeqnoToTimeMapping", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#ad7a0d818fb454ee6d5601996a692e721", null ],
+    [ "Init", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#ac90dc822c3f9ad086c41d35c575ba654", null ],
+    [ "Ref", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#ab3b4b42d9b2cc8b9d8c6d7b3e480ffa0", null ],
+    [ "ShareSeqnoToTimeMapping", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#abcb036fd0bec138d9c26329361b03e93", null ],
+    [ "Unref", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#afcd2144e15ffbdb2edcd882450b6d5e1", null ],
+    [ "cfd", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#aa0cf8a68d936966f37825d1cdf88586b", null ],
+    [ "current", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#ae9e5cd5fbf8ea14e5f6841454f5ff835", null ],
+    [ "dummy", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#adfd938fc9872c41b98efaefacb0b7fab", null ],
+    [ "full_history_ts_low", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#afeb32b5e26dab5675ed79902a5626d4b", null ],
+    [ "imm", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#a92eed3c076577549cbcd49549079a61d", null ],
+    [ "kSVInUse", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#a8ef37ebd4ee177065744584ff5b9f551", null ],
+    [ "kSVObsolete", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#a020b12f78d5231bcae9f29410ea6f4c4", null ],
+    [ "mem", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#a6a3d7a981b2a6b0ea98ec6530ef7a14d", null ],
+    [ "mutable_cf_options", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#ac6f93f38a176fa843480db2dc46d2b13", null ],
+    [ "refs", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#ad09c4209c61e42d6034175816be19565", null ],
+    [ "seqno_to_time_mapping", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#a7ae5f9d7a75419a07de3fa647ed07a75", null ],
+    [ "to_delete", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#af516ea87e9fce23b6da72355ec758f68", null ],
+    [ "version_number", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#a8b33f93185b37da9d3ea9e4c5503c813", null ],
+    [ "write_stall_condition", "d0/df3/structROCKSDB__NAMESPACE_1_1SuperVersion.html#ac915001aefc53811343a7afc73d64532", null ]
+];

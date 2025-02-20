@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: util/random_test.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d6/d70/random__test_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">random_test.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d6/d70/random__test_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2012 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d79/random_8h.html">util/random.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;cstring&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d42/testharness_8h.html">test_util/testharness.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::Random;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="../../d6/d70/random__test_8cc.html#adbec00c9dfad37b337e1ef79473ca573">   19</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#ad8b332753515c0ab8baada563c2547eb">TEST</a>(RandomTest, Uniform) {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> average = 20;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keywordflow">for</span> (uint32_t seed : {0, 1, 2, 37, 4096}) {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <a class="code hl_class" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">Random</a> r(seed);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> range : {1, 2, 8, 12, 100}) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      std::vector&lt;int&gt; counts(range, 0);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; range * average; ++i) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        ++counts.at(r.<a class="code hl_function" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html#a0067d95cd09465bcf62dce27e27af49a">Uniform</a>(range));</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      <span class="keywordtype">int</span> max_variance = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::sqrt(range) * 2 + 4);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; range; ++i) {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ab7a0ff4bfa4d9b27baa118d8b0756ca0">EXPECT_GE</a>(counts[i], std::max(1, average - max_variance));</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae0f265632323b4a07b585dcfde10f60a">EXPECT_LE</a>(counts[i], average + max_variance + 1);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d6/d70/random__test_8cc.html#ac12850e17cdc503fd8358fd03aa58f61">   38</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#ad8b332753515c0ab8baada563c2547eb">TEST</a>(RandomTest, OneIn) {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <a class="code hl_class" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">Random</a> r(42);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> range : {1, 2, 8, 12, 100, 1234}) {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> average = 100;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">int</span> count = 0;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; average * range; ++i) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      <span class="keywordflow">if</span> (r.<a class="code hl_function" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html#af8f85da33e54c4eb290d2f191b060b2a">OneIn</a>(range)) {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        ++count;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">if</span> (range == 1) {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a4159019abda84f5366acdb7604ff220a">EXPECT_EQ</a>(count, average);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="keywordtype">int</span> max_variance = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::sqrt(average) * 1.5);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ab7a0ff4bfa4d9b27baa118d8b0756ca0">EXPECT_GE</a>(count, average - max_variance);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae0f265632323b4a07b585dcfde10f60a">EXPECT_LE</a>(count, average + max_variance);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
+</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../d6/d70/random__test_8cc.html#a2bbd7864cf57415086d7eb85571b9c61">   58</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#ad8b332753515c0ab8baada563c2547eb">TEST</a>(RandomTest, OneInOpt) {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_class" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">Random</a> r(42);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> range : {-12, 0, 1, 2, 8, 12, 100, 1234}) {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> average = 100;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordtype">int</span> count = 0;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; average * range; ++i) {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <span class="keywordflow">if</span> (r.<a class="code hl_function" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html#a0dbdeb66e406c979a005aedc02977b05">OneInOpt</a>(range)) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        ++count;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">if</span> (range &lt; 1) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a4159019abda84f5366acdb7604ff220a">EXPECT_EQ</a>(count, 0);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (range == 1) {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a4159019abda84f5366acdb7604ff220a">EXPECT_EQ</a>(count, average);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      <span class="keywordtype">int</span> max_variance = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::sqrt(average) * 1.5);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ab7a0ff4bfa4d9b27baa118d8b0756ca0">EXPECT_GE</a>(count, average - max_variance);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae0f265632323b4a07b585dcfde10f60a">EXPECT_LE</a>(count, average + max_variance);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>}</div>
+</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="foldopen" id="foldopen00080" data-start="{" data-end="}">
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="../../d6/d70/random__test_8cc.html#a981e332b3d64c644d4e34945959b460d">   80</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#ad8b332753515c0ab8baada563c2547eb">TEST</a>(RandomTest, PercentTrue) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <a class="code hl_class" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">Random</a> r(42);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> pct : {-12, 0, 1, 2, 10, 50, 90, 98, 99, 100, 1234}) {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> samples = 10000;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordtype">int</span> count = 0;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; samples; ++i) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      <span class="keywordflow">if</span> (r.<a class="code hl_function" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html#ac04bbd9dae4551870fead1aada3469ea">PercentTrue</a>(pct)) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        ++count;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">if</span> (pct &lt;= 0) {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a4159019abda84f5366acdb7604ff220a">EXPECT_EQ</a>(count, 0);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (pct &gt;= 100) {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a4159019abda84f5366acdb7604ff220a">EXPECT_EQ</a>(count, samples);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <span class="keywordtype">int</span> est = (count * 100 + (samples / 2)) / samples;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a4159019abda84f5366acdb7604ff220a">EXPECT_EQ</a>(est, pct);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    }</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}</div>
+</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="foldopen" id="foldopen00102" data-start="{" data-end="}">
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d6/d70/random__test_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627">  102</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  ROCKSDB_NAMESPACE::port::InstallStackTraceHandler();</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <a class="code hl_function" href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">::testing::InitGoogleTest</a>(&amp;argc, argv);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a>();</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
+</div>
+<div class="ttc" id="acache__bench_8cc_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/db4/cache__bench_8cc_source.html#l00011">cache_bench.cc:11</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Random_html"><div class="ttname"><a href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">ROCKSDB_NAMESPACE::Random</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d79/random_8h_source.html#l00023">random.h:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Random_html_a0067d95cd09465bcf62dce27e27af49a"><div class="ttname"><a href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html#a0067d95cd09465bcf62dce27e27af49a">ROCKSDB_NAMESPACE::Random::Uniform</a></div><div class="ttdeci">uint32_t Uniform(int n)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d79/random_8h_source.html#l00068">random.h:68</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Random_html_a0dbdeb66e406c979a005aedc02977b05"><div class="ttname"><a href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html#a0dbdeb66e406c979a005aedc02977b05">ROCKSDB_NAMESPACE::Random::OneInOpt</a></div><div class="ttdeci">bool OneInOpt(int n)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d79/random_8h_source.html#l00076">random.h:76</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Random_html_ac04bbd9dae4551870fead1aada3469ea"><div class="ttname"><a href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html#ac04bbd9dae4551870fead1aada3469ea">ROCKSDB_NAMESPACE::Random::PercentTrue</a></div><div class="ttdeci">bool PercentTrue(int percentage)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d79/random_8h_source.html#l00081">random.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Random_html_af8f85da33e54c4eb290d2f191b060b2a"><div class="ttname"><a href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html#af8f85da33e54c4eb290d2f191b060b2a">ROCKSDB_NAMESPACE::Random::OneIn</a></div><div class="ttdeci">bool OneIn(int n)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d79/random_8h_source.html#l00072">random.h:72</a></div></div>
+<div class="ttc" id="agtest_8h_html_a4159019abda84f5366acdb7604ff220a"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a4159019abda84f5366acdb7604ff220a">EXPECT_EQ</a></div><div class="ttdeci">#define EXPECT_EQ(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21735">gtest.h:21735</a></div></div>
+<div class="ttc" id="agtest_8h_html_a853a3792807489591d3d4a2f2ff9359f"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a></div><div class="ttdeci">int RUN_ALL_TESTS() GTEST_MUST_USE_RESULT_</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22109">gtest.h:22109</a></div></div>
+<div class="ttc" id="agtest_8h_html_ab7a0ff4bfa4d9b27baa118d8b0756ca0"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ab7a0ff4bfa4d9b27baa118d8b0756ca0">EXPECT_GE</a></div><div class="ttdeci">#define EXPECT_GE(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21745">gtest.h:21745</a></div></div>
+<div class="ttc" id="agtest_8h_html_ad8b332753515c0ab8baada563c2547eb"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ad8b332753515c0ab8baada563c2547eb">TEST</a></div><div class="ttdeci">#define TEST(test_case_name, test_name)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22056">gtest.h:22056</a></div></div>
+<div class="ttc" id="agtest_8h_html_ae0f265632323b4a07b585dcfde10f60a"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ae0f265632323b4a07b585dcfde10f60a">EXPECT_LE</a></div><div class="ttdeci">#define EXPECT_LE(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21741">gtest.h:21741</a></div></div>
+<div class="ttc" id="anamespacetesting_html_aee3f6f99df893f576f705f66c0559482"><div class="ttname"><a href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">testing::InitGoogleTest</a></div><div class="ttdeci">void InitGoogleTest(int *argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d8c/gtest-all_8cc_source.html#l07404">gtest-all.cc:7404</a></div></div>
+<div class="ttc" id="arandom_8h_html"><div class="ttname"><a href="../../d1/d79/random_8h.html">random.h</a></div></div>
+<div class="ttc" id="atestharness_8h_html"><div class="ttname"><a href="../../dc/d42/testharness_8h.html">testharness.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_23ec12649285f9fabf3a6b7380226c28.html">util</a></li><li class="navelem"><a class="el" href="../../d6/d70/random__test_8cc.html">random_test.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

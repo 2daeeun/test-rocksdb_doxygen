@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/range/range_tree/lib/locktree/keyrange.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d6/dd0/keyrange_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">keyrange.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d6/dd0/keyrange_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/* -*- mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*- */</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// vim: ft=cpp:expandtab:ts=8:sw=4:softtabstop=4:</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#ident &quot;$Id$&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">/*======</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">This file is part of PerconaFT.</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"></span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"></span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">Copyright (c) 2006, 2015, Percona and/or its affiliates. All rights reserved.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"></span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">    PerconaFT is free software: you can redistribute it and/or modify</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">    it under the terms of the GNU General Public License, version 2,</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">    as published by the Free Software Foundation.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"></span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">    PerconaFT is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">    GNU General Public License for more details.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"></span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">    You should have received a copy of the GNU General Public License</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">    along with PerconaFT.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"></span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">----------------------------------------</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"></span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">    PerconaFT is free software: you can redistribute it and/or modify</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">    it under the terms of the GNU Affero General Public License, version 3,</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">    as published by the Free Software Foundation.</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"></span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">    PerconaFT is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">    GNU Affero General Public License for more details.</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"></span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    You should have received a copy of the GNU Affero General Public License</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">    along with PerconaFT.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"></span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">----------------------------------------</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"></span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">   you may not use this file except in compliance with the License.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">   You may obtain a copy of the License at</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"></span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">       http://www.apache.org/licenses/LICENSE-2.0</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"></span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">   Unless required by applicable law or agreed to in writing, software</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">   See the License for the specific language governing permissions and</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">   limitations under the License.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">======= */</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#ident \</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">    &quot;Copyright (c) 2006, 2015, Percona and/or its affiliates. All rights reserved.&quot;</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/dc2/utilities_2transactions_2lock_2range_2range__tree_2lib_2ft_2comparator_8h.html">../ft/comparator.h</a>&quot;</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d2/de6/namespacetoku.html">toku</a> {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">// A keyrange has a left and right key as endpoints.</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">//</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">// When a keyrange is created it owns no memory, but when it copies</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">// or extends another keyrange, it copies memory as necessary. This</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">// means it is cheap in the common case.</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="};">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../d8/d07/classtoku_1_1keyrange.html">   66</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d8/d07/classtoku_1_1keyrange.html">keyrange</a> {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="comment">// effect: constructor that borrows left and right key pointers.</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">//         no memory is allocated or copied.</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a44d29869b4310abc4dc95add601214b6">create</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> *left_key, <span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> *right_key);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">// effect: constructor that allocates and copies another keyrange&#39;s points.</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a7539a7a124ed027fdd4f31e74e57d7e4">create_copy</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d8/d07/classtoku_1_1keyrange.html">keyrange</a> &amp;range);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">// effect: destroys the keyrange, freeing any allocated memory</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a25476dc9ec658fdf1e6931ebf37fc110">destroy</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">// effect: extends the keyrange by choosing the leftmost and rightmost</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">//         endpoints from this range and the given range.</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">//         replaced keys in this range are freed, new keys are copied.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a64ae7d33c368eef981df4d02dfbca2dc">extend</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d3/dc5/classtoku_1_1comparator.html">comparator</a> &amp;cmp, <span class="keyword">const</span> <a class="code hl_class" href="../../d8/d07/classtoku_1_1keyrange.html">keyrange</a> &amp;range);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">// returns: the amount of memory this keyrange takes. does not account</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">//          for point optimizations or malloc overhead.</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  uint64_t <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a44c4b0b822f2008daba267b873f9a410">get_memory_size</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">// returns: pointer to the left key of this range</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> *<a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#aabe63c11266b848bcecb3411c7e42c61">get_left_key</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="comment">// returns: pointer to the right key of this range</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> *<a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a05c4e96c9e244401b941460eaf925619">get_right_key</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">// two ranges are either equal, lt, gt, or overlapping</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009">   94</a></span>  <span class="keyword">enum</span> <a class="code hl_enumeration" href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009">comparison</a> { <a class="code hl_enumvalue" href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009aad7159c11da2dd7f7dfcdaaf3ee00976">EQUALS</a>, <a class="code hl_enumvalue" href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009a75dd466e73ee49b7a75c35c76fbcb3f5">LESS_THAN</a>, <a class="code hl_enumvalue" href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009abaa6676f5f4dc333b3a65a426dff94f0">GREATER_THAN</a>, <a class="code hl_enumvalue" href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009a96de3c58a6c8fd7ff59f9578abc5f451">OVERLAPS</a> };</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="comment">// effect: compares this range to the given range</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="comment">// returns: LESS_THAN    if given range is strictly to the left</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="comment">//          GREATER_THAN if given range is strictly to the right</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="comment">//          EQUALS       if given range has the same left and right endpoints</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="comment">//          OVERLAPS     if at least one of the given range&#39;s endpoints falls</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="comment">//                       between this range&#39;s endpoints</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <a class="code hl_enumeration" href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009">comparison</a> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a78a61a6b76cca09105f72e129c94e77d">compare</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d3/dc5/classtoku_1_1comparator.html">comparator</a> &amp;cmp, <span class="keyword">const</span> <a class="code hl_class" href="../../d8/d07/classtoku_1_1keyrange.html">keyrange</a> &amp;range) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="comment">// returns: true if the range and the given range are equal or overlapping</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#af7a4d7bbdf2b89287cb5c8fec039c4fd">overlaps</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d3/dc5/classtoku_1_1comparator.html">comparator</a> &amp;cmp, <span class="keyword">const</span> <a class="code hl_class" href="../../d8/d07/classtoku_1_1keyrange.html">keyrange</a> &amp;range) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="comment">// returns: a keyrange representing -inf, +inf</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keyword">static</span> <a class="code hl_class" href="../../d8/d07/classtoku_1_1keyrange.html">keyrange</a> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a2c749310cf9402b388b6725e9dc76d52">get_infinite_range</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="comment">// some keys should be copied, some keys should not be.</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="comment">// to support both, we use two DBTs for copies and two pointers</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="comment">// for temporaries. the access rule is:</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="comment">// - if a pointer is non-null, then it reprsents the key.</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="comment">// - otherwise the pointer is null, and the key is in the copy.</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../d8/d07/classtoku_1_1keyrange.html#a058ccdeb683ca1f1470dd3adedcf5839">  117</a></span>  <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> <a class="code hl_variable" href="../../d8/d07/classtoku_1_1keyrange.html#a058ccdeb683ca1f1470dd3adedcf5839">m_left_key_copy</a>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../d8/d07/classtoku_1_1keyrange.html#ae7dd24b8db1bae4722127db29d327374">  118</a></span>  <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> <a class="code hl_variable" href="../../d8/d07/classtoku_1_1keyrange.html#ae7dd24b8db1bae4722127db29d327374">m_right_key_copy</a>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="../../d8/d07/classtoku_1_1keyrange.html#ac35c30af01070393114ae86bbea4bf39">  119</a></span>  <span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> *<a class="code hl_variable" href="../../d8/d07/classtoku_1_1keyrange.html#ac35c30af01070393114ae86bbea4bf39">m_left_key</a>;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../d8/d07/classtoku_1_1keyrange.html#af631f43ead633e8428146ed2e1c3f003">  120</a></span>  <span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> *<a class="code hl_variable" href="../../d8/d07/classtoku_1_1keyrange.html#af631f43ead633e8428146ed2e1c3f003">m_right_key</a>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// if this range is a point range, then m_left_key == m_right_key</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="comment">// and the actual data is stored exactly once in m_left_key_copy.</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="../../d8/d07/classtoku_1_1keyrange.html#a045b6c1a05a1d6aa25e64c51f3fab416">  124</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d8/d07/classtoku_1_1keyrange.html#a045b6c1a05a1d6aa25e64c51f3fab416">m_point_range</a>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="comment">// effect: initializes a keyrange to be empty</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a24092df2e89e897af77f721edf5e183a">init_empty</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="comment">// effect: copies the given key once into the left key copy</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="comment">//         and sets the right key copy to share the left.</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="comment">// rationale: optimization for point ranges to only do one malloc</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#aeadd7a8ea50aeec9f859e24d399ecbc0">set_both_keys</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> *key);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="comment">// effect: destroys the current left key. sets and copies the new one.</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a795f67758bc37871906ed7206e50d2d7">replace_left_key</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> *key);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="comment">// effect: destroys the current right key. sets and copies the new one.</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d07/classtoku_1_1keyrange.html#a6818fd366003440d29722df68e9306de">replace_right_key</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a> *key);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>};</div>
+</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>} <span class="comment">/* namespace toku */</span></div>
+<div class="ttc" id="aclasstoku_1_1comparator_html"><div class="ttname"><a href="../../d3/dc5/classtoku_1_1comparator.html">toku::comparator</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/dc2/utilities_2transactions_2lock_2range_2range__tree_2lib_2ft_2comparator_8h_source.html#l00075">comparator.h:75</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html">toku::keyrange</a></div><div class="ttdef"><b>Definition</b> <a href="#l00066">keyrange.h:66</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a045b6c1a05a1d6aa25e64c51f3fab416"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a045b6c1a05a1d6aa25e64c51f3fab416">toku::keyrange::m_point_range</a></div><div class="ttdeci">bool m_point_range</div><div class="ttdef"><b>Definition</b> <a href="#l00124">keyrange.h:124</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a058ccdeb683ca1f1470dd3adedcf5839"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a058ccdeb683ca1f1470dd3adedcf5839">toku::keyrange::m_left_key_copy</a></div><div class="ttdeci">DBT m_left_key_copy</div><div class="ttdef"><b>Definition</b> <a href="#l00117">keyrange.h:117</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a05c4e96c9e244401b941460eaf925619"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a05c4e96c9e244401b941460eaf925619">toku::keyrange::get_right_key</a></div><div class="ttdeci">const DBT * get_right_key(void) const</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00161">keyrange.cc:161</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a24092df2e89e897af77f721edf5e183a"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a24092df2e89e897af77f721edf5e183a">toku::keyrange::init_empty</a></div><div class="ttdeci">void init_empty(void)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00145">keyrange.cc:145</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a25476dc9ec658fdf1e6931ebf37fc110"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a25476dc9ec658fdf1e6931ebf37fc110">toku::keyrange::destroy</a></div><div class="ttdeci">void destroy(void)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00070">keyrange.cc:70</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a2c749310cf9402b388b6725e9dc76d52"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a2c749310cf9402b388b6725e9dc76d52">toku::keyrange::get_infinite_range</a></div><div class="ttdeci">static keyrange get_infinite_range(void)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00139">keyrange.cc:139</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a37b799215b6856d81594597947773009"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009">toku::keyrange::comparison</a></div><div class="ttdeci">comparison</div><div class="ttdef"><b>Definition</b> <a href="#l00094">keyrange.h:94</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a37b799215b6856d81594597947773009a75dd466e73ee49b7a75c35c76fbcb3f5"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009a75dd466e73ee49b7a75c35c76fbcb3f5">toku::keyrange::LESS_THAN</a></div><div class="ttdeci">@ LESS_THAN</div><div class="ttdef"><b>Definition</b> <a href="#l00094">keyrange.h:94</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a37b799215b6856d81594597947773009a96de3c58a6c8fd7ff59f9578abc5f451"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009a96de3c58a6c8fd7ff59f9578abc5f451">toku::keyrange::OVERLAPS</a></div><div class="ttdeci">@ OVERLAPS</div><div class="ttdef"><b>Definition</b> <a href="#l00094">keyrange.h:94</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a37b799215b6856d81594597947773009aad7159c11da2dd7f7dfcdaaf3ee00976"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009aad7159c11da2dd7f7dfcdaaf3ee00976">toku::keyrange::EQUALS</a></div><div class="ttdeci">@ EQUALS</div><div class="ttdef"><b>Definition</b> <a href="#l00094">keyrange.h:94</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a37b799215b6856d81594597947773009abaa6676f5f4dc333b3a65a426dff94f0"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a37b799215b6856d81594597947773009abaa6676f5f4dc333b3a65a426dff94f0">toku::keyrange::GREATER_THAN</a></div><div class="ttdeci">@ GREATER_THAN</div><div class="ttdef"><b>Definition</b> <a href="#l00094">keyrange.h:94</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a44c4b0b822f2008daba267b873f9a410"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a44c4b0b822f2008daba267b873f9a410">toku::keyrange::get_memory_size</a></div><div class="ttdeci">uint64_t get_memory_size(void) const</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00111">keyrange.cc:111</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a44d29869b4310abc4dc95add601214b6"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a44d29869b4310abc4dc95add601214b6">toku::keyrange::create</a></div><div class="ttdeci">void create(const DBT *left_key, const DBT *right_key)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00063">keyrange.cc:63</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a64ae7d33c368eef981df4d02dfbca2dc"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a64ae7d33c368eef981df4d02dfbca2dc">toku::keyrange::extend</a></div><div class="ttdeci">void extend(const comparator &amp;cmp, const keyrange &amp;range)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00095">keyrange.cc:95</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a6818fd366003440d29722df68e9306de"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a6818fd366003440d29722df68e9306de">toku::keyrange::replace_right_key</a></div><div class="ttdeci">void replace_right_key(const DBT *key)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00208">keyrange.cc:208</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a7539a7a124ed027fdd4f31e74e57d7e4"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a7539a7a124ed027fdd4f31e74e57d7e4">toku::keyrange::create_copy</a></div><div class="ttdeci">void create_copy(const keyrange &amp;range)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00076">keyrange.cc:76</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a78a61a6b76cca09105f72e129c94e77d"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a78a61a6b76cca09105f72e129c94e77d">toku::keyrange::compare</a></div><div class="ttdeci">comparison compare(const comparator &amp;cmp, const keyrange &amp;range) const</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00118">keyrange.cc:118</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_a795f67758bc37871906ed7206e50d2d7"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#a795f67758bc37871906ed7206e50d2d7">toku::keyrange::replace_left_key</a></div><div class="ttdeci">void replace_left_key(const DBT *key)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00184">keyrange.cc:184</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_aabe63c11266b848bcecb3411c7e42c61"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#aabe63c11266b848bcecb3411c7e42c61">toku::keyrange::get_left_key</a></div><div class="ttdeci">const DBT * get_left_key(void) const</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00153">keyrange.cc:153</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_ac35c30af01070393114ae86bbea4bf39"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#ac35c30af01070393114ae86bbea4bf39">toku::keyrange::m_left_key</a></div><div class="ttdeci">const DBT * m_left_key</div><div class="ttdef"><b>Definition</b> <a href="#l00119">keyrange.h:119</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_ae7dd24b8db1bae4722127db29d327374"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#ae7dd24b8db1bae4722127db29d327374">toku::keyrange::m_right_key_copy</a></div><div class="ttdeci">DBT m_right_key_copy</div><div class="ttdef"><b>Definition</b> <a href="#l00118">keyrange.h:118</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_aeadd7a8ea50aeec9f859e24d399ecbc0"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#aeadd7a8ea50aeec9f859e24d399ecbc0">toku::keyrange::set_both_keys</a></div><div class="ttdeci">void set_both_keys(const DBT *key)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00172">keyrange.cc:172</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_af631f43ead633e8428146ed2e1c3f003"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#af631f43ead633e8428146ed2e1c3f003">toku::keyrange::m_right_key</a></div><div class="ttdeci">const DBT * m_right_key</div><div class="ttdef"><b>Definition</b> <a href="#l00120">keyrange.h:120</a></div></div>
+<div class="ttc" id="aclasstoku_1_1keyrange_html_af7a4d7bbdf2b89287cb5c8fec039c4fd"><div class="ttname"><a href="../../d8/d07/classtoku_1_1keyrange.html#af7a4d7bbdf2b89287cb5c8fec039c4fd">toku::keyrange::overlaps</a></div><div class="ttdeci">bool overlaps(const comparator &amp;cmp, const keyrange &amp;range) const</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db3/keyrange_8cc_source.html#l00132">keyrange.cc:132</a></div></div>
+<div class="ttc" id="anamespacetoku_html"><div class="ttname"><a href="../../d2/de6/namespacetoku.html">toku</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/dc2/utilities_2transactions_2lock_2range_2range__tree_2lib_2ft_2comparator_8h_source.html#l00069">comparator.h:69</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_a2546b46f9811705f7d7bbe3a17c5f014"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a></div><div class="ttdeci">struct __toku_dbt DBT</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_source.html#l00012">db.h:12</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2ft_2comparator_8h_html"><div class="ttname"><a href="../../df/dc2/utilities_2transactions_2lock_2range_2range__tree_2lib_2ft_2comparator_8h.html">comparator.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../dir_3eff4fc1b9bdc927695daa6eaf220609.html">range</a></li><li class="navelem"><a class="el" href="../../dir_1fdd669514be316dc6b9821c4ef31e1a.html">range_tree</a></li><li class="navelem"><a class="el" href="../../dir_103d03b151a8543e8b0cd5714558840a.html">lib</a></li><li class="navelem"><a class="el" href="../../dir_079592faaa8b29223a1a2df5e326e84a.html">locktree</a></li><li class="navelem"><a class="el" href="../../d6/dd0/keyrange_8h.html">keyrange.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

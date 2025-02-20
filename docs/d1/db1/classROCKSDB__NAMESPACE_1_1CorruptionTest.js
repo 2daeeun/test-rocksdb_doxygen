@@ -1,0 +1,28 @@
+var classROCKSDB__NAMESPACE_1_1CorruptionTest =
+[
+    [ "CorruptionTest", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a637188800d6d02ac200045ceabda11bc", null ],
+    [ "~CorruptionTest", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#ab3047b694302e8843f43206c87bdfc4e", null ],
+    [ "Build", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a8c8300747a690f010c5350420bc6ade6", null ],
+    [ "Build", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a1a8c81c6b8a25e422d35713c51c2d6dc", null ],
+    [ "Check", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a271711e1e6cfc66ee5fa927d20ec05bd", null ],
+    [ "Check", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a09c999d9790f79e24d1dfbaff6a97c77", null ],
+    [ "CloseDb", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a9c1275080a4b986fec19826e3190cbdb", null ],
+    [ "Corrupt", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#abd1b5214c7713c8e4cd19ed066dfc08d", null ],
+    [ "CorruptFileWithTruncation", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a2d44113f93b54d5dc4bff91d84f31b5e", null ],
+    [ "CorruptTableFileAtLevel", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a4906b2b204a58f8346e73239e64c8677", null ],
+    [ "GetSortedWalFiles", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a8763de26fd41b26af463ecf2a13c3cd8", null ],
+    [ "Key", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a872957e700da1d09a8639da01ea7ec0d", null ],
+    [ "Property", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a88404a9e3a18ba00fb441562a632a74c", null ],
+    [ "Reopen", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#af55eef2b8061e376719338c3546ab8ef", null ],
+    [ "RepairDB", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#ab3f146bf09012a433719fa6d4a24f5d7", null ],
+    [ "TryReopen", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a9bbab8cdd754681da13770bdf7f52484", null ],
+    [ "Value", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#ad9f1ec2dfee7ec170ce38ec003a36343", null ],
+    [ "base_env_", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#af22cc7b30e3a465e04745abd86f85f83", null ],
+    [ "db_", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a7eff91fbb70b9acf80643b9062137276", null ],
+    [ "dbname_", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a5bff7a0e75b1be225a94f349a0debb56", null ],
+    [ "env_", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a659705434288b1ce31167168d3d71b3e", null ],
+    [ "env_guard_", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a9bc734baf21a10bc16f5b9d9d14e22a9", null ],
+    [ "fs_", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#abfdbcf5f5bcfdbc793fc71f03e3533ab", null ],
+    [ "options_", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#a1445ac827f1ae5bcc45299ed0740f532", null ],
+    [ "tiny_cache_", "d1/db1/classROCKSDB__NAMESPACE_1_1CorruptionTest.html#ae1b80d4fdb77e24884c456b8f9616e42", null ]
+];

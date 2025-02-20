@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: include/rocksdb/block_cache_trace_writer.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d4/df0/block__cache__trace__writer_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">block_cache_trace_writer.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d4/df0/block__cache__trace__writer_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2022, Meta Platforms, Inc. and affiliates.  All rights</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// reserved. This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d5b/options_8h.html">rocksdb/options.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d2f/system__clock_8h.html">rocksdb/system_clock.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/dc0/table__reader__caller_8h.html">rocksdb/table_reader_caller.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/dec/trace__reader__writer_8h.html">rocksdb/trace_reader_writer.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d42/trace__record_8h.html">rocksdb/trace_record.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// A record for block cache lookups/inserts. This is passed by the table</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// reader to the BlockCacheTraceWriter for every block cache op.</span></div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="};">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html">   17</a></span><span class="keyword">struct </span><a class="code hl_function" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a20f1a620918281736e4abcca426ac376">BlockCacheTraceRecord</a> {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="comment">// Required fields for all accesses.</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#aa9c37323f1abce297565bc384eacc3ac">   19</a></span>  uint64_t <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#aa9c37323f1abce297565bc384eacc3ac">access_timestamp</a> = 0;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="comment">// Info related to the block being looked up or inserted</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="comment">// 1. The cache key for the block</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#af4f03e68118048dc2c6e3277d6184b25">   24</a></span>  std::string <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#af4f03e68118048dc2c6e3277d6184b25">block_key</a>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// 2. The type of block</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#af63ea4fdc10d95d1cbcaed86103fcc9b">   27</a></span>  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#af63ea4fdc10d95d1cbcaed86103fcc9b">block_type</a> = <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9a8c61bc3ce41e06c8afd8cf09b51e1d1a">TraceType::kTraceMax</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="comment">// 3. Size of the block</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a359b7822ff4d6bfa36e805beef38f9d7">   30</a></span>  uint64_t <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a359b7822ff4d6bfa36e805beef38f9d7">block_size</a> = 0;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// Info about the SST file the block is in</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="comment">// 1. Column family ID</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a2b0f47ce285097751d8371d26a0a82bb">   35</a></span>  uint64_t <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a2b0f47ce285097751d8371d26a0a82bb">cf_id</a> = 0;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// 2. Column family name</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a70360aafce088950f6ecb663c74be9df">   38</a></span>  std::string <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a70360aafce088950f6ecb663c74be9df">cf_name</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// 3. LSM level of the file</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a995ecb79ead9b20b10b22fad2019898f">   41</a></span>  uint32_t <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a995ecb79ead9b20b10b22fad2019898f">level</a> = 0;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">// 4. SST file number</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#acb8dd3493e355dcf27263cb13d526cac">   44</a></span>  uint64_t <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#acb8dd3493e355dcf27263cb13d526cac">sst_fd_number</a> = 0;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// Info about the calling context</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// 1. The higher level request triggering the block cache request</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ad940ff9fef48babdc8f49954a9543221">   49</a></span>  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07352f7dacd1a517cd84f38fd10c1010">TableReaderCaller</a> <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ad940ff9fef48babdc8f49954a9543221">caller</a> = <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07352f7dacd1a517cd84f38fd10c1010acb5e25de881af0050e973be26578a41b">TableReaderCaller::kMaxBlockCacheLookupCaller</a>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// 2. Cache lookup hit/miss. Not relevant for inserts</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a16a0422774adbf7c0641bc3c0df43b8d">   52</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a16a0422774adbf7c0641bc3c0df43b8d">is_cache_hit</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// 3. Whether this request is a lookup</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a6852a3c2e942b2fc36fbf60a668060bc">   55</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a6852a3c2e942b2fc36fbf60a668060bc">no_insert</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// Get/MultiGet specific info</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">// 1. A unique ID for Get/MultiGet</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ad2227330cbdaf331b63a4a6a08b69ed0">   60</a></span>  uint64_t <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ad2227330cbdaf331b63a4a6a08b69ed0">get_id</a> = <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a7705810902140f140540be0b46724d27">kReservedGetId</a>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// 2. Whether the Get/MultiGet is from a user-specified snapshot</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a47d7b10ae57633b0a7b856fc7fd52439">   63</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a47d7b10ae57633b0a7b856fc7fd52439">get_from_user_specified_snapshot</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// 3. The target user key in the block</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#aa83629f7bc11a15583f02c72bda36285">   66</a></span>  std::string <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#aa83629f7bc11a15583f02c72bda36285">referenced_key</a>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="comment">// Required fields for data block and user Get/Multi-Get only.</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// 1. Size of te useful data in the block</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a3a0453526b12ff0b97342d6e0042067e">   71</a></span>  uint64_t <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a3a0453526b12ff0b97342d6e0042067e">referenced_data_size</a> = 0;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// 2. Only for MultiGet, number of keys from the batch found in the block</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ada21cce82c11f8267975f62380336a44">   74</a></span>  uint64_t <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ada21cce82c11f8267975f62380336a44">num_keys_in_block</a> = 0;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// 3. Whether the key was found in the block or not (false positive)</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a5f833813e0574b5fd497cfaa94904a56">   77</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a5f833813e0574b5fd497cfaa94904a56">referenced_key_exist_in_block</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a7705810902140f140540be0b46724d27">   79</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> uint64_t <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a7705810902140f140540be0b46724d27">kReservedGetId</a>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a20f1a620918281736e4abcca426ac376">   81</a></span>  <a class="code hl_function" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a20f1a620918281736e4abcca426ac376">BlockCacheTraceRecord</a>() {}</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a6fa12412e3c981973462825df544fc76">   83</a></span>  <a class="code hl_function" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a6fa12412e3c981973462825df544fc76">BlockCacheTraceRecord</a>(uint64_t _access_timestamp, std::string _block_key,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                        <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> _block_type, uint64_t _block_size,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                        uint64_t _cf_id, std::string _cf_name, uint32_t _level,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                        uint64_t _sst_fd_number, <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07352f7dacd1a517cd84f38fd10c1010">TableReaderCaller</a> _caller,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                        <span class="keywordtype">bool</span> _is_cache_hit, <span class="keywordtype">bool</span> _no_insert, uint64_t _get_id,</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                        <span class="keywordtype">bool</span> _get_from_user_specified_snapshot = <span class="keyword">false</span>,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                        std::string _referenced_key = <span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                        uint64_t _referenced_data_size = 0,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                        uint64_t _num_keys_in_block = 0,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                        <span class="keywordtype">bool</span> _referenced_key_exist_in_block = <span class="keyword">false</span>)</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      : <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#aa9c37323f1abce297565bc384eacc3ac">access_timestamp</a>(_access_timestamp),</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#af4f03e68118048dc2c6e3277d6184b25">block_key</a>(_block_key),</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#af63ea4fdc10d95d1cbcaed86103fcc9b">block_type</a>(_block_type),</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a359b7822ff4d6bfa36e805beef38f9d7">block_size</a>(_block_size),</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a2b0f47ce285097751d8371d26a0a82bb">cf_id</a>(_cf_id),</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a70360aafce088950f6ecb663c74be9df">cf_name</a>(_cf_name),</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a995ecb79ead9b20b10b22fad2019898f">level</a>(_level),</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#acb8dd3493e355dcf27263cb13d526cac">sst_fd_number</a>(_sst_fd_number),</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ad940ff9fef48babdc8f49954a9543221">caller</a>(_caller),</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a16a0422774adbf7c0641bc3c0df43b8d">is_cache_hit</a>(_is_cache_hit),</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a6852a3c2e942b2fc36fbf60a668060bc">no_insert</a>(_no_insert),</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ad2227330cbdaf331b63a4a6a08b69ed0">get_id</a>(_get_id),</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a47d7b10ae57633b0a7b856fc7fd52439">get_from_user_specified_snapshot</a>(_get_from_user_specified_snapshot),</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#aa83629f7bc11a15583f02c72bda36285">referenced_key</a>(_referenced_key),</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a3a0453526b12ff0b97342d6e0042067e">referenced_data_size</a>(_referenced_data_size),</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ada21cce82c11f8267975f62380336a44">num_keys_in_block</a>(_num_keys_in_block),</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <a class="code hl_variable" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a5f833813e0574b5fd497cfaa94904a56">referenced_key_exist_in_block</a>(_referenced_key_exist_in_block) {}</div>
+</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>};</div>
+</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">// Options for tracing block cache accesses</span></div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="};">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="../../df/dd1/structROCKSDB__NAMESPACE_1_1BlockCacheTraceOptions.html">  113</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../df/dd1/structROCKSDB__NAMESPACE_1_1BlockCacheTraceOptions.html">BlockCacheTraceOptions</a> {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="comment">// Specify trace sampling option, i.e. capture one per how many requests.</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="comment">// Default to 1 (capture every request).</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="../../df/dd1/structROCKSDB__NAMESPACE_1_1BlockCacheTraceOptions.html#a2aa52746bfefc6bdef8fbccc757ca518">  116</a></span>  uint64_t <a class="code hl_variable" href="../../df/dd1/structROCKSDB__NAMESPACE_1_1BlockCacheTraceOptions.html#a2aa52746bfefc6bdef8fbccc757ca518">sampling_frequency</a> = 1;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>};</div>
+</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment">// Options for the built-in implementation of BlockCacheTraceWriter</span></div>
+<div class="foldopen" id="foldopen00120" data-start="{" data-end="};">
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../d8/d20/structROCKSDB__NAMESPACE_1_1BlockCacheTraceWriterOptions.html">  120</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../d8/d20/structROCKSDB__NAMESPACE_1_1BlockCacheTraceWriterOptions.html">BlockCacheTraceWriterOptions</a> {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="../../d8/d20/structROCKSDB__NAMESPACE_1_1BlockCacheTraceWriterOptions.html#a370c578be03c98f288b9b93571f86176">  121</a></span>  uint64_t <a class="code hl_variable" href="../../d8/d20/structROCKSDB__NAMESPACE_1_1BlockCacheTraceWriterOptions.html#a370c578be03c98f288b9b93571f86176">max_trace_file_size</a> = uint64_t{64} * 1024 * 1024 * 1024;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>};</div>
+</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment">// BlockCacheTraceWriter is an abstract class that captures all RocksDB block</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment">// cache accesses. Every RocksDB operation is passed to WriteBlockAccess()</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment">// with a BlockCacheTraceRecord.</span></div>
+<div class="foldopen" id="foldopen00127" data-start="{" data-end="};">
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html">  127</a></span><span class="keyword">class </span><a class="code hl_class" href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html">BlockCacheTraceWriter</a> {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html#ae597236f9611dc6aaf1cac4b659829bc">  129</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html#ae597236f9611dc6aaf1cac4b659829bc">~BlockCacheTraceWriter</a>() {}</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="comment">// Pass Slice references to avoid copy.</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html#a8f59f0cd0a9717f694156f70680254d6">  132</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html#a8f59f0cd0a9717f694156f70680254d6">WriteBlockAccess</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html">BlockCacheTraceRecord</a>&amp; record,</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                                  <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; block_key, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; cf_name,</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                                  <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; referenced_key) = 0;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="comment">// Write a trace header at the beginning, typically on initiating a trace,</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="comment">// with some metadata like a magic number and RocksDB version.</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html#a090d862c88d9ec1102c6ada945f1727b">  138</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html#a090d862c88d9ec1102c6ada945f1727b">WriteHeader</a>() = 0;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>};</div>
+</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment">// Allocate an instance of the built-in BlockCacheTraceWriter implementation,</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment">// that traces all block cache accesses to a user-provided TraceWriter. Each</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment">// access is traced to a file with a timestamp and type, followed by the</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">// payload.</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>std::unique_ptr&lt;BlockCacheTraceWriter&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a498012b63d2b08f2392c3ce34521d81f">NewBlockCacheTraceWriter</a>(</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <a class="code hl_class" href="../../dc/d06/classROCKSDB__NAMESPACE_1_1SystemClock.html">SystemClock</a>* clock, <span class="keyword">const</span> <a class="code hl_struct" href="../../d8/d20/structROCKSDB__NAMESPACE_1_1BlockCacheTraceWriterOptions.html">BlockCacheTraceWriterOptions</a>&amp; trace_options,</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    std::unique_ptr&lt;TraceWriter&gt;&amp;&amp; trace_writer);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter_html"><div class="ttname"><a href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html">ROCKSDB_NAMESPACE::BlockCacheTraceWriter</a></div><div class="ttdef"><b>Definition</b> <a href="#l00127">block_cache_trace_writer.h:127</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter_html_a090d862c88d9ec1102c6ada945f1727b"><div class="ttname"><a href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html#a090d862c88d9ec1102c6ada945f1727b">ROCKSDB_NAMESPACE::BlockCacheTraceWriter::WriteHeader</a></div><div class="ttdeci">virtual Status WriteHeader()=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter_html_a8f59f0cd0a9717f694156f70680254d6"><div class="ttname"><a href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html#a8f59f0cd0a9717f694156f70680254d6">ROCKSDB_NAMESPACE::BlockCacheTraceWriter::WriteBlockAccess</a></div><div class="ttdeci">virtual Status WriteBlockAccess(const BlockCacheTraceRecord &amp;record, const Slice &amp;block_key, const Slice &amp;cf_name, const Slice &amp;referenced_key)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter_html_ae597236f9611dc6aaf1cac4b659829bc"><div class="ttname"><a href="../../db/da6/classROCKSDB__NAMESPACE_1_1BlockCacheTraceWriter.html#ae597236f9611dc6aaf1cac4b659829bc">ROCKSDB_NAMESPACE::BlockCacheTraceWriter::~BlockCacheTraceWriter</a></div><div class="ttdeci">virtual ~BlockCacheTraceWriter()</div><div class="ttdef"><b>Definition</b> <a href="#l00129">block_cache_trace_writer.h:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SystemClock_html"><div class="ttname"><a href="../../dc/d06/classROCKSDB__NAMESPACE_1_1SystemClock.html">ROCKSDB_NAMESPACE::SystemClock</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d2f/system__clock_8h_source.html#l00030">system_clock.h:30</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a07352f7dacd1a517cd84f38fd10c1010"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07352f7dacd1a517cd84f38fd10c1010">ROCKSDB_NAMESPACE::TableReaderCaller</a></div><div class="ttdeci">TableReaderCaller</div><div class="ttdef"><b>Definition</b> <a href="../../de/dc0/table__reader__caller_8h_source.html#l00016">table_reader_caller.h:16</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a07352f7dacd1a517cd84f38fd10c1010acb5e25de881af0050e973be26578a41b"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07352f7dacd1a517cd84f38fd10c1010acb5e25de881af0050e973be26578a41b">ROCKSDB_NAMESPACE::kMaxBlockCacheLookupCaller</a></div><div class="ttdeci">@ kMaxBlockCacheLookupCaller</div><div class="ttdef"><b>Definition</b> <a href="../../de/dc0/table__reader__caller_8h_source.html#l00039">table_reader_caller.h:39</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a498012b63d2b08f2392c3ce34521d81f"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a498012b63d2b08f2392c3ce34521d81f">ROCKSDB_NAMESPACE::NewBlockCacheTraceWriter</a></div><div class="ttdeci">std::unique_ptr&lt; BlockCacheTraceWriter &gt; NewBlockCacheTraceWriter(SystemClock *clock, const BlockCacheTraceWriterOptions &amp;trace_options, std::unique_ptr&lt; TraceWriter &gt; &amp;&amp;trace_writer)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d8b/block__cache__tracer_8cc_source.html#l00502">block_cache_tracer.cc:502</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6bdc8fce90c625710420e4fbed2ba1e9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">ROCKSDB_NAMESPACE::TraceType</a></div><div class="ttdeci">TraceType</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d42/trace__record_8h_source.html#l00022">trace_record.h:22</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6bdc8fce90c625710420e4fbed2ba1e9a8c61bc3ce41e06c8afd8cf09b51e1d1a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9a8c61bc3ce41e06c8afd8cf09b51e1d1a">ROCKSDB_NAMESPACE::kTraceMax</a></div><div class="ttdeci">@ kTraceMax</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d42/trace__record_8h_source.html#l00043">trace_record.h:43</a></div></div>
+<div class="ttc" id="aoptions_8h_html"><div class="ttname"><a href="../../d7/d5b/options_8h.html">options.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceOptions_html"><div class="ttname"><a href="../../df/dd1/structROCKSDB__NAMESPACE_1_1BlockCacheTraceOptions.html">ROCKSDB_NAMESPACE::BlockCacheTraceOptions</a></div><div class="ttdef"><b>Definition</b> <a href="#l00113">block_cache_trace_writer.h:113</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceOptions_html_a2aa52746bfefc6bdef8fbccc757ca518"><div class="ttname"><a href="../../df/dd1/structROCKSDB__NAMESPACE_1_1BlockCacheTraceOptions.html#a2aa52746bfefc6bdef8fbccc757ca518">ROCKSDB_NAMESPACE::BlockCacheTraceOptions::sampling_frequency</a></div><div class="ttdeci">uint64_t sampling_frequency</div><div class="ttdef"><b>Definition</b> <a href="#l00116">block_cache_trace_writer.h:116</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html">ROCKSDB_NAMESPACE::BlockCacheTraceRecord</a></div><div class="ttdef"><b>Definition</b> <a href="#l00017">block_cache_trace_writer.h:17</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a16a0422774adbf7c0641bc3c0df43b8d"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a16a0422774adbf7c0641bc3c0df43b8d">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::is_cache_hit</a></div><div class="ttdeci">bool is_cache_hit</div><div class="ttdef"><b>Definition</b> <a href="#l00052">block_cache_trace_writer.h:52</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a20f1a620918281736e4abcca426ac376"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a20f1a620918281736e4abcca426ac376">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::BlockCacheTraceRecord</a></div><div class="ttdeci">BlockCacheTraceRecord()</div><div class="ttdef"><b>Definition</b> <a href="#l00081">block_cache_trace_writer.h:81</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a2b0f47ce285097751d8371d26a0a82bb"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a2b0f47ce285097751d8371d26a0a82bb">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::cf_id</a></div><div class="ttdeci">uint64_t cf_id</div><div class="ttdef"><b>Definition</b> <a href="#l00035">block_cache_trace_writer.h:35</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a359b7822ff4d6bfa36e805beef38f9d7"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a359b7822ff4d6bfa36e805beef38f9d7">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::block_size</a></div><div class="ttdeci">uint64_t block_size</div><div class="ttdef"><b>Definition</b> <a href="#l00030">block_cache_trace_writer.h:30</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a3a0453526b12ff0b97342d6e0042067e"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a3a0453526b12ff0b97342d6e0042067e">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::referenced_data_size</a></div><div class="ttdeci">uint64_t referenced_data_size</div><div class="ttdef"><b>Definition</b> <a href="#l00071">block_cache_trace_writer.h:71</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a47d7b10ae57633b0a7b856fc7fd52439"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a47d7b10ae57633b0a7b856fc7fd52439">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::get_from_user_specified_snapshot</a></div><div class="ttdeci">bool get_from_user_specified_snapshot</div><div class="ttdef"><b>Definition</b> <a href="#l00063">block_cache_trace_writer.h:63</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a5f833813e0574b5fd497cfaa94904a56"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a5f833813e0574b5fd497cfaa94904a56">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::referenced_key_exist_in_block</a></div><div class="ttdeci">bool referenced_key_exist_in_block</div><div class="ttdef"><b>Definition</b> <a href="#l00077">block_cache_trace_writer.h:77</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a6852a3c2e942b2fc36fbf60a668060bc"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a6852a3c2e942b2fc36fbf60a668060bc">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::no_insert</a></div><div class="ttdeci">bool no_insert</div><div class="ttdef"><b>Definition</b> <a href="#l00055">block_cache_trace_writer.h:55</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a6fa12412e3c981973462825df544fc76"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a6fa12412e3c981973462825df544fc76">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::BlockCacheTraceRecord</a></div><div class="ttdeci">BlockCacheTraceRecord(uint64_t _access_timestamp, std::string _block_key, TraceType _block_type, uint64_t _block_size, uint64_t _cf_id, std::string _cf_name, uint32_t _level, uint64_t _sst_fd_number, TableReaderCaller _caller, bool _is_cache_hit, bool _no_insert, uint64_t _get_id, bool _get_from_user_specified_snapshot=false, std::string _referenced_key=&quot;&quot;, uint64_t _referenced_data_size=0, uint64_t _num_keys_in_block=0, bool _referenced_key_exist_in_block=false)</div><div class="ttdef"><b>Definition</b> <a href="#l00083">block_cache_trace_writer.h:83</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a70360aafce088950f6ecb663c74be9df"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a70360aafce088950f6ecb663c74be9df">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::cf_name</a></div><div class="ttdeci">std::string cf_name</div><div class="ttdef"><b>Definition</b> <a href="#l00038">block_cache_trace_writer.h:38</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a7705810902140f140540be0b46724d27"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a7705810902140f140540be0b46724d27">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::kReservedGetId</a></div><div class="ttdeci">static const uint64_t kReservedGetId</div><div class="ttdef"><b>Definition</b> <a href="#l00079">block_cache_trace_writer.h:79</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_a995ecb79ead9b20b10b22fad2019898f"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#a995ecb79ead9b20b10b22fad2019898f">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::level</a></div><div class="ttdeci">uint32_t level</div><div class="ttdef"><b>Definition</b> <a href="#l00041">block_cache_trace_writer.h:41</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_aa83629f7bc11a15583f02c72bda36285"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#aa83629f7bc11a15583f02c72bda36285">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::referenced_key</a></div><div class="ttdeci">std::string referenced_key</div><div class="ttdef"><b>Definition</b> <a href="#l00066">block_cache_trace_writer.h:66</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_aa9c37323f1abce297565bc384eacc3ac"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#aa9c37323f1abce297565bc384eacc3ac">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::access_timestamp</a></div><div class="ttdeci">uint64_t access_timestamp</div><div class="ttdef"><b>Definition</b> <a href="#l00019">block_cache_trace_writer.h:19</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_acb8dd3493e355dcf27263cb13d526cac"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#acb8dd3493e355dcf27263cb13d526cac">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::sst_fd_number</a></div><div class="ttdeci">uint64_t sst_fd_number</div><div class="ttdef"><b>Definition</b> <a href="#l00044">block_cache_trace_writer.h:44</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_ad2227330cbdaf331b63a4a6a08b69ed0"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ad2227330cbdaf331b63a4a6a08b69ed0">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::get_id</a></div><div class="ttdeci">uint64_t get_id</div><div class="ttdef"><b>Definition</b> <a href="#l00060">block_cache_trace_writer.h:60</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_ad940ff9fef48babdc8f49954a9543221"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ad940ff9fef48babdc8f49954a9543221">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::caller</a></div><div class="ttdeci">TableReaderCaller caller</div><div class="ttdef"><b>Definition</b> <a href="#l00049">block_cache_trace_writer.h:49</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_ada21cce82c11f8267975f62380336a44"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#ada21cce82c11f8267975f62380336a44">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::num_keys_in_block</a></div><div class="ttdeci">uint64_t num_keys_in_block</div><div class="ttdef"><b>Definition</b> <a href="#l00074">block_cache_trace_writer.h:74</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_af4f03e68118048dc2c6e3277d6184b25"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#af4f03e68118048dc2c6e3277d6184b25">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::block_key</a></div><div class="ttdeci">std::string block_key</div><div class="ttdef"><b>Definition</b> <a href="#l00024">block_cache_trace_writer.h:24</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord_html_af63ea4fdc10d95d1cbcaed86103fcc9b"><div class="ttname"><a href="../../d9/d94/structROCKSDB__NAMESPACE_1_1BlockCacheTraceRecord.html#af63ea4fdc10d95d1cbcaed86103fcc9b">ROCKSDB_NAMESPACE::BlockCacheTraceRecord::block_type</a></div><div class="ttdeci">TraceType block_type</div><div class="ttdef"><b>Definition</b> <a href="#l00027">block_cache_trace_writer.h:27</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceWriterOptions_html"><div class="ttname"><a href="../../d8/d20/structROCKSDB__NAMESPACE_1_1BlockCacheTraceWriterOptions.html">ROCKSDB_NAMESPACE::BlockCacheTraceWriterOptions</a></div><div class="ttdef"><b>Definition</b> <a href="#l00120">block_cache_trace_writer.h:120</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheTraceWriterOptions_html_a370c578be03c98f288b9b93571f86176"><div class="ttname"><a href="../../d8/d20/structROCKSDB__NAMESPACE_1_1BlockCacheTraceWriterOptions.html#a370c578be03c98f288b9b93571f86176">ROCKSDB_NAMESPACE::BlockCacheTraceWriterOptions::max_trace_file_size</a></div><div class="ttdeci">uint64_t max_trace_file_size</div><div class="ttdef"><b>Definition</b> <a href="#l00121">block_cache_trace_writer.h:121</a></div></div>
+<div class="ttc" id="asystem__clock_8h_html"><div class="ttname"><a href="../../df/d2f/system__clock_8h.html">system_clock.h</a></div></div>
+<div class="ttc" id="atable__reader__caller_8h_html"><div class="ttname"><a href="../../de/dc0/table__reader__caller_8h.html">table_reader_caller.h</a></div></div>
+<div class="ttc" id="atrace__reader__writer_8h_html"><div class="ttname"><a href="../../d7/dec/trace__reader__writer_8h.html">trace_reader_writer.h</a></div></div>
+<div class="ttc" id="atrace__record_8h_html"><div class="ttname"><a href="../../d5/d42/trace__record_8h.html">trace_record.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_8784722d8c2e7f3978e4945ad578533f.html">rocksdb</a></li><li class="navelem"><a class="el" href="../../d4/df0/block__cache__trace__writer_8h.html">block_cache_trace_writer.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

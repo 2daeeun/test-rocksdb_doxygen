@@ -1,0 +1,47 @@
+var classROCKSDB__NAMESPACE_1_1FaultInjectionTest =
+[
+    [ "ExpectedVerifResult", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a461d2c645953139cad61ac8ba551db77", [
+      [ "kValExpectFound", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a461d2c645953139cad61ac8ba551db77a10dda582c9be598ec4a61e1cc1711c28", null ],
+      [ "kValExpectNoError", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a461d2c645953139cad61ac8ba551db77af0fa7bbcda10a0a85fda2952897cfc93", null ]
+    ] ],
+    [ "ResetMethod", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ad756a346983efef4eb585844bdd6c218", [
+      [ "kResetDropUnsyncedData", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ad756a346983efef4eb585844bdd6c218a266e4ea1bf5c85b037ba1dc36ff5edf0", null ],
+      [ "kResetDropRandomUnsyncedData", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ad756a346983efef4eb585844bdd6c218aa64ac2f6600c96c98934cee65971482a", null ],
+      [ "kResetDeleteUnsyncedFiles", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ad756a346983efef4eb585844bdd6c218a03e756a4ed4b3ac9a7fecd15706e7da4", null ],
+      [ "kResetDropAndDeleteUnsynced", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ad756a346983efef4eb585844bdd6c218a90678e3ee10488ba951a6eeb48c84607", null ]
+    ] ],
+    [ "FaultInjectionTest", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ae51c2e63f9054b1f85076861c7e58354", null ],
+    [ "~FaultInjectionTest", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#aa982ccfb8b27a3c24300cff650c93228", null ],
+    [ "Build", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#af9bb7b7985c921294f9521e857ee9942", null ],
+    [ "ChangeOptions", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#affe1a720f4ef10b081977f767fb202a7", null ],
+    [ "CloseDB", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ac11de7a7b2a3f56d86257dd5d2dbc21f", null ],
+    [ "CurrentOptions", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a4b7b7ee9d193160d6ee9a3f03032242c", null ],
+    [ "DeleteAllData", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a47fb580c6cce63e497593ece3360acfd", null ],
+    [ "Key", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#af50e785e821177929e3d97ffb12101d6", null ],
+    [ "NewDB", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#aa466b19e481184194b8ab46f3ed666d9", null ],
+    [ "NoWriteTestPreFault", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ae632f09a2c251f66db91633f98a6a593", null ],
+    [ "NoWriteTestReopenWithFault", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ac8c8486e81dfa57d028c8cc293629f14", null ],
+    [ "OpenDB", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a0c84666b4a43053d3cf946030f6fa0c0", null ],
+    [ "PartialCompactTestPreFault", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a72d605f28d1b3650732a2a45e711d68b", null ],
+    [ "PartialCompactTestReopenWithFault", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#aa132eafad829dbc1e0f64e3781d1ddc5", null ],
+    [ "ReadValue", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a127da6cfd50681cce09dac97346ec607", null ],
+    [ "ResetDBState", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a4e76e5e6937b8749db384270e8b8de13", null ],
+    [ "SetUp", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a89a2c3d6c55ba74c99952872f3735979", null ],
+    [ "TearDown", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#aad07bbb769aa5a1f7462aef1c7234d70", null ],
+    [ "Value", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a0b3d1260a9a3f417ae4ba05c8d0171ab", null ],
+    [ "Verify", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a993d77cb2a780b9e58846c9476d3fe65", null ],
+    [ "WaitCompactionFinish", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a9af932e5764ca6fcd781f07f961bf2e9", null ],
+    [ "base_env_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ae8d5d899dd256f579b860e4c74eedbf2", null ],
+    [ "db_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a7861cc0e39b6a7fbf22a62ff6c462554", null ],
+    [ "dbname_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a42b62d01f041ae5e56ed1f63dbc6b99b", null ],
+    [ "env_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a47004af4d7845040dceccbd5db2e0589", null ],
+    [ "env_guard_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a56366bea333ed655f01f7204e9abab35", null ],
+    [ "non_inclusive_end_range_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ad0ef0c173ea6978b36e6f8470e62a0ec", null ],
+    [ "option_config_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#aa77b45edb69b637f73d353d135491c86", null ],
+    [ "options_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#ae2343949eebfdb1b1baa4f9431316ce7", null ],
+    [ "sequential_order_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a4b7abe68d8e813172988678aa91d5f25", null ],
+    [ "sync_use_compact_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a21bf2ff3da33b466db34e8ccd9fb5d3c", null ],
+    [ "sync_use_wal_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a8786f27f7ef6f9683190ad3e1210ee7e", null ],
+    [ "system_env_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a72e4ca097d5e3ac2b4c8780fe5b31763", null ],
+    [ "tiny_cache_", "d7/d38/classROCKSDB__NAMESPACE_1_1FaultInjectionTest.html#a7d999718804beabff2bd3e710bf21b40", null ]
+];

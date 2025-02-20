@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/range/range_tree/lib/portability/toku_atomic.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d1/dfb/toku__atomic_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">toku_atomic.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d1/dfb/toku__atomic_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/* -*- mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*- */</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// vim: ft=cpp:expandtab:ts=8:sw=4:softtabstop=4:</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#ident &quot;$Id$&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">/*======</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">This file is part of PerconaFT.</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"></span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"></span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">Copyright (c) 2006, 2015, Percona and/or its affiliates. All rights reserved.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"></span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">    PerconaFT is free software: you can redistribute it and/or modify</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">    it under the terms of the GNU General Public License, version 2,</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">    as published by the Free Software Foundation.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"></span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">    PerconaFT is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">    GNU General Public License for more details.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"></span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">    You should have received a copy of the GNU General Public License</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">    along with PerconaFT.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"></span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">----------------------------------------</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"></span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">    PerconaFT is free software: you can redistribute it and/or modify</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">    it under the terms of the GNU Affero General Public License, version 3,</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">    as published by the Free Software Foundation.</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"></span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">    PerconaFT is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">    GNU Affero General Public License for more details.</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"></span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    You should have received a copy of the GNU Affero General Public License</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">    along with PerconaFT.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"></span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">----------------------------------------</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"></span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">   you may not use this file except in compliance with the License.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">   You may obtain a copy of the License at</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"></span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">       http://www.apache.org/licenses/LICENSE-2.0</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"></span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">   Unless required by applicable law or agreed to in writing, software</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">   See the License for the specific language governing permissions and</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">   limitations under the License.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">======= */</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#ident \</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">    &quot;Copyright (c) 2006, 2015, Percona and/or its affiliates. All rights reserved.&quot;</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">// PORT2: #include &lt;portability/toku_config.h&gt;</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/dc9/toku__assert__subst_8h.html">toku_assert_subst.h</a>&quot;</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">   63</a></span><a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a>((<span class="keyword">const</span>, always_inline)) <span class="keyword">static</span> <span class="keyword">inline</span> intptr_t <a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a54b8964b3b1e568bfd882396e0a3dd48">which_cache_line</a>(</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    intptr_t addr) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> assumed_cache_line_size = 64;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordflow">return</span> addr / assumed_cache_line_size;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a039e1bbc65c0d1f9c470ed1c8d5c9040">   69</a></span><a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a>((<span class="keyword">const</span>, always_inline)) <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> crosses_boundary(</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a02bed8590a9ddf520e58a060059518ec">   70</a></span>    T *addr, <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a02bed8590a9ddf520e58a060059518ec">width</a>) {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">const</span> intptr_t int_addr = <span class="keyword">reinterpret_cast&lt;</span>intptr_t<span class="keyword">&gt;</span>(addr);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a4d50445057edb0abeb642621d15390d4">   72</a></span>  <span class="keyword">const</span> intptr_t <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a4d50445057edb0abeb642621d15390d4">last_byte</a> = int_addr + <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a02bed8590a9ddf520e58a060059518ec">width</a> - 1;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a54b8964b3b1e568bfd882396e0a3dd48">   73</a></span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a54b8964b3b1e568bfd882396e0a3dd48">which_cache_line</a>(int_addr) != <a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a54b8964b3b1e568bfd882396e0a3dd48">which_cache_line</a>(<a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a4d50445057edb0abeb642621d15390d4">last_byte</a>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a1e50563390ba24b5ed213a7a9cc59cbb">   77</a></span><a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a>((always_inline)) <span class="keyword">static</span> <span class="keyword">inline</span> T toku_sync_fetch_and_add(T *addr,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a78e339a9bf34c71778d86e62530c1fe6">   78</a></span>                                                                       U <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a78e339a9bf34c71778d86e62530c1fe6">diff</a>) {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <a class="code hl_define" href="../../d1/dc9/toku__assert__subst_8h.html#a3fd9b56a44183892251b932b13b644d7">paranoid_invariant</a>(!crosses_boundary(addr, <span class="keyword">sizeof</span> *addr));</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a9b74724640706163f7dc5b88c8e35c2e">   80</a></span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a9b74724640706163f7dc5b88c8e35c2e">__sync_fetch_and_add</a>(addr, <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a78e339a9bf34c71778d86e62530c1fe6">diff</a>);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a>((always_inline)) <span class="keyword">static</span> <span class="keyword">inline</span> T toku_sync_add_and_fetch(T *addr,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                                                                       U <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a78e339a9bf34c71778d86e62530c1fe6">diff</a>) {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <a class="code hl_define" href="../../d1/dc9/toku__assert__subst_8h.html#a3fd9b56a44183892251b932b13b644d7">paranoid_invariant</a>(!crosses_boundary(addr, <span class="keyword">sizeof</span> *addr));</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#ad4457407c07bf987163b91f0b7768a8b">   86</a></span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#ad4457407c07bf987163b91f0b7768a8b">__sync_add_and_fetch</a>(addr, <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a78e339a9bf34c71778d86e62530c1fe6">diff</a>);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>}</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a>((always_inline)) <span class="keyword">static</span> <span class="keyword">inline</span> T toku_sync_fetch_and_sub(T *addr,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                                                                       U <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a78e339a9bf34c71778d86e62530c1fe6">diff</a>) {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <a class="code hl_define" href="../../d1/dc9/toku__assert__subst_8h.html#a3fd9b56a44183892251b932b13b644d7">paranoid_invariant</a>(!crosses_boundary(addr, <span class="keyword">sizeof</span> *addr));</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a6ccc40849cdabf2658b0d7d469007af9">   92</a></span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a6ccc40849cdabf2658b0d7d469007af9">__sync_fetch_and_sub</a>(addr, <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a78e339a9bf34c71778d86e62530c1fe6">diff</a>);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a>((always_inline)) <span class="keyword">static</span> <span class="keyword">inline</span> T toku_sync_sub_and_fetch(T *addr,</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                                                                       U <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a78e339a9bf34c71778d86e62530c1fe6">diff</a>) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <a class="code hl_define" href="../../d1/dc9/toku__assert__subst_8h.html#a3fd9b56a44183892251b932b13b644d7">paranoid_invariant</a>(!crosses_boundary(addr, <span class="keyword">sizeof</span> *addr));</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#ad6973898904f84a344cf93b8b5e4fc70">   98</a></span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#ad6973898904f84a344cf93b8b5e4fc70">__sync_sub_and_fetch</a>(addr, <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a78e339a9bf34c71778d86e62530c1fe6">diff</a>);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U, <span class="keyword">typename</span> V&gt;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a7a05e354098a339000fa874dc6dc22f9">  101</a></span><a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a>((always_inline)) <span class="keyword">static</span> <span class="keyword">inline</span> T toku_sync_val_compare_and_swap(</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a368836276d8c756348f970105564df81">  102</a></span>    T *addr, U <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a77da64a27c27686ee11e740ade04b2f3">oldval</a>, V <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a368836276d8c756348f970105564df81">newval</a>) {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <a class="code hl_define" href="../../d1/dc9/toku__assert__subst_8h.html#a3fd9b56a44183892251b932b13b644d7">paranoid_invariant</a>(!crosses_boundary(addr, <span class="keyword">sizeof</span> *addr));</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#a99c080bb93577fe3c7d057bfe07d7b25">  104</a></span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a99c080bb93577fe3c7d057bfe07d7b25">__sync_val_compare_and_swap</a>(addr, <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a77da64a27c27686ee11e740ade04b2f3">oldval</a>, <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a368836276d8c756348f970105564df81">newval</a>);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U, <span class="keyword">typename</span> V&gt;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a>((always_inline)) <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>toku_sync_bool_compare_and_swap(T *addr, U <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a77da64a27c27686ee11e740ade04b2f3">oldval</a>, V <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a368836276d8c756348f970105564df81">newval</a>) {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <a class="code hl_define" href="../../d1/dc9/toku__assert__subst_8h.html#a3fd9b56a44183892251b932b13b644d7">paranoid_invariant</a>(!crosses_boundary(addr, <span class="keyword">sizeof</span> *addr));</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../d1/dfb/toku__atomic_8h.html#aac888ac9e1ff5d5fa8426df1d03b3ce7">  110</a></span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/dfb/toku__atomic_8h.html#aac888ac9e1ff5d5fa8426df1d03b3ce7">__sync_bool_compare_and_swap</a>(addr, <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a77da64a27c27686ee11e740ade04b2f3">oldval</a>, <a class="code hl_variable" href="../../d1/dfb/toku__atomic_8h.html#a368836276d8c756348f970105564df81">newval</a>);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment">// in case you include this but not toku_portability.h</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">#pragma GCC poison __sync_fetch_and_add</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">#pragma GCC poison __sync_fetch_and_sub</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#pragma GCC poison __sync_fetch_and_or</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#pragma GCC poison __sync_fetch_and_and</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor">#pragma GCC poison __sync_fetch_and_xor</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">#pragma GCC poison __sync_fetch_and_nand</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">#pragma GCC poison __sync_add_and_fetch</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">#pragma GCC poison __sync_sub_and_fetch</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#pragma GCC poison __sync_or_and_fetch</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">#pragma GCC poison __sync_and_and_fetch</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#pragma GCC poison __sync_xor_and_fetch</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">#pragma GCC poison __sync_nand_and_fetch</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#pragma GCC poison __sync_bool_compare_and_swap</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">#pragma GCC poison __sync_val_compare_and_swap</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#pragma GCC poison __sync_synchronize</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#pragma GCC poison __sync_lock_test_and_set</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#pragma GCC poison __sync_release</span></div>
+<div class="ttc" id="atoku__assert__subst_8h_html"><div class="ttname"><a href="../../d1/dc9/toku__assert__subst_8h.html">toku_assert_subst.h</a></div></div>
+<div class="ttc" id="atoku__assert__subst_8h_html_a3fd9b56a44183892251b932b13b644d7"><div class="ttname"><a href="../../d1/dc9/toku__assert__subst_8h.html#a3fd9b56a44183892251b932b13b644d7">paranoid_invariant</a></div><div class="ttdeci">#define paranoid_invariant(a)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/dc9/toku__assert__subst_8h_source.html#l00033">toku_assert_subst.h:33</a></div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a02bed8590a9ddf520e58a060059518ec"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a02bed8590a9ddf520e58a060059518ec">width</a></div><div class="ttdeci">size_t width</div><div class="ttdef"><b>Definition</b> <a href="#l00070">toku_atomic.h:70</a></div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a368836276d8c756348f970105564df81"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a368836276d8c756348f970105564df81">newval</a></div><div class="ttdeci">U V newval</div><div class="ttdef"><b>Definition</b> <a href="#l00102">toku_atomic.h:102</a></div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a4d50445057edb0abeb642621d15390d4"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a4d50445057edb0abeb642621d15390d4">last_byte</a></div><div class="ttdeci">const intptr_t last_byte</div><div class="ttdef"><b>Definition</b> <a href="#l00072">toku_atomic.h:72</a></div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a54b8964b3b1e568bfd882396e0a3dd48"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a54b8964b3b1e568bfd882396e0a3dd48">which_cache_line</a></div><div class="ttdeci">return which_cache_line(int_addr) !</div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a6ccc40849cdabf2658b0d7d469007af9"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a6ccc40849cdabf2658b0d7d469007af9">__sync_fetch_and_sub</a></div><div class="ttdeci">return __sync_fetch_and_sub(addr, diff)</div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a76c9b09b31a6cc23044f5574d9545a79"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a76c9b09b31a6cc23044f5574d9545a79">__attribute__</a></div><div class="ttdeci">__attribute__((const, always_inline)) static inline intptr_t which_cache_line(intptr_t addr)</div><div class="ttdef"><b>Definition</b> <a href="#l00063">toku_atomic.h:63</a></div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a77da64a27c27686ee11e740ade04b2f3"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a77da64a27c27686ee11e740ade04b2f3">oldval</a></div><div class="ttdeci">U oldval</div><div class="ttdef"><b>Definition</b> <a href="#l00102">toku_atomic.h:102</a></div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a78e339a9bf34c71778d86e62530c1fe6"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a78e339a9bf34c71778d86e62530c1fe6">diff</a></div><div class="ttdeci">U diff</div><div class="ttdef"><b>Definition</b> <a href="#l00078">toku_atomic.h:78</a></div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a99c080bb93577fe3c7d057bfe07d7b25"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a99c080bb93577fe3c7d057bfe07d7b25">__sync_val_compare_and_swap</a></div><div class="ttdeci">return __sync_val_compare_and_swap(addr, oldval, newval)</div></div>
+<div class="ttc" id="atoku__atomic_8h_html_a9b74724640706163f7dc5b88c8e35c2e"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#a9b74724640706163f7dc5b88c8e35c2e">__sync_fetch_and_add</a></div><div class="ttdeci">return __sync_fetch_and_add(addr, diff)</div></div>
+<div class="ttc" id="atoku__atomic_8h_html_aac888ac9e1ff5d5fa8426df1d03b3ce7"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#aac888ac9e1ff5d5fa8426df1d03b3ce7">__sync_bool_compare_and_swap</a></div><div class="ttdeci">return __sync_bool_compare_and_swap(addr, oldval, newval)</div></div>
+<div class="ttc" id="atoku__atomic_8h_html_ad4457407c07bf987163b91f0b7768a8b"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#ad4457407c07bf987163b91f0b7768a8b">__sync_add_and_fetch</a></div><div class="ttdeci">return __sync_add_and_fetch(addr, diff)</div></div>
+<div class="ttc" id="atoku__atomic_8h_html_ad6973898904f84a344cf93b8b5e4fc70"><div class="ttname"><a href="../../d1/dfb/toku__atomic_8h.html#ad6973898904f84a344cf93b8b5e4fc70">__sync_sub_and_fetch</a></div><div class="ttdeci">return __sync_sub_and_fetch(addr, diff)</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../dir_3eff4fc1b9bdc927695daa6eaf220609.html">range</a></li><li class="navelem"><a class="el" href="../../dir_1fdd669514be316dc6b9821c4ef31e1a.html">range_tree</a></li><li class="navelem"><a class="el" href="../../dir_103d03b151a8543e8b0cd5714558840a.html">lib</a></li><li class="navelem"><a class="el" href="../../dir_0adc4dbd5f5488318e25bf48c294c71c.html">portability</a></li><li class="navelem"><a class="el" href="../../d1/dfb/toku__atomic_8h.html">toku_atomic.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

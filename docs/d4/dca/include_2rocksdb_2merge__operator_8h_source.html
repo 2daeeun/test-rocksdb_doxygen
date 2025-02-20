@@ -1,0 +1,531 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: include/rocksdb/merge_operator.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d4/dca/include_2rocksdb_2merge__operator_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">merge_operator.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d4/dca/include_2rocksdb_2merge__operator_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;deque&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;variant&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d21/customizable_8h.html">rocksdb/customizable.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d48/slice_8h.html">rocksdb/slice.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/dde/wide__columns_8h.html">rocksdb/wide_columns.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">class </span>Slice;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">class </span>Logger;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// The Merge Operator</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">//</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// Essentially, a MergeOperator specifies the SEMANTICS of a merge, which only</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// client knows. It could be numeric addition, list append, string</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// concatenation, edit data structure, ... , anything.</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// The library, on the other hand, is concerned with the exercise of this</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// interface, at the right time (during get, iteration, compaction...)</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">//</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// To use merge, the client needs to provide an object implementing one of</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// the following interfaces:</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">//  a) AssociativeMergeOperator - for most simple semantics (always take</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">//    two values, and merge them into one value, which is then put back</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">//    into rocksdb); numeric addition and string concatenation are examples;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">//</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">//  b) MergeOperator - the generic class for all the more abstract / complex</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">//    operations; one method (FullMergeV3) to merge a Put/Delete value with a</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">//    merge operand; and another method (PartialMerge) that merges multiple</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">//    operands together. this is especially useful if your key values have</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">//    complex structures but you would still like to support client-specific</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">//    incremental updates.</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">//</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// AssociativeMergeOperator is simpler to implement. MergeOperator is simply</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">// more powerful.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">//</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">// Refer to rocksdb-merge wiki for more details and example implementations.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">//</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">// Exceptions MUST NOT propagate out of overridden functions into RocksDB,</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">// because RocksDB is not exception-safe. This could cause undefined behavior</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">// including data loss, unreported corruption, deadlocks, and more.</span></div>
+<div class="foldopen" id="foldopen00053" data-start="{" data-end="};">
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html">   53</a></span><span class="keyword">class </span><a class="code hl_class" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html">MergeOperator</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d0/deb/classROCKSDB__NAMESPACE_1_1Customizable.html">Customizable</a> {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a4958679f9a6ce0c80003b846db391098">   55</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a4958679f9a6ce0c80003b846db391098">~MergeOperator</a>() {}</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ac2d33336b04e3ee34c34faa36482d9f7">   56</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ac2d33336b04e3ee34c34faa36482d9f7">Type</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;MergeOperator&quot;</span>; }</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">static</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> CreateFromString(<span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ConfigOptions</a>&amp; opts,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                                 <span class="keyword">const</span> std::string&amp; <span class="keywordtype">id</span>,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                                 std::shared_ptr&lt;MergeOperator&gt;* result);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">// Gives the client a way to express the read -&gt; modify -&gt; write semantics</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// key:      (IN)    The key that&#39;s associated with this merge operation.</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">//                   Client could multiplex the merge operator based on it</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">//                   if the key space is partitioned and different subspaces</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">//                   refer to different types of data which have different</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">//                   merge operation semantics</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="comment">// existing: (IN)    null indicates that the key does not exist before this op</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="comment">// operand_list:(IN) the sequence of merge operations to apply, front() first.</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">// new_value:(OUT)   Client is responsible for filling the merge result here.</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// The string that new_value is pointing to will be empty.</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// logger:   (IN)    Client could use this to log errors during merge.</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// Return true on success.</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// All values passed in will be client-specific values. So if this method</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">// returns false, it is because client specified bad data or there was</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// internal corruption. This will be treated as an error by the library.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">// Also make use of the *logger for error messages.</span></div>
+<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a1b26d932f2878fab6d853159a1580c1f">   79</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a1b26d932f2878fab6d853159a1580c1f">FullMerge</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <span class="comment">/*key*/</span>, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* <span class="comment">/*existing_value*/</span>,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                         <span class="keyword">const</span> std::deque&lt;std::string&gt;&amp; <span class="comment">/*operand_list*/</span>,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                         std::string* <span class="comment">/*new_value*/</span>, <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* <span class="comment">/*logger*/</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="comment">// deprecated, please use FullMergeV2()</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  }</div>
+</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="foldopen" id="foldopen00087" data-start="{" data-end="};">
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html">   87</a></span>  <span class="keyword">struct </span><a class="code hl_function" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a8601eadaa817f77381c98900e4fd9863">MergeOperationInput</a> {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="comment">// If user-defined timestamp is enabled, `_key` includes timestamp.</span></div>
+<div class="foldopen" id="foldopen00089" data-start="{" data-end="}">
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a8601eadaa817f77381c98900e4fd9863">   89</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a8601eadaa817f77381c98900e4fd9863">MergeOperationInput</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; _key,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                                 <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* _existing_value,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                                 <span class="keyword">const</span> std::vector&lt;Slice&gt;&amp; _operand_list,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                                 <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* _logger)</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        : <a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a051ae8daeb81bffec72321ca145da73b">key</a>(_key),</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>          <a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">existing_value</a>(_existing_value),</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>          <a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a0cdff7031ad6dd4a7c277cb49d43e572">operand_list</a>(_operand_list),</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>          <a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a5936146a7956b75eb371ebf27b3f165c">logger</a>(_logger) {}</div>
+</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="comment">// The key associated with the merge operation.</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a051ae8daeb81bffec72321ca145da73b">   99</a></span>    <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a051ae8daeb81bffec72321ca145da73b">key</a>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="comment">// The existing value of the current key, nullptr means that the</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">// value doesn&#39;t exist.</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">  102</a></span>    <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* <a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">existing_value</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="comment">// A list of operands to apply.</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a0cdff7031ad6dd4a7c277cb49d43e572">  104</a></span>    <span class="keyword">const</span> std::vector&lt;Slice&gt;&amp; <a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a0cdff7031ad6dd4a7c277cb49d43e572">operand_list</a>;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="comment">// Logger could be used by client to log any errors that happen during</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="comment">// the merge operation.</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a5936146a7956b75eb371ebf27b3f165c">  107</a></span>    <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* <a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a5936146a7956b75eb371ebf27b3f165c">logger</a>;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  };</div>
+</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="foldopen" id="foldopen00110" data-start="{" data-end="};">
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4">  110</a></span>  <span class="keyword">enum class</span> <a class="code hl_enumeration" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4">OpFailureScope</a> {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4a6867faeaa475fda467e48267db2bb8a8">  111</a></span>    <a class="code hl_enumvalue" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4a6867faeaa475fda467e48267db2bb8a8">kDefault</a>,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4aa4a1e3519650d81e7fd4ac79782594c7">  112</a></span>    <a class="code hl_enumvalue" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4aa4a1e3519650d81e7fd4ac79782594c7">kTryMerge</a>,</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4ad7b1bc35cd7af446d32c1ebd2bb7ffb5">  113</a></span>    <a class="code hl_enumvalue" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4ad7b1bc35cd7af446d32c1ebd2bb7ffb5">kMustMerge</a>,</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4ab9d0e5e393f2b93bcf01f43e4a1daba8">  114</a></span>    <a class="code hl_enumvalue" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4ab9d0e5e393f2b93bcf01f43e4a1daba8">kOpFailureScopeMax</a>,</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  };</div>
+</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="foldopen" id="foldopen00117" data-start="{" data-end="};">
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html">  117</a></span>  <span class="keyword">struct </span><a class="code hl_function" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#aeade27d50c91fc57515b19a7ca913658">MergeOperationOutput</a> {</div>
+<div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#aeade27d50c91fc57515b19a7ca913658">  118</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#aeade27d50c91fc57515b19a7ca913658">MergeOperationOutput</a>(std::string&amp; _new_value,</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                                  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; _existing_operand)</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        : <a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">new_value</a>(_new_value), <a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a8f7a4733ac768bcfaf4b66dc39d4c485">existing_operand</a>(_existing_operand) {}</div>
+</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="comment">// Client is responsible for filling the merge result here.</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">  123</a></span>    std::string&amp; <a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">new_value</a>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="comment">// If the merge result is one of the existing operands (or existing_value),</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="comment">// client can set this field to the operand (or existing_value) instead of</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="comment">// using new_value.</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a8f7a4733ac768bcfaf4b66dc39d4c485">  127</a></span>    <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a8f7a4733ac768bcfaf4b66dc39d4c485">existing_operand</a>;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="comment">// Indicates the blast radius of the failure. It is only meaningful to</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="comment">// provide a failure scope when returning `false` from the API populating</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="comment">// the `MergeOperationOutput`. Currently RocksDB operations handle these</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="comment">// values as follows:</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="comment">// - `OpFailureScope::kDefault`: fallback to default</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="comment">//   (`OpFailureScope::kTryMerge`)</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="comment">// - `OpFailureScope::kTryMerge`: operations that try to merge that key will</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="comment">//   fail. This includes flush and compaction, which puts the DB in</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="comment">//   read-only mode.</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="comment">// - `OpFailureScope::kMustMerge`: operations that must merge that key will</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="comment">//   fail (e.g., `Get()`, `MultiGet()`, iteration). Flushes/compactions can</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="comment">//   still proceed by copying the original input operands to the output.</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#afb0c06b55a4cf42611fc32d3ccbb0044">  141</a></span>    <a class="code hl_enumeration" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4">OpFailureScope</a> <a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#afb0c06b55a4cf42611fc32d3ccbb0044">op_failure_scope</a> = <a class="code hl_enumvalue" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4a6867faeaa475fda467e48267db2bb8a8">OpFailureScope::kDefault</a>;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  };</div>
+</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="comment">// This function applies a stack of merge operands in chronological order</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="comment">// on top of an existing value. There are two ways in which this method is</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="comment">// being used:</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  <span class="comment">// a) During Get() operation, it used to calculate the final value of a key</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">// b) During compaction, in order to collapse some operands with the based</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">//    value.</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="comment">// Note: The name of the method is somewhat misleading, as both in the cases</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="comment">// of Get() or compaction it may be called on a subset of operands:</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="comment">// K:    0    +1    +2    +7    +4     +5      2     +1     +2</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="comment">//                              ^</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="comment">//                              |</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="comment">//                          snapshot</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="comment">// In the example above, Get(K) operation will call FullMerge with a base</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="comment">// value of 2 and operands [+1, +2]. Compaction process might decide to</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="comment">// collapse the beginning of the history up to the snapshot by performing</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="comment">// full Merge with base value of 0 and operands [+1, +2, +7, +4].</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a37d8b3a61f8067fda944939e0c0325a5">FullMergeV2</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html">MergeOperationInput</a>&amp; merge_in,</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                           <a class="code hl_struct" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html">MergeOperationOutput</a>* merge_out) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="foldopen" id="foldopen00164" data-start="{" data-end="};">
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html">  164</a></span>  <span class="keyword">struct </span><a class="code hl_function" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#ac789eed0fd4d6975630276cad1e1b5bf">MergeOperationInputV3</a> {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#ac8909620317e7bb1067449b2c78a4e38">  165</a></span>    <span class="keyword">using </span><a class="code hl_typedef" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#ac8909620317e7bb1067449b2c78a4e38">ExistingValue</a> = std::variant&lt;std::monostate, Slice, WideColumns&gt;;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a737d45e2f5e5acc1328b40476c457b09">  166</a></span>    <span class="keyword">using </span><a class="code hl_typedef" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a737d45e2f5e5acc1328b40476c457b09">OperandList</a> = std::vector&lt;Slice&gt;;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="foldopen" id="foldopen00168" data-start="{" data-end="}">
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#ac789eed0fd4d6975630276cad1e1b5bf">  168</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#ac789eed0fd4d6975630276cad1e1b5bf">MergeOperationInputV3</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; _key,</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                                   <a class="code hl_typedef" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#ac8909620317e7bb1067449b2c78a4e38">ExistingValue</a>&amp;&amp; _existing_value,</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                                   <span class="keyword">const</span> <a class="code hl_typedef" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a737d45e2f5e5acc1328b40476c457b09">OperandList</a>&amp; _operand_list,</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                                   <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* _logger)</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        : <a class="code hl_variable" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a52b8b57d214adb5324b108e0f58cfdc2">key</a>(_key),</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>          <a class="code hl_variable" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a9b9ba34e6df37562121a4dc4ce916161">existing_value</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(_existing_value)),</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>          <a class="code hl_variable" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a1bd869d1cf05de96951d24ab746cc065">operand_list</a>(_operand_list),</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>          <a class="code hl_variable" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a9f9c1811f253d2b25abec10489902b03">logger</a>(_logger) {}</div>
+</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="comment">// The user key, including the user-defined timestamp if applicable.</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a52b8b57d214adb5324b108e0f58cfdc2">  178</a></span>    <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <a class="code hl_variable" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a52b8b57d214adb5324b108e0f58cfdc2">key</a>;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="comment">// The base value of the merge operation. Can be one of three things (see</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="comment">// the ExistingValue variant above): no existing value, plain existing</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="comment">// value, or wide-column existing value.</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a9b9ba34e6df37562121a4dc4ce916161">  182</a></span>    <a class="code hl_typedef" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#ac8909620317e7bb1067449b2c78a4e38">ExistingValue</a> <a class="code hl_variable" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a9b9ba34e6df37562121a4dc4ce916161">existing_value</a>;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="comment">// The list of operands to apply.</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a1bd869d1cf05de96951d24ab746cc065">  184</a></span>    <span class="keyword">const</span> <a class="code hl_typedef" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a737d45e2f5e5acc1328b40476c457b09">OperandList</a>&amp; <a class="code hl_variable" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a1bd869d1cf05de96951d24ab746cc065">operand_list</a>;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="comment">// The logger to use in case a failure happens during the merge operation.</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a9f9c1811f253d2b25abec10489902b03">  186</a></span>    <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* <a class="code hl_variable" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a9f9c1811f253d2b25abec10489902b03">logger</a>;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  };</div>
+</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="foldopen" id="foldopen00189" data-start="{" data-end="};">
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html">  189</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html">MergeOperationOutputV3</a> {</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a26f60b09dca370e21c0f7a65668f0e7a">  190</a></span>    <span class="keyword">using </span><a class="code hl_typedef" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a26f60b09dca370e21c0f7a65668f0e7a">NewColumns</a> = std::vector&lt;std::pair&lt;std::string, std::string&gt;&gt;;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno"><a class="line" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a0ee9cf6f981cf0a9360fd456fbcf3823">  191</a></span>    <span class="keyword">using </span><a class="code hl_typedef" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a0ee9cf6f981cf0a9360fd456fbcf3823">NewValue</a> = std::variant&lt;std::string, NewColumns, Slice&gt;;</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="comment">// The result of the merge operation. Can be one of three things (see the</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="comment">// NewValue variant above): a new plain value, a new wide-column value, or</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="comment">// an existing merge operand.</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno"><a class="line" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a5ffc66921d57a0a54085116696983da9">  196</a></span>    <a class="code hl_typedef" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a0ee9cf6f981cf0a9360fd456fbcf3823">NewValue</a> <a class="code hl_variable" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a5ffc66921d57a0a54085116696983da9">new_value</a>;</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <span class="comment">// The scope of the failure if applicable. See above for more details.</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno"><a class="line" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a6abd1f7613a83c1f9e6149694801369e">  198</a></span>    <a class="code hl_enumeration" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4">OpFailureScope</a> <a class="code hl_variable" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a6abd1f7613a83c1f9e6149694801369e">op_failure_scope</a> = <a class="code hl_enumvalue" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4a6867faeaa475fda467e48267db2bb8a8">OpFailureScope::kDefault</a>;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  };</div>
+</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="comment">// An extended version of FullMergeV2() that supports wide columns on both the</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="comment">// input and the output side, enabling the application to perform general</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <span class="comment">// transformations during merges. For backward compatibility, the default</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  <span class="comment">// implementation calls FullMergeV2(). Specifically, if there is no base value</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="comment">// or the base value is a plain key-value, the default implementation falls</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="comment">// back to FullMergeV2(). If the base value is a wide-column entity, the</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <span class="comment">// default implementation invokes FullMergeV2() to perform the merge on the</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  <span class="comment">// default column, and leaves any other columns unchanged.</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ad62e11547e988d19095bb7be8df23023">FullMergeV3</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html">MergeOperationInputV3</a>&amp; merge_in,</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>                           <a class="code hl_struct" href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html">MergeOperationOutputV3</a>* merge_out) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  <span class="comment">// This function performs merge(left_op, right_op)</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  <span class="comment">// when both the operands are themselves merge operation types</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <span class="comment">// that you would have passed to a DB::Merge() call in the same order</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  <span class="comment">// (i.e.: DB::Merge(key,left_op), followed by DB::Merge(key,right_op)).</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  <span class="comment">// PartialMerge should combine them into a single merge operation that is</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  <span class="comment">// saved into *new_value, and then it should return true.</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <span class="comment">// *new_value should be constructed such that a call to</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  <span class="comment">// DB::Merge(key, *new_value) would yield the same result as a call</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <span class="comment">// to DB::Merge(key, left_op) followed by DB::Merge(key, right_op).</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  <span class="comment">// The string that new_value is pointing to will be empty.</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  <span class="comment">// The default implementation of PartialMergeMulti will use this function</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <span class="comment">// as a helper, for backward compatibility.  Any successor class of</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="comment">// MergeOperator should either implement PartialMerge or PartialMergeMulti,</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <span class="comment">// although implementing PartialMergeMulti is suggested as it is in general</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  <span class="comment">// more effective to merge multiple operands at a time instead of two</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <span class="comment">// operands at a time.</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <span class="comment">// If it is impossible or infeasible to combine the two operations,</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <span class="comment">// leave new_value unchanged and return false. The library will</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  <span class="comment">// internally keep track of the operations, and apply them in the</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="comment">// correct order once a base-value (a Put/Delete/End-of-Database) is seen.</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <span class="comment">// TODO: Presently there is no way to differentiate between error/corruption</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <span class="comment">// and simply &quot;return false&quot;. For now, the client should simply return</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="comment">// false in any case it cannot perform partial-merge, regardless of reason.</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <span class="comment">// If there is corruption in the data, handle it in the FullMergeV3() function</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <span class="comment">// and return false there.  The default implementation of PartialMerge will</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <span class="comment">// always return false.</span></div>
+<div class="foldopen" id="foldopen00243" data-start="{" data-end="}">
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a8300a5e091fb76f93c815ec7eb55e48b">  243</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a8300a5e091fb76f93c815ec7eb55e48b">PartialMerge</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <span class="comment">/*key*/</span>, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <span class="comment">/*left_operand*/</span>,</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                            <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <span class="comment">/*right_operand*/</span>,</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>                            std::string* <span class="comment">/*new_value*/</span>,</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                            <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* <span class="comment">/*logger*/</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  }</div>
+</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <span class="comment">// This function performs merge when all the operands are themselves merge</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="comment">// operation types that you would have passed to a DB::Merge() call in the</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <span class="comment">// same order (front() first)</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <span class="comment">// (i.e. DB::Merge(key, operand_list[0]), followed by</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <span class="comment">//  DB::Merge(key, operand_list[1]), ...)</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="comment">// PartialMergeMulti should combine them into a single merge operation that is</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <span class="comment">// saved into *new_value, and then it should return true.  *new_value should</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <span class="comment">// be constructed such that a call to DB::Merge(key, *new_value) would yield</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="comment">// the same result as sequential individual calls to DB::Merge(key, operand)</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <span class="comment">// for each operand in operand_list from front() to back().</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <span class="comment">// The string that new_value is pointing to will be empty.</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="comment">// The PartialMergeMulti function will be called when there are at least two</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="comment">// operands.</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <span class="comment">// In the default implementation, PartialMergeMulti will invoke PartialMerge</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <span class="comment">// multiple times, where each time it only merges two operands.  Developers</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  <span class="comment">// should either implement PartialMergeMulti, or implement PartialMerge which</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  <span class="comment">// is served as the helper function of the default PartialMergeMulti.</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> PartialMergeMulti(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key,</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                                 <span class="keyword">const</span> std::deque&lt;Slice&gt;&amp; operand_list,</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                                 std::string* new_value, <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* logger) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  <span class="comment">// The name of the MergeOperator. Used to check for MergeOperator</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="comment">// mismatches (i.e., a DB created with one MergeOperator is</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  <span class="comment">// accessed using a different MergeOperator)</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="comment">// TODO: the name is currently not stored persistently and thus</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <span class="comment">//       no checking is enforced. Client is responsible for providing</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <span class="comment">//       consistent MergeOperator between DB opens.</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a9fc7b1f9614b3551542fb4e9b0209999">  281</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a9fc7b1f9614b3551542fb4e9b0209999">Name</a>() <span class="keyword">const override</span> = 0;</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  <span class="comment">// Determines whether the PartialMerge can be called with just a single</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  <span class="comment">// merge operand.</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  <span class="comment">// Override and return true for allowing a single operand. PartialMerge</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  <span class="comment">// and PartialMergeMulti should be overridden and implemented</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  <span class="comment">// correctly to properly handle a single operand.</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ac0c1d5f935541c5c0e187ba776b9ffde">  288</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ac0c1d5f935541c5c0e187ba776b9ffde">AllowSingleOperand</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  <span class="comment">// Allows to control when to invoke a full merge during Get.</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  <span class="comment">// This could be used to limit the number of merge operands that are looked at</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  <span class="comment">// during a point lookup, thereby helping in limiting the number of levels to</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  <span class="comment">// read from.</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  <span class="comment">// Doesn&#39;t help with iterators.</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <span class="comment">// Note: the merge operands are passed to this function in the reversed order</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  <span class="comment">// relative to how they were merged (passed to</span></div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  <span class="comment">// FullMerge/FullMergeV2/FullMergeV3) for performance reasons, see also:</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>  <span class="comment">// https://github.com/facebook/rocksdb/issues/3865</span></div>
+<div class="foldopen" id="foldopen00300" data-start="{" data-end="}">
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ae2b9a53f86b4332a2e2e1fb9ab2ac245">  300</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ae2b9a53f86b4332a2e2e1fb9ab2ac245">ShouldMerge</a>(<span class="keyword">const</span> std::vector&lt;Slice&gt;&amp; <span class="comment">/*operands*/</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  }</div>
+</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>};</div>
+</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="comment">// The simpler, associative merge operator.</span></div>
+<div class="foldopen" id="foldopen00306" data-start="{" data-end="};">
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno"><a class="line" href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html">  306</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html">AssociativeMergeOperator</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html">MergeOperator</a> {</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno"><a class="line" href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html#a687413a86c36f954f1d22e8921f180cf">  308</a></span>  <a class="code hl_function" href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html#a687413a86c36f954f1d22e8921f180cf">~AssociativeMergeOperator</a>()<span class="keyword"> override </span>{}</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  <span class="comment">// Gives the client a way to express the read -&gt; modify -&gt; write semantics</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="comment">// key:           (IN) The key that&#39;s associated with this merge operation.</span></div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  <span class="comment">// existing_value:(IN) null indicates the key does not exist before this op</span></div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  <span class="comment">// value:         (IN) the value to update/merge the existing_value with</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  <span class="comment">// new_value:    (OUT) Client is responsible for filling the merge result</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  <span class="comment">// here. The string that new_value is pointing to will be empty.</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  <span class="comment">// logger:        (IN) Client could use this to log errors during merge.</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  <span class="comment">// Return true on success.</span></div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  <span class="comment">// All values passed in will be client-specific values. So if this method</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <span class="comment">// returns false, it is because client specified bad data or there was</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  <span class="comment">// internal corruption. The client should assume that this will be treated</span></div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  <span class="comment">// as an error by the library.</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno"><a class="line" href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html#afd8f7db30373ff4974d501a4eac98c98">  323</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html#afd8f7db30373ff4974d501a4eac98c98">Merge</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* existing_value,</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>                     <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value, std::string* new_value,</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>                     <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* logger) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  <span class="comment">// Default implementations of the MergeOperator functions</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html#abd952ceb43104ee9b4325a7b95c1f174">FullMergeV2</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html">MergeOperationInput</a>&amp; merge_in,</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>                   <a class="code hl_struct" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html">MergeOperationOutput</a>* merge_out) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html#a65fc7f445d6b150c14714aebbb0a8c86">PartialMerge</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; left_operand,</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>                    <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; right_operand, std::string* new_value,</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>                    <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* logger) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>};</div>
+</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AssociativeMergeOperator_html"><div class="ttname"><a href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html">ROCKSDB_NAMESPACE::AssociativeMergeOperator</a></div><div class="ttdef"><b>Definition</b> <a href="#l00306">merge_operator.h:306</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AssociativeMergeOperator_html_a65fc7f445d6b150c14714aebbb0a8c86"><div class="ttname"><a href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html#a65fc7f445d6b150c14714aebbb0a8c86">ROCKSDB_NAMESPACE::AssociativeMergeOperator::PartialMerge</a></div><div class="ttdeci">bool PartialMerge(const Slice &amp;key, const Slice &amp;left_operand, const Slice &amp;right_operand, std::string *new_value, Logger *logger) const override</div><div class="ttdef"><b>Definition</b> <a href="../../dc/dfe/db_2merge__operator_8cc_source.html#l00159">merge_operator.cc:159</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AssociativeMergeOperator_html_a687413a86c36f954f1d22e8921f180cf"><div class="ttname"><a href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html#a687413a86c36f954f1d22e8921f180cf">ROCKSDB_NAMESPACE::AssociativeMergeOperator::~AssociativeMergeOperator</a></div><div class="ttdeci">~AssociativeMergeOperator() override</div><div class="ttdef"><b>Definition</b> <a href="#l00308">merge_operator.h:308</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AssociativeMergeOperator_html_abd952ceb43104ee9b4325a7b95c1f174"><div class="ttname"><a href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html#abd952ceb43104ee9b4325a7b95c1f174">ROCKSDB_NAMESPACE::AssociativeMergeOperator::FullMergeV2</a></div><div class="ttdeci">bool FullMergeV2(const MergeOperationInput &amp;merge_in, MergeOperationOutput *merge_out) const override</div><div class="ttdef"><b>Definition</b> <a href="../../dc/dfe/db_2merge__operator_8cc_source.html#l00136">merge_operator.cc:136</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AssociativeMergeOperator_html_afd8f7db30373ff4974d501a4eac98c98"><div class="ttname"><a href="../../d3/d1c/classROCKSDB__NAMESPACE_1_1AssociativeMergeOperator.html#afd8f7db30373ff4974d501a4eac98c98">ROCKSDB_NAMESPACE::AssociativeMergeOperator::Merge</a></div><div class="ttdeci">virtual bool Merge(const Slice &amp;key, const Slice *existing_value, const Slice &amp;value, std::string *new_value, Logger *logger) const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Customizable_html"><div class="ttname"><a href="../../d0/deb/classROCKSDB__NAMESPACE_1_1Customizable.html">ROCKSDB_NAMESPACE::Customizable</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d21/customizable_8h_source.html#l00056">customizable.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Logger_html"><div class="ttname"><a href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">ROCKSDB_NAMESPACE::Logger</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l01218">env.h:1218</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html">ROCKSDB_NAMESPACE::MergeOperator</a></div><div class="ttdef"><b>Definition</b> <a href="#l00053">merge_operator.h:53</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_a1b26d932f2878fab6d853159a1580c1f"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a1b26d932f2878fab6d853159a1580c1f">ROCKSDB_NAMESPACE::MergeOperator::FullMerge</a></div><div class="ttdeci">virtual bool FullMerge(const Slice &amp;, const Slice *, const std::deque&lt; std::string &gt; &amp;, std::string *, Logger *) const</div><div class="ttdef"><b>Definition</b> <a href="#l00079">merge_operator.h:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_a37d8b3a61f8067fda944939e0c0325a5"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a37d8b3a61f8067fda944939e0c0325a5">ROCKSDB_NAMESPACE::MergeOperator::FullMergeV2</a></div><div class="ttdeci">virtual bool FullMergeV2(const MergeOperationInput &amp;merge_in, MergeOperationOutput *merge_out) const</div><div class="ttdef"><b>Definition</b> <a href="../../dc/dfe/db_2merge__operator_8cc_source.html#l00019">merge_operator.cc:19</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_a4958679f9a6ce0c80003b846db391098"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a4958679f9a6ce0c80003b846db391098">ROCKSDB_NAMESPACE::MergeOperator::~MergeOperator</a></div><div class="ttdeci">virtual ~MergeOperator()</div><div class="ttdef"><b>Definition</b> <a href="#l00055">merge_operator.h:55</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_a8300a5e091fb76f93c815ec7eb55e48b"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a8300a5e091fb76f93c815ec7eb55e48b">ROCKSDB_NAMESPACE::MergeOperator::PartialMerge</a></div><div class="ttdeci">virtual bool PartialMerge(const Slice &amp;, const Slice &amp;, const Slice &amp;, std::string *, Logger *) const</div><div class="ttdef"><b>Definition</b> <a href="#l00243">merge_operator.h:243</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_a90aa0accd362bd376761d610253611c4"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4">ROCKSDB_NAMESPACE::MergeOperator::OpFailureScope</a></div><div class="ttdeci">OpFailureScope</div><div class="ttdef"><b>Definition</b> <a href="#l00110">merge_operator.h:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_a90aa0accd362bd376761d610253611c4a6867faeaa475fda467e48267db2bb8a8"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4a6867faeaa475fda467e48267db2bb8a8">ROCKSDB_NAMESPACE::MergeOperator::OpFailureScope::kDefault</a></div><div class="ttdeci">@ kDefault</div><div class="ttdef"><b>Definition</b> <a href="#l00111">merge_operator.h:111</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_a90aa0accd362bd376761d610253611c4aa4a1e3519650d81e7fd4ac79782594c7"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4aa4a1e3519650d81e7fd4ac79782594c7">ROCKSDB_NAMESPACE::MergeOperator::OpFailureScope::kTryMerge</a></div><div class="ttdeci">@ kTryMerge</div><div class="ttdef"><b>Definition</b> <a href="#l00112">merge_operator.h:112</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_a90aa0accd362bd376761d610253611c4ab9d0e5e393f2b93bcf01f43e4a1daba8"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4ab9d0e5e393f2b93bcf01f43e4a1daba8">ROCKSDB_NAMESPACE::MergeOperator::OpFailureScope::kOpFailureScopeMax</a></div><div class="ttdeci">@ kOpFailureScopeMax</div><div class="ttdef"><b>Definition</b> <a href="#l00114">merge_operator.h:114</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_a90aa0accd362bd376761d610253611c4ad7b1bc35cd7af446d32c1ebd2bb7ffb5"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a90aa0accd362bd376761d610253611c4ad7b1bc35cd7af446d32c1ebd2bb7ffb5">ROCKSDB_NAMESPACE::MergeOperator::OpFailureScope::kMustMerge</a></div><div class="ttdeci">@ kMustMerge</div><div class="ttdef"><b>Definition</b> <a href="#l00113">merge_operator.h:113</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_a9fc7b1f9614b3551542fb4e9b0209999"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#a9fc7b1f9614b3551542fb4e9b0209999">ROCKSDB_NAMESPACE::MergeOperator::Name</a></div><div class="ttdeci">const char * Name() const override=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_ac0c1d5f935541c5c0e187ba776b9ffde"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ac0c1d5f935541c5c0e187ba776b9ffde">ROCKSDB_NAMESPACE::MergeOperator::AllowSingleOperand</a></div><div class="ttdeci">virtual bool AllowSingleOperand() const</div><div class="ttdef"><b>Definition</b> <a href="#l00288">merge_operator.h:288</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_ac2d33336b04e3ee34c34faa36482d9f7"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ac2d33336b04e3ee34c34faa36482d9f7">ROCKSDB_NAMESPACE::MergeOperator::Type</a></div><div class="ttdeci">static const char * Type()</div><div class="ttdef"><b>Definition</b> <a href="#l00056">merge_operator.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_ad62e11547e988d19095bb7be8df23023"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ad62e11547e988d19095bb7be8df23023">ROCKSDB_NAMESPACE::MergeOperator::FullMergeV3</a></div><div class="ttdeci">virtual bool FullMergeV3(const MergeOperationInputV3 &amp;merge_in, MergeOperationOutputV3 *merge_out) const</div><div class="ttdef"><b>Definition</b> <a href="../../dc/dfe/db_2merge__operator_8cc_source.html#l00031">merge_operator.cc:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html_ae2b9a53f86b4332a2e2e1fb9ab2ac245"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html#ae2b9a53f86b4332a2e2e1fb9ab2ac245">ROCKSDB_NAMESPACE::MergeOperator::ShouldMerge</a></div><div class="ttdeci">virtual bool ShouldMerge(const std::vector&lt; Slice &gt; &amp;) const</div><div class="ttdef"><b>Definition</b> <a href="#l00300">merge_operator.h:300</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="acustomizable_8h_html"><div class="ttname"><a href="../../d0/d21/customizable_8h.html">customizable.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="aslice_8h_html"><div class="ttname"><a href="../../d0/d48/slice_8h.html">slice.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ConfigOptions_html"><div class="ttname"><a href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ROCKSDB_NAMESPACE::ConfigOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/ddb/convenience_8h_source.html#l00034">convenience.h:34</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3_html"><div class="ttname"><a href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInputV3</a></div><div class="ttdef"><b>Definition</b> <a href="#l00164">merge_operator.h:164</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3_html_a1bd869d1cf05de96951d24ab746cc065"><div class="ttname"><a href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a1bd869d1cf05de96951d24ab746cc065">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInputV3::operand_list</a></div><div class="ttdeci">const OperandList &amp; operand_list</div><div class="ttdef"><b>Definition</b> <a href="#l00184">merge_operator.h:184</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3_html_a52b8b57d214adb5324b108e0f58cfdc2"><div class="ttname"><a href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a52b8b57d214adb5324b108e0f58cfdc2">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInputV3::key</a></div><div class="ttdeci">const Slice &amp; key</div><div class="ttdef"><b>Definition</b> <a href="#l00178">merge_operator.h:178</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3_html_a737d45e2f5e5acc1328b40476c457b09"><div class="ttname"><a href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a737d45e2f5e5acc1328b40476c457b09">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInputV3::OperandList</a></div><div class="ttdeci">std::vector&lt; Slice &gt; OperandList</div><div class="ttdef"><b>Definition</b> <a href="#l00166">merge_operator.h:166</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3_html_a9b9ba34e6df37562121a4dc4ce916161"><div class="ttname"><a href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a9b9ba34e6df37562121a4dc4ce916161">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInputV3::existing_value</a></div><div class="ttdeci">ExistingValue existing_value</div><div class="ttdef"><b>Definition</b> <a href="#l00182">merge_operator.h:182</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3_html_a9f9c1811f253d2b25abec10489902b03"><div class="ttname"><a href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#a9f9c1811f253d2b25abec10489902b03">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInputV3::logger</a></div><div class="ttdeci">Logger * logger</div><div class="ttdef"><b>Definition</b> <a href="#l00186">merge_operator.h:186</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3_html_ac789eed0fd4d6975630276cad1e1b5bf"><div class="ttname"><a href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#ac789eed0fd4d6975630276cad1e1b5bf">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInputV3::MergeOperationInputV3</a></div><div class="ttdeci">MergeOperationInputV3(const Slice &amp;_key, ExistingValue &amp;&amp;_existing_value, const OperandList &amp;_operand_list, Logger *_logger)</div><div class="ttdef"><b>Definition</b> <a href="#l00168">merge_operator.h:168</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3_html_ac8909620317e7bb1067449b2c78a4e38"><div class="ttname"><a href="../../d2/d4c/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInputV3.html#ac8909620317e7bb1067449b2c78a4e38">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInputV3::ExistingValue</a></div><div class="ttdeci">std::variant&lt; std::monostate, Slice, WideColumns &gt; ExistingValue</div><div class="ttdef"><b>Definition</b> <a href="#l00165">merge_operator.h:165</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput</a></div><div class="ttdef"><b>Definition</b> <a href="#l00087">merge_operator.h:87</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html_a051ae8daeb81bffec72321ca145da73b"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a051ae8daeb81bffec72321ca145da73b">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput::key</a></div><div class="ttdeci">const Slice &amp; key</div><div class="ttdef"><b>Definition</b> <a href="#l00099">merge_operator.h:99</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html_a0cdff7031ad6dd4a7c277cb49d43e572"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a0cdff7031ad6dd4a7c277cb49d43e572">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput::operand_list</a></div><div class="ttdeci">const std::vector&lt; Slice &gt; &amp; operand_list</div><div class="ttdef"><b>Definition</b> <a href="#l00104">merge_operator.h:104</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html_a101d7be38d987960dbf587ed22dc77b5"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput::existing_value</a></div><div class="ttdeci">const Slice * existing_value</div><div class="ttdef"><b>Definition</b> <a href="#l00102">merge_operator.h:102</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html_a5936146a7956b75eb371ebf27b3f165c"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a5936146a7956b75eb371ebf27b3f165c">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput::logger</a></div><div class="ttdeci">Logger * logger</div><div class="ttdef"><b>Definition</b> <a href="#l00107">merge_operator.h:107</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html_a8601eadaa817f77381c98900e4fd9863"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a8601eadaa817f77381c98900e4fd9863">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput::MergeOperationInput</a></div><div class="ttdeci">MergeOperationInput(const Slice &amp;_key, const Slice *_existing_value, const std::vector&lt; Slice &gt; &amp;_operand_list, Logger *_logger)</div><div class="ttdef"><b>Definition</b> <a href="#l00089">merge_operator.h:89</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3_html"><div class="ttname"><a href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutputV3</a></div><div class="ttdef"><b>Definition</b> <a href="#l00189">merge_operator.h:189</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3_html_a0ee9cf6f981cf0a9360fd456fbcf3823"><div class="ttname"><a href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a0ee9cf6f981cf0a9360fd456fbcf3823">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutputV3::NewValue</a></div><div class="ttdeci">std::variant&lt; std::string, NewColumns, Slice &gt; NewValue</div><div class="ttdef"><b>Definition</b> <a href="#l00191">merge_operator.h:191</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3_html_a26f60b09dca370e21c0f7a65668f0e7a"><div class="ttname"><a href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a26f60b09dca370e21c0f7a65668f0e7a">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutputV3::NewColumns</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt; NewColumns</div><div class="ttdef"><b>Definition</b> <a href="#l00190">merge_operator.h:190</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3_html_a5ffc66921d57a0a54085116696983da9"><div class="ttname"><a href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a5ffc66921d57a0a54085116696983da9">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutputV3::new_value</a></div><div class="ttdeci">NewValue new_value</div><div class="ttdef"><b>Definition</b> <a href="#l00196">merge_operator.h:196</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3_html_a6abd1f7613a83c1f9e6149694801369e"><div class="ttname"><a href="../../d7/d50/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutputV3.html#a6abd1f7613a83c1f9e6149694801369e">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutputV3::op_failure_scope</a></div><div class="ttdeci">OpFailureScope op_failure_scope</div><div class="ttdef"><b>Definition</b> <a href="#l00198">merge_operator.h:198</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput_html"><div class="ttname"><a href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutput</a></div><div class="ttdef"><b>Definition</b> <a href="#l00117">merge_operator.h:117</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput_html_a15377dc1ee93447a7bc1b58bbba70caf"><div class="ttname"><a href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutput::new_value</a></div><div class="ttdeci">std::string &amp; new_value</div><div class="ttdef"><b>Definition</b> <a href="#l00123">merge_operator.h:123</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput_html_a8f7a4733ac768bcfaf4b66dc39d4c485"><div class="ttname"><a href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a8f7a4733ac768bcfaf4b66dc39d4c485">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutput::existing_operand</a></div><div class="ttdeci">Slice &amp; existing_operand</div><div class="ttdef"><b>Definition</b> <a href="#l00127">merge_operator.h:127</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput_html_aeade27d50c91fc57515b19a7ca913658"><div class="ttname"><a href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#aeade27d50c91fc57515b19a7ca913658">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutput::MergeOperationOutput</a></div><div class="ttdeci">MergeOperationOutput(std::string &amp;_new_value, Slice &amp;_existing_operand)</div><div class="ttdef"><b>Definition</b> <a href="#l00118">merge_operator.h:118</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput_html_afb0c06b55a4cf42611fc32d3ccbb0044"><div class="ttname"><a href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#afb0c06b55a4cf42611fc32d3ccbb0044">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutput::op_failure_scope</a></div><div class="ttdeci">OpFailureScope op_failure_scope</div><div class="ttdef"><b>Definition</b> <a href="#l00141">merge_operator.h:141</a></div></div>
+<div class="ttc" id="awide__columns_8h_html"><div class="ttname"><a href="../../d4/dde/wide__columns_8h.html">wide_columns.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_8784722d8c2e7f3978e4945ad578533f.html">rocksdb</a></li><li class="navelem"><a class="el" href="../../d4/dca/include_2rocksdb_2merge__operator_8h.html">merge_operator.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

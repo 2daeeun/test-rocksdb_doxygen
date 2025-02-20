@@ -1,0 +1,27 @@
+var classROCKSDB__NAMESPACE_1_1EmulatedSystemClock =
+[
+    [ "EmulatedSystemClock", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a124900e77f3db5d24947b9c42f577023", null ],
+    [ "CPUMicros", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#ae91bd8c23561bb7ab38e25994ae10b4d", null ],
+    [ "CPUNanos", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#ac11221010e2cf2c762dd02f2d9cc1acb", null ],
+    [ "GetCpuCounter", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a68c113e0bb304df3064ea993d253d829", null ],
+    [ "GetCurrentTime", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#aba04ac2fc2a0afc37fd14fdde3b3fc3e", null ],
+    [ "GetSleepCounter", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a52adc3d46b578e04377f3b18f054b40d", null ],
+    [ "IsMockSleepEnabled", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a2bf3e624864d7be6d88850f5c121348c", null ],
+    [ "IsTimeElapseOnlySleep", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a825039b5522c525dfe2424928aaa9be7", null ],
+    [ "kClassName", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a784e6bc33478d8c32f3cf7f267755147", null ],
+    [ "MockSleepForMicroseconds", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a80485f3d171b294d59ed25336410181e", null ],
+    [ "MockSleepForSeconds", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a1487c8be2f0eb7f3227347abf42802f6", null ],
+    [ "Name", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a112c3704d29f4a42370d88fc6b5d47a7", null ],
+    [ "NowMicros", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a2473563a28c278c32e09b300cf311479", null ],
+    [ "NowNanos", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#ae2b06bc4dd7ce259464913b6b2865df5", null ],
+    [ "ResetCounters", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#ad120c2fe0dcf554edaa289dccef595e4", null ],
+    [ "SetMockSleep", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#aeada9dc2aeedfa56a3bf35535406011a", null ],
+    [ "SetTimeElapseOnlySleep", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#aca6cc513d779d975f564093edf278223", null ],
+    [ "SleepForMicroseconds", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a1c538beb69e5a44f2cf81c0bf8f2c377", null ],
+    [ "addon_microseconds_", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#ad2495b36923b7ed533888df48887060f", null ],
+    [ "cpu_counter_", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a896514d8aa6b5ccc667f6c22dee3504b", null ],
+    [ "maybe_starting_time_", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a64d3d5231c96a8aedb177330bc55fd4f", null ],
+    [ "no_slowdown_", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#ab6edef0b3e36893977cd8542c16a7a06", null ],
+    [ "sleep_counter_", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a3f34be0e871a4f662d0ddd59e9614b05", null ],
+    [ "time_elapse_only_sleep_", "d5/df5/classROCKSDB__NAMESPACE_1_1EmulatedSystemClock.html#a0df64e73b67a0865922d4c73d76f0c0b", null ]
+];

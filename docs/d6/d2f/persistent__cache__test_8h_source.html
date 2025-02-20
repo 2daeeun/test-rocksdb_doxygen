@@ -1,0 +1,494 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/persistent_cache/persistent_cache_test.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d6/d2f/persistent__cache__test_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">persistent_cache_test.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d6/d2f/persistent__cache__test_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2013, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;limits&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;list&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/dab/db__test__util_8h.html">db/db_test_util.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d0c/arena_8h.html">memory/arena.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d00/port_8h.html">port/port.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/d26/cache_8h.html">rocksdb/cache.h</a>&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/df3/block__builder_8h.html">table/block_based/block_builder.h</a>&quot;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d42/testharness_8h.html">test_util/testharness.h</a>&quot;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d79/random_8h.html">util/random.h</a>&quot;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d0d/volatile__tier__impl_8h.html">utilities/persistent_cache/volatile_tier_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">//</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// Unit tests for testing PersistentCacheTier</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">//</span></div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html">   34</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a3b3add95a8da32b53fcdf48c89aabdd4">PersistentCacheTierTest</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../db/d9f/classtesting_1_1Test.html">testing::Test</a> {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a3b3add95a8da32b53fcdf48c89aabdd4">PersistentCacheTierTest</a>();</div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a877748f7e5f068ea40a1a61a75cedae1">   37</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a877748f7e5f068ea40a1a61a75cedae1">~PersistentCacheTierTest</a>() {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>) {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>-&gt;Close();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  }</div>
+</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// Flush cache</span></div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a5bb1f9b36e1f734a028b6ba43cecdf1c">   46</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a5bb1f9b36e1f734a028b6ba43cecdf1c">Flush</a>() {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>-&gt;TEST_Flush();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
+</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// create threaded workload</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#aaded42d1b9f54c1460363c0c802c147c">   54</a></span>  std::list&lt;port::Thread&gt; <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#aaded42d1b9f54c1460363c0c802c147c">SpawnThreads</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> n, <span class="keyword">const</span> T&amp; fn) {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    std::list&lt;port::Thread&gt; threads;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; i++) {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <a class="code hl_typedef" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#afc6f29d029401f7520152663acb0fb61">port::Thread</a> th(fn);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      threads.push_back(std::move(th));</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">return</span> threads;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  }</div>
+</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">// Wait for threads to join</span></div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a924809fb5aed0d3e42c846cfa2ac8a8e">   64</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a924809fb5aed0d3e42c846cfa2ac8a8e">Join</a>(std::list&lt;port::Thread&gt;&amp;&amp; threads) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; th : threads) {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      th.join();</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    threads.clear();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  }</div>
+</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// Run insert workload in threads</span></div>
+<div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a0692586f78a1336f73493550a1f9537a">   72</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a0692586f78a1336f73493550a1f9537a">Insert</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> nthreads, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_keys) {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13b0abe676a1ae76d1c8c5fe6201da9a">key_</a> = 0;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a89db54e32125529ee91e9c746e90d3c6">max_keys_</a> = max_keys;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="comment">// spawn threads</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">auto</span> fn = std::bind(&amp;<a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a4374740b598fe48b0aa5381663d4edd3">PersistentCacheTierTest::InsertImpl</a>, <span class="keyword">this</span>);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keyword">auto</span> threads = <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#aaded42d1b9f54c1460363c0c802c147c">SpawnThreads</a>(nthreads, fn);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="comment">// join with threads</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a924809fb5aed0d3e42c846cfa2ac8a8e">Join</a>(std::move(threads));</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="comment">// Flush cache</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a5bb1f9b36e1f734a028b6ba43cecdf1c">Flush</a>();</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
+</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">// Run verification on the cache</span></div>
+<div class="foldopen" id="foldopen00085" data-start="{" data-end="}">
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a337b07dce7a1607ccfc5eb27286cc940">   85</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a337b07dce7a1607ccfc5eb27286cc940">Verify</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> nthreads = 1, <span class="keyword">const</span> <span class="keywordtype">bool</span> eviction_enabled = <span class="keyword">false</span>) {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a892fcff6f017103663a5a9b70e843a42">stats_verify_hits_</a> = 0;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13d7ec9a6141e5c942ca6c300247c13e">stats_verify_missed_</a> = 0;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13b0abe676a1ae76d1c8c5fe6201da9a">key_</a> = 0;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="comment">// spawn threads</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keyword">auto</span> fn =</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        std::bind(&amp;<a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a3d50e4160a79e00a4b1e2ef96ecdce93">PersistentCacheTierTest::VerifyImpl</a>, <span class="keyword">this</span>, eviction_enabled);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keyword">auto</span> threads = <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#aaded42d1b9f54c1460363c0c802c147c">SpawnThreads</a>(nthreads, fn);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="comment">// join with threads</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a924809fb5aed0d3e42c846cfa2ac8a8e">Join</a>(std::move(threads));</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="comment">// pad 0 to numbers</span></div>
+<div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a36580d70645991e3228ac148957c4a5c">   98</a></span>  std::string <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a36580d70645991e3228ac148957c4a5c">PaddedNumber</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> data, <span class="keyword">const</span> <span class="keywordtype">size_t</span> pad_size) {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    assert(pad_size);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordtype">char</span>* ret = <span class="keyword">new</span> <span class="keywordtype">char</span>[pad_size];</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordtype">int</span> pos = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(pad_size) - 1;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordtype">size_t</span> count = 0;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordtype">size_t</span> t = data;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="comment">// copy numbers</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">while</span> (t) {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      count++;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      ret[pos--] = <span class="charliteral">&#39;0&#39;</span> + t % 10;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      t = t / 10;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    }</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="comment">// copy 0s</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">while</span> (pos &gt;= 0) {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      ret[pos--] = <span class="charliteral">&#39;0&#39;</span>;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    }</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="comment">// post condition</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    assert(count &lt;= pad_size);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    assert(pos == -1);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    std::string result(ret, pad_size);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keyword">delete</span>[] ret;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  }</div>
+</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// Insert workload implementation</span></div>
+<div class="foldopen" id="foldopen00123" data-start="{" data-end="}">
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a4374740b598fe48b0aa5381663d4edd3">  123</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a4374740b598fe48b0aa5381663d4edd3">InsertImpl</a>() {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keyword">const</span> std::string prefix = <span class="stringliteral">&quot;key_prefix_&quot;</span>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>      <span class="keywordtype">size_t</span> i = <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13b0abe676a1ae76d1c8c5fe6201da9a">key_</a>++;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      <span class="keywordflow">if</span> (i &gt;= <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a89db54e32125529ee91e9c746e90d3c6">max_keys_</a>) {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>      }</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      <span class="keywordtype">char</span> data[4 * 1024];</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>      memset(data, <span class="charliteral">&#39;0&#39;</span> + (i % 10), <span class="keyword">sizeof</span>(data));</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      <span class="keyword">auto</span> k = prefix + <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a36580d70645991e3228ac148957c4a5c">PaddedNumber</a>(i, <span class="comment">/*count=*/</span>8);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> key(k);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> status = <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>-&gt;Insert(key, data, <span class="keyword">sizeof</span>(data));</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <span class="keywordflow">if</span> (status.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>          <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        }</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(status.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44eaf25a3bfb28f45a174bca42bbdebf">IsTryAgain</a>());</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">Env::Default</a>()-&gt;SleepForMicroseconds(1 * 1000 * 1000);</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>      }</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    }</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  }</div>
+</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  <span class="comment">// Verification implementation</span></div>
+<div class="foldopen" id="foldopen00148" data-start="{" data-end="}">
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a3d50e4160a79e00a4b1e2ef96ecdce93">  148</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a3d50e4160a79e00a4b1e2ef96ecdce93">VerifyImpl</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> eviction_enabled = <span class="keyword">false</span>) {</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keyword">const</span> std::string prefix = <span class="stringliteral">&quot;key_prefix_&quot;</span>;</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>      <span class="keywordtype">size_t</span> i = <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13b0abe676a1ae76d1c8c5fe6201da9a">key_</a>++;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>      <span class="keywordflow">if</span> (i &gt;= <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a89db54e32125529ee91e9c746e90d3c6">max_keys_</a>) {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      }</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      <span class="keywordtype">char</span> edata[4 * 1024];</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>      memset(edata, <span class="charliteral">&#39;0&#39;</span> + (i % 10), <span class="keyword">sizeof</span>(edata));</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>      <span class="keyword">auto</span> k = prefix + <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a36580d70645991e3228ac148957c4a5c">PaddedNumber</a>(i, <span class="comment">/*count=*/</span>8);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> key(k);</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>      std::unique_ptr&lt;char[]&gt; block;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>      <span class="keywordtype">size_t</span> block_size;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>      <span class="keywordflow">if</span> (eviction_enabled) {</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>-&gt;Lookup(key, &amp;block, &amp;block_size).ok()) {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>          <span class="comment">// assume that the key is evicted</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>          <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13d7ec9a6141e5c942ca6c300247c13e">stats_verify_missed_</a>++;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>          <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>      }</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>      <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>-&gt;Lookup(key, &amp;block, &amp;block_size));</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(block_size, <span class="keyword">sizeof</span>(edata));</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(memcmp(edata, block.get(), <span class="keyword">sizeof</span>(edata)), 0);</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>      <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a892fcff6f017103663a5a9b70e843a42">stats_verify_hits_</a>++;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    }</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  }</div>
+</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="comment">// template for insert test</span></div>
+<div class="foldopen" id="foldopen00179" data-start="{" data-end="}">
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a61adbf8525b467836357cccd5f289892">  179</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a61adbf8525b467836357cccd5f289892">RunInsertTest</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> nthreads, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_keys) {</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a0692586f78a1336f73493550a1f9537a">Insert</a>(nthreads, max_keys);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a337b07dce7a1607ccfc5eb27286cc940">Verify</a>(nthreads);</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a892fcff6f017103663a5a9b70e843a42">stats_verify_hits_</a>, max_keys);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13d7ec9a6141e5c942ca6c300247c13e">stats_verify_missed_</a>, 0);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>-&gt;Close());</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>.reset();</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  }</div>
+</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="comment">// template for negative insert test</span></div>
+<div class="foldopen" id="foldopen00190" data-start="{" data-end="}">
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a198ab255e715f4eba595c7ed52457658">  190</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a198ab255e715f4eba595c7ed52457658">RunNegativeInsertTest</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> nthreads, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_keys) {</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a0692586f78a1336f73493550a1f9537a">Insert</a>(nthreads, max_keys);</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a337b07dce7a1607ccfc5eb27286cc940">Verify</a>(nthreads, <span class="comment">/*eviction_enabled=*/</span><span class="keyword">true</span>);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#affc4f9cae4c3aabfe60fced83737b42c">ASSERT_LT</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a892fcff6f017103663a5a9b70e843a42">stats_verify_hits_</a>, max_keys);</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a16a882d4eafc9f8643867aea40879140">ASSERT_GT</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13d7ec9a6141e5c942ca6c300247c13e">stats_verify_missed_</a>, 0);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>-&gt;Close());</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>.reset();</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  }</div>
+</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="comment">// template for insert with eviction test</span></div>
+<div class="foldopen" id="foldopen00201" data-start="{" data-end="}">
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#aaa11b37639032ddf251f4d79629e4a06">  201</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#aaa11b37639032ddf251f4d79629e4a06">RunInsertTestWithEviction</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> nthreads, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_keys) {</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a0692586f78a1336f73493550a1f9537a">Insert</a>(nthreads, max_keys);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <a class="code hl_function" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a337b07dce7a1607ccfc5eb27286cc940">Verify</a>(nthreads, <span class="comment">/*eviction_enabled=*/</span><span class="keyword">true</span>);</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a892fcff6f017103663a5a9b70e843a42">stats_verify_hits_</a> + <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13d7ec9a6141e5c942ca6c300247c13e">stats_verify_missed_</a>, max_keys);</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a16a882d4eafc9f8643867aea40879140">ASSERT_GT</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a892fcff6f017103663a5a9b70e843a42">stats_verify_hits_</a>, 0);</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a16a882d4eafc9f8643867aea40879140">ASSERT_GT</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13d7ec9a6141e5c942ca6c300247c13e">stats_verify_missed_</a>, 0);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>-&gt;Close());</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>.reset();</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  }</div>
+</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a4fcf9251ab0b3e2fdd56963b36ab6ffb">  212</a></span>  <span class="keyword">const</span> std::string <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a4fcf9251ab0b3e2fdd56963b36ab6ffb">path_</a>;</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#abd15a74c151b140d4cd6e63e2f922a38">  213</a></span>  std::shared_ptr&lt;Logger&gt; <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#abd15a74c151b140d4cd6e63e2f922a38">log_</a>;</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">  214</a></span>  std::shared_ptr&lt;PersistentCacheTier&gt; <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">cache_</a>;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13b0abe676a1ae76d1c8c5fe6201da9a">  215</a></span>  std::atomic&lt;size_t&gt; <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13b0abe676a1ae76d1c8c5fe6201da9a">key_</a>{0};</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a89db54e32125529ee91e9c746e90d3c6">  216</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a89db54e32125529ee91e9c746e90d3c6">max_keys_</a> = 0;</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a892fcff6f017103663a5a9b70e843a42">  217</a></span>  std::atomic&lt;size_t&gt; <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a892fcff6f017103663a5a9b70e843a42">stats_verify_hits_</a>{0};</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno"><a class="line" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13d7ec9a6141e5c942ca6c300247c13e">  218</a></span>  std::atomic&lt;size_t&gt; <a class="code hl_variable" href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13d7ec9a6141e5c942ca6c300247c13e">stats_verify_missed_</a>{0};</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>};</div>
+</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment">//</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">// RocksDB tests</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment">//</span></div>
+<div class="foldopen" id="foldopen00224" data-start="{" data-end="};">
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno"><a class="line" href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html">  224</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#a52a0ce5b71df0b5bc798c7df6195a7a2">PersistentCacheDBTest</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a4991c402218ec212ad7acfc5dd4574a2">DBTestBase</a> {</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <a class="code hl_function" href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#a52a0ce5b71df0b5bc798c7df6195a7a2">PersistentCacheDBTest</a>();</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
+<div class="foldopen" id="foldopen00228" data-start="{" data-end="}">
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#ad6ffd1113c0fdd21bf5251aa64104942">  228</a></span>  <span class="keyword">static</span> uint64_t <a class="code hl_function" href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#ad6ffd1113c0fdd21bf5251aa64104942">TestGetTickerCount</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a>&amp; options,</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>                                     <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a153247a8e045efa11bbb3134499dfc47">Tickers</a> ticker_type) {</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        options.<a class="code hl_variable" href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#a81c15e9e94de36077aa52dfec56e89e1">statistics</a>-&gt;getTickerCount(ticker_type));</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  }</div>
+</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  <span class="comment">// insert data to table</span></div>
+<div class="foldopen" id="foldopen00235" data-start="{" data-end="}">
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno"><a class="line" href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#affe7d7a44918423f8308469d7c3a12b7">  235</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#affe7d7a44918423f8308469d7c3a12b7">Insert</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a>&amp; options,</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>              <span class="keyword">const</span> <a class="code hl_struct" href="../../d4/d6c/structROCKSDB__NAMESPACE_1_1BlockBasedTableOptions.html">BlockBasedTableOptions</a>&amp; <span class="comment">/*table_options*/</span>,</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> num_iter, std::vector&lt;std::string&gt;* values) {</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <a class="code hl_function" href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a825ff4e9a37fdc0419f019a85fa60514">CreateAndReopenWithCF</a>({<span class="stringliteral">&quot;pikachu&quot;</span>}, options);</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="comment">// default column family doesn&#39;t have block cache</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a> no_block_cache_opts;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    no_block_cache_opts.<a class="code hl_variable" href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#a81c15e9e94de36077aa52dfec56e89e1">statistics</a> = options.<a class="code hl_variable" href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#a81c15e9e94de36077aa52dfec56e89e1">statistics</a>;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    no_block_cache_opts = <a class="code hl_function" href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a5224d5e365eb08d0b4d43c6d97e3c38b">CurrentOptions</a>(no_block_cache_opts);</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <a class="code hl_struct" href="../../d4/d6c/structROCKSDB__NAMESPACE_1_1BlockBasedTableOptions.html">BlockBasedTableOptions</a> table_options_no_bc;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    table_options_no_bc.<a class="code hl_variable" href="../../d4/d6c/structROCKSDB__NAMESPACE_1_1BlockBasedTableOptions.html#a06137262f5d81d6ff13e79f86d15a69a">no_block_cache</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    no_block_cache_opts.table_factory.reset(</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2a5a2da2d8eed48a4707e8601890e7d0">NewBlockBasedTableFactory</a>(table_options_no_bc));</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <a class="code hl_function" href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a67cfbe883601983030736d7d9b55d03a">ReopenWithColumnFamilies</a>(</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        {<span class="stringliteral">&quot;default&quot;</span>, <span class="stringliteral">&quot;pikachu&quot;</span>},</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        std::vector&lt;Options&gt;({no_block_cache_opts, options}));</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <a class="code hl_class" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">Random</a> rnd(301);</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="comment">// Write 8MB (80 values, each 100K)</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(<a class="code hl_function" href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#ae2e1093b402823b7034b63184b823e1d">NumTableFilesAtLevel</a>(0, 1), 0);</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    std::string str;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_iter; i++) {</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>      <span class="keywordflow">if</span> (i % 4 == 0) {  <span class="comment">// high compression ratio</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        str = rnd.<a class="code hl_function" href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html#a13a4c078891d26e9f284fc390b01349b">RandomString</a>(1000);</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>      }</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>      values-&gt;push_back(str);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>      <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_function" href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#aefc1d40ab6e2a06f3b71ca8d83719199">Put</a>(1, <a class="code hl_function" href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a69abe1a6dbd22cca46c86556ea1a0e87">Key</a>(i), (*values)[i]));</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    }</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <span class="comment">// flush all data from memtable so that reads are from block cache</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_function" href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#af6e4fb94dbcc6fd934f311adfad8c876">Flush</a>(1));</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  }</div>
+</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <span class="comment">// verify data</span></div>
+<div class="foldopen" id="foldopen00269" data-start="{" data-end="}">
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno"><a class="line" href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#a57c615a0cf563cf1646e431b0a5fe2f9">  269</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#a57c615a0cf563cf1646e431b0a5fe2f9">Verify</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> num_iter, <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; values) {</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; 2; ++j) {</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_iter; i++) {</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(<a class="code hl_function" href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#ab484a38d5f1821da8436ae24582b772f">Get</a>(1, <a class="code hl_function" href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a69abe1a6dbd22cca46c86556ea1a0e87">Key</a>(i)), values[i]);</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>      }</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    }</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  }</div>
+</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  <span class="comment">// test template</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="keywordtype">void</span> RunTest(<span class="keyword">const</span> std::function&lt;std::shared_ptr&lt;PersistentCacheTier&gt;(<span class="keywordtype">bool</span>)&gt;&amp;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                   new_pcache,</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>               <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_keys, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_usecase);</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>};</div>
+</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
+<div class="ttc" id="aarena_8h_html"><div class="ttname"><a href="../../da/d0c/arena_8h.html">arena.h</a></div></div>
+<div class="ttc" id="ablock__builder_8h_html"><div class="ttname"><a href="../../d9/df3/block__builder_8h.html">block_builder.h</a></div></div>
+<div class="ttc" id="acache_8h_html"><div class="ttname"><a href="../../d3/d26/cache_8h.html">cache.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DBTestBase_html_a4991c402218ec212ad7acfc5dd4574a2"><div class="ttname"><a href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a4991c402218ec212ad7acfc5dd4574a2">ROCKSDB_NAMESPACE::DBTestBase::DBTestBase</a></div><div class="ttdeci">DBTestBase(const std::string path, bool env_do_fsync)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d5b/db__test__util_8cc_source.html#l00064">db_test_util.cc:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DBTestBase_html_a5224d5e365eb08d0b4d43c6d97e3c38b"><div class="ttname"><a href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a5224d5e365eb08d0b4d43c6d97e3c38b">ROCKSDB_NAMESPACE::DBTestBase::CurrentOptions</a></div><div class="ttdeci">Options CurrentOptions(const anon::OptionsOverride &amp;options_override=anon::OptionsOverride()) const</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d5b/db__test__util_8cc_source.html#l00311">db_test_util.cc:311</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DBTestBase_html_a67cfbe883601983030736d7d9b55d03a"><div class="ttname"><a href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a67cfbe883601983030736d7d9b55d03a">ROCKSDB_NAMESPACE::DBTestBase::ReopenWithColumnFamilies</a></div><div class="ttdeci">void ReopenWithColumnFamilies(const std::vector&lt; std::string &gt; &amp;cfs, const std::vector&lt; Options &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d5b/db__test__util_8cc_source.html#l00618">db_test_util.cc:618</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DBTestBase_html_a69abe1a6dbd22cca46c86556ea1a0e87"><div class="ttname"><a href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a69abe1a6dbd22cca46c86556ea1a0e87">ROCKSDB_NAMESPACE::DBTestBase::Key</a></div><div class="ttdeci">static std::string Key(int i)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/dab/db__test__util_8h_source.html#l01103">db_test_util.h:1103</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DBTestBase_html_a825ff4e9a37fdc0419f019a85fa60514"><div class="ttname"><a href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#a825ff4e9a37fdc0419f019a85fa60514">ROCKSDB_NAMESPACE::DBTestBase::CreateAndReopenWithCF</a></div><div class="ttdeci">void CreateAndReopenWithCF(const std::vector&lt; std::string &gt; &amp;cfs, const Options &amp;options)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d5b/db__test__util_8cc_source.html#l00610">db_test_util.cc:610</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DBTestBase_html_ab484a38d5f1821da8436ae24582b772f"><div class="ttname"><a href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#ab484a38d5f1821da8436ae24582b772f">ROCKSDB_NAMESPACE::DBTestBase::Get</a></div><div class="ttdeci">std::string Get(const std::string &amp;k, const Snapshot *snapshot=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d5b/db__test__util_8cc_source.html#l00820">db_test_util.cc:820</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DBTestBase_html_ae2e1093b402823b7034b63184b823e1d"><div class="ttname"><a href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#ae2e1093b402823b7034b63184b823e1d">ROCKSDB_NAMESPACE::DBTestBase::NumTableFilesAtLevel</a></div><div class="ttdeci">int NumTableFilesAtLevel(int level, int cf=0)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d5b/db__test__util_8cc_source.html#l01151">db_test_util.cc:1151</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DBTestBase_html_aefc1d40ab6e2a06f3b71ca8d83719199"><div class="ttname"><a href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#aefc1d40ab6e2a06f3b71ca8d83719199">ROCKSDB_NAMESPACE::DBTestBase::Put</a></div><div class="ttdeci">Status Put(const Slice &amp;k, const Slice &amp;v, WriteOptions wo=WriteOptions())</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d5b/db__test__util_8cc_source.html#l00758">db_test_util.cc:758</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DBTestBase_html_af6e4fb94dbcc6fd934f311adfad8c876"><div class="ttname"><a href="../../d5/d9a/classROCKSDB__NAMESPACE_1_1DBTestBase.html#af6e4fb94dbcc6fd934f311adfad8c876">ROCKSDB_NAMESPACE::DBTestBase::Flush</a></div><div class="ttdeci">Status Flush(int cf=0)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d5b/db__test__util_8cc_source.html#l00743">db_test_util.cc:743</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a6ab2e37815691608582aa44201663888"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">ROCKSDB_NAMESPACE::Env::Default</a></div><div class="ttdeci">static Env * Default()</div><div class="ttdef"><b>Definition</b> <a href="../../de/d24/env__posix_8cc_source.html#l00498">env_posix.cc:498</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheDBTest_html_a52a0ce5b71df0b5bc798c7df6195a7a2"><div class="ttname"><a href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#a52a0ce5b71df0b5bc798c7df6195a7a2">ROCKSDB_NAMESPACE::PersistentCacheDBTest::PersistentCacheDBTest</a></div><div class="ttdeci">PersistentCacheDBTest()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d8a/persistent__cache__test_8cc_source.html#l00284">persistent_cache_test.cc:284</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheDBTest_html_a57c615a0cf563cf1646e431b0a5fe2f9"><div class="ttname"><a href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#a57c615a0cf563cf1646e431b0a5fe2f9">ROCKSDB_NAMESPACE::PersistentCacheDBTest::Verify</a></div><div class="ttdeci">void Verify(const int num_iter, const std::vector&lt; std::string &gt; &amp;values)</div><div class="ttdef"><b>Definition</b> <a href="#l00269">persistent_cache_test.h:269</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheDBTest_html_ad6ffd1113c0fdd21bf5251aa64104942"><div class="ttname"><a href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#ad6ffd1113c0fdd21bf5251aa64104942">ROCKSDB_NAMESPACE::PersistentCacheDBTest::TestGetTickerCount</a></div><div class="ttdeci">static uint64_t TestGetTickerCount(const Options &amp;options, Tickers ticker_type)</div><div class="ttdef"><b>Definition</b> <a href="#l00228">persistent_cache_test.h:228</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheDBTest_html_affe7d7a44918423f8308469d7c3a12b7"><div class="ttname"><a href="../../d2/d2f/classROCKSDB__NAMESPACE_1_1PersistentCacheDBTest.html#affe7d7a44918423f8308469d7c3a12b7">ROCKSDB_NAMESPACE::PersistentCacheDBTest::Insert</a></div><div class="ttdeci">void Insert(const Options &amp;options, const BlockBasedTableOptions &amp;, const int num_iter, std::vector&lt; std::string &gt; *values)</div><div class="ttdef"><b>Definition</b> <a href="#l00235">persistent_cache_test.h:235</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a0692586f78a1336f73493550a1f9537a"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a0692586f78a1336f73493550a1f9537a">ROCKSDB_NAMESPACE::PersistentCacheTierTest::Insert</a></div><div class="ttdeci">void Insert(const size_t nthreads, const size_t max_keys)</div><div class="ttdef"><b>Definition</b> <a href="#l00072">persistent_cache_test.h:72</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a13b0abe676a1ae76d1c8c5fe6201da9a"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13b0abe676a1ae76d1c8c5fe6201da9a">ROCKSDB_NAMESPACE::PersistentCacheTierTest::key_</a></div><div class="ttdeci">std::atomic&lt; size_t &gt; key_</div><div class="ttdef"><b>Definition</b> <a href="#l00215">persistent_cache_test.h:215</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a13d7ec9a6141e5c942ca6c300247c13e"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a13d7ec9a6141e5c942ca6c300247c13e">ROCKSDB_NAMESPACE::PersistentCacheTierTest::stats_verify_missed_</a></div><div class="ttdeci">std::atomic&lt; size_t &gt; stats_verify_missed_</div><div class="ttdef"><b>Definition</b> <a href="#l00218">persistent_cache_test.h:218</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a198ab255e715f4eba595c7ed52457658"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a198ab255e715f4eba595c7ed52457658">ROCKSDB_NAMESPACE::PersistentCacheTierTest::RunNegativeInsertTest</a></div><div class="ttdeci">void RunNegativeInsertTest(const size_t nthreads, const size_t max_keys)</div><div class="ttdef"><b>Definition</b> <a href="#l00190">persistent_cache_test.h:190</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a337b07dce7a1607ccfc5eb27286cc940"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a337b07dce7a1607ccfc5eb27286cc940">ROCKSDB_NAMESPACE::PersistentCacheTierTest::Verify</a></div><div class="ttdeci">void Verify(const size_t nthreads=1, const bool eviction_enabled=false)</div><div class="ttdef"><b>Definition</b> <a href="#l00085">persistent_cache_test.h:85</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a36580d70645991e3228ac148957c4a5c"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a36580d70645991e3228ac148957c4a5c">ROCKSDB_NAMESPACE::PersistentCacheTierTest::PaddedNumber</a></div><div class="ttdeci">std::string PaddedNumber(const size_t data, const size_t pad_size)</div><div class="ttdef"><b>Definition</b> <a href="#l00098">persistent_cache_test.h:98</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a3b3add95a8da32b53fcdf48c89aabdd4"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a3b3add95a8da32b53fcdf48c89aabdd4">ROCKSDB_NAMESPACE::PersistentCacheTierTest::PersistentCacheTierTest</a></div><div class="ttdeci">PersistentCacheTierTest()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d8a/persistent__cache__test_8cc_source.html#l00115">persistent_cache_test.cc:115</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a3d50e4160a79e00a4b1e2ef96ecdce93"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a3d50e4160a79e00a4b1e2ef96ecdce93">ROCKSDB_NAMESPACE::PersistentCacheTierTest::VerifyImpl</a></div><div class="ttdeci">void VerifyImpl(const bool eviction_enabled=false)</div><div class="ttdef"><b>Definition</b> <a href="#l00148">persistent_cache_test.h:148</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a4374740b598fe48b0aa5381663d4edd3"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a4374740b598fe48b0aa5381663d4edd3">ROCKSDB_NAMESPACE::PersistentCacheTierTest::InsertImpl</a></div><div class="ttdeci">void InsertImpl()</div><div class="ttdef"><b>Definition</b> <a href="#l00123">persistent_cache_test.h:123</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a4fcf9251ab0b3e2fdd56963b36ab6ffb"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a4fcf9251ab0b3e2fdd56963b36ab6ffb">ROCKSDB_NAMESPACE::PersistentCacheTierTest::path_</a></div><div class="ttdeci">const std::string path_</div><div class="ttdef"><b>Definition</b> <a href="#l00212">persistent_cache_test.h:212</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a5bb1f9b36e1f734a028b6ba43cecdf1c"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a5bb1f9b36e1f734a028b6ba43cecdf1c">ROCKSDB_NAMESPACE::PersistentCacheTierTest::Flush</a></div><div class="ttdeci">void Flush()</div><div class="ttdef"><b>Definition</b> <a href="#l00046">persistent_cache_test.h:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a61adbf8525b467836357cccd5f289892"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a61adbf8525b467836357cccd5f289892">ROCKSDB_NAMESPACE::PersistentCacheTierTest::RunInsertTest</a></div><div class="ttdeci">void RunInsertTest(const size_t nthreads, const size_t max_keys)</div><div class="ttdef"><b>Definition</b> <a href="#l00179">persistent_cache_test.h:179</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a877748f7e5f068ea40a1a61a75cedae1"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a877748f7e5f068ea40a1a61a75cedae1">ROCKSDB_NAMESPACE::PersistentCacheTierTest::~PersistentCacheTierTest</a></div><div class="ttdeci">virtual ~PersistentCacheTierTest()</div><div class="ttdef"><b>Definition</b> <a href="#l00037">persistent_cache_test.h:37</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a892fcff6f017103663a5a9b70e843a42"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a892fcff6f017103663a5a9b70e843a42">ROCKSDB_NAMESPACE::PersistentCacheTierTest::stats_verify_hits_</a></div><div class="ttdeci">std::atomic&lt; size_t &gt; stats_verify_hits_</div><div class="ttdef"><b>Definition</b> <a href="#l00217">persistent_cache_test.h:217</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a89db54e32125529ee91e9c746e90d3c6"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a89db54e32125529ee91e9c746e90d3c6">ROCKSDB_NAMESPACE::PersistentCacheTierTest::max_keys_</a></div><div class="ttdeci">size_t max_keys_</div><div class="ttdef"><b>Definition</b> <a href="#l00216">persistent_cache_test.h:216</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a8e01be37974b37d12aef966b51284772"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a8e01be37974b37d12aef966b51284772">ROCKSDB_NAMESPACE::PersistentCacheTierTest::cache_</a></div><div class="ttdeci">std::shared_ptr&lt; PersistentCacheTier &gt; cache_</div><div class="ttdef"><b>Definition</b> <a href="#l00214">persistent_cache_test.h:214</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_a924809fb5aed0d3e42c846cfa2ac8a8e"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#a924809fb5aed0d3e42c846cfa2ac8a8e">ROCKSDB_NAMESPACE::PersistentCacheTierTest::Join</a></div><div class="ttdeci">void Join(std::list&lt; port::Thread &gt; &amp;&amp;threads)</div><div class="ttdef"><b>Definition</b> <a href="#l00064">persistent_cache_test.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_aaa11b37639032ddf251f4d79629e4a06"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#aaa11b37639032ddf251f4d79629e4a06">ROCKSDB_NAMESPACE::PersistentCacheTierTest::RunInsertTestWithEviction</a></div><div class="ttdeci">void RunInsertTestWithEviction(const size_t nthreads, const size_t max_keys)</div><div class="ttdef"><b>Definition</b> <a href="#l00201">persistent_cache_test.h:201</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_aaded42d1b9f54c1460363c0c802c147c"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#aaded42d1b9f54c1460363c0c802c147c">ROCKSDB_NAMESPACE::PersistentCacheTierTest::SpawnThreads</a></div><div class="ttdeci">std::list&lt; port::Thread &gt; SpawnThreads(const size_t n, const T &amp;fn)</div><div class="ttdef"><b>Definition</b> <a href="#l00054">persistent_cache_test.h:54</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTierTest_html_abd15a74c151b140d4cd6e63e2f922a38"><div class="ttname"><a href="../../dd/de9/classROCKSDB__NAMESPACE_1_1PersistentCacheTierTest.html#abd15a74c151b140d4cd6e63e2f922a38">ROCKSDB_NAMESPACE::PersistentCacheTierTest::log_</a></div><div class="ttdeci">std::shared_ptr&lt; Logger &gt; log_</div><div class="ttdef"><b>Definition</b> <a href="#l00213">persistent_cache_test.h:213</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Random_html"><div class="ttname"><a href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html">ROCKSDB_NAMESPACE::Random</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d79/random_8h_source.html#l00023">random.h:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Random_html_a13a4c078891d26e9f284fc390b01349b"><div class="ttname"><a href="../../d9/d54/classROCKSDB__NAMESPACE_1_1Random.html#a13a4c078891d26e9f284fc390b01349b">ROCKSDB_NAMESPACE::Random::RandomString</a></div><div class="ttdeci">std::string RandomString(int len)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d1f/random_8cc_source.html#l00045">random.cc:45</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44eaf25a3bfb28f45a174bca42bbdebf"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44eaf25a3bfb28f45a174bca42bbdebf">ROCKSDB_NAMESPACE::Status::IsTryAgain</a></div><div class="ttdeci">bool IsTryAgain() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00423">status.h:423</a></div></div>
+<div class="ttc" id="aclasstesting_1_1Test_html"><div class="ttname"><a href="../../db/d9f/classtesting_1_1Test.html">testing::Test</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l20178">gtest.h:20178</a></div></div>
+<div class="ttc" id="adb__test__util_8h_html"><div class="ttname"><a href="../../d0/dab/db__test__util_8h.html">db_test_util.h</a></div></div>
+<div class="ttc" id="agtest_8h_html_a16a882d4eafc9f8643867aea40879140"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a16a882d4eafc9f8643867aea40879140">ASSERT_GT</a></div><div class="ttdeci">#define ASSERT_GT(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21789">gtest.h:21789</a></div></div>
+<div class="ttc" id="agtest_8h_html_a1a6db8b1338ee7040329322b77779086"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a></div><div class="ttdeci">#define ASSERT_EQ(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21769">gtest.h:21769</a></div></div>
+<div class="ttc" id="agtest_8h_html_ae9244bfbda562e8b798789b001993fa5"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a></div><div class="ttdeci">#define ASSERT_TRUE(condition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21682">gtest.h:21682</a></div></div>
+<div class="ttc" id="agtest_8h_html_affc4f9cae4c3aabfe60fced83737b42c"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#affc4f9cae4c3aabfe60fced83737b42c">ASSERT_LT</a></div><div class="ttdeci">#define ASSERT_LT(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21781">gtest.h:21781</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_afc6f29d029401f7520152663acb0fb61"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#afc6f29d029401f7520152663acb0fb61">ROCKSDB_NAMESPACE::port::Thread</a></div><div class="ttdeci">std::thread Thread</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00166">port_posix.h:166</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a153247a8e045efa11bbb3134499dfc47"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a153247a8e045efa11bbb3134499dfc47">ROCKSDB_NAMESPACE::Tickers</a></div><div class="ttdeci">Tickers</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00031">statistics.h:31</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a2a5a2da2d8eed48a4707e8601890e7d0"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2a5a2da2d8eed48a4707e8601890e7d0">ROCKSDB_NAMESPACE::NewBlockBasedTableFactory</a></div><div class="ttdeci">TableFactory * NewBlockBasedTableFactory(const BlockBasedTableOptions &amp;table_options=BlockBasedTableOptions())</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d79/block__based__table__factory_8cc_source.html#l00949">block_based_table_factory.cc:949</a></div></div>
+<div class="ttc" id="aport_8h_html"><div class="ttname"><a href="../../da/d00/port_8h.html">port.h</a></div></div>
+<div class="ttc" id="arandom_8h_html"><div class="ttname"><a href="../../d1/d79/random_8h.html">random.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockBasedTableOptions_html"><div class="ttname"><a href="../../d4/d6c/structROCKSDB__NAMESPACE_1_1BlockBasedTableOptions.html">ROCKSDB_NAMESPACE::BlockBasedTableOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/d98/table_8h_source.html#l00147">table.h:147</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockBasedTableOptions_html_a06137262f5d81d6ff13e79f86d15a69a"><div class="ttname"><a href="../../d4/d6c/structROCKSDB__NAMESPACE_1_1BlockBasedTableOptions.html#a06137262f5d81d6ff13e79f86d15a69a">ROCKSDB_NAMESPACE::BlockBasedTableOptions::no_block_cache</a></div><div class="ttdeci">bool no_block_cache</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d98/table_8h_source.html#l00281">table.h:281</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1DBOptions_html_a81c15e9e94de36077aa52dfec56e89e1"><div class="ttname"><a href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#a81c15e9e94de36077aa52dfec56e89e1">ROCKSDB_NAMESPACE::DBOptions::statistics</a></div><div class="ttdeci">std::shared_ptr&lt; Statistics &gt; statistics</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l00749">options.h:749</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Options_html"><div class="ttname"><a href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">ROCKSDB_NAMESPACE::Options</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01620">options.h:1620</a></div></div>
+<div class="ttc" id="atestharness_8h_html"><div class="ttname"><a href="../../dc/d42/testharness_8h.html">testharness.h</a></div></div>
+<div class="ttc" id="atestharness_8h_html_a6892e90ee417adfb0c66aa7a49769895"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a></div><div class="ttdeci">#define ASSERT_OK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00082">testharness.h:82</a></div></div>
+<div class="ttc" id="avolatile__tier__impl_8h_html"><div class="ttname"><a href="../../df/d0d/volatile__tier__impl_8h.html">volatile_tier_impl.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_ac80ecde573b52e8729c1d4ee319d032.html">persistent_cache</a></li><li class="navelem"><a class="el" href="../../d6/d2f/persistent__cache__test_8h.html">persistent_cache_test.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

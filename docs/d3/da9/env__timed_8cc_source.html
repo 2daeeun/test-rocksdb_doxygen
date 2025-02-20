@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/env_timed.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d3/da9/env__timed_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">env_timed.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d3/da9/env__timed_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2017-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d21/env__timed_8h.html">utilities/env_timed.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/df0/composite__env__wrapper_8h.html">env/composite_env_wrapper.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d93/perf__context__imp_8h.html">monitoring/perf_context_imp.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d81/env_8h.html">rocksdb/env.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d8d/file__system_8h.html">rocksdb/file_system.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dd0/include_2rocksdb_2status_8h.html">rocksdb/status.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a5b9e2e44274a6314126dea6c913ab773">   15</a></span><a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a5b9e2e44274a6314126dea6c913ab773">TimedFileSystem::TimedFileSystem</a>(<span class="keyword">const</span> std::shared_ptr&lt;FileSystem&gt;&amp; base)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    : <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ab17169a1ff27410814c9e63022e3f881">FileSystemWrapper</a>(base) {}</div>
+</div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a97a66596cb323bb56a856c37debb116d">   17</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a97a66596cb323bb56a856c37debb116d">TimedFileSystem::NewSequentialFile</a>(</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">const</span> std::string&amp; fname, <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; options,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    std::unique_ptr&lt;FSSequentialFile&gt;* result, <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_new_sequential_file_nanos);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a07d11a24cd0164413a0df106c6b97fce">FileSystemWrapper::NewSequentialFile</a>(fname, options, result, dbg);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>}</div>
+</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a12bb9801d7d8be182333155e7fc80355">   24</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a12bb9801d7d8be182333155e7fc80355">TimedFileSystem::NewRandomAccessFile</a>(</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">const</span> std::string&amp; fname, <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; options,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    std::unique_ptr&lt;FSRandomAccessFile&gt;* result, <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_new_random_access_file_nanos);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a2b7230f82ee289db7091b85e5f5facb7">FileSystemWrapper::NewRandomAccessFile</a>(fname, options, result, dbg);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a3d325943d2aa12b4b881f12aafbed638">   31</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a3d325943d2aa12b4b881f12aafbed638">TimedFileSystem::NewWritableFile</a>(</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">const</span> std::string&amp; fname, <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; options,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    std::unique_ptr&lt;FSWritableFile&gt;* result, <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_new_writable_file_nanos);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ae43cacd98c38b16bba25321d58156e97">FileSystemWrapper::NewWritableFile</a>(fname, options, result, dbg);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aec00e0718dc91b30b02ea435c1ab3aaf">   38</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aec00e0718dc91b30b02ea435c1ab3aaf">TimedFileSystem::ReuseWritableFile</a>(</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">const</span> std::string&amp; fname, <span class="keyword">const</span> std::string&amp; old_fname,</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; options, std::unique_ptr&lt;FSWritableFile&gt;* result,</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_reuse_writable_file_nanos);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a811be06dec97ce20f95cc0a06fea2e14">FileSystemWrapper::ReuseWritableFile</a>(fname, old_fname, options, result,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                                              dbg);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aa56ad0eb4e16c9034b154c7fa104f187">   47</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aa56ad0eb4e16c9034b154c7fa104f187">TimedFileSystem::NewRandomRWFile</a>(</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">const</span> std::string&amp; fname, <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; options,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    std::unique_ptr&lt;FSRandomRWFile&gt;* result, <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_new_random_rw_file_nanos);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ad6d36d6342b3d751ce3bdcc38d9cabdc">FileSystemWrapper::NewRandomRWFile</a>(fname, options, result, dbg);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
+</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a3663688cffb4d1b140ce7029eb504cb3">   54</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a3663688cffb4d1b140ce7029eb504cb3">TimedFileSystem::NewDirectory</a>(<span class="keyword">const</span> std::string&amp; name,</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                                       <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                                       std::unique_ptr&lt;FSDirectory&gt;* result,</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                                       <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_new_directory_nanos);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#abc69398f406abbaaf0cd222a667118f7">FileSystemWrapper::NewDirectory</a>(name, options, result, dbg);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
+</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a11027818a73a7648afda392f3f345eed">   62</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a11027818a73a7648afda392f3f345eed">TimedFileSystem::FileExists</a>(<span class="keyword">const</span> std::string&amp; fname,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                                     <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                                     <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_file_exists_nanos);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a8ff05ac01a90d44fec1c85bae1491fd9">FileSystemWrapper::FileExists</a>(fname, options, dbg);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="foldopen" id="foldopen00069" data-start="{" data-end="}">
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aa448609763d3a0f051bee160ad44124a">   69</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aa448609763d3a0f051bee160ad44124a">TimedFileSystem::GetChildren</a>(<span class="keyword">const</span> std::string&amp; dir,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                                      <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                                      std::vector&lt;std::string&gt;* result,</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                                      <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_get_children_nanos);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a6f3663e57d9a82d15c75ebd43c3f5df6">FileSystemWrapper::GetChildren</a>(dir, options, result, dbg);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
+</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#afed345b781d4782c1db212fef174e28a">   77</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#afed345b781d4782c1db212fef174e28a">TimedFileSystem::GetChildrenFileAttributes</a>(</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keyword">const</span> std::string&amp; dir, <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    std::vector&lt;FileAttributes&gt;* result, <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_get_children_file_attributes_nanos);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ae38e3ad8c22e389e6c0141abc3390480">FileSystemWrapper::GetChildrenFileAttributes</a>(dir, options, result,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                                                      dbg);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>}</div>
+</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="foldopen" id="foldopen00085" data-start="{" data-end="}">
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a42f8fec3e608e2ca0a85fb662a23aee3">   85</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a42f8fec3e608e2ca0a85fb662a23aee3">TimedFileSystem::DeleteFile</a>(<span class="keyword">const</span> std::string&amp; fname,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                                     <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                                     <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_delete_file_nanos);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a7194e7bc5d77b3ce1cb5d2017e20e8d1">FileSystemWrapper::DeleteFile</a>(fname, options, dbg);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>}</div>
+</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aa8b13cc08f40e7ba2dfedd52dc631a20">   92</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aa8b13cc08f40e7ba2dfedd52dc631a20">TimedFileSystem::CreateDir</a>(<span class="keyword">const</span> std::string&amp; dirname,</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                                    <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                                    <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_create_dir_nanos);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ae8ecd9f83af159008650bd0743e3aef9">FileSystemWrapper::CreateDir</a>(dirname, options, dbg);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
+</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="foldopen" id="foldopen00099" data-start="{" data-end="}">
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a39113d773c6621ff11d6e6dfdc2fb9fa">   99</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a39113d773c6621ff11d6e6dfdc2fb9fa">TimedFileSystem::CreateDirIfMissing</a>(<span class="keyword">const</span> std::string&amp; dirname,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                                             <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                                             <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_create_dir_if_missing_nanos);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a228685e022969878c006637a2f3724e4">FileSystemWrapper::CreateDirIfMissing</a>(dirname, options, dbg);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
+</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="foldopen" id="foldopen00106" data-start="{" data-end="}">
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a2a7cebe74c63b8615628a93c3a37840f">  106</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a2a7cebe74c63b8615628a93c3a37840f">TimedFileSystem::DeleteDir</a>(<span class="keyword">const</span> std::string&amp; dirname,</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                                    <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                                    <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_delete_dir_nanos);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#acfebdf049d108c35401493d3ab651b60">FileSystemWrapper::DeleteDir</a>(dirname, options, dbg);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
+</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#afbfe46da0feb9051c1f05f5434ccfb8a">  113</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#afbfe46da0feb9051c1f05f5434ccfb8a">TimedFileSystem::GetFileSize</a>(<span class="keyword">const</span> std::string&amp; fname,</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                                      <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                                      uint64_t* file_size,</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                                      <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_get_file_size_nanos);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a8fa7a1ee28d801b1826af794619deb37">FileSystemWrapper::GetFileSize</a>(fname, options, file_size, dbg);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>}</div>
+</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="foldopen" id="foldopen00121" data-start="{" data-end="}">
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aaca0e614906044d16911b1772857010a">  121</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aaca0e614906044d16911b1772857010a">TimedFileSystem::GetFileModificationTime</a>(<span class="keyword">const</span> std::string&amp; fname,</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                                                  <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                                                  uint64_t* file_mtime,</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                                                  <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_get_file_modification_time_nanos);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a9bb4a961c4138a712aa7e8ceb09f7946">FileSystemWrapper::GetFileModificationTime</a>(fname, options, file_mtime,</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                                                    dbg);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>}</div>
+</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="foldopen" id="foldopen00130" data-start="{" data-end="}">
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#ae555879e948acc4b8bada99d207e5ca3">  130</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#ae555879e948acc4b8bada99d207e5ca3">TimedFileSystem::RenameFile</a>(<span class="keyword">const</span> std::string&amp; src,</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                                     <span class="keyword">const</span> std::string&amp; dst,</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                                     <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                                     <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_rename_file_nanos);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a11d420262bcc4657e624cbc591fc9a8c">FileSystemWrapper::RenameFile</a>(src, dst, options, dbg);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>}</div>
+</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a5b8b37b675852af39f5dc2314918005e">  138</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a5b8b37b675852af39f5dc2314918005e">TimedFileSystem::LinkFile</a>(<span class="keyword">const</span> std::string&amp; src,</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                                   <span class="keyword">const</span> std::string&amp; dst,</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                                   <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                                   <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_link_file_nanos);</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a91ca8b0471e235cad5297011b6cba09e">FileSystemWrapper::LinkFile</a>(src, dst, options, dbg);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>}</div>
+</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="foldopen" id="foldopen00146" data-start="{" data-end="}">
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a9cfdf02daab769e73e14147bb66aeeeb">  146</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a9cfdf02daab769e73e14147bb66aeeeb">TimedFileSystem::LockFile</a>(<span class="keyword">const</span> std::string&amp; fname,</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                                   <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options, <a class="code hl_class" href="../../d5/d4c/classROCKSDB__NAMESPACE_1_1FileLock.html">FileLock</a>** lock,</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                                   <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_lock_file_nanos);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a0090902af9d328a036b2ebe42cbe0cc9">FileSystemWrapper::LockFile</a>(fname, options, lock, dbg);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>}</div>
+</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="foldopen" id="foldopen00153" data-start="{" data-end="}">
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a4857a89807cb21b2e68532bd2b9f4b12">  153</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a4857a89807cb21b2e68532bd2b9f4b12">TimedFileSystem::UnlockFile</a>(<a class="code hl_class" href="../../d5/d4c/classROCKSDB__NAMESPACE_1_1FileLock.html">FileLock</a>* lock, <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                                     <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_unlock_file_nanos);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a58014e1f9747de3b32fb63e7335ea221">FileSystemWrapper::UnlockFile</a>(lock, options, dbg);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>}</div>
+</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="foldopen" id="foldopen00159" data-start="{" data-end="}">
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a582ad35820184de1a223c50fe7e017b4">  159</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a582ad35820184de1a223c50fe7e017b4">TimedFileSystem::NewLogger</a>(<span class="keyword">const</span> std::string&amp; fname,</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                                    <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                                    std::shared_ptr&lt;Logger&gt;* result,</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                                    <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) {</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <a class="code hl_define" href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a>(env_new_logger_nanos);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a7c62775e93a15014fc0f693e858a4dd7">FileSystemWrapper::NewLogger</a>(fname, options, result, dbg);</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>}</div>
+</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="foldopen" id="foldopen00167" data-start="{" data-end="}">
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5dee79638e7995aa438571bbc84aa0de">  167</a></span>std::shared_ptr&lt;FileSystem&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5dee79638e7995aa438571bbc84aa0de">NewTimedFileSystem</a>(</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keyword">const</span> std::shared_ptr&lt;FileSystem&gt;&amp; base) {</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="keywordflow">return</span> std::make_shared&lt;TimedFileSystem&gt;(base);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>}</div>
+</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment">// An environment that measures function call times for filesystem</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment">// operations, reporting results to variables in PerfContext.</span></div>
+<div class="foldopen" id="foldopen00174" data-start="{" data-end="}">
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0b5f9031414507e2147b13e9b25b7180">  174</a></span><a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0b5f9031414507e2147b13e9b25b7180">NewTimedEnv</a>(<a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* base_env) {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  std::shared_ptr&lt;FileSystem&gt; timed_fs =</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>      <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5dee79638e7995aa438571bbc84aa0de">NewTimedFileSystem</a>(base_env-&gt;<a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a1be4ed1309b173fc7b7cad85e5ed1086">GetFileSystem</a>());</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="../../d6/d89/classROCKSDB__NAMESPACE_1_1CompositeEnvWrapper.html">CompositeEnvWrapper</a>(base_env, timed_fs);</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>}</div>
+</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompositeEnvWrapper_html"><div class="ttname"><a href="../../d6/d89/classROCKSDB__NAMESPACE_1_1CompositeEnvWrapper.html">ROCKSDB_NAMESPACE::CompositeEnvWrapper</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/df0/composite__env__wrapper_8h_source.html#l00274">composite_env_wrapper.h:274</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">ROCKSDB_NAMESPACE::Env</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00154">env.h:154</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a1be4ed1309b173fc7b7cad85e5ed1086"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a1be4ed1309b173fc7b7cad85e5ed1086">ROCKSDB_NAMESPACE::Env::GetFileSystem</a></div><div class="ttdeci">const std::shared_ptr&lt; FileSystem &gt; &amp; GetFileSystem() const</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d7d/env_8cc_source.html#l01173">env.cc:1173</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileLock_html"><div class="ttname"><a href="../../d5/d4c/classROCKSDB__NAMESPACE_1_1FileLock.html">ROCKSDB_NAMESPACE::FileLock</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l01287">env.h:1287</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a0090902af9d328a036b2ebe42cbe0cc9"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a0090902af9d328a036b2ebe42cbe0cc9">ROCKSDB_NAMESPACE::FileSystemWrapper::LockFile</a></div><div class="ttdeci">IOStatus LockFile(const std::string &amp;f, const IOOptions &amp;options, FileLock **l, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01553">file_system.h:1553</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a07d11a24cd0164413a0df106c6b97fce"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a07d11a24cd0164413a0df106c6b97fce">ROCKSDB_NAMESPACE::FileSystemWrapper::NewSequentialFile</a></div><div class="ttdeci">IOStatus NewSequentialFile(const std::string &amp;f, const FileOptions &amp;file_opts, std::unique_ptr&lt; FSSequentialFile &gt; *r, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01434">file_system.h:1434</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a11d420262bcc4657e624cbc591fc9a8c"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a11d420262bcc4657e624cbc591fc9a8c">ROCKSDB_NAMESPACE::FileSystemWrapper::RenameFile</a></div><div class="ttdeci">IOStatus RenameFile(const std::string &amp;s, const std::string &amp;t, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01532">file_system.h:1532</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a228685e022969878c006637a2f3724e4"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a228685e022969878c006637a2f3724e4">ROCKSDB_NAMESPACE::FileSystemWrapper::CreateDirIfMissing</a></div><div class="ttdeci">IOStatus CreateDirIfMissing(const std::string &amp;d, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01506">file_system.h:1506</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a2b7230f82ee289db7091b85e5f5facb7"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a2b7230f82ee289db7091b85e5f5facb7">ROCKSDB_NAMESPACE::FileSystemWrapper::NewRandomAccessFile</a></div><div class="ttdeci">IOStatus NewRandomAccessFile(const std::string &amp;f, const FileOptions &amp;file_opts, std::unique_ptr&lt; FSRandomAccessFile &gt; *r, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01439">file_system.h:1439</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a58014e1f9747de3b32fb63e7335ea221"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a58014e1f9747de3b32fb63e7335ea221">ROCKSDB_NAMESPACE::FileSystemWrapper::UnlockFile</a></div><div class="ttdeci">IOStatus UnlockFile(FileLock *l, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01558">file_system.h:1558</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a6f3663e57d9a82d15c75ebd43c3f5df6"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a6f3663e57d9a82d15c75ebd43c3f5df6">ROCKSDB_NAMESPACE::FileSystemWrapper::GetChildren</a></div><div class="ttdeci">IOStatus GetChildren(const std::string &amp;dir, const IOOptions &amp;io_opts, std::vector&lt; std::string &gt; *r, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01483">file_system.h:1483</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a7194e7bc5d77b3ce1cb5d2017e20e8d1"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a7194e7bc5d77b3ce1cb5d2017e20e8d1">ROCKSDB_NAMESPACE::FileSystemWrapper::DeleteFile</a></div><div class="ttdeci">IOStatus DeleteFile(const std::string &amp;f, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01494">file_system.h:1494</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a7c62775e93a15014fc0f693e858a4dd7"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a7c62775e93a15014fc0f693e858a4dd7">ROCKSDB_NAMESPACE::FileSystemWrapper::NewLogger</a></div><div class="ttdeci">IOStatus NewLogger(const std::string &amp;fname, const IOOptions &amp;options, std::shared_ptr&lt; Logger &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01567">file_system.h:1567</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a811be06dec97ce20f95cc0a06fea2e14"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a811be06dec97ce20f95cc0a06fea2e14">ROCKSDB_NAMESPACE::FileSystemWrapper::ReuseWritableFile</a></div><div class="ttdeci">IOStatus ReuseWritableFile(const std::string &amp;fname, const std::string &amp;old_fname, const FileOptions &amp;file_opts, std::unique_ptr&lt; FSWritableFile &gt; *r, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01456">file_system.h:1456</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a8fa7a1ee28d801b1826af794619deb37"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a8fa7a1ee28d801b1826af794619deb37">ROCKSDB_NAMESPACE::FileSystemWrapper::GetFileSize</a></div><div class="ttdeci">IOStatus GetFileSize(const std::string &amp;f, const IOOptions &amp;options, uint64_t *s, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01514">file_system.h:1514</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a8ff05ac01a90d44fec1c85bae1491fd9"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a8ff05ac01a90d44fec1c85bae1491fd9">ROCKSDB_NAMESPACE::FileSystemWrapper::FileExists</a></div><div class="ttdeci">IOStatus FileExists(const std::string &amp;f, const IOOptions &amp;io_opts, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01479">file_system.h:1479</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a91ca8b0471e235cad5297011b6cba09e"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a91ca8b0471e235cad5297011b6cba09e">ROCKSDB_NAMESPACE::FileSystemWrapper::LinkFile</a></div><div class="ttdeci">IOStatus LinkFile(const std::string &amp;s, const std::string &amp;t, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01537">file_system.h:1537</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a9bb4a961c4138a712aa7e8ceb09f7946"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a9bb4a961c4138a712aa7e8ceb09f7946">ROCKSDB_NAMESPACE::FileSystemWrapper::GetFileModificationTime</a></div><div class="ttdeci">IOStatus GetFileModificationTime(const std::string &amp;fname, const IOOptions &amp;options, uint64_t *file_mtime, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01519">file_system.h:1519</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_ab17169a1ff27410814c9e63022e3f881"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ab17169a1ff27410814c9e63022e3f881">ROCKSDB_NAMESPACE::FileSystemWrapper::FileSystemWrapper</a></div><div class="ttdeci">FileSystemWrapper(const std::shared_ptr&lt; FileSystem &gt; &amp;t)</div><div class="ttdef"><b>Definition</b> <a href="../../dd/dac/file__system_8cc_source.html#l00240">file_system.cc:240</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_abc69398f406abbaaf0cd222a667118f7"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#abc69398f406abbaaf0cd222a667118f7">ROCKSDB_NAMESPACE::FileSystemWrapper::NewDirectory</a></div><div class="ttdeci">IOStatus NewDirectory(const std::string &amp;name, const IOOptions &amp;io_opts, std::unique_ptr&lt; FSDirectory &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01474">file_system.h:1474</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_acfebdf049d108c35401493d3ab651b60"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#acfebdf049d108c35401493d3ab651b60">ROCKSDB_NAMESPACE::FileSystemWrapper::DeleteDir</a></div><div class="ttdeci">IOStatus DeleteDir(const std::string &amp;d, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01510">file_system.h:1510</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_ad6d36d6342b3d751ce3bdcc38d9cabdc"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ad6d36d6342b3d751ce3bdcc38d9cabdc">ROCKSDB_NAMESPACE::FileSystemWrapper::NewRandomRWFile</a></div><div class="ttdeci">IOStatus NewRandomRWFile(const std::string &amp;fname, const FileOptions &amp;file_opts, std::unique_ptr&lt; FSRandomRWFile &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01463">file_system.h:1463</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_ae38e3ad8c22e389e6c0141abc3390480"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ae38e3ad8c22e389e6c0141abc3390480">ROCKSDB_NAMESPACE::FileSystemWrapper::GetChildrenFileAttributes</a></div><div class="ttdeci">IOStatus GetChildrenFileAttributes(const std::string &amp;dir, const IOOptions &amp;options, std::vector&lt; FileAttributes &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01488">file_system.h:1488</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_ae43cacd98c38b16bba25321d58156e97"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ae43cacd98c38b16bba25321d58156e97">ROCKSDB_NAMESPACE::FileSystemWrapper::NewWritableFile</a></div><div class="ttdeci">IOStatus NewWritableFile(const std::string &amp;f, const FileOptions &amp;file_opts, std::unique_ptr&lt; FSWritableFile &gt; *r, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01445">file_system.h:1445</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_ae8ecd9f83af159008650bd0743e3aef9"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ae8ecd9f83af159008650bd0743e3aef9">ROCKSDB_NAMESPACE::FileSystemWrapper::CreateDir</a></div><div class="ttdeci">IOStatus CreateDir(const std::string &amp;d, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01502">file_system.h:1502</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IOStatus_html"><div class="ttname"><a href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">ROCKSDB_NAMESPACE::IOStatus</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dcd/io__status_8h_source.html#l00028">io_status.h:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a11027818a73a7648afda392f3f345eed"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a11027818a73a7648afda392f3f345eed">ROCKSDB_NAMESPACE::TimedFileSystem::FileExists</a></div><div class="ttdeci">IOStatus FileExists(const std::string &amp;fname, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00062">env_timed.cc:62</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a12bb9801d7d8be182333155e7fc80355"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a12bb9801d7d8be182333155e7fc80355">ROCKSDB_NAMESPACE::TimedFileSystem::NewRandomAccessFile</a></div><div class="ttdeci">IOStatus NewRandomAccessFile(const std::string &amp;fname, const FileOptions &amp;options, std::unique_ptr&lt; FSRandomAccessFile &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00024">env_timed.cc:24</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a2a7cebe74c63b8615628a93c3a37840f"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a2a7cebe74c63b8615628a93c3a37840f">ROCKSDB_NAMESPACE::TimedFileSystem::DeleteDir</a></div><div class="ttdeci">IOStatus DeleteDir(const std::string &amp;dirname, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00106">env_timed.cc:106</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a3663688cffb4d1b140ce7029eb504cb3"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a3663688cffb4d1b140ce7029eb504cb3">ROCKSDB_NAMESPACE::TimedFileSystem::NewDirectory</a></div><div class="ttdeci">IOStatus NewDirectory(const std::string &amp;name, const IOOptions &amp;options, std::unique_ptr&lt; FSDirectory &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00054">env_timed.cc:54</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a39113d773c6621ff11d6e6dfdc2fb9fa"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a39113d773c6621ff11d6e6dfdc2fb9fa">ROCKSDB_NAMESPACE::TimedFileSystem::CreateDirIfMissing</a></div><div class="ttdeci">IOStatus CreateDirIfMissing(const std::string &amp;dirname, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00099">env_timed.cc:99</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a3d325943d2aa12b4b881f12aafbed638"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a3d325943d2aa12b4b881f12aafbed638">ROCKSDB_NAMESPACE::TimedFileSystem::NewWritableFile</a></div><div class="ttdeci">IOStatus NewWritableFile(const std::string &amp;fname, const FileOptions &amp;options, std::unique_ptr&lt; FSWritableFile &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00031">env_timed.cc:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a42f8fec3e608e2ca0a85fb662a23aee3"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a42f8fec3e608e2ca0a85fb662a23aee3">ROCKSDB_NAMESPACE::TimedFileSystem::DeleteFile</a></div><div class="ttdeci">IOStatus DeleteFile(const std::string &amp;fname, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00085">env_timed.cc:85</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a4857a89807cb21b2e68532bd2b9f4b12"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a4857a89807cb21b2e68532bd2b9f4b12">ROCKSDB_NAMESPACE::TimedFileSystem::UnlockFile</a></div><div class="ttdeci">IOStatus UnlockFile(FileLock *lock, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00153">env_timed.cc:153</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a582ad35820184de1a223c50fe7e017b4"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a582ad35820184de1a223c50fe7e017b4">ROCKSDB_NAMESPACE::TimedFileSystem::NewLogger</a></div><div class="ttdeci">IOStatus NewLogger(const std::string &amp;fname, const IOOptions &amp;options, std::shared_ptr&lt; Logger &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00159">env_timed.cc:159</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a5b8b37b675852af39f5dc2314918005e"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a5b8b37b675852af39f5dc2314918005e">ROCKSDB_NAMESPACE::TimedFileSystem::LinkFile</a></div><div class="ttdeci">IOStatus LinkFile(const std::string &amp;src, const std::string &amp;dst, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00138">env_timed.cc:138</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a5b9e2e44274a6314126dea6c913ab773"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a5b9e2e44274a6314126dea6c913ab773">ROCKSDB_NAMESPACE::TimedFileSystem::TimedFileSystem</a></div><div class="ttdeci">TimedFileSystem(const std::shared_ptr&lt; FileSystem &gt; &amp;base)</div><div class="ttdef"><b>Definition</b> <a href="#l00015">env_timed.cc:15</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a97a66596cb323bb56a856c37debb116d"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a97a66596cb323bb56a856c37debb116d">ROCKSDB_NAMESPACE::TimedFileSystem::NewSequentialFile</a></div><div class="ttdeci">IOStatus NewSequentialFile(const std::string &amp;fname, const FileOptions &amp;options, std::unique_ptr&lt; FSSequentialFile &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00017">env_timed.cc:17</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_a9cfdf02daab769e73e14147bb66aeeeb"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#a9cfdf02daab769e73e14147bb66aeeeb">ROCKSDB_NAMESPACE::TimedFileSystem::LockFile</a></div><div class="ttdeci">IOStatus LockFile(const std::string &amp;fname, const IOOptions &amp;options, FileLock **lock, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00146">env_timed.cc:146</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_aa448609763d3a0f051bee160ad44124a"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aa448609763d3a0f051bee160ad44124a">ROCKSDB_NAMESPACE::TimedFileSystem::GetChildren</a></div><div class="ttdeci">IOStatus GetChildren(const std::string &amp;dir, const IOOptions &amp;options, std::vector&lt; std::string &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00069">env_timed.cc:69</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_aa56ad0eb4e16c9034b154c7fa104f187"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aa56ad0eb4e16c9034b154c7fa104f187">ROCKSDB_NAMESPACE::TimedFileSystem::NewRandomRWFile</a></div><div class="ttdeci">IOStatus NewRandomRWFile(const std::string &amp;fname, const FileOptions &amp;options, std::unique_ptr&lt; FSRandomRWFile &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00047">env_timed.cc:47</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_aa8b13cc08f40e7ba2dfedd52dc631a20"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aa8b13cc08f40e7ba2dfedd52dc631a20">ROCKSDB_NAMESPACE::TimedFileSystem::CreateDir</a></div><div class="ttdeci">IOStatus CreateDir(const std::string &amp;dirname, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00092">env_timed.cc:92</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_aaca0e614906044d16911b1772857010a"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aaca0e614906044d16911b1772857010a">ROCKSDB_NAMESPACE::TimedFileSystem::GetFileModificationTime</a></div><div class="ttdeci">IOStatus GetFileModificationTime(const std::string &amp;fname, const IOOptions &amp;options, uint64_t *file_mtime, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00121">env_timed.cc:121</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_ae555879e948acc4b8bada99d207e5ca3"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#ae555879e948acc4b8bada99d207e5ca3">ROCKSDB_NAMESPACE::TimedFileSystem::RenameFile</a></div><div class="ttdeci">IOStatus RenameFile(const std::string &amp;src, const std::string &amp;dst, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00130">env_timed.cc:130</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_aec00e0718dc91b30b02ea435c1ab3aaf"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#aec00e0718dc91b30b02ea435c1ab3aaf">ROCKSDB_NAMESPACE::TimedFileSystem::ReuseWritableFile</a></div><div class="ttdeci">IOStatus ReuseWritableFile(const std::string &amp;fname, const std::string &amp;old_fname, const FileOptions &amp;options, std::unique_ptr&lt; FSWritableFile &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00038">env_timed.cc:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_afbfe46da0feb9051c1f05f5434ccfb8a"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#afbfe46da0feb9051c1f05f5434ccfb8a">ROCKSDB_NAMESPACE::TimedFileSystem::GetFileSize</a></div><div class="ttdeci">IOStatus GetFileSize(const std::string &amp;fname, const IOOptions &amp;options, uint64_t *file_size, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00113">env_timed.cc:113</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimedFileSystem_html_afed345b781d4782c1db212fef174e28a"><div class="ttname"><a href="../../d1/d98/classROCKSDB__NAMESPACE_1_1TimedFileSystem.html#afed345b781d4782c1db212fef174e28a">ROCKSDB_NAMESPACE::TimedFileSystem::GetChildrenFileAttributes</a></div><div class="ttdeci">IOStatus GetChildrenFileAttributes(const std::string &amp;dir, const IOOptions &amp;options, std::vector&lt; FileAttributes &gt; *result, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00077">env_timed.cc:77</a></div></div>
+<div class="ttc" id="acomposite__env__wrapper_8h_html"><div class="ttname"><a href="../../d6/df0/composite__env__wrapper_8h.html">composite_env_wrapper.h</a></div></div>
+<div class="ttc" id="aenv_8h_html"><div class="ttname"><a href="../../d5/d81/env_8h.html">env.h</a></div></div>
+<div class="ttc" id="aenv__timed_8h_html"><div class="ttname"><a href="../../d5/d21/env__timed_8h.html">env_timed.h</a></div></div>
+<div class="ttc" id="afile__system_8h_html"><div class="ttname"><a href="../../d6/d8d/file__system_8h.html">file_system.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2status_8h_html"><div class="ttname"><a href="../../d9/dd0/include_2rocksdb_2status_8h.html">status.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0b5f9031414507e2147b13e9b25b7180"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0b5f9031414507e2147b13e9b25b7180">ROCKSDB_NAMESPACE::NewTimedEnv</a></div><div class="ttdeci">Env * NewTimedEnv(Env *base_env)</div><div class="ttdef"><b>Definition</b> <a href="#l00174">env_timed.cc:174</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a5dee79638e7995aa438571bbc84aa0de"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5dee79638e7995aa438571bbc84aa0de">ROCKSDB_NAMESPACE::NewTimedFileSystem</a></div><div class="ttdeci">std::shared_ptr&lt; FileSystem &gt; NewTimedFileSystem(const std::shared_ptr&lt; FileSystem &gt; &amp;base)</div><div class="ttdef"><b>Definition</b> <a href="#l00167">env_timed.cc:167</a></div></div>
+<div class="ttc" id="aperf__context__imp_8h_html"><div class="ttname"><a href="../../d7/d93/perf__context__imp_8h.html">perf_context_imp.h</a></div></div>
+<div class="ttc" id="aperf__context__imp_8h_html_a2ecd3a0aae3920127a09fc21373b7baa"><div class="ttname"><a href="../../d7/d93/perf__context__imp_8h.html#a2ecd3a0aae3920127a09fc21373b7baa">PERF_TIMER_GUARD</a></div><div class="ttdeci">#define PERF_TIMER_GUARD(metric)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d93/perf__context__imp_8h_source.html#l00045">perf_context_imp.h:45</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOptions_html"><div class="ttname"><a href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">ROCKSDB_NAMESPACE::FileOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00179">file_system.h:179</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IODebugContext_html"><div class="ttname"><a href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">ROCKSDB_NAMESPACE::IODebugContext</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00216">file_system.h:216</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IOOptions_html"><div class="ttname"><a href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">ROCKSDB_NAMESPACE::IOOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00097">file_system.h:97</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../d3/da9/env__timed_8cc.html">env_timed.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

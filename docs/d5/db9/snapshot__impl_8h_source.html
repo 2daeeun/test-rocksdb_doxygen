@@ -1,0 +1,432 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/snapshot_impl.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d5/db9/snapshot__impl_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">snapshot_impl.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d5/db9/snapshot__impl_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d73/dbformat_8h.html">db/dbformat.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d43/include_2rocksdb_2db_8h.html">rocksdb/db.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/dfc/autovector_8h.html">util/autovector.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span>SnapshotList;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// Snapshots are kept in a doubly-linked list in the DB.</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// Each SnapshotImpl corresponds to a particular sequence number.</span></div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">   23</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">SnapshotImpl</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html">Snapshot</a> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a8fad9ae6fb568abaaa782053e4e1115e">   25</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a8fad9ae6fb568abaaa782053e4e1115e">number_</a>;  <span class="comment">// const after creation</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// It indicates the smallest uncommitted data at the time the snapshot was</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="comment">// taken. This is currently used by WritePrepared transactions to limit the</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// scope of queries to IsInSnapshot.</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a84ecbaabc47bedae45ff8d15e9de62bc">   29</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a84ecbaabc47bedae45ff8d15e9de62bc">min_uncommitted_</a> = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74b6146f5c0fdd11281a199d795facbe">kMinUnCommittedSeq</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0861c39bb3d415ecbc93cf9ae365c731">   31</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_function" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0861c39bb3d415ecbc93cf9ae365c731">GetSequenceNumber</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a8fad9ae6fb568abaaa782053e4e1115e">number_</a>; }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a79bf4f2504f89058a9de9b700322e16b">   33</a></span>  int64_t <a class="code hl_function" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a79bf4f2504f89058a9de9b700322e16b">GetUnixTime</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#aa02044c27c8848640722c71fb83b636e">unix_time_</a>; }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ae89ce525d90a6d7d5b79f7b00862411f">   35</a></span>  uint64_t <a class="code hl_function" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ae89ce525d90a6d7d5b79f7b00862411f">GetTimestamp</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a408e021ee27110a6d0847dca8240b094">timestamp_</a>; }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#abe14b2fb5e32159324c619e1a42327a0">   38</a></span>  <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_friend" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#abe14b2fb5e32159324c619e1a42327a0">SnapshotList</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// SnapshotImpl is kept in a doubly-linked circular list</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0ad39f8b9025ddbc362dad7b01746778">   41</a></span>  <a class="code hl_class" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">SnapshotImpl</a>* <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0ad39f8b9025ddbc362dad7b01746778">prev_</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">   42</a></span>  <a class="code hl_class" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">SnapshotImpl</a>* <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a87f8b2066c49f8d592ac9b31db0a69ba">   44</a></span>  <a class="code hl_friend" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#abe14b2fb5e32159324c619e1a42327a0">SnapshotList</a>* <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a87f8b2066c49f8d592ac9b31db0a69ba">list_</a>;  <span class="comment">// just for sanity checks</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#aa02044c27c8848640722c71fb83b636e">   46</a></span>  int64_t <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#aa02044c27c8848640722c71fb83b636e">unix_time_</a>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a408e021ee27110a6d0847dca8240b094">   48</a></span>  uint64_t <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a408e021ee27110a6d0847dca8240b094">timestamp_</a>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// Will this snapshot be used by a Transaction to do write-conflict checking?</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0c48fe7897c2e07339bb6dc0ca9a257e">   51</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0c48fe7897c2e07339bb6dc0ca9a257e">is_write_conflict_boundary_</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
+</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="};">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html">   54</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af72d46815ca91adcae65c4e0fd610b67">SnapshotList</a> {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af72d46815ca91adcae65c4e0fd610b67">   56</a></span>  <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af72d46815ca91adcae65c4e0fd610b67">SnapshotList</a>() {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.prev_ = &amp;<a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.next_ = &amp;<a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.number_ = 0xFFFFFFFFL;  <span class="comment">// placeholder marker, for debugging</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">// Set all the variables to make UBSAN happy.</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.list_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.unix_time_ = 0;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.timestamp_ = 0;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.is_write_conflict_boundary_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#acf8bd8f442f4494a6ed88205dc29f38d">count_</a> = 0;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
+</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="comment">// No copy-construct.</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#ae378db05cccf6d2315f4d452306c108c">   69</a></span>  <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#ae378db05cccf6d2315f4d452306c108c">SnapshotList</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af72d46815ca91adcae65c4e0fd610b67">SnapshotList</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af9591c102cd034b0adbb569d803667c2">   71</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af9591c102cd034b0adbb569d803667c2">empty</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    assert(<a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.next_ != &amp;<a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a> || 0 == <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#acf8bd8f442f4494a6ed88205dc29f38d">count_</a>);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.next_ == &amp;<a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00075" data-start="{" data-end="}">
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a47f2bdd0113790f4ad7daecc17157485">   75</a></span>  <a class="code hl_class" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">SnapshotImpl</a>* <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a47f2bdd0113790f4ad7daecc17157485">oldest</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    assert(!<a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af9591c102cd034b0adbb569d803667c2">empty</a>());</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.next_;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#aa3cbfa1331cde0744ba5fadb8765efa0">   79</a></span>  <a class="code hl_class" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">SnapshotImpl</a>* <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#aa3cbfa1331cde0744ba5fadb8765efa0">newest</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    assert(!<a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af9591c102cd034b0adbb569d803667c2">empty</a>());</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.prev_;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
+</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a68d221ef6824905e4cea8c33f17337ae">   84</a></span>  <a class="code hl_class" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">SnapshotImpl</a>* <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a68d221ef6824905e4cea8c33f17337ae">New</a>(<a class="code hl_class" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">SnapshotImpl</a>* s, <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seq, uint64_t unix_time,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                    <span class="keywordtype">bool</span> is_write_conflict_boundary,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                    uint64_t ts = std::numeric_limits&lt;uint64_t&gt;::max()) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a8fad9ae6fb568abaaa782053e4e1115e">number_</a> = seq;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#aa02044c27c8848640722c71fb83b636e">unix_time_</a> = unix_time;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a408e021ee27110a6d0847dca8240b094">timestamp_</a> = ts;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0c48fe7897c2e07339bb6dc0ca9a257e">is_write_conflict_boundary_</a> = is_write_conflict_boundary;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a87f8b2066c49f8d592ac9b31db0a69ba">list_</a> = <span class="keyword">this</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a> = &amp;<a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0ad39f8b9025ddbc362dad7b01746778">prev_</a> = <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>.prev_;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0ad39f8b9025ddbc362dad7b01746778">prev_</a>-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a> = s;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a>-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0ad39f8b9025ddbc362dad7b01746778">prev_</a> = s;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#acf8bd8f442f4494a6ed88205dc29f38d">count_</a>++;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  }</div>
+</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="comment">// Do not responsible to free the object.</span></div>
+<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a8c4eb54eee7a108822d74a63d490a909">  101</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a8c4eb54eee7a108822d74a63d490a909">Delete</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">SnapshotImpl</a>* s) {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    assert(s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a87f8b2066c49f8d592ac9b31db0a69ba">list_</a> == <span class="keyword">this</span>);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0ad39f8b9025ddbc362dad7b01746778">prev_</a>-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a> = s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a>-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0ad39f8b9025ddbc362dad7b01746778">prev_</a> = s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0ad39f8b9025ddbc362dad7b01746778">prev_</a>;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#acf8bd8f442f4494a6ed88205dc29f38d">count_</a>--;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  }</div>
+</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="comment">// retrieve all snapshot numbers up until max_seq. They are sorted in</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="comment">// ascending order (with no duplicates).</span></div>
+<div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#adb4b39368c3ab9d35a5553c34e4f0b52">  110</a></span>  std::vector&lt;SequenceNumber&gt; <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#adb4b39368c3ab9d35a5553c34e4f0b52">GetAll</a>(</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a>* oldest_write_conflict_snapshot = <span class="keyword">nullptr</span>,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a>&amp; max_seq = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">kMaxSequenceNumber</a>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    std::vector&lt;SequenceNumber&gt; ret;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#adb4b39368c3ab9d35a5553c34e4f0b52">GetAll</a>(&amp;ret, oldest_write_conflict_snapshot, max_seq);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  }</div>
+</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a26273b58a8f128296ff50bb5afed7e97">  118</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a26273b58a8f128296ff50bb5afed7e97">GetAll</a>(std::vector&lt;SequenceNumber&gt;* snap_vector,</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>              <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a>* oldest_write_conflict_snapshot = <span class="keyword">nullptr</span>,</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a>&amp; max_seq = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">kMaxSequenceNumber</a>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    std::vector&lt;SequenceNumber&gt;&amp; ret = *snap_vector;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="comment">// So far we have no use case that would pass a non-empty vector</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    assert(ret.size() == 0);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordflow">if</span> (oldest_write_conflict_snapshot != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      *oldest_write_conflict_snapshot = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">kMaxSequenceNumber</a>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af9591c102cd034b0adbb569d803667c2">empty</a>()) {</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keyword">const</span> <a class="code hl_class" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">SnapshotImpl</a>* s = &amp;<a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">while</span> (s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a> != &amp;<a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>) {</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      <span class="keywordflow">if</span> (s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a>-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a8fad9ae6fb568abaaa782053e4e1115e">number_</a> &gt; max_seq) {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      <span class="comment">// Avoid duplicates</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      <span class="keywordflow">if</span> (ret.empty() || ret.back() != s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a>-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a8fad9ae6fb568abaaa782053e4e1115e">number_</a>) {</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        ret.push_back(s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a>-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a8fad9ae6fb568abaaa782053e4e1115e">number_</a>);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      }</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>      <span class="keywordflow">if</span> (oldest_write_conflict_snapshot != <span class="keyword">nullptr</span> &amp;&amp;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>          *oldest_write_conflict_snapshot == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">kMaxSequenceNumber</a> &amp;&amp;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>          s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a>-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0c48fe7897c2e07339bb6dc0ca9a257e">is_write_conflict_boundary_</a>) {</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <span class="comment">// If this is the first write-conflict boundary snapshot in the list,</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        <span class="comment">// it is the oldest</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        *oldest_write_conflict_snapshot = s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a>-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a8fad9ae6fb568abaaa782053e4e1115e">number_</a>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      }</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      s = s-&gt;<a class="code hl_variable" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">next_</a>;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    }</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  }</div>
+</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="comment">// get the sequence number of the most recent snapshot</span></div>
+<div class="foldopen" id="foldopen00156" data-start="{" data-end="}">
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#ad24e56bd2597034d2a73ea399ed9ff7a">  156</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#ad24e56bd2597034d2a73ea399ed9ff7a">GetNewest</a>() {</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af9591c102cd034b0adbb569d803667c2">empty</a>()) {</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    }</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#aa3cbfa1331cde0744ba5fadb8765efa0">newest</a>()-&gt;number_;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  }</div>
+</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="foldopen" id="foldopen00163" data-start="{" data-end="}">
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a757f564bbd645de68491f5735fead267">  163</a></span>  int64_t <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a757f564bbd645de68491f5735fead267">GetOldestSnapshotTime</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af9591c102cd034b0adbb569d803667c2">empty</a>()) {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a47f2bdd0113790f4ad7daecc17157485">oldest</a>()-&gt;unix_time_;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  }</div>
+</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="foldopen" id="foldopen00171" data-start="{" data-end="}">
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a59a555df4f5dd6200ba53f04b594185e">  171</a></span>  int64_t <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a59a555df4f5dd6200ba53f04b594185e">GetOldestSnapshotSequence</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af9591c102cd034b0adbb569d803667c2">empty</a>()) {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a47f2bdd0113790f4ad7daecc17157485">oldest</a>()-&gt;GetSequenceNumber();</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    }</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  }</div>
+</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a9967c60e32ba24b99ece3ea825ff58e0">  179</a></span>  uint64_t <a class="code hl_function" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a9967c60e32ba24b99ece3ea825ff58e0">count</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#acf8bd8f442f4494a6ed88205dc29f38d">count_</a>; }</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="comment">// Dummy head of doubly-linked list of snapshots</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">  183</a></span>  <a class="code hl_class" href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">SnapshotImpl</a> <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">list_</a>;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#acf8bd8f442f4494a6ed88205dc29f38d">  184</a></span>  uint64_t <a class="code hl_variable" href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#acf8bd8f442f4494a6ed88205dc29f38d">count_</a>;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>};</div>
+</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment">// All operations on TimestampedSnapshotList must be protected by db mutex.</span></div>
+<div class="foldopen" id="foldopen00188" data-start="{" data-end="};">
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno"><a class="line" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html">  188</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#a856afc440d80b98400412c5ffa540d00">TimestampedSnapshotList</a> {</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#a856afc440d80b98400412c5ffa540d00">  190</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#a856afc440d80b98400412c5ffa540d00">TimestampedSnapshotList</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="foldopen" id="foldopen00192" data-start="{" data-end="}">
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno"><a class="line" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#afdb5b547eb52d607b6b00d9c98ce8ea2">  192</a></span>  std::shared_ptr&lt;const SnapshotImpl&gt; <a class="code hl_function" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#afdb5b547eb52d607b6b00d9c98ce8ea2">GetSnapshot</a>(uint64_t ts)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordflow">if</span> (ts == std::numeric_limits&lt;uint64_t&gt;::max() &amp;&amp; !<a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.empty()) {</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>      <span class="keyword">auto</span> it = <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.rbegin();</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      assert(it != <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.rend());</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      <span class="keywordflow">return</span> it-&gt;second;</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    }</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="keyword">auto</span> it = <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.find(ts);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keywordflow">if</span> (it == <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.end()) {</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>      <span class="keywordflow">return</span> std::shared_ptr&lt;const SnapshotImpl&gt;();</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    }</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keywordflow">return</span> it-&gt;second;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  }</div>
+</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="foldopen" id="foldopen00205" data-start="{" data-end="}">
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno"><a class="line" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ac011a70adaa2e1a2f3666c87e7bc0752">  205</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ac011a70adaa2e1a2f3666c87e7bc0752">GetSnapshots</a>(</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>      uint64_t ts_lb, uint64_t ts_ub,</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>      std::vector&lt;std::shared_ptr&lt;const Snapshot&gt;&gt;&amp; snapshots)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    assert(ts_lb &lt; ts_ub);</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="keyword">auto</span> it_low = <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.lower_bound(ts_lb);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keyword">auto</span> it_high = <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.lower_bound(ts_ub);</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = it_low; it != it_high; ++it) {</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>      snapshots.emplace_back(it-&gt;second);</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    }</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  }</div>
+</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
+<div class="foldopen" id="foldopen00216" data-start="{" data-end="}">
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno"><a class="line" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#a25aa2f27b62a3a23b73bebb682294f32">  216</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#a25aa2f27b62a3a23b73bebb682294f32">AddSnapshot</a>(<span class="keyword">const</span> std::shared_ptr&lt;const SnapshotImpl&gt;&amp; snapshot) {</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    assert(snapshot);</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.try_emplace(snapshot-&gt;GetTimestamp(), snapshot);</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  }</div>
+</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <span class="comment">// snapshots_to_release: the container to where the timestamped snapshots will</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <span class="comment">// be moved so that it retains the last reference to the snapshots and the</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  <span class="comment">// snapshots won&#39;t be actually released which requires db mutex. The</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <span class="comment">// snapshots will be released by caller of ReleaseSnapshotsOlderThan().</span></div>
+<div class="foldopen" id="foldopen00225" data-start="{" data-end="}">
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno"><a class="line" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#a9206819f748d9c775fbcbf2c85ac646e">  225</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#a9206819f748d9c775fbcbf2c85ac646e">ReleaseSnapshotsOlderThan</a>(</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>      uint64_t ts,</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>      <a class="code hl_class" href="../../d4/d5f/classROCKSDB__NAMESPACE_1_1autovector.html">autovector</a>&lt;std::shared_ptr&lt;const SnapshotImpl&gt;&gt;&amp; snapshots_to_release) {</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="keyword">auto</span> ub = <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.lower_bound(ts);</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.begin(); it != ub; ++it) {</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>      snapshots_to_release.emplace_back(it-&gt;second);</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    }</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.erase(<a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>.begin(), ub);</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  }</div>
+</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno"><a class="line" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">  236</a></span>  std::map&lt;uint64_t, std::shared_ptr&lt;const SnapshotImpl&gt;&gt; <a class="code hl_variable" href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">snapshots_</a>;</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>};</div>
+</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aautovector_8h_html"><div class="ttname"><a href="../../de/dfc/autovector_8h.html">autovector.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html">ROCKSDB_NAMESPACE::SnapshotImpl</a></div><div class="ttdef"><b>Definition</b> <a href="#l00023">snapshot_impl.h:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_a0861c39bb3d415ecbc93cf9ae365c731"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0861c39bb3d415ecbc93cf9ae365c731">ROCKSDB_NAMESPACE::SnapshotImpl::GetSequenceNumber</a></div><div class="ttdeci">SequenceNumber GetSequenceNumber() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00031">snapshot_impl.h:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_a0ad39f8b9025ddbc362dad7b01746778"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0ad39f8b9025ddbc362dad7b01746778">ROCKSDB_NAMESPACE::SnapshotImpl::prev_</a></div><div class="ttdeci">SnapshotImpl * prev_</div><div class="ttdef"><b>Definition</b> <a href="#l00041">snapshot_impl.h:41</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_a0c48fe7897c2e07339bb6dc0ca9a257e"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a0c48fe7897c2e07339bb6dc0ca9a257e">ROCKSDB_NAMESPACE::SnapshotImpl::is_write_conflict_boundary_</a></div><div class="ttdeci">bool is_write_conflict_boundary_</div><div class="ttdef"><b>Definition</b> <a href="#l00051">snapshot_impl.h:51</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_a408e021ee27110a6d0847dca8240b094"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a408e021ee27110a6d0847dca8240b094">ROCKSDB_NAMESPACE::SnapshotImpl::timestamp_</a></div><div class="ttdeci">uint64_t timestamp_</div><div class="ttdef"><b>Definition</b> <a href="#l00048">snapshot_impl.h:48</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_a79bf4f2504f89058a9de9b700322e16b"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a79bf4f2504f89058a9de9b700322e16b">ROCKSDB_NAMESPACE::SnapshotImpl::GetUnixTime</a></div><div class="ttdeci">int64_t GetUnixTime() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00033">snapshot_impl.h:33</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_a84ecbaabc47bedae45ff8d15e9de62bc"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a84ecbaabc47bedae45ff8d15e9de62bc">ROCKSDB_NAMESPACE::SnapshotImpl::min_uncommitted_</a></div><div class="ttdeci">SequenceNumber min_uncommitted_</div><div class="ttdef"><b>Definition</b> <a href="#l00029">snapshot_impl.h:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_a87f8b2066c49f8d592ac9b31db0a69ba"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a87f8b2066c49f8d592ac9b31db0a69ba">ROCKSDB_NAMESPACE::SnapshotImpl::list_</a></div><div class="ttdeci">SnapshotList * list_</div><div class="ttdef"><b>Definition</b> <a href="#l00044">snapshot_impl.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_a8fad9ae6fb568abaaa782053e4e1115e"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#a8fad9ae6fb568abaaa782053e4e1115e">ROCKSDB_NAMESPACE::SnapshotImpl::number_</a></div><div class="ttdeci">SequenceNumber number_</div><div class="ttdef"><b>Definition</b> <a href="#l00025">snapshot_impl.h:25</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_aa02044c27c8848640722c71fb83b636e"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#aa02044c27c8848640722c71fb83b636e">ROCKSDB_NAMESPACE::SnapshotImpl::unix_time_</a></div><div class="ttdeci">int64_t unix_time_</div><div class="ttdef"><b>Definition</b> <a href="#l00046">snapshot_impl.h:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_abe14b2fb5e32159324c619e1a42327a0"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#abe14b2fb5e32159324c619e1a42327a0">ROCKSDB_NAMESPACE::SnapshotImpl::SnapshotList</a></div><div class="ttdeci">friend class SnapshotList</div><div class="ttdef"><b>Definition</b> <a href="#l00038">snapshot_impl.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_ad94c6499acfb5c4b87cefba1dbfed488"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ad94c6499acfb5c4b87cefba1dbfed488">ROCKSDB_NAMESPACE::SnapshotImpl::next_</a></div><div class="ttdeci">SnapshotImpl * next_</div><div class="ttdef"><b>Definition</b> <a href="#l00042">snapshot_impl.h:42</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotImpl_html_ae89ce525d90a6d7d5b79f7b00862411f"><div class="ttname"><a href="../../d2/d09/classROCKSDB__NAMESPACE_1_1SnapshotImpl.html#ae89ce525d90a6d7d5b79f7b00862411f">ROCKSDB_NAMESPACE::SnapshotImpl::GetTimestamp</a></div><div class="ttdeci">uint64_t GetTimestamp() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00035">snapshot_impl.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_a26273b58a8f128296ff50bb5afed7e97"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a26273b58a8f128296ff50bb5afed7e97">ROCKSDB_NAMESPACE::SnapshotList::GetAll</a></div><div class="ttdeci">void GetAll(std::vector&lt; SequenceNumber &gt; *snap_vector, SequenceNumber *oldest_write_conflict_snapshot=nullptr, const SequenceNumber &amp;max_seq=kMaxSequenceNumber) const</div><div class="ttdef"><b>Definition</b> <a href="#l00118">snapshot_impl.h:118</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_a47f2bdd0113790f4ad7daecc17157485"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a47f2bdd0113790f4ad7daecc17157485">ROCKSDB_NAMESPACE::SnapshotList::oldest</a></div><div class="ttdeci">SnapshotImpl * oldest() const</div><div class="ttdef"><b>Definition</b> <a href="#l00075">snapshot_impl.h:75</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_a59a555df4f5dd6200ba53f04b594185e"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a59a555df4f5dd6200ba53f04b594185e">ROCKSDB_NAMESPACE::SnapshotList::GetOldestSnapshotSequence</a></div><div class="ttdeci">int64_t GetOldestSnapshotSequence() const</div><div class="ttdef"><b>Definition</b> <a href="#l00171">snapshot_impl.h:171</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_a5a742963727201a5d2702e85e163322a"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a5a742963727201a5d2702e85e163322a">ROCKSDB_NAMESPACE::SnapshotList::list_</a></div><div class="ttdeci">SnapshotImpl list_</div><div class="ttdef"><b>Definition</b> <a href="#l00183">snapshot_impl.h:183</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_a68d221ef6824905e4cea8c33f17337ae"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a68d221ef6824905e4cea8c33f17337ae">ROCKSDB_NAMESPACE::SnapshotList::New</a></div><div class="ttdeci">SnapshotImpl * New(SnapshotImpl *s, SequenceNumber seq, uint64_t unix_time, bool is_write_conflict_boundary, uint64_t ts=std::numeric_limits&lt; uint64_t &gt;::max())</div><div class="ttdef"><b>Definition</b> <a href="#l00084">snapshot_impl.h:84</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_a757f564bbd645de68491f5735fead267"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a757f564bbd645de68491f5735fead267">ROCKSDB_NAMESPACE::SnapshotList::GetOldestSnapshotTime</a></div><div class="ttdeci">int64_t GetOldestSnapshotTime() const</div><div class="ttdef"><b>Definition</b> <a href="#l00163">snapshot_impl.h:163</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_a8c4eb54eee7a108822d74a63d490a909"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a8c4eb54eee7a108822d74a63d490a909">ROCKSDB_NAMESPACE::SnapshotList::Delete</a></div><div class="ttdeci">void Delete(const SnapshotImpl *s)</div><div class="ttdef"><b>Definition</b> <a href="#l00101">snapshot_impl.h:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_a9967c60e32ba24b99ece3ea825ff58e0"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#a9967c60e32ba24b99ece3ea825ff58e0">ROCKSDB_NAMESPACE::SnapshotList::count</a></div><div class="ttdeci">uint64_t count() const</div><div class="ttdef"><b>Definition</b> <a href="#l00179">snapshot_impl.h:179</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_aa3cbfa1331cde0744ba5fadb8765efa0"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#aa3cbfa1331cde0744ba5fadb8765efa0">ROCKSDB_NAMESPACE::SnapshotList::newest</a></div><div class="ttdeci">SnapshotImpl * newest() const</div><div class="ttdef"><b>Definition</b> <a href="#l00079">snapshot_impl.h:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_acf8bd8f442f4494a6ed88205dc29f38d"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#acf8bd8f442f4494a6ed88205dc29f38d">ROCKSDB_NAMESPACE::SnapshotList::count_</a></div><div class="ttdeci">uint64_t count_</div><div class="ttdef"><b>Definition</b> <a href="#l00184">snapshot_impl.h:184</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_ad24e56bd2597034d2a73ea399ed9ff7a"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#ad24e56bd2597034d2a73ea399ed9ff7a">ROCKSDB_NAMESPACE::SnapshotList::GetNewest</a></div><div class="ttdeci">SequenceNumber GetNewest()</div><div class="ttdef"><b>Definition</b> <a href="#l00156">snapshot_impl.h:156</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_adb4b39368c3ab9d35a5553c34e4f0b52"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#adb4b39368c3ab9d35a5553c34e4f0b52">ROCKSDB_NAMESPACE::SnapshotList::GetAll</a></div><div class="ttdeci">std::vector&lt; SequenceNumber &gt; GetAll(SequenceNumber *oldest_write_conflict_snapshot=nullptr, const SequenceNumber &amp;max_seq=kMaxSequenceNumber) const</div><div class="ttdef"><b>Definition</b> <a href="#l00110">snapshot_impl.h:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_ae378db05cccf6d2315f4d452306c108c"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#ae378db05cccf6d2315f4d452306c108c">ROCKSDB_NAMESPACE::SnapshotList::SnapshotList</a></div><div class="ttdeci">SnapshotList(const SnapshotList &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_af72d46815ca91adcae65c4e0fd610b67"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af72d46815ca91adcae65c4e0fd610b67">ROCKSDB_NAMESPACE::SnapshotList::SnapshotList</a></div><div class="ttdeci">SnapshotList()</div><div class="ttdef"><b>Definition</b> <a href="#l00056">snapshot_impl.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotList_html_af9591c102cd034b0adbb569d803667c2"><div class="ttname"><a href="../../d1/db1/classROCKSDB__NAMESPACE_1_1SnapshotList.html#af9591c102cd034b0adbb569d803667c2">ROCKSDB_NAMESPACE::SnapshotList::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdef"><b>Definition</b> <a href="#l00071">snapshot_impl.h:71</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Snapshot_html"><div class="ttname"><a href="../../d0/ddd/classROCKSDB__NAMESPACE_1_1Snapshot.html">ROCKSDB_NAMESPACE::Snapshot</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dc8/snapshot_8h_source.html#l00020">snapshot.h:20</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimestampedSnapshotList_html_a25aa2f27b62a3a23b73bebb682294f32"><div class="ttname"><a href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#a25aa2f27b62a3a23b73bebb682294f32">ROCKSDB_NAMESPACE::TimestampedSnapshotList::AddSnapshot</a></div><div class="ttdeci">void AddSnapshot(const std::shared_ptr&lt; const SnapshotImpl &gt; &amp;snapshot)</div><div class="ttdef"><b>Definition</b> <a href="#l00216">snapshot_impl.h:216</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimestampedSnapshotList_html_a856afc440d80b98400412c5ffa540d00"><div class="ttname"><a href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#a856afc440d80b98400412c5ffa540d00">ROCKSDB_NAMESPACE::TimestampedSnapshotList::TimestampedSnapshotList</a></div><div class="ttdeci">TimestampedSnapshotList()=default</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimestampedSnapshotList_html_a9206819f748d9c775fbcbf2c85ac646e"><div class="ttname"><a href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#a9206819f748d9c775fbcbf2c85ac646e">ROCKSDB_NAMESPACE::TimestampedSnapshotList::ReleaseSnapshotsOlderThan</a></div><div class="ttdeci">void ReleaseSnapshotsOlderThan(uint64_t ts, autovector&lt; std::shared_ptr&lt; const SnapshotImpl &gt; &gt; &amp;snapshots_to_release)</div><div class="ttdef"><b>Definition</b> <a href="#l00225">snapshot_impl.h:225</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimestampedSnapshotList_html_ab0547bd86ccb6b6c51ac81592e6a7efb"><div class="ttname"><a href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ab0547bd86ccb6b6c51ac81592e6a7efb">ROCKSDB_NAMESPACE::TimestampedSnapshotList::snapshots_</a></div><div class="ttdeci">std::map&lt; uint64_t, std::shared_ptr&lt; const SnapshotImpl &gt; &gt; snapshots_</div><div class="ttdef"><b>Definition</b> <a href="#l00236">snapshot_impl.h:236</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimestampedSnapshotList_html_ac011a70adaa2e1a2f3666c87e7bc0752"><div class="ttname"><a href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#ac011a70adaa2e1a2f3666c87e7bc0752">ROCKSDB_NAMESPACE::TimestampedSnapshotList::GetSnapshots</a></div><div class="ttdeci">void GetSnapshots(uint64_t ts_lb, uint64_t ts_ub, std::vector&lt; std::shared_ptr&lt; const Snapshot &gt; &gt; &amp;snapshots) const</div><div class="ttdef"><b>Definition</b> <a href="#l00205">snapshot_impl.h:205</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TimestampedSnapshotList_html_afdb5b547eb52d607b6b00d9c98ce8ea2"><div class="ttname"><a href="../../d3/d78/classROCKSDB__NAMESPACE_1_1TimestampedSnapshotList.html#afdb5b547eb52d607b6b00d9c98ce8ea2">ROCKSDB_NAMESPACE::TimestampedSnapshotList::GetSnapshot</a></div><div class="ttdeci">std::shared_ptr&lt; const SnapshotImpl &gt; GetSnapshot(uint64_t ts) const</div><div class="ttdef"><b>Definition</b> <a href="#l00192">snapshot_impl.h:192</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1autovector_html"><div class="ttname"><a href="../../d4/d5f/classROCKSDB__NAMESPACE_1_1autovector.html">ROCKSDB_NAMESPACE::autovector</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/dfc/autovector_8h_source.html#l00040">autovector.h:40</a></div></div>
+<div class="ttc" id="adbformat_8h_html"><div class="ttname"><a href="../../d1/d73/dbformat_8h.html">dbformat.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2db_8h_html"><div class="ttname"><a href="../../d5/d43/include_2rocksdb_2db_8h.html">db.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a14421ad5fea786298ec0edd0f34bd96a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">ROCKSDB_NAMESPACE::SequenceNumber</a></div><div class="ttdeci">uint64_t SequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00022">types.h:22</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a74b6146f5c0fdd11281a199d795facbe"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74b6146f5c0fdd11281a199d795facbe">ROCKSDB_NAMESPACE::kMinUnCommittedSeq</a></div><div class="ttdeci">const SequenceNumber kMinUnCommittedSeq</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00028">types.h:28</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aec4ce90d41846978a4702e7e924468eb"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">ROCKSDB_NAMESPACE::kMaxSequenceNumber</a></div><div class="ttdeci">static const SequenceNumber kMaxSequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00128">dbformat.h:128</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../d5/db9/snapshot__impl_8h.html">snapshot_impl.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

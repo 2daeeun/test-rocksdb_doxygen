@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: examples/rocksdb_backup_restore_example.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d6/dcd/rocksdb__backup__restore__example_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">rocksdb_backup_restore_example.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d6/dcd/rocksdb__backup__restore__example_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d43/include_2rocksdb_2db_8h.html">rocksdb/db.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d5b/options_8h.html">rocksdb/options.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/dfe/backup__engine_8h.html">rocksdb/utilities/backup_engine.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::BackupEngine;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::BackupEngineOptions;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::BackupEngineReadOnly;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::BackupInfo;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::DB;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::Env;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::Options;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::ReadOptions;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::Status;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::WriteOptions;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#if defined(OS_WIN)</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>std::string <a class="code hl_variable" href="../../d1/d29/column__families__example_8cc.html#a9a3a7d1a5af805c1b9923240fca71ce5">kDBPath</a> = <span class="stringliteral">&quot;C:\\Windows\\TEMP\\rocksdb_example&quot;</span>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d6/dcd/rocksdb__backup__restore__example_8cc.html#a9a3a7d1a5af805c1b9923240fca71ce5">   28</a></span>std::string <a class="code hl_variable" href="../../d1/d29/column__families__example_8cc.html#a9a3a7d1a5af805c1b9923240fca71ce5">kDBPath</a> = <span class="stringliteral">&quot;/tmp/rocksdb_example&quot;</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d6/dcd/rocksdb__backup__restore__example_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">   31</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../d6/dcd/rocksdb__backup__restore__example_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>() {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <a class="code hl_class" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html">DB</a>* db;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a> options;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="comment">// Optimize RocksDB. This is the easiest way to get RocksDB to perform well</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  options.<a class="code hl_function" href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#a9f7285686599b76bd3ce1edd30dda1fe">IncreaseParallelism</a>();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  options.<a class="code hl_function" href="../../dc/d97/structROCKSDB__NAMESPACE_1_1ColumnFamilyOptions.html#a19fd41f7ac83d1525fee70aa21dd6b86">OptimizeLevelStyleCompaction</a>();</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// create the DB if it&#39;s not already present</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  options.<a class="code hl_variable" href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#aa03c50d249ad3afef2c9b1039b407afb">create_if_missing</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// open DB</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#abd94e728770ecb2a6be245aba961ecc1">DB::Open</a>(options, <a class="code hl_variable" href="../../d1/d29/column__families__example_8cc.html#a9a3a7d1a5af805c1b9923240fca71ce5">kDBPath</a>, &amp;db);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">// Put key-value</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  db-&gt;<a class="code hl_function" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#a176ea985ee15d3c31691c9433085480e">Put</a>(<a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>(), <span class="stringliteral">&quot;key1&quot;</span>, <span class="stringliteral">&quot;value1&quot;</span>);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// create backup</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <a class="code hl_class" href="../../d7/df9/classROCKSDB__NAMESPACE_1_1BackupEngine.html">BackupEngine</a>* backup_engine;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  s = <a class="code hl_function" href="../../d7/df9/classROCKSDB__NAMESPACE_1_1BackupEngine.html#a279a88bc42c68a834178cfb236bca22c">BackupEngine::Open</a>(<a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">Env::Default</a>(),</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                         <a class="code hl_struct" href="../../d7/d80/structROCKSDB__NAMESPACE_1_1BackupEngineOptions.html">BackupEngineOptions</a>(<span class="stringliteral">&quot;/tmp/rocksdb_example_backup&quot;</span>),</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                         &amp;backup_engine);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  backup_engine-&gt;<a class="code hl_function" href="../../d5/d7f/classROCKSDB__NAMESPACE_1_1BackupEngineAppendOnlyBase.html#adbdd6f1041e5b52f8731d78675d8f57e">CreateNewBackup</a>(db);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  std::vector&lt;BackupInfo&gt; backup_info;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  backup_engine-&gt;<a class="code hl_function" href="../../db/d1c/classROCKSDB__NAMESPACE_1_1BackupEngineReadOnlyBase.html#a699009cd373f46209662cc7643d01260">GetBackupInfo</a>(&amp;backup_info);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  s = backup_engine-&gt;<a class="code hl_function" href="../../db/d1c/classROCKSDB__NAMESPACE_1_1BackupEngineReadOnlyBase.html#a48d4c55fe8f019b34b9c4042233247f5">VerifyBackup</a>(1);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">// Put key-value</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  db-&gt;<a class="code hl_function" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#a176ea985ee15d3c31691c9433085480e">Put</a>(<a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>(), <span class="stringliteral">&quot;key2&quot;</span>, <span class="stringliteral">&quot;value2&quot;</span>);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  db-&gt;<a class="code hl_function" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#a719d9688c861dc694863b5fc125bfc9b">Close</a>();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">delete</span> db;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  db = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">// restore db to backup 1</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_class" href="../../da/d2a/classROCKSDB__NAMESPACE_1_1BackupEngineReadOnly.html">BackupEngineReadOnly</a>* backup_engine_ro;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  s = <a class="code hl_function" href="../../da/d2a/classROCKSDB__NAMESPACE_1_1BackupEngineReadOnly.html#a278c5a85afb05366778d48473c553f18">BackupEngineReadOnly::Open</a>(</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      <a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">Env::Default</a>(), <a class="code hl_struct" href="../../d7/d80/structROCKSDB__NAMESPACE_1_1BackupEngineOptions.html">BackupEngineOptions</a>(<span class="stringliteral">&quot;/tmp/rocksdb_example_backup&quot;</span>),</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      &amp;backup_engine_ro);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  s = backup_engine_ro-&gt;<a class="code hl_function" href="../../db/d1c/classROCKSDB__NAMESPACE_1_1BackupEngineReadOnlyBase.html#a9a73f0d71ec86a8676ce0638707fd411">RestoreDBFromBackup</a>(1, <span class="stringliteral">&quot;/tmp/rocksdb_example&quot;</span>,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                                            <span class="stringliteral">&quot;/tmp/rocksdb_example&quot;</span>);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">// open db again</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  s = <a class="code hl_function" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#abd94e728770ecb2a6be245aba961ecc1">DB::Open</a>(options, <a class="code hl_variable" href="../../d1/d29/column__families__example_8cc.html#a9a3a7d1a5af805c1b9923240fca71ce5">kDBPath</a>, &amp;db);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  std::string value;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  s = db-&gt;<a class="code hl_function" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#aa12d7b4bb5299d2ec574d5a2b894a045">Get</a>(<a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>(), <span class="stringliteral">&quot;key1&quot;</span>, &amp;value);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  assert(!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#abad803bbeb3e3c84affdae4551f372d9">IsNotFound</a>());</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  s = db-&gt;<a class="code hl_function" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#aa12d7b4bb5299d2ec574d5a2b894a045">Get</a>(<a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>(), <span class="stringliteral">&quot;key2&quot;</span>, &amp;value);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#abad803bbeb3e3c84affdae4551f372d9">IsNotFound</a>());</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">delete</span> backup_engine;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keyword">delete</span> backup_engine_ro;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keyword">delete</span> db;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
+</div>
+<div class="ttc" id="abackup__engine_8h_html"><div class="ttname"><a href="../../df/dfe/backup__engine_8h.html">backup_engine.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BackupEngineAppendOnlyBase_html_adbdd6f1041e5b52f8731d78675d8f57e"><div class="ttname"><a href="../../d5/d7f/classROCKSDB__NAMESPACE_1_1BackupEngineAppendOnlyBase.html#adbdd6f1041e5b52f8731d78675d8f57e">ROCKSDB_NAMESPACE::BackupEngineAppendOnlyBase::CreateNewBackup</a></div><div class="ttdeci">virtual IOStatus CreateNewBackup(const CreateBackupOptions &amp;options, DB *db, BackupID *new_backup_id=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="../../df/dfe/backup__engine_8h_source.html#l00554">backup_engine.h:554</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BackupEngineReadOnlyBase_html_a48d4c55fe8f019b34b9c4042233247f5"><div class="ttname"><a href="../../db/d1c/classROCKSDB__NAMESPACE_1_1BackupEngineReadOnlyBase.html#a48d4c55fe8f019b34b9c4042233247f5">ROCKSDB_NAMESPACE::BackupEngineReadOnlyBase::VerifyBackup</a></div><div class="ttdeci">virtual IOStatus VerifyBackup(BackupID backup_id, bool verify_with_checksum=false) const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BackupEngineReadOnlyBase_html_a699009cd373f46209662cc7643d01260"><div class="ttname"><a href="../../db/d1c/classROCKSDB__NAMESPACE_1_1BackupEngineReadOnlyBase.html#a699009cd373f46209662cc7643d01260">ROCKSDB_NAMESPACE::BackupEngineReadOnlyBase::GetBackupInfo</a></div><div class="ttdeci">virtual Status GetBackupInfo(BackupID backup_id, BackupInfo *backup_info, bool include_file_details=false) const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BackupEngineReadOnlyBase_html_a9a73f0d71ec86a8676ce0638707fd411"><div class="ttname"><a href="../../db/d1c/classROCKSDB__NAMESPACE_1_1BackupEngineReadOnlyBase.html#a9a73f0d71ec86a8676ce0638707fd411">ROCKSDB_NAMESPACE::BackupEngineReadOnlyBase::RestoreDBFromBackup</a></div><div class="ttdeci">virtual IOStatus RestoreDBFromBackup(const RestoreOptions &amp;options, BackupID backup_id, const std::string &amp;db_dir, const std::string &amp;wal_dir) const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BackupEngineReadOnly_html"><div class="ttname"><a href="../../da/d2a/classROCKSDB__NAMESPACE_1_1BackupEngineReadOnly.html">ROCKSDB_NAMESPACE::BackupEngineReadOnly</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/dfe/backup__engine_8h_source.html#l00676">backup_engine.h:676</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BackupEngineReadOnly_html_a278c5a85afb05366778d48473c553f18"><div class="ttname"><a href="../../da/d2a/classROCKSDB__NAMESPACE_1_1BackupEngineReadOnly.html#a278c5a85afb05366778d48473c553f18">ROCKSDB_NAMESPACE::BackupEngineReadOnly::Open</a></div><div class="ttdeci">static IOStatus Open(const BackupEngineOptions &amp;options, Env *db_env, BackupEngineReadOnly **backup_engine_ptr)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d48/backup__engine_8cc_source.html#l03323">backup_engine.cc:3323</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BackupEngine_html"><div class="ttname"><a href="../../d7/df9/classROCKSDB__NAMESPACE_1_1BackupEngine.html">ROCKSDB_NAMESPACE::BackupEngine</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/dfe/backup__engine_8h_source.html#l00647">backup_engine.h:648</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BackupEngine_html_a279a88bc42c68a834178cfb236bca22c"><div class="ttname"><a href="../../d7/df9/classROCKSDB__NAMESPACE_1_1BackupEngine.html#a279a88bc42c68a834178cfb236bca22c">ROCKSDB_NAMESPACE::BackupEngine::Open</a></div><div class="ttdeci">static IOStatus Open(const BackupEngineOptions &amp;options, Env *db_env, BackupEngine **backup_engine_ptr)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d48/backup__engine_8cc_source.html#l01004">backup_engine.cc:1004</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DB_html"><div class="ttname"><a href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html">ROCKSDB_NAMESPACE::DB</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l00175">db.h:175</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DB_html_a176ea985ee15d3c31691c9433085480e"><div class="ttname"><a href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#a176ea985ee15d3c31691c9433085480e">ROCKSDB_NAMESPACE::DB::Put</a></div><div class="ttdeci">virtual Status Put(const WriteOptions &amp;options, ColumnFamilyHandle *column_family, const Slice &amp;key, const Slice &amp;value)=0</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d82/db__impl__write_8cc_source.html#l02663">db_impl_write.cc:2663</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DB_html_a719d9688c861dc694863b5fc125bfc9b"><div class="ttname"><a href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#a719d9688c861dc694863b5fc125bfc9b">ROCKSDB_NAMESPACE::DB::Close</a></div><div class="ttdeci">virtual Status Close()</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l00386">db.h:386</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DB_html_aa12d7b4bb5299d2ec574d5a2b894a045"><div class="ttname"><a href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#aa12d7b4bb5299d2ec574d5a2b894a045">ROCKSDB_NAMESPACE::DB::Get</a></div><div class="ttdeci">virtual Status Get(const ReadOptions &amp;options, ColumnFamilyHandle *column_family, const Slice &amp;key, PinnableSlice *value, std::string *timestamp)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DB_html_abd94e728770ecb2a6be245aba961ecc1"><div class="ttname"><a href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#abd94e728770ecb2a6be245aba961ecc1">ROCKSDB_NAMESPACE::DB::Open</a></div><div class="ttdeci">static Status Open(const Options &amp;options, const std::string &amp;name, DB **dbptr)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/dd4/db__impl__open_8cc_source.html#l01849">db_impl_open.cc:1849</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a6ab2e37815691608582aa44201663888"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">ROCKSDB_NAMESPACE::Env::Default</a></div><div class="ttdeci">static Env * Default()</div><div class="ttdef"><b>Definition</b> <a href="../../de/d24/env__posix_8cc_source.html#l00498">env_posix.cc:498</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_abad803bbeb3e3c84affdae4551f372d9"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#abad803bbeb3e3c84affdae4551f372d9">ROCKSDB_NAMESPACE::Status::IsNotFound</a></div><div class="ttdeci">bool IsNotFound() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00340">status.h:340</a></div></div>
+<div class="ttc" id="acolumn__families__example_8cc_html_a9a3a7d1a5af805c1b9923240fca71ce5"><div class="ttname"><a href="../../d1/d29/column__families__example_8cc.html#a9a3a7d1a5af805c1b9923240fca71ce5">kDBPath</a></div><div class="ttdeci">std::string kDBPath</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d29/column__families__example_8cc_source.html#l00016">column_families_example.cc:16</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2db_8h_html"><div class="ttname"><a href="../../d5/d43/include_2rocksdb_2db_8h.html">db.h</a></div></div>
+<div class="ttc" id="aoptions_8h_html"><div class="ttname"><a href="../../d7/d5b/options_8h.html">options.h</a></div></div>
+<div class="ttc" id="arocksdb__backup__restore__example_8cc_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="../../d6/dcd/rocksdb__backup__restore__example_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="#l00031">rocksdb_backup_restore_example.cc:31</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BackupEngineOptions_html"><div class="ttname"><a href="../../d7/d80/structROCKSDB__NAMESPACE_1_1BackupEngineOptions.html">ROCKSDB_NAMESPACE::BackupEngineOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/dfe/backup__engine_8h_source.html#l00034">backup_engine.h:34</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ColumnFamilyOptions_html_a19fd41f7ac83d1525fee70aa21dd6b86"><div class="ttname"><a href="../../dc/d97/structROCKSDB__NAMESPACE_1_1ColumnFamilyOptions.html#a19fd41f7ac83d1525fee70aa21dd6b86">ROCKSDB_NAMESPACE::ColumnFamilyOptions::OptimizeLevelStyleCompaction</a></div><div class="ttdeci">ColumnFamilyOptions * OptimizeLevelStyleCompaction(uint64_t memtable_memory_budget=512 *1024 *1024)</div><div class="ttdef"><b>Definition</b> <a href="../../db/df4/options_8cc_source.html#l00648">options.cc:648</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1DBOptions_html_a9f7285686599b76bd3ce1edd30dda1fe"><div class="ttname"><a href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#a9f7285686599b76bd3ce1edd30dda1fe">ROCKSDB_NAMESPACE::DBOptions::IncreaseParallelism</a></div><div class="ttdeci">DBOptions * IncreaseParallelism(int total_threads=16)</div><div class="ttdef"><b>Definition</b> <a href="../../db/df4/options_8cc_source.html#l00697">options.cc:697</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1DBOptions_html_aa03c50d249ad3afef2c9b1039b407afb"><div class="ttname"><a href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#aa03c50d249ad3afef2c9b1039b407afb">ROCKSDB_NAMESPACE::DBOptions::create_if_missing</a></div><div class="ttdeci">bool create_if_missing</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l00563">options.h:563</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Options_html"><div class="ttname"><a href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">ROCKSDB_NAMESPACE::Options</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01620">options.h:1620</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ReadOptions_html"><div class="ttname"><a href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ROCKSDB_NAMESPACE::ReadOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01680">options.h:1680</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1WriteOptions_html"><div class="ttname"><a href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">ROCKSDB_NAMESPACE::WriteOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01958">options.h:1958</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../d6/dcd/rocksdb__backup__restore__example_8cc.html">rocksdb_backup_restore_example.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

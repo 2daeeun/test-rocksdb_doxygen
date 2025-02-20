@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/read_callback.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d4/de7/read__callback_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">read_callback.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d4/de7/read__callback_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d73/dbformat_8h.html">db/dbformat.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d49/types_8h.html">rocksdb/types.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="};">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html">   13</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a7a99963b38244d0952229dbfec20885a">ReadCallback</a> {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a7a99963b38244d0952229dbfec20885a">   15</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a7a99963b38244d0952229dbfec20885a">ReadCallback</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> last_visible_seq)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      : <a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a71981b34dc35acbdfa4cbf92581c5e9f">max_visible_seq_</a>(last_visible_seq) {}</div>
+</div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a210de10aa9f603550e58da1defbce698">   17</a></span>  <a class="code hl_function" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a210de10aa9f603550e58da1defbce698">ReadCallback</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> last_visible_seq, <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> min_uncommitted)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      : <a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a71981b34dc35acbdfa4cbf92581c5e9f">max_visible_seq_</a>(last_visible_seq), <a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a84b3c7d1610bf0b1fdfb869ffc6f1d4a">min_uncommitted_</a>(min_uncommitted) {}</div>
+</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#aa7a53ecda52051a24aafe0ed1b6980c4">   20</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#aa7a53ecda52051a24aafe0ed1b6980c4">~ReadCallback</a>() {}</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="comment">// Will be called to see if the seq number visible; if not it moves on to</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="comment">// the next seq number.</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a8b4ead63b7a0d2c8f53235b3d849c4a6">   24</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a8b4ead63b7a0d2c8f53235b3d849c4a6">IsVisibleFullCheck</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seq) = 0;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#ae32db42484d1b7757685ab67dd658eaa">   26</a></span>  <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#ae32db42484d1b7757685ab67dd658eaa">IsVisible</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seq) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    assert(<a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a84b3c7d1610bf0b1fdfb869ffc6f1d4a">min_uncommitted_</a> &gt; 0);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    assert(<a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a84b3c7d1610bf0b1fdfb869ffc6f1d4a">min_uncommitted_</a> &gt;= <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74b6146f5c0fdd11281a199d795facbe">kMinUnCommittedSeq</a>);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">if</span> (seq &lt; <a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a84b3c7d1610bf0b1fdfb869ffc6f1d4a">min_uncommitted_</a>) {  <span class="comment">// handles seq == 0 as well</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      assert(seq &lt;= <a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a71981b34dc35acbdfa4cbf92581c5e9f">max_visible_seq_</a>);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a71981b34dc35acbdfa4cbf92581c5e9f">max_visible_seq_</a> &lt; seq) {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      assert(seq != 0);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      assert(seq != 0);  <span class="comment">// already handled in the first if-then clause</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a8b4ead63b7a0d2c8f53235b3d849c4a6">IsVisibleFullCheck</a>(seq);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
+</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a7ff7da56808515adfb3e3f183c7d0c9b">   41</a></span>  <span class="keyword">inline</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_function" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a7ff7da56808515adfb3e3f183c7d0c9b">max_visible_seq</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a71981b34dc35acbdfa4cbf92581c5e9f">max_visible_seq_</a>; }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">// Refresh to a more recent visible seq</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#ab277c98ed059081205ceea8735285c2e">   44</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#ab277c98ed059081205ceea8735285c2e">Refresh</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seq) { <a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a71981b34dc35acbdfa4cbf92581c5e9f">max_visible_seq_</a> = seq; }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// The max visible seq, it is usually the snapshot but could be larger if</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// transaction has its own writes written to db.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a71981b34dc35acbdfa4cbf92581c5e9f">   49</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a71981b34dc35acbdfa4cbf92581c5e9f">max_visible_seq_</a> = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">kMaxSequenceNumber</a>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// Any seq less than min_uncommitted_ is committed.</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a84b3c7d1610bf0b1fdfb869ffc6f1d4a">   51</a></span>  <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_variable" href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a84b3c7d1610bf0b1fdfb869ffc6f1d4a">min_uncommitted_</a> = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74b6146f5c0fdd11281a199d795facbe">kMinUnCommittedSeq</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
+</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadCallback_html_a210de10aa9f603550e58da1defbce698"><div class="ttname"><a href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a210de10aa9f603550e58da1defbce698">ROCKSDB_NAMESPACE::ReadCallback::ReadCallback</a></div><div class="ttdeci">ReadCallback(SequenceNumber last_visible_seq, SequenceNumber min_uncommitted)</div><div class="ttdef"><b>Definition</b> <a href="#l00017">read_callback.h:17</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadCallback_html_a71981b34dc35acbdfa4cbf92581c5e9f"><div class="ttname"><a href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a71981b34dc35acbdfa4cbf92581c5e9f">ROCKSDB_NAMESPACE::ReadCallback::max_visible_seq_</a></div><div class="ttdeci">SequenceNumber max_visible_seq_</div><div class="ttdef"><b>Definition</b> <a href="#l00049">read_callback.h:49</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadCallback_html_a7a99963b38244d0952229dbfec20885a"><div class="ttname"><a href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a7a99963b38244d0952229dbfec20885a">ROCKSDB_NAMESPACE::ReadCallback::ReadCallback</a></div><div class="ttdeci">ReadCallback(SequenceNumber last_visible_seq)</div><div class="ttdef"><b>Definition</b> <a href="#l00015">read_callback.h:15</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadCallback_html_a7ff7da56808515adfb3e3f183c7d0c9b"><div class="ttname"><a href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a7ff7da56808515adfb3e3f183c7d0c9b">ROCKSDB_NAMESPACE::ReadCallback::max_visible_seq</a></div><div class="ttdeci">SequenceNumber max_visible_seq()</div><div class="ttdef"><b>Definition</b> <a href="#l00041">read_callback.h:41</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadCallback_html_a84b3c7d1610bf0b1fdfb869ffc6f1d4a"><div class="ttname"><a href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a84b3c7d1610bf0b1fdfb869ffc6f1d4a">ROCKSDB_NAMESPACE::ReadCallback::min_uncommitted_</a></div><div class="ttdeci">const SequenceNumber min_uncommitted_</div><div class="ttdef"><b>Definition</b> <a href="#l00051">read_callback.h:51</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadCallback_html_a8b4ead63b7a0d2c8f53235b3d849c4a6"><div class="ttname"><a href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#a8b4ead63b7a0d2c8f53235b3d849c4a6">ROCKSDB_NAMESPACE::ReadCallback::IsVisibleFullCheck</a></div><div class="ttdeci">virtual bool IsVisibleFullCheck(SequenceNumber seq)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadCallback_html_aa7a53ecda52051a24aafe0ed1b6980c4"><div class="ttname"><a href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#aa7a53ecda52051a24aafe0ed1b6980c4">ROCKSDB_NAMESPACE::ReadCallback::~ReadCallback</a></div><div class="ttdeci">virtual ~ReadCallback()</div><div class="ttdef"><b>Definition</b> <a href="#l00020">read_callback.h:20</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadCallback_html_ab277c98ed059081205ceea8735285c2e"><div class="ttname"><a href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#ab277c98ed059081205ceea8735285c2e">ROCKSDB_NAMESPACE::ReadCallback::Refresh</a></div><div class="ttdeci">virtual void Refresh(SequenceNumber seq)</div><div class="ttdef"><b>Definition</b> <a href="#l00044">read_callback.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadCallback_html_ae32db42484d1b7757685ab67dd658eaa"><div class="ttname"><a href="../../d8/da3/classROCKSDB__NAMESPACE_1_1ReadCallback.html#ae32db42484d1b7757685ab67dd658eaa">ROCKSDB_NAMESPACE::ReadCallback::IsVisible</a></div><div class="ttdeci">bool IsVisible(SequenceNumber seq)</div><div class="ttdef"><b>Definition</b> <a href="#l00026">read_callback.h:26</a></div></div>
+<div class="ttc" id="adbformat_8h_html"><div class="ttname"><a href="../../d1/d73/dbformat_8h.html">dbformat.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a14421ad5fea786298ec0edd0f34bd96a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">ROCKSDB_NAMESPACE::SequenceNumber</a></div><div class="ttdeci">uint64_t SequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00022">types.h:22</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a74b6146f5c0fdd11281a199d795facbe"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74b6146f5c0fdd11281a199d795facbe">ROCKSDB_NAMESPACE::kMinUnCommittedSeq</a></div><div class="ttdeci">const SequenceNumber kMinUnCommittedSeq</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00028">types.h:28</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aec4ce90d41846978a4702e7e924468eb"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">ROCKSDB_NAMESPACE::kMaxSequenceNumber</a></div><div class="ttdeci">static const SequenceNumber kMaxSequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00128">dbformat.h:128</a></div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="../../d9/d49/types_8h.html">types.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../d4/de7/read__callback_8h.html">read_callback.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

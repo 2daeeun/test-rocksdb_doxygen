@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/counted_fs.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d0/d34/counted__fs_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">counted_fs.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d0/d34/counted__fs_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2016-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d8d/file__system_8h.html">rocksdb/file_system.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dcd/io__status_8h.html">rocksdb/io_status.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/df5/rocksdb__namespace_8h.html">rocksdb/rocksdb_namespace.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">class </span>Logger;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html">   18</a></span><span class="keyword">struct </span><a class="code hl_function" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a631b451a388d2693cc4250b151de1bd3">OpCounter</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#ab125fedd45f066d486847dca1f53dacb">   19</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#ab125fedd45f066d486847dca1f53dacb">ops</a>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a0193a81a46d8121e17119d14ed464224">   20</a></span>  std::atomic&lt;uint64_t&gt; <a class="code hl_variable" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a0193a81a46d8121e17119d14ed464224">bytes</a>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a631b451a388d2693cc4250b151de1bd3">   22</a></span>  <a class="code hl_function" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a631b451a388d2693cc4250b151de1bd3">OpCounter</a>() : <a class="code hl_variable" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#ab125fedd45f066d486847dca1f53dacb">ops</a>(0), <a class="code hl_variable" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a0193a81a46d8121e17119d14ed464224">bytes</a>(0) {}</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#afeffff11b55d924f823ad3c923f183c2">   24</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#afeffff11b55d924f823ad3c923f183c2">Reset</a>() {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_variable" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#ab125fedd45f066d486847dca1f53dacb">ops</a> = 0;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_variable" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a0193a81a46d8121e17119d14ed464224">bytes</a> = 0;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a16f171d5681c09d062fed9475e1bb59b">   28</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a16f171d5681c09d062fed9475e1bb59b">RecordOp</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a>&amp; io_s, <span class="keywordtype">size_t</span> added_bytes) {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">if</span> (!io_s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a74251af128f4cf6beb4e1fadf77d717d">IsNotSupported</a>()) {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      <a class="code hl_variable" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#ab125fedd45f066d486847dca1f53dacb">ops</a>.fetch_add(1, std::memory_order_relaxed);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">if</span> (io_s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      <a class="code hl_variable" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a0193a81a46d8121e17119d14ed464224">bytes</a>.fetch_add(added_bytes, std::memory_order_relaxed);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
+</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>};</div>
+</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="};">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html">   38</a></span><span class="keyword">struct </span><a class="code hl_function" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#aeacda70f075930d92f69e2c2530c4d20">FileOpCounters</a> {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a0c32d2dee74d0cfac97787f0429904e9">   39</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a0c32d2dee74d0cfac97787f0429904e9">kName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;FileOpCounters&quot;</span>; }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#aae274fbd2cbd714bb7127597c427ee11">   41</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#aae274fbd2cbd714bb7127597c427ee11">opens</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad070833987257da332219e1413f18da5">   42</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad070833987257da332219e1413f18da5">closes</a>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a3f44bfc3d63fa6d4a2b9e7f51060b649">   43</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a3f44bfc3d63fa6d4a2b9e7f51060b649">deletes</a>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad2fd954888ce5e4df8020d4be778b7c3">   44</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad2fd954888ce5e4df8020d4be778b7c3">renames</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a47fe88ba69f754746a4077ee5d088991">   45</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a47fe88ba69f754746a4077ee5d088991">flushes</a>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a28be68f4a5a3f7d1f1113253e788aac3">   46</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a28be68f4a5a3f7d1f1113253e788aac3">syncs</a>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a8195bc6b22f567af07e2fc9d0fdb1362">   47</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a8195bc6b22f567af07e2fc9d0fdb1362">dsyncs</a>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad8c0d7e0b4b30e15f52a8511fd91f497">   48</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad8c0d7e0b4b30e15f52a8511fd91f497">fsyncs</a>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ae753221840d600ad4128b4586104d5a7">   49</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ae753221840d600ad4128b4586104d5a7">dir_opens</a>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a94ec8f3ffb40ccb3e84c8fc2d5edc840">   50</a></span>  std::atomic&lt;int&gt; <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a94ec8f3ffb40ccb3e84c8fc2d5edc840">dir_closes</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a6f60bb3263bb53d20f16432b076f4a3a">   51</a></span>  <a class="code hl_struct" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html">OpCounter</a> <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a6f60bb3263bb53d20f16432b076f4a3a">reads</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a461dcb0604911220df6766f72c86e590">   52</a></span>  <a class="code hl_struct" href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html">OpCounter</a> <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a461dcb0604911220df6766f72c86e590">writes</a>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#aeacda70f075930d92f69e2c2530c4d20">   54</a></span>  <a class="code hl_function" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#aeacda70f075930d92f69e2c2530c4d20">FileOpCounters</a>()</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      : <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#aae274fbd2cbd714bb7127597c427ee11">opens</a>(0),</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad070833987257da332219e1413f18da5">closes</a>(0),</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a3f44bfc3d63fa6d4a2b9e7f51060b649">deletes</a>(0),</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad2fd954888ce5e4df8020d4be778b7c3">renames</a>(0),</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a47fe88ba69f754746a4077ee5d088991">flushes</a>(0),</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a28be68f4a5a3f7d1f1113253e788aac3">syncs</a>(0),</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a8195bc6b22f567af07e2fc9d0fdb1362">dsyncs</a>(0),</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad8c0d7e0b4b30e15f52a8511fd91f497">fsyncs</a>(0),</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ae753221840d600ad4128b4586104d5a7">dir_opens</a>(0),</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a94ec8f3ffb40ccb3e84c8fc2d5edc840">dir_closes</a>(0) {}</div>
+</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a0b6715eda8e597d5824ce770fef56618">   66</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a0b6715eda8e597d5824ce770fef56618">Reset</a>() {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#aae274fbd2cbd714bb7127597c427ee11">opens</a> = 0;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad070833987257da332219e1413f18da5">closes</a> = 0;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a3f44bfc3d63fa6d4a2b9e7f51060b649">deletes</a> = 0;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad2fd954888ce5e4df8020d4be778b7c3">renames</a> = 0;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a47fe88ba69f754746a4077ee5d088991">flushes</a> = 0;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a28be68f4a5a3f7d1f1113253e788aac3">syncs</a> = 0;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a8195bc6b22f567af07e2fc9d0fdb1362">dsyncs</a> = 0;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad8c0d7e0b4b30e15f52a8511fd91f497">fsyncs</a> = 0;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ae753221840d600ad4128b4586104d5a7">dir_opens</a> = 0;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a94ec8f3ffb40ccb3e84c8fc2d5edc840">dir_closes</a> = 0;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a6f60bb3263bb53d20f16432b076f4a3a">reads</a>.Reset();</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_variable" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a461dcb0604911220df6766f72c86e590">writes</a>.Reset();</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  }</div>
+</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  std::string PrintCounters() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>};</div>
+</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">// A FileSystem class that counts operations (reads, writes, opens, closes, etc)</span></div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="};">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html">   84</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a2b47d98235c3e560b8a475e0e6ba5570">CountedFileSystem</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ab17169a1ff27410814c9e63022e3f881">FileSystemWrapper</a> {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad8c427aa11108ed3e6d9b75216d46ef3">   87</a></span>  <a class="code hl_struct" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html">FileOpCounters</a> <a class="code hl_variable" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad8c427aa11108ed3e6d9b75216d46ef3">counters_</a>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a2b47d98235c3e560b8a475e0e6ba5570">CountedFileSystem</a>(<span class="keyword">const</span> std::shared_ptr&lt;FileSystem&gt;&amp; base);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a85d5ba202868e386d4ccb842afccc785">   91</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a85d5ba202868e386d4ccb842afccc785">kClassName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;CountedFileSystem&quot;</span>; }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a70d477d6be3ab8465928b85dd67f76fe">   92</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a70d477d6be3ab8465928b85dd67f76fe">Name</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a85d5ba202868e386d4ccb842afccc785">kClassName</a>(); }</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> NewSequentialFile(<span class="keyword">const</span> std::string&amp; f, <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; options,</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                             std::unique_ptr&lt;FSSequentialFile&gt;* r,</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                             <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> NewRandomAccessFile(<span class="keyword">const</span> std::string&amp; f,</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                               <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; file_opts,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                               std::unique_ptr&lt;FSRandomAccessFile&gt;* r,</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                               <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac7c3bfd565362e0a8744db6feb8c2ead">NewWritableFile</a>(<span class="keyword">const</span> std::string&amp; f, <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; options,</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                           std::unique_ptr&lt;FSWritableFile&gt;* r,</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                           <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> ReopenWritableFile(<span class="keyword">const</span> std::string&amp; fname,</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                              <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; options,</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                              std::unique_ptr&lt;FSWritableFile&gt;* result,</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                              <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> ReuseWritableFile(<span class="keyword">const</span> std::string&amp; fname,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                             <span class="keyword">const</span> std::string&amp; old_fname,</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                             <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; file_opts,</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                             std::unique_ptr&lt;FSWritableFile&gt;* result,</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                             <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> NewRandomRWFile(<span class="keyword">const</span> std::string&amp; name, <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; options,</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                           std::unique_ptr&lt;FSRandomRWFile&gt;* result,</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                           <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> NewDirectory(<span class="keyword">const</span> std::string&amp; name, <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; io_opts,</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                        std::unique_ptr&lt;FSDirectory&gt;* result,</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                        <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad9a6ae14af0f2982e9ccfcf3e8857ac9">  124</a></span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad9a6ae14af0f2982e9ccfcf3e8857ac9">DeleteFile</a>(<span class="keyword">const</span> std::string&amp; fname, <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options,</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                      <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> s = <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a51cda3e7053873f63b80ba8f4d8d0494">target</a>()-&gt;DeleteFile(fname, options, dbg);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">if</span> (s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      <a class="code hl_variable" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad8c427aa11108ed3e6d9b75216d46ef3">counters_</a>.deletes++;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  }</div>
+</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="foldopen" id="foldopen00133" data-start="{" data-end="}">
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a0bb9bcceb7b10b6802b55a5b9b49b7ac">  133</a></span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a0bb9bcceb7b10b6802b55a5b9b49b7ac">RenameFile</a>(<span class="keyword">const</span> std::string&amp; s, <span class="keyword">const</span> std::string&amp; t,</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                      <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>&amp; options, <a class="code hl_struct" href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">IODebugContext</a>* dbg)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> st = <a class="code hl_function" href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a51cda3e7053873f63b80ba8f4d8d0494">target</a>()-&gt;RenameFile(s, t, options, dbg);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">if</span> (st.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      <a class="code hl_variable" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad8c427aa11108ed3e6d9b75216d46ef3">counters_</a>.renames++;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    }</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">return</span> st;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  }</div>
+</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a54804050f7946e729729a50c3e1759de">  142</a></span>  <span class="keyword">const</span> <a class="code hl_struct" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html">FileOpCounters</a>* <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a54804050f7946e729729a50c3e1759de">counters</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> &amp;<a class="code hl_variable" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad8c427aa11108ed3e6d9b75216d46ef3">counters_</a>; }</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a40a7b234641ee0bea77f632d4d68b349">  144</a></span>  <a class="code hl_struct" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html">FileOpCounters</a>* <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a40a7b234641ee0bea77f632d4d68b349">counters</a>() { <span class="keywordflow">return</span> &amp;<a class="code hl_variable" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad8c427aa11108ed3e6d9b75216d46ef3">counters_</a>; }</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="foldopen" id="foldopen00146" data-start="{" data-end="}">
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ab944d2c2cb10aae4d6d6e2b264e737f9">  146</a></span>  <span class="keyword">const</span> <span class="keywordtype">void</span>* <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ab944d2c2cb10aae4d6d6e2b264e737f9">GetOptionsPtr</a>(<span class="keyword">const</span> std::string&amp; name)<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordflow">if</span> (name == <a class="code hl_function" href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a0c32d2dee74d0cfac97787f0429904e9">FileOpCounters::kName</a>()) {</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a54804050f7946e729729a50c3e1759de">counters</a>();</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#afa47a6de85b615199c5e4e7d58e57058">FileSystemWrapper::GetOptionsPtr</a>(name);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    }</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  }</div>
+</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="comment">// Prints the counters to a string</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a2a136129863f414b5272975fda17f2ae">  155</a></span>  std::string <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a2a136129863f414b5272975fda17f2ae">PrintCounters</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad8c427aa11108ed3e6d9b75216d46ef3">counters_</a>.PrintCounters(); }</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ab244b4f4f15dd0af867f6a94f605656b">  156</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ab244b4f4f15dd0af867f6a94f605656b">ResetCounters</a>() { <a class="code hl_variable" href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad8c427aa11108ed3e6d9b75216d46ef3">counters_</a>.Reset(); }</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>};</div>
+</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Configurable_html_afa47a6de85b615199c5e4e7d58e57058"><div class="ttname"><a href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#afa47a6de85b615199c5e4e7d58e57058">ROCKSDB_NAMESPACE::Configurable::GetOptionsPtr</a></div><div class="ttdeci">virtual const void * GetOptionsPtr(const std::string &amp;name) const</div><div class="ttdef"><b>Definition</b> <a href="../../dd/db7/configurable_8cc_source.html#l00095">configurable.cc:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_a0bb9bcceb7b10b6802b55a5b9b49b7ac"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a0bb9bcceb7b10b6802b55a5b9b49b7ac">ROCKSDB_NAMESPACE::CountedFileSystem::RenameFile</a></div><div class="ttdeci">IOStatus RenameFile(const std::string &amp;s, const std::string &amp;t, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00133">counted_fs.h:133</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_a2a136129863f414b5272975fda17f2ae"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a2a136129863f414b5272975fda17f2ae">ROCKSDB_NAMESPACE::CountedFileSystem::PrintCounters</a></div><div class="ttdeci">std::string PrintCounters() const</div><div class="ttdef"><b>Definition</b> <a href="#l00155">counted_fs.h:155</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_a2b47d98235c3e560b8a475e0e6ba5570"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a2b47d98235c3e560b8a475e0e6ba5570">ROCKSDB_NAMESPACE::CountedFileSystem::CountedFileSystem</a></div><div class="ttdeci">CountedFileSystem(const std::shared_ptr&lt; FileSystem &gt; &amp;base)</div><div class="ttdef"><b>Definition</b> <a href="../../da/db2/counted__fs_8cc_source.html#l00287">counted_fs.cc:287</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_a40a7b234641ee0bea77f632d4d68b349"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a40a7b234641ee0bea77f632d4d68b349">ROCKSDB_NAMESPACE::CountedFileSystem::counters</a></div><div class="ttdeci">FileOpCounters * counters()</div><div class="ttdef"><b>Definition</b> <a href="#l00144">counted_fs.h:144</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_a54804050f7946e729729a50c3e1759de"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a54804050f7946e729729a50c3e1759de">ROCKSDB_NAMESPACE::CountedFileSystem::counters</a></div><div class="ttdeci">const FileOpCounters * counters() const</div><div class="ttdef"><b>Definition</b> <a href="#l00142">counted_fs.h:142</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_a70d477d6be3ab8465928b85dd67f76fe"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a70d477d6be3ab8465928b85dd67f76fe">ROCKSDB_NAMESPACE::CountedFileSystem::Name</a></div><div class="ttdeci">const char * Name() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00092">counted_fs.h:92</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_a85d5ba202868e386d4ccb842afccc785"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#a85d5ba202868e386d4ccb842afccc785">ROCKSDB_NAMESPACE::CountedFileSystem::kClassName</a></div><div class="ttdeci">static const char * kClassName()</div><div class="ttdef"><b>Definition</b> <a href="#l00091">counted_fs.h:91</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_ab244b4f4f15dd0af867f6a94f605656b"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ab244b4f4f15dd0af867f6a94f605656b">ROCKSDB_NAMESPACE::CountedFileSystem::ResetCounters</a></div><div class="ttdeci">void ResetCounters()</div><div class="ttdef"><b>Definition</b> <a href="#l00156">counted_fs.h:156</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_ab944d2c2cb10aae4d6d6e2b264e737f9"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ab944d2c2cb10aae4d6d6e2b264e737f9">ROCKSDB_NAMESPACE::CountedFileSystem::GetOptionsPtr</a></div><div class="ttdeci">const void * GetOptionsPtr(const std::string &amp;name) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00146">counted_fs.h:146</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_ad8c427aa11108ed3e6d9b75216d46ef3"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad8c427aa11108ed3e6d9b75216d46ef3">ROCKSDB_NAMESPACE::CountedFileSystem::counters_</a></div><div class="ttdeci">FileOpCounters counters_</div><div class="ttdef"><b>Definition</b> <a href="#l00087">counted_fs.h:87</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedFileSystem_html_ad9a6ae14af0f2982e9ccfcf3e8857ac9"><div class="ttname"><a href="../../d8/d22/classROCKSDB__NAMESPACE_1_1CountedFileSystem.html#ad9a6ae14af0f2982e9ccfcf3e8857ac9">ROCKSDB_NAMESPACE::CountedFileSystem::DeleteFile</a></div><div class="ttdeci">IOStatus DeleteFile(const std::string &amp;fname, const IOOptions &amp;options, IODebugContext *dbg) override</div><div class="ttdef"><b>Definition</b> <a href="#l00124">counted_fs.h:124</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_a51cda3e7053873f63b80ba8f4d8d0494"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#a51cda3e7053873f63b80ba8f4d8d0494">ROCKSDB_NAMESPACE::FileSystemWrapper::target</a></div><div class="ttdeci">FileSystem * target() const</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l01431">file_system.h:1431</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystemWrapper_html_ab17169a1ff27410814c9e63022e3f881"><div class="ttname"><a href="../../da/dca/classROCKSDB__NAMESPACE_1_1FileSystemWrapper.html#ab17169a1ff27410814c9e63022e3f881">ROCKSDB_NAMESPACE::FileSystemWrapper::FileSystemWrapper</a></div><div class="ttdeci">FileSystemWrapper(const std::shared_ptr&lt; FileSystem &gt; &amp;t)</div><div class="ttdef"><b>Definition</b> <a href="../../dd/dac/file__system_8cc_source.html#l00240">file_system.cc:240</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IOStatus_html"><div class="ttname"><a href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">ROCKSDB_NAMESPACE::IOStatus</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dcd/io__status_8h_source.html#l00028">io_status.h:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a74251af128f4cf6beb4e1fadf77d717d"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a74251af128f4cf6beb4e1fadf77d717d">ROCKSDB_NAMESPACE::Status::IsNotSupported</a></div><div class="ttdeci">bool IsNotSupported() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00352">status.h:352</a></div></div>
+<div class="ttc" id="afile__system_8h_html"><div class="ttname"><a href="../../d6/d8d/file__system_8h.html">file_system.h</a></div></div>
+<div class="ttc" id="aio__status_8h_html"><div class="ttname"><a href="../../d9/dcd/io__status_8h.html">io_status.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ac7c3bfd565362e0a8744db6feb8c2ead"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac7c3bfd565362e0a8744db6feb8c2ead">ROCKSDB_NAMESPACE::NewWritableFile</a></div><div class="ttdeci">IOStatus NewWritableFile(FileSystem *fs, const std::string &amp;fname, std::unique_ptr&lt; FSWritableFile &gt; *result, const FileOptions &amp;options)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d5c/read__write__util_8cc_source.html#l00018">read_write_util.cc:18</a></div></div>
+<div class="ttc" id="arocksdb__namespace_8h_html"><div class="ttname"><a href="../../da/df5/rocksdb__namespace_8h.html">rocksdb_namespace.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html">ROCKSDB_NAMESPACE::FileOpCounters</a></div><div class="ttdef"><b>Definition</b> <a href="#l00038">counted_fs.h:38</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_a0b6715eda8e597d5824ce770fef56618"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a0b6715eda8e597d5824ce770fef56618">ROCKSDB_NAMESPACE::FileOpCounters::Reset</a></div><div class="ttdeci">void Reset()</div><div class="ttdef"><b>Definition</b> <a href="#l00066">counted_fs.h:66</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_a0c32d2dee74d0cfac97787f0429904e9"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a0c32d2dee74d0cfac97787f0429904e9">ROCKSDB_NAMESPACE::FileOpCounters::kName</a></div><div class="ttdeci">static const char * kName()</div><div class="ttdef"><b>Definition</b> <a href="#l00039">counted_fs.h:39</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_a28be68f4a5a3f7d1f1113253e788aac3"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a28be68f4a5a3f7d1f1113253e788aac3">ROCKSDB_NAMESPACE::FileOpCounters::syncs</a></div><div class="ttdeci">std::atomic&lt; int &gt; syncs</div><div class="ttdef"><b>Definition</b> <a href="#l00046">counted_fs.h:46</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_a3f44bfc3d63fa6d4a2b9e7f51060b649"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a3f44bfc3d63fa6d4a2b9e7f51060b649">ROCKSDB_NAMESPACE::FileOpCounters::deletes</a></div><div class="ttdeci">std::atomic&lt; int &gt; deletes</div><div class="ttdef"><b>Definition</b> <a href="#l00043">counted_fs.h:43</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_a461dcb0604911220df6766f72c86e590"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a461dcb0604911220df6766f72c86e590">ROCKSDB_NAMESPACE::FileOpCounters::writes</a></div><div class="ttdeci">OpCounter writes</div><div class="ttdef"><b>Definition</b> <a href="#l00052">counted_fs.h:52</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_a47fe88ba69f754746a4077ee5d088991"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a47fe88ba69f754746a4077ee5d088991">ROCKSDB_NAMESPACE::FileOpCounters::flushes</a></div><div class="ttdeci">std::atomic&lt; int &gt; flushes</div><div class="ttdef"><b>Definition</b> <a href="#l00045">counted_fs.h:45</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_a6f60bb3263bb53d20f16432b076f4a3a"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a6f60bb3263bb53d20f16432b076f4a3a">ROCKSDB_NAMESPACE::FileOpCounters::reads</a></div><div class="ttdeci">OpCounter reads</div><div class="ttdef"><b>Definition</b> <a href="#l00051">counted_fs.h:51</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_a8195bc6b22f567af07e2fc9d0fdb1362"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a8195bc6b22f567af07e2fc9d0fdb1362">ROCKSDB_NAMESPACE::FileOpCounters::dsyncs</a></div><div class="ttdeci">std::atomic&lt; int &gt; dsyncs</div><div class="ttdef"><b>Definition</b> <a href="#l00047">counted_fs.h:47</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_a94ec8f3ffb40ccb3e84c8fc2d5edc840"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#a94ec8f3ffb40ccb3e84c8fc2d5edc840">ROCKSDB_NAMESPACE::FileOpCounters::dir_closes</a></div><div class="ttdeci">std::atomic&lt; int &gt; dir_closes</div><div class="ttdef"><b>Definition</b> <a href="#l00050">counted_fs.h:50</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_aae274fbd2cbd714bb7127597c427ee11"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#aae274fbd2cbd714bb7127597c427ee11">ROCKSDB_NAMESPACE::FileOpCounters::opens</a></div><div class="ttdeci">std::atomic&lt; int &gt; opens</div><div class="ttdef"><b>Definition</b> <a href="#l00041">counted_fs.h:41</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_ad070833987257da332219e1413f18da5"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad070833987257da332219e1413f18da5">ROCKSDB_NAMESPACE::FileOpCounters::closes</a></div><div class="ttdeci">std::atomic&lt; int &gt; closes</div><div class="ttdef"><b>Definition</b> <a href="#l00042">counted_fs.h:42</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_ad2fd954888ce5e4df8020d4be778b7c3"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad2fd954888ce5e4df8020d4be778b7c3">ROCKSDB_NAMESPACE::FileOpCounters::renames</a></div><div class="ttdeci">std::atomic&lt; int &gt; renames</div><div class="ttdef"><b>Definition</b> <a href="#l00044">counted_fs.h:44</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_ad8c0d7e0b4b30e15f52a8511fd91f497"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ad8c0d7e0b4b30e15f52a8511fd91f497">ROCKSDB_NAMESPACE::FileOpCounters::fsyncs</a></div><div class="ttdeci">std::atomic&lt; int &gt; fsyncs</div><div class="ttdef"><b>Definition</b> <a href="#l00048">counted_fs.h:48</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_ae753221840d600ad4128b4586104d5a7"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#ae753221840d600ad4128b4586104d5a7">ROCKSDB_NAMESPACE::FileOpCounters::dir_opens</a></div><div class="ttdeci">std::atomic&lt; int &gt; dir_opens</div><div class="ttdef"><b>Definition</b> <a href="#l00049">counted_fs.h:49</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOpCounters_html_aeacda70f075930d92f69e2c2530c4d20"><div class="ttname"><a href="../../dd/d9d/structROCKSDB__NAMESPACE_1_1FileOpCounters.html#aeacda70f075930d92f69e2c2530c4d20">ROCKSDB_NAMESPACE::FileOpCounters::FileOpCounters</a></div><div class="ttdeci">FileOpCounters()</div><div class="ttdef"><b>Definition</b> <a href="#l00054">counted_fs.h:54</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOptions_html"><div class="ttname"><a href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">ROCKSDB_NAMESPACE::FileOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00179">file_system.h:179</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IODebugContext_html"><div class="ttname"><a href="../../da/df4/structROCKSDB__NAMESPACE_1_1IODebugContext.html">ROCKSDB_NAMESPACE::IODebugContext</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00216">file_system.h:216</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IOOptions_html"><div class="ttname"><a href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">ROCKSDB_NAMESPACE::IOOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00097">file_system.h:97</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OpCounter_html"><div class="ttname"><a href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html">ROCKSDB_NAMESPACE::OpCounter</a></div><div class="ttdef"><b>Definition</b> <a href="#l00018">counted_fs.h:18</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OpCounter_html_a0193a81a46d8121e17119d14ed464224"><div class="ttname"><a href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a0193a81a46d8121e17119d14ed464224">ROCKSDB_NAMESPACE::OpCounter::bytes</a></div><div class="ttdeci">std::atomic&lt; uint64_t &gt; bytes</div><div class="ttdef"><b>Definition</b> <a href="#l00020">counted_fs.h:20</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OpCounter_html_a16f171d5681c09d062fed9475e1bb59b"><div class="ttname"><a href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a16f171d5681c09d062fed9475e1bb59b">ROCKSDB_NAMESPACE::OpCounter::RecordOp</a></div><div class="ttdeci">void RecordOp(const IOStatus &amp;io_s, size_t added_bytes)</div><div class="ttdef"><b>Definition</b> <a href="#l00028">counted_fs.h:28</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OpCounter_html_a631b451a388d2693cc4250b151de1bd3"><div class="ttname"><a href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#a631b451a388d2693cc4250b151de1bd3">ROCKSDB_NAMESPACE::OpCounter::OpCounter</a></div><div class="ttdeci">OpCounter()</div><div class="ttdef"><b>Definition</b> <a href="#l00022">counted_fs.h:22</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OpCounter_html_ab125fedd45f066d486847dca1f53dacb"><div class="ttname"><a href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#ab125fedd45f066d486847dca1f53dacb">ROCKSDB_NAMESPACE::OpCounter::ops</a></div><div class="ttdeci">std::atomic&lt; int &gt; ops</div><div class="ttdef"><b>Definition</b> <a href="#l00019">counted_fs.h:19</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OpCounter_html_afeffff11b55d924f823ad3c923f183c2"><div class="ttname"><a href="../../d6/d31/structROCKSDB__NAMESPACE_1_1OpCounter.html#afeffff11b55d924f823ad3c923f183c2">ROCKSDB_NAMESPACE::OpCounter::Reset</a></div><div class="ttdeci">void Reset()</div><div class="ttdef"><b>Definition</b> <a href="#l00024">counted_fs.h:24</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../d0/d34/counted__fs_8h.html">counted_fs.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/secondary_index/faiss_ivf_index_test.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d3/dfb/faiss__ivf__index__test_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">faiss_ivf_index_test.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d3/dfb/faiss__ivf__index__test_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d8f/faiss__ivf__index_8h.html">utilities/secondary_index/faiss_ivf_index.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;charconv&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;faiss/IndexFlat.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;faiss/IndexIVFFlat.h&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;faiss/utils/random.h&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d95/transaction__db_8h.html">rocksdb/utilities/transaction_db.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d42/testharness_8h.html">test_util/testharness.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/dc0/coding_8h.html">util/coding.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac4a89e58cd4728ac04cd0f309b0e21a1">   22</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#ad8b332753515c0ab8baada563c2547eb">TEST</a>(FaissIVFIndexTest, Basic) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> dim = 128;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keyword">auto</span> quantizer = std::make_unique&lt;faiss::IndexFlatL2&gt;(dim);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> num_lists = 16;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">auto</span> index =</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      std::make_unique&lt;faiss::IndexIVFFlat&gt;(quantizer.get(), dim, num_lists);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">constexpr</span> faiss::idx_t num_vectors = 1024;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  std::vector&lt;float&gt; embeddings(dim * num_vectors);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  faiss::float_rand(embeddings.data(), dim * num_vectors, 42);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  index-&gt;train(num_vectors, embeddings.data());</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  index-&gt;nprobe = 2;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keyword">const</span> std::string db_name = <a class="code hl_function" href="../../de/d4f/namespaceROCKSDB__NAMESPACE_1_1test.html#a6830c127633c3e6557d9f6316b25a19b">test::PerThreadDBPath</a>(<span class="stringliteral">&quot;faiss_ivf_index_test&quot;</span>);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18634f1aa447e30554266ec43f3a50f9">DestroyDB</a>(db_name, <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a>()));</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a> options;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  options.<a class="code hl_variable" href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#aa03c50d249ad3afef2c9b1039b407afb">create_if_missing</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_struct" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html">TransactionDBOptions</a> txn_db_options;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">const</span> std::string primary_column_name = <span class="stringliteral">&quot;embedding&quot;</span>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  txn_db_options.<a class="code hl_variable" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#abb3d53f8ab0164c4c0ab309307ec3ecd">secondary_indices</a>.emplace_back(</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      std::make_shared&lt;FaissIVFIndex&gt;(std::move(index), primary_column_name));</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <a class="code hl_class" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html">TransactionDB</a>* db = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a6c0d0ca98e38a1d4e814f55d1f128cca">TransactionDB::Open</a>(options, txn_db_options, db_name, &amp;db));</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  std::unique_ptr&lt;TransactionDB&gt; db_guard(db);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <a class="code hl_struct" href="../../dc/d97/structROCKSDB__NAMESPACE_1_1ColumnFamilyOptions.html">ColumnFamilyOptions</a> cf1_opts;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <a class="code hl_class" href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ColumnFamilyHandle</a>* cfh1 = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#abaaa5f1ca478abe747650338232387a3">CreateColumnFamily</a>(cf1_opts, <span class="stringliteral">&quot;cf1&quot;</span>, &amp;cfh1));</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  std::unique_ptr&lt;ColumnFamilyHandle&gt; cfh1_guard(cfh1);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_struct" href="../../dc/d97/structROCKSDB__NAMESPACE_1_1ColumnFamilyOptions.html">ColumnFamilyOptions</a> cf2_opts;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <a class="code hl_class" href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ColumnFamilyHandle</a>* cfh2 = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(db-&gt;<a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#abaaa5f1ca478abe747650338232387a3">CreateColumnFamily</a>(cf2_opts, <span class="stringliteral">&quot;cf2&quot;</span>, &amp;cfh2));</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  std::unique_ptr&lt;ColumnFamilyHandle&gt; cfh2_guard(cfh2);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; secondary_index = txn_db_options.<a class="code hl_variable" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#abb3d53f8ab0164c4c0ab309307ec3ecd">secondary_indices</a>.back();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  secondary_index-&gt;SetPrimaryColumnFamily(cfh1);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  secondary_index-&gt;SetSecondaryColumnFamily(cfh2);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    std::unique_ptr&lt;Transaction&gt; txn(db-&gt;<a class="code hl_function" href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">BeginTransaction</a>(<a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>()));</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">for</span> (faiss::idx_t i = 0; i &lt; num_vectors; ++i) {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="keyword">const</span> std::string primary_key = std::to_string(i);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn-&gt;PutEntity(</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>          cfh1, primary_key,</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>          <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">WideColumns</a>{</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>              {primary_column_name,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>               Slice(reinterpret_cast&lt;const char*&gt;(embeddings.data() + i * dim),</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                     dim * sizeof(float))}}));</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(txn-&gt;Commit());</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordtype">size_t</span> num_found = 0;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    std::unique_ptr&lt;Iterator&gt; it(db-&gt;NewIterator(ReadOptions(), cfh2));</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">for</span> (it-&gt;SeekToFirst(); it-&gt;Valid(); it-&gt;Next()) {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      Slice key = it-&gt;key();</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      faiss::idx_t label = -1;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(GetVarsignedint64(&amp;key, &amp;label));</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#af4ff5dc71479fcb374b6bc2ed195bcc4">ASSERT_GE</a>(label, 0);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#affc4f9cae4c3aabfe60fced83737b42c">ASSERT_LT</a>(label, num_lists);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      faiss::idx_t <span class="keywordtype">id</span> = -1;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(std::from_chars(key.data(), key.data() + key.size(), <span class="keywordtype">id</span>).ec,</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                std::errc());</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#af4ff5dc71479fcb374b6bc2ed195bcc4">ASSERT_GE</a>(<span class="keywordtype">id</span>, 0);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#affc4f9cae4c3aabfe60fced83737b42c">ASSERT_LT</a>(<span class="keywordtype">id</span>, num_vectors);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      <span class="comment">// Since we use IndexIVFFlat, there is no fine quantization, so the code</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      <span class="comment">// is actually just the original embedding</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>          it-&gt;value(),</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>          Slice(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(embeddings.data() + <span class="keywordtype">id</span> * dim),</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                dim * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>)));</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      ++num_found;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    }</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(it-&gt;status());</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(num_found, num_vectors);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>}</div>
+</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="foldopen" id="foldopen00120" data-start="{" data-end="}">
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../d3/dfb/faiss__ivf__index__test_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627">  120</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  ROCKSDB_NAMESPACE::port::InstallStackTraceHandler();</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <a class="code hl_function" href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">::testing::InitGoogleTest</a>(&amp;argc, argv);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a>();</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
+</div>
+<div class="ttc" id="acache__bench_8cc_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/db4/cache__bench_8cc_source.html#l00011">cache_bench.cc:11</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ColumnFamilyHandle_html"><div class="ttname"><a href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ROCKSDB_NAMESPACE::ColumnFamilyHandle</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l00081">db.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StackableDB_html_abaaa5f1ca478abe747650338232387a3"><div class="ttname"><a href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#abaaa5f1ca478abe747650338232387a3">ROCKSDB_NAMESPACE::StackableDB::CreateColumnFamily</a></div><div class="ttdeci">Status CreateColumnFamily(const ColumnFamilyOptions &amp;options, const std::string &amp;column_family_name, ColumnFamilyHandle **handle) override</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d2d/stackable__db_8h_source.html#l00045">stackable_db.h:45</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TransactionDB_html"><div class="ttname"><a href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html">ROCKSDB_NAMESPACE::TransactionDB</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00420">transaction_db.h:420</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TransactionDB_html_a186a74b7fc3e2e810a4024bf5f6a7558"><div class="ttname"><a href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a186a74b7fc3e2e810a4024bf5f6a7558">ROCKSDB_NAMESPACE::TransactionDB::BeginTransaction</a></div><div class="ttdeci">virtual Transaction * BeginTransaction(const WriteOptions &amp;write_options, const TransactionOptions &amp;txn_options=TransactionOptions(), Transaction *old_txn=nullptr)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TransactionDB_html_a6c0d0ca98e38a1d4e814f55d1f128cca"><div class="ttname"><a href="../../da/dcd/classROCKSDB__NAMESPACE_1_1TransactionDB.html#a6c0d0ca98e38a1d4e814f55d1f128cca">ROCKSDB_NAMESPACE::TransactionDB::Open</a></div><div class="ttdeci">static Status Open(const Options &amp;options, const TransactionDBOptions &amp;txn_db_options, const std::string &amp;dbname, TransactionDB **dbptr)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/db9/pessimistic__transaction__db_8cc_source.html#l00207">pessimistic_transaction_db.cc:207</a></div></div>
+<div class="ttc" id="acoding_8h_html"><div class="ttname"><a href="../../dd/dc0/coding_8h.html">coding.h</a></div></div>
+<div class="ttc" id="afaiss__ivf__index_8h_html"><div class="ttname"><a href="../../d8/d8f/faiss__ivf__index_8h.html">faiss_ivf_index.h</a></div></div>
+<div class="ttc" id="agtest_8h_html_a1a6db8b1338ee7040329322b77779086"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a></div><div class="ttdeci">#define ASSERT_EQ(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21769">gtest.h:21769</a></div></div>
+<div class="ttc" id="agtest_8h_html_a853a3792807489591d3d4a2f2ff9359f"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a></div><div class="ttdeci">int RUN_ALL_TESTS() GTEST_MUST_USE_RESULT_</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22109">gtest.h:22109</a></div></div>
+<div class="ttc" id="agtest_8h_html_ad8b332753515c0ab8baada563c2547eb"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ad8b332753515c0ab8baada563c2547eb">TEST</a></div><div class="ttdeci">#define TEST(test_case_name, test_name)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22056">gtest.h:22056</a></div></div>
+<div class="ttc" id="agtest_8h_html_ae9244bfbda562e8b798789b001993fa5"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a></div><div class="ttdeci">#define ASSERT_TRUE(condition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21682">gtest.h:21682</a></div></div>
+<div class="ttc" id="agtest_8h_html_af4ff5dc71479fcb374b6bc2ed195bcc4"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#af4ff5dc71479fcb374b6bc2ed195bcc4">ASSERT_GE</a></div><div class="ttdeci">#define ASSERT_GE(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21785">gtest.h:21785</a></div></div>
+<div class="ttc" id="agtest_8h_html_affc4f9cae4c3aabfe60fced83737b42c"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#affc4f9cae4c3aabfe60fced83737b42c">ASSERT_LT</a></div><div class="ttdeci">#define ASSERT_LT(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21781">gtest.h:21781</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1test_html_a6830c127633c3e6557d9f6316b25a19b"><div class="ttname"><a href="../../de/d4f/namespaceROCKSDB__NAMESPACE_1_1test.html#a6830c127633c3e6557d9f6316b25a19b">ROCKSDB_NAMESPACE::test::PerThreadDBPath</a></div><div class="ttdeci">std::string PerThreadDBPath(std::string dir, std::string name)</div><div class="ttdef"><b>Definition</b> <a href="../../da/d18/testharness_8cc_source.html#l00041">testharness.cc:41</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a18634f1aa447e30554266ec43f3a50f9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18634f1aa447e30554266ec43f3a50f9">ROCKSDB_NAMESPACE::DestroyDB</a></div><div class="ttdeci">Status DestroyDB(const std::string &amp;dbname, const Options &amp;options, const std::vector&lt; ColumnFamilyDescriptor &gt; &amp;column_families)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/db__impl_8cc_source.html#l05348">db_impl.cc:5348</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa3d6cbb70dfce12fe11d4a341f361d09"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">ROCKSDB_NAMESPACE::WideColumns</a></div><div class="ttdeci">std::vector&lt; WideColumn &gt; WideColumns</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dde/wide__columns_8h_source.html#l00096">wide_columns.h:96</a></div></div>
+<div class="ttc" id="anamespacetesting_html_aee3f6f99df893f576f705f66c0559482"><div class="ttname"><a href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">testing::InitGoogleTest</a></div><div class="ttdeci">void InitGoogleTest(int *argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d8c/gtest-all_8cc_source.html#l07404">gtest-all.cc:7404</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ColumnFamilyOptions_html"><div class="ttname"><a href="../../dc/d97/structROCKSDB__NAMESPACE_1_1ColumnFamilyOptions.html">ROCKSDB_NAMESPACE::ColumnFamilyOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l00066">options.h:66</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1DBOptions_html_aa03c50d249ad3afef2c9b1039b407afb"><div class="ttname"><a href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#aa03c50d249ad3afef2c9b1039b407afb">ROCKSDB_NAMESPACE::DBOptions::create_if_missing</a></div><div class="ttdeci">bool create_if_missing</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l00563">options.h:563</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Options_html"><div class="ttname"><a href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">ROCKSDB_NAMESPACE::Options</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01620">options.h:1620</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionDBOptions_html"><div class="ttname"><a href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html">ROCKSDB_NAMESPACE::TransactionDBOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00150">transaction_db.h:150</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionDBOptions_html_abb3d53f8ab0164c4c0ab309307ec3ecd"><div class="ttname"><a href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#abb3d53f8ab0164c4c0ab309307ec3ecd">ROCKSDB_NAMESPACE::TransactionDBOptions::secondary_indices</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; SecondaryIndex &gt; &gt; secondary_indices</div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00250">transaction_db.h:250</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1WriteOptions_html"><div class="ttname"><a href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">ROCKSDB_NAMESPACE::WriteOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01958">options.h:1958</a></div></div>
+<div class="ttc" id="atestharness_8h_html"><div class="ttname"><a href="../../dc/d42/testharness_8h.html">testharness.h</a></div></div>
+<div class="ttc" id="atestharness_8h_html_a6892e90ee417adfb0c66aa7a49769895"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a></div><div class="ttdeci">#define ASSERT_OK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00082">testharness.h:82</a></div></div>
+<div class="ttc" id="atestharness_8h_html_a72818a1b73e08f703b93b673513ca08a"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a></div><div class="ttdeci">#define EXPECT_OK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00085">testharness.h:85</a></div></div>
+<div class="ttc" id="atransaction__db_8h_html"><div class="ttname"><a href="../../df/d95/transaction__db_8h.html">transaction_db.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_39f16c53e2fedc4dcf26740696f4a019.html">secondary_index</a></li><li class="navelem"><a class="el" href="../../d3/dfb/faiss__ivf__index__test_8cc.html">faiss_ivf_index_test.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

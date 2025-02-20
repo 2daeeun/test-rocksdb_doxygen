@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: include/rocksdb/wide_columns.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d4/dde/wide__columns_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">wide_columns.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d4/dde/wide__columns_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;ostream&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;tuple&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/df5/rocksdb__namespace_8h.html">rocksdb/rocksdb_namespace.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d48/slice_8h.html">rocksdb/slice.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dd0/include_2rocksdb_2status_8h.html">rocksdb/status.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span>ColumnFamilyHandle;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// Class representing a wide column, which is defined as a pair of column name</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// and column value.</span></div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html">   23</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac176769c65ba7437ee2394878aaaa503">WideColumn</a> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac176769c65ba7437ee2394878aaaa503">   25</a></span>  <a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac176769c65ba7437ee2394878aaaa503">WideColumn</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="comment">// Initializes a WideColumn object by forwarding the name and value</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// arguments to the corresponding member Slices. This makes it possible to</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="comment">// construct a WideColumn using combinations of const char*, const</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="comment">// std::string&amp;, const Slice&amp; etc., for example:</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// constexpr char foo[] = &quot;foo&quot;;</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="comment">// const std::string bar(&quot;bar&quot;);</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="comment">// WideColumn column(foo, bar);</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> N, <span class="keyword">typename</span> V&gt;</div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a0bf5752fc9e243d70d09c3729fbcd41b">   36</a></span>  <a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a0bf5752fc9e243d70d09c3729fbcd41b">WideColumn</a>(N&amp;&amp; <a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">name</a>, V&amp;&amp; <a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae0d1010578c7d83fe700f9836aec7391">value</a>)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      : <a class="code hl_variable" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac958778af611faf85dab1b1c30b624ff">name_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::forward&lt;N&gt;(<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">name</a>)), <a class="code hl_variable" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a9fa73643e73a69cd787c64cca40f5673">value_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::forward&lt;V&gt;(<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae0d1010578c7d83fe700f9836aec7391">value</a>)) {}</div>
+</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// Initializes a WideColumn object by forwarding the elements of</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// name_tuple and value_tuple to the constructors of the corresponding member</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="comment">// Slices. This makes it possible to initialize the Slices using the Slice</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// constructors that take more than one argument, for example:</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">// constexpr char foo_name[] = &quot;foo_name&quot;;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// constexpr char bar_value[] = &quot;bar_value&quot;;</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// WideColumn column(std::piecewise_construct,</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">//                   std::forward_as_tuple(foo_name, 3),</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">//                   std::forward_as_tuple(bar_value, 3));</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> NTuple, <span class="keyword">typename</span> VTuple&gt;</div>
+<div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#aba164267783f4019f70f7184e9efd117">   50</a></span>  <a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#aba164267783f4019f70f7184e9efd117">WideColumn</a>(std::piecewise_construct_t, NTuple&amp;&amp; name_tuple,</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>             VTuple&amp;&amp; value_tuple)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      : <a class="code hl_variable" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac958778af611faf85dab1b1c30b624ff">name_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::make_from_tuple&lt;<a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&gt;(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::forward&lt;NTuple&gt;(name_tuple))),</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <a class="code hl_variable" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a9fa73643e73a69cd787c64cca40f5673">value_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::make_from_tuple&lt;<a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&gt;(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::forward&lt;VTuple&gt;(value_tuple))) {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
+</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">   56</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">name</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac958778af611faf85dab1b1c30b624ff">name_</a>; }</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae0d1010578c7d83fe700f9836aec7391">   57</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae0d1010578c7d83fe700f9836aec7391">value</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a9fa73643e73a69cd787c64cca40f5673">value_</a>; }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ad73c89ce0f35a83a9c7a0db9b00ee1a6">   59</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ad73c89ce0f35a83a9c7a0db9b00ee1a6">name</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac958778af611faf85dab1b1c30b624ff">name_</a>; }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae86d411b6b4f6a90ff77544beee037be">   60</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae86d411b6b4f6a90ff77544beee037be">value</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a9fa73643e73a69cd787c64cca40f5673">value_</a>; }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac958778af611faf85dab1b1c30b624ff">   63</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_variable" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac958778af611faf85dab1b1c30b624ff">name_</a>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a9fa73643e73a69cd787c64cca40f5673">   64</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_variable" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a9fa73643e73a69cd787c64cca40f5673">value_</a>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>};</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// Note: column names and values are compared bytewise.</span></div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6ee65bc9e5ec9ff673d866451b1ed8a1">   68</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1dc28f4d7734a6cd015a54e54a3d39a0">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html">WideColumn</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_class" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html">WideColumn</a>&amp; rhs) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">return</span> lhs.<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">name</a>() == rhs.<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">name</a>() &amp;&amp; lhs.<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae0d1010578c7d83fe700f9836aec7391">value</a>() == rhs.<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae0d1010578c7d83fe700f9836aec7391">value</a>();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
+</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a511addf225be1cc2aa139a34d23b851c">   72</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6185c1ff5be0299f2d50183ebfd37c0e">operator!=</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html">WideColumn</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_class" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html">WideColumn</a>&amp; rhs) {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordflow">return</span> !(lhs == rhs);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
+</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="foldopen" id="foldopen00076" data-start="{" data-end="}">
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a58cc50bb554fefa32aeecbb1299bcb9a">   76</a></span><span class="keyword">inline</span> std::ostream&amp; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a140e1a17cda68907c5b700c9e536f970">operator&lt;&lt;</a>(std::ostream&amp; os, <span class="keyword">const</span> <a class="code hl_class" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html">WideColumn</a>&amp; column) {</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> hex =</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      (os.flags() &amp; std::ios_base::basefield) == std::ios_base::hex;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">if</span> (!column.<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">name</a>().<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">empty</a>()) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">if</span> (hex) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      os &lt;&lt; <span class="stringliteral">&quot;0x&quot;</span>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    os &lt;&lt; column.<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">name</a>().<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ToString</a>(hex);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  os &lt;&lt; <span class="charliteral">&#39;:&#39;</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordflow">if</span> (!column.<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae0d1010578c7d83fe700f9836aec7391">value</a>().<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">empty</a>()) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">if</span> (hex) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      os &lt;&lt; <span class="stringliteral">&quot;0x&quot;</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    os &lt;&lt; column.<a class="code hl_function" href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae0d1010578c7d83fe700f9836aec7391">value</a>().<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ToString</a>(hex);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keywordflow">return</span> os;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}</div>
+</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">// A collection of wide columns.</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">   96</a></span><span class="keyword">using </span><a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">WideColumns</a> = std::vector&lt;WideColumn&gt;;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">// The anonymous default wide column (an empty Slice).</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8999596cfeae56f7b79618791c7dfc3c">kDefaultWideColumnName</a>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">// An empty set of wide columns.</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">WideColumns</a> <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a563c29699c57f5c752202d64e4fa1948">kNoWideColumns</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">// A self-contained collection of wide columns. Used for the results of</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">// wide-column queries.</span></div>
+<div class="foldopen" id="foldopen00106" data-start="{" data-end="};">
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html">  106</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a> {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">  108</a></span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ac59ff51f1dba84a463b8996ca44e8641">  110</a></span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ac59ff51f1dba84a463b8996ca44e8641">PinnableWideColumns</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a33159fff1f2313b60e6edb9cf14d2807">  111</a></span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>&amp; <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a33159fff1f2313b60e6edb9cf14d2807">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>(<a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>&amp;&amp;);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>&amp; <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a33159fff1f2313b60e6edb9cf14d2807">operator=</a>(<a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>&amp;&amp;);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ac79ffb4b4fff51704c78257a949da17c">  116</a></span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ac79ffb4b4fff51704c78257a949da17c">~PinnableWideColumns</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ae6e04e9cc50bc839cceb7ee44f9e7112">  118</a></span>  <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">WideColumns</a>&amp; <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ae6e04e9cc50bc839cceb7ee44f9e7112">columns</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabfd1a954a4c9f714ffa00843ffbb8ce">columns_</a>; }</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabcd8f9257c236cfcd6a469336b37a3a">  119</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabcd8f9257c236cfcd6a469336b37a3a">serialized_size</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">value_</a>.size(); }</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="keywordtype">void</span> SetPlainValue(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keywordtype">void</span> SetPlainValue(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value, <a class="code hl_class" href="../../d7/d19/classROCKSDB__NAMESPACE_1_1Cleanable.html">Cleanable</a>* cleanable);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordtype">void</span> SetPlainValue(<a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>&amp;&amp; value);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keywordtype">void</span> SetPlainValue(std::string&amp;&amp; value);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> SetWideColumnValue(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> SetWideColumnValue(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value, <a class="code hl_class" href="../../d7/d19/classROCKSDB__NAMESPACE_1_1Cleanable.html">Cleanable</a>* cleanable);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> SetWideColumnValue(<a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>&amp;&amp; value);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> SetWideColumnValue(std::string&amp;&amp; value);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keywordtype">void</span> Reset();</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordtype">void</span> Move(<a class="code hl_class" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html">PinnableWideColumns</a>&amp;&amp; other);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="keywordtype">void</span> CopyValue(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keywordtype">void</span> PinOrCopyValue(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value, <a class="code hl_class" href="../../d7/d19/classROCKSDB__NAMESPACE_1_1Cleanable.html">Cleanable</a>* cleanable);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="keywordtype">void</span> MoveValue(<a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>&amp;&amp; value);</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keywordtype">void</span> MoveValue(std::string&amp;&amp; value);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="keywordtype">void</span> CreateIndexForPlainValue();</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> CreateIndexForWideColumns();</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">  143</a></span>  <a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a> <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">value_</a>;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabfd1a954a4c9f714ffa00843ffbb8ce">  144</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">WideColumns</a> <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabfd1a954a4c9f714ffa00843ffbb8ce">columns_</a>;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>};</div>
+</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="foldopen" id="foldopen00147" data-start="{" data-end="}">
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af9249f570106c21bed9686216bf4206a">  147</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af9249f570106c21bed9686216bf4206a">PinnableWideColumns::Reset</a>() {</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">value_</a>.Reset();</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabfd1a954a4c9f714ffa00843ffbb8ce">columns_</a>.clear();</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>}</div>
+</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="foldopen" id="foldopen00152" data-start="{" data-end="}">
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a3259658cfa724b920d63498145790c6b">  152</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a3259658cfa724b920d63498145790c6b">PinnableWideColumns::Move</a>(<a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>&amp;&amp; other) {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  assert(<a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabfd1a954a4c9f714ffa00843ffbb8ce">columns_</a>.empty());</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keywordflow">if</span> (other.columns_.empty()) {</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  }</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <span class="keyword">const</span> data = other.value_.data();</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> is_plain_value =</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>      other.columns_.size() == 1 &amp;&amp;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      other.columns_.front().name() == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8999596cfeae56f7b79618791c7dfc3c">kDefaultWideColumnName</a> &amp;&amp;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>      other.columns_.front().value() == other.value_;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#abf87068e4ef724728b38522983fcf62e">MoveValue</a>(std::move(other.value_));</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">value_</a>.data() == data) {</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabfd1a954a4c9f714ffa00843ffbb8ce">columns_</a> = std::move(other.columns_);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keywordflow">if</span> (is_plain_value) {</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>      <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a35b6d9edf7514dc58c6a24ea520fd8b7">CreateIndexForPlainValue</a>();</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a2916bb2ea5569ad2aa63e2cdb3dc6a04">CreateIndexForWideColumns</a>();</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>      assert(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>());</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>      s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#aaf1532cf0c0cf8fb93620d09e41d624f">PermitUncheckedError</a>();</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    }</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  }</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  other.Reset();</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>}</div>
+</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="foldopen" id="foldopen00183" data-start="{" data-end="}">
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0e095b464c09936e439a89e467bbe2b4">  183</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0e095b464c09936e439a89e467bbe2b4">PinnableWideColumns::CopyValue</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value) {</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">value_</a>.PinSelf(value);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>}</div>
+</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="foldopen" id="foldopen00187" data-start="{" data-end="}">
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a4586012bf7aa3b6a1bc60e63ef0b44f8">  187</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a4586012bf7aa3b6a1bc60e63ef0b44f8">PinnableWideColumns::PinOrCopyValue</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value,</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                                                <a class="code hl_class" href="../../d7/d19/classROCKSDB__NAMESPACE_1_1Cleanable.html">Cleanable</a>* cleanable) {</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="keywordflow">if</span> (!cleanable) {</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0e095b464c09936e439a89e467bbe2b4">CopyValue</a>(value);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  }</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">value_</a>.PinSlice(value, cleanable);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>}</div>
+</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="foldopen" id="foldopen00197" data-start="{" data-end="}">
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#abf87068e4ef724728b38522983fcf62e">  197</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#abf87068e4ef724728b38522983fcf62e">PinnableWideColumns::MoveValue</a>(<a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>&amp;&amp; value) {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">value_</a> = std::move(value);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>}</div>
+</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="foldopen" id="foldopen00201" data-start="{" data-end="}">
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0cfc32eefd2e1cfafb127a0520f00a3f">  201</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#abf87068e4ef724728b38522983fcf62e">PinnableWideColumns::MoveValue</a>(std::string&amp;&amp; value) {</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  std::string* <span class="keyword">const</span> buf = <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">value_</a>.GetSelf();</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  assert(buf);</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  *buf = std::move(value);</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">value_</a>.PinSelf();</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>}</div>
+</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="foldopen" id="foldopen00209" data-start="{" data-end="}">
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a35b6d9edf7514dc58c6a24ea520fd8b7">  209</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a35b6d9edf7514dc58c6a24ea520fd8b7">PinnableWideColumns::CreateIndexForPlainValue</a>() {</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabfd1a954a4c9f714ffa00843ffbb8ce">columns_</a> = <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">WideColumns</a>{{<a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8999596cfeae56f7b79618791c7dfc3c">kDefaultWideColumnName</a>, <a class="code hl_variable" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">value_</a>}};</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>}</div>
+</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
+<div class="foldopen" id="foldopen00213" data-start="{" data-end="}">
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#adbbb88458b43964a338e5096d4bed478">  213</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#adbbb88458b43964a338e5096d4bed478">PinnableWideColumns::SetPlainValue</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value) {</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0e095b464c09936e439a89e467bbe2b4">CopyValue</a>(value);</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a35b6d9edf7514dc58c6a24ea520fd8b7">CreateIndexForPlainValue</a>();</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>}</div>
+</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
+<div class="foldopen" id="foldopen00218" data-start="{" data-end="}">
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a6420936366f0840da5e40881bab1a386">  218</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#adbbb88458b43964a338e5096d4bed478">PinnableWideColumns::SetPlainValue</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value,</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>                                               <a class="code hl_class" href="../../d7/d19/classROCKSDB__NAMESPACE_1_1Cleanable.html">Cleanable</a>* cleanable) {</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a4586012bf7aa3b6a1bc60e63ef0b44f8">PinOrCopyValue</a>(value, cleanable);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a35b6d9edf7514dc58c6a24ea520fd8b7">CreateIndexForPlainValue</a>();</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>}</div>
+</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="foldopen" id="foldopen00224" data-start="{" data-end="}">
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a03b56868178eec190046875f11009575">  224</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#adbbb88458b43964a338e5096d4bed478">PinnableWideColumns::SetPlainValue</a>(<a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>&amp;&amp; value) {</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#abf87068e4ef724728b38522983fcf62e">MoveValue</a>(std::move(value));</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a35b6d9edf7514dc58c6a24ea520fd8b7">CreateIndexForPlainValue</a>();</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>}</div>
+</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="foldopen" id="foldopen00229" data-start="{" data-end="}">
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aded74d88f393423cbd27393d31bc6de0">  229</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#adbbb88458b43964a338e5096d4bed478">PinnableWideColumns::SetPlainValue</a>(std::string&amp;&amp; value) {</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#abf87068e4ef724728b38522983fcf62e">MoveValue</a>(std::move(value));</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a35b6d9edf7514dc58c6a24ea520fd8b7">CreateIndexForPlainValue</a>();</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>}</div>
+</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="foldopen" id="foldopen00234" data-start="{" data-end="}">
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af796bb84259196797d20cac8c57219bd">  234</a></span><span class="keyword">inline</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af796bb84259196797d20cac8c57219bd">PinnableWideColumns::SetWideColumnValue</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value) {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0e095b464c09936e439a89e467bbe2b4">CopyValue</a>(value);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a2916bb2ea5569ad2aa63e2cdb3dc6a04">CreateIndexForWideColumns</a>();</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af9249f570106c21bed9686216bf4206a">Reset</a>();</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  }</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>}</div>
+</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="foldopen" id="foldopen00245" data-start="{" data-end="}">
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a146bc671323aefb006784da5591fa36b">  245</a></span><span class="keyword">inline</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af796bb84259196797d20cac8c57219bd">PinnableWideColumns::SetWideColumnValue</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value,</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                                                      <a class="code hl_class" href="../../d7/d19/classROCKSDB__NAMESPACE_1_1Cleanable.html">Cleanable</a>* cleanable) {</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a4586012bf7aa3b6a1bc60e63ef0b44f8">PinOrCopyValue</a>(value, cleanable);</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a2916bb2ea5569ad2aa63e2cdb3dc6a04">CreateIndexForWideColumns</a>();</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af9249f570106c21bed9686216bf4206a">Reset</a>();</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  }</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>}</div>
+</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
+<div class="foldopen" id="foldopen00257" data-start="{" data-end="}">
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ac72131e02d62d8e34901985fe5c772cd">  257</a></span><span class="keyword">inline</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af796bb84259196797d20cac8c57219bd">PinnableWideColumns::SetWideColumnValue</a>(<a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>&amp;&amp; value) {</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#abf87068e4ef724728b38522983fcf62e">MoveValue</a>(std::move(value));</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a2916bb2ea5569ad2aa63e2cdb3dc6a04">CreateIndexForWideColumns</a>();</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af9249f570106c21bed9686216bf4206a">Reset</a>();</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  }</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>}</div>
+</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
+<div class="foldopen" id="foldopen00268" data-start="{" data-end="}">
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a28a409815f77f7a5b5af9f826f9133c4">  268</a></span><span class="keyword">inline</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af796bb84259196797d20cac8c57219bd">PinnableWideColumns::SetWideColumnValue</a>(std::string&amp;&amp; value) {</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#abf87068e4ef724728b38522983fcf62e">MoveValue</a>(std::move(value));</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a2916bb2ea5569ad2aa63e2cdb3dc6a04">CreateIndexForWideColumns</a>();</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af9249f570106c21bed9686216bf4206a">Reset</a>();</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  }</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>}</div>
+</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="foldopen" id="foldopen00279" data-start="{" data-end="}">
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#acec7633ad2a11afe0ccdfba7eb1f0db4">  279</a></span><span class="keyword">inline</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns::PinnableWideColumns</a>(<a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>&amp;&amp; other) {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a3259658cfa724b920d63498145790c6b">Move</a>(std::move(other));</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>}</div>
+</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
+<div class="foldopen" id="foldopen00283" data-start="{" data-end="}">
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno"><a class="line" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a3b711aecb160938e5e2d57075ea8039f">  283</a></span><span class="keyword">inline</span> <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>&amp; <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a33159fff1f2313b60e6edb9cf14d2807">PinnableWideColumns::operator=</a>(</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">PinnableWideColumns</a>&amp;&amp; other) {</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  <span class="keywordflow">if</span> (<span class="keyword">this</span> != &amp;other) {</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af9249f570106c21bed9686216bf4206a">Reset</a>();</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a3259658cfa724b920d63498145790c6b">Move</a>(std::move(other));</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  }</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>}</div>
+</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="foldopen" id="foldopen00293" data-start="{" data-end="}">
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a34cae592ddc8c6bad4d5c57141a4c09f">  293</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1dc28f4d7734a6cd015a54e54a3d39a0">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html">PinnableWideColumns</a>&amp; lhs,</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>                       <span class="keyword">const</span> <a class="code hl_class" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html">PinnableWideColumns</a>&amp; rhs) {</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="keywordflow">return</span> lhs.<a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ae6e04e9cc50bc839cceb7ee44f9e7112">columns</a>() == rhs.<a class="code hl_function" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ae6e04e9cc50bc839cceb7ee44f9e7112">columns</a>();</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>}</div>
+</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
+<div class="foldopen" id="foldopen00298" data-start="{" data-end="}">
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a063ee6d74e1dd23137e29336829123ef">  298</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6185c1ff5be0299f2d50183ebfd37c0e">operator!=</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html">PinnableWideColumns</a>&amp; lhs,</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>                       <span class="keyword">const</span> <a class="code hl_class" href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html">PinnableWideColumns</a>&amp; rhs) {</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  <span class="keywordflow">return</span> !(lhs == rhs);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>}</div>
+</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Cleanable_html"><div class="ttname"><a href="../../d7/d19/classROCKSDB__NAMESPACE_1_1Cleanable.html">ROCKSDB_NAMESPACE::Cleanable</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d9d/cleanable_8h_source.html#l00015">cleanable.h:15</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableSlice_html"><div class="ttname"><a href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">ROCKSDB_NAMESPACE::PinnableSlice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00138">slice.h:138</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html">ROCKSDB_NAMESPACE::PinnableWideColumns</a></div><div class="ttdef"><b>Definition</b> <a href="#l00106">wide_columns.h:106</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_a0476ee4eb45fbadce476d0f024e493f7"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0476ee4eb45fbadce476d0f024e493f7">ROCKSDB_NAMESPACE::PinnableWideColumns::value_</a></div><div class="ttdeci">PinnableSlice value_</div><div class="ttdef"><b>Definition</b> <a href="#l00143">wide_columns.h:143</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_a0e095b464c09936e439a89e467bbe2b4"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a0e095b464c09936e439a89e467bbe2b4">ROCKSDB_NAMESPACE::PinnableWideColumns::CopyValue</a></div><div class="ttdeci">void CopyValue(const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00183">wide_columns.h:183</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_a1b540dab4894fe64ab5e6407a7c62ec8"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a1b540dab4894fe64ab5e6407a7c62ec8">ROCKSDB_NAMESPACE::PinnableWideColumns::PinnableWideColumns</a></div><div class="ttdeci">PinnableWideColumns()=default</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_a2916bb2ea5569ad2aa63e2cdb3dc6a04"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a2916bb2ea5569ad2aa63e2cdb3dc6a04">ROCKSDB_NAMESPACE::PinnableWideColumns::CreateIndexForWideColumns</a></div><div class="ttdeci">Status CreateIndexForWideColumns()</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d7c/wide__columns_8cc_source.html#l00015">wide_columns.cc:15</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_a3259658cfa724b920d63498145790c6b"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a3259658cfa724b920d63498145790c6b">ROCKSDB_NAMESPACE::PinnableWideColumns::Move</a></div><div class="ttdeci">void Move(PinnableWideColumns &amp;&amp;other)</div><div class="ttdef"><b>Definition</b> <a href="#l00152">wide_columns.h:152</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_a33159fff1f2313b60e6edb9cf14d2807"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a33159fff1f2313b60e6edb9cf14d2807">ROCKSDB_NAMESPACE::PinnableWideColumns::operator=</a></div><div class="ttdeci">PinnableWideColumns &amp; operator=(const PinnableWideColumns &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_a35b6d9edf7514dc58c6a24ea520fd8b7"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a35b6d9edf7514dc58c6a24ea520fd8b7">ROCKSDB_NAMESPACE::PinnableWideColumns::CreateIndexForPlainValue</a></div><div class="ttdeci">void CreateIndexForPlainValue()</div><div class="ttdef"><b>Definition</b> <a href="#l00209">wide_columns.h:209</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_a4586012bf7aa3b6a1bc60e63ef0b44f8"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#a4586012bf7aa3b6a1bc60e63ef0b44f8">ROCKSDB_NAMESPACE::PinnableWideColumns::PinOrCopyValue</a></div><div class="ttdeci">void PinOrCopyValue(const Slice &amp;value, Cleanable *cleanable)</div><div class="ttdef"><b>Definition</b> <a href="#l00187">wide_columns.h:187</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_aabcd8f9257c236cfcd6a469336b37a3a"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabcd8f9257c236cfcd6a469336b37a3a">ROCKSDB_NAMESPACE::PinnableWideColumns::serialized_size</a></div><div class="ttdeci">size_t serialized_size() const</div><div class="ttdef"><b>Definition</b> <a href="#l00119">wide_columns.h:119</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_aabfd1a954a4c9f714ffa00843ffbb8ce"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#aabfd1a954a4c9f714ffa00843ffbb8ce">ROCKSDB_NAMESPACE::PinnableWideColumns::columns_</a></div><div class="ttdeci">WideColumns columns_</div><div class="ttdef"><b>Definition</b> <a href="#l00144">wide_columns.h:144</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_abf87068e4ef724728b38522983fcf62e"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#abf87068e4ef724728b38522983fcf62e">ROCKSDB_NAMESPACE::PinnableWideColumns::MoveValue</a></div><div class="ttdeci">void MoveValue(PinnableSlice &amp;&amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00197">wide_columns.h:197</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_ac59ff51f1dba84a463b8996ca44e8641"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ac59ff51f1dba84a463b8996ca44e8641">ROCKSDB_NAMESPACE::PinnableWideColumns::PinnableWideColumns</a></div><div class="ttdeci">PinnableWideColumns(const PinnableWideColumns &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_ac79ffb4b4fff51704c78257a949da17c"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ac79ffb4b4fff51704c78257a949da17c">ROCKSDB_NAMESPACE::PinnableWideColumns::~PinnableWideColumns</a></div><div class="ttdeci">~PinnableWideColumns()=default</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_adbbb88458b43964a338e5096d4bed478"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#adbbb88458b43964a338e5096d4bed478">ROCKSDB_NAMESPACE::PinnableWideColumns::SetPlainValue</a></div><div class="ttdeci">void SetPlainValue(const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00213">wide_columns.h:213</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_ae6e04e9cc50bc839cceb7ee44f9e7112"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#ae6e04e9cc50bc839cceb7ee44f9e7112">ROCKSDB_NAMESPACE::PinnableWideColumns::columns</a></div><div class="ttdeci">const WideColumns &amp; columns() const</div><div class="ttdef"><b>Definition</b> <a href="#l00118">wide_columns.h:118</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_af796bb84259196797d20cac8c57219bd"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af796bb84259196797d20cac8c57219bd">ROCKSDB_NAMESPACE::PinnableWideColumns::SetWideColumnValue</a></div><div class="ttdeci">Status SetWideColumnValue(const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00234">wide_columns.h:234</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableWideColumns_html_af9249f570106c21bed9686216bf4206a"><div class="ttname"><a href="../../d1/d43/classROCKSDB__NAMESPACE_1_1PinnableWideColumns.html#af9249f570106c21bed9686216bf4206a">ROCKSDB_NAMESPACE::PinnableWideColumns::Reset</a></div><div class="ttdeci">void Reset()</div><div class="ttdef"><b>Definition</b> <a href="#l00147">wide_columns.h:147</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a0a0abf5017eb159fd69edf2d40d4d7e1"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">ROCKSDB_NAMESPACE::Slice::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00063">slice.h:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a290b26395e5d5df4b78f0a164c7da733"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ROCKSDB_NAMESPACE::Slice::ToString</a></div><div class="ttdeci">std::string ToString(bool hex=false) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d5a/slice_8cc_source.html#l00292">slice.cc:292</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_aaf1532cf0c0cf8fb93620d09e41d624f"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#aaf1532cf0c0cf8fb93620d09e41d624f">ROCKSDB_NAMESPACE::Status::PermitUncheckedError</a></div><div class="ttdeci">void PermitUncheckedError() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00067">status.h:67</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html">ROCKSDB_NAMESPACE::WideColumn</a></div><div class="ttdef"><b>Definition</b> <a href="#l00023">wide_columns.h:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html_a0bf5752fc9e243d70d09c3729fbcd41b"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a0bf5752fc9e243d70d09c3729fbcd41b">ROCKSDB_NAMESPACE::WideColumn::WideColumn</a></div><div class="ttdeci">WideColumn(N &amp;&amp;name, V &amp;&amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00036">wide_columns.h:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html_a5206e33b779540de290ec6d48f668d3a"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a5206e33b779540de290ec6d48f668d3a">ROCKSDB_NAMESPACE::WideColumn::name</a></div><div class="ttdeci">const Slice &amp; name() const</div><div class="ttdef"><b>Definition</b> <a href="#l00056">wide_columns.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html_a9fa73643e73a69cd787c64cca40f5673"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#a9fa73643e73a69cd787c64cca40f5673">ROCKSDB_NAMESPACE::WideColumn::value_</a></div><div class="ttdeci">Slice value_</div><div class="ttdef"><b>Definition</b> <a href="#l00064">wide_columns.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html_aba164267783f4019f70f7184e9efd117"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#aba164267783f4019f70f7184e9efd117">ROCKSDB_NAMESPACE::WideColumn::WideColumn</a></div><div class="ttdeci">WideColumn(std::piecewise_construct_t, NTuple &amp;&amp;name_tuple, VTuple &amp;&amp;value_tuple)</div><div class="ttdef"><b>Definition</b> <a href="#l00050">wide_columns.h:50</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html_ac176769c65ba7437ee2394878aaaa503"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac176769c65ba7437ee2394878aaaa503">ROCKSDB_NAMESPACE::WideColumn::WideColumn</a></div><div class="ttdeci">WideColumn()=default</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html_ac958778af611faf85dab1b1c30b624ff"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ac958778af611faf85dab1b1c30b624ff">ROCKSDB_NAMESPACE::WideColumn::name_</a></div><div class="ttdeci">Slice name_</div><div class="ttdef"><b>Definition</b> <a href="#l00063">wide_columns.h:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html_ad73c89ce0f35a83a9c7a0db9b00ee1a6"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ad73c89ce0f35a83a9c7a0db9b00ee1a6">ROCKSDB_NAMESPACE::WideColumn::name</a></div><div class="ttdeci">Slice &amp; name()</div><div class="ttdef"><b>Definition</b> <a href="#l00059">wide_columns.h:59</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html_ae0d1010578c7d83fe700f9836aec7391"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae0d1010578c7d83fe700f9836aec7391">ROCKSDB_NAMESPACE::WideColumn::value</a></div><div class="ttdeci">const Slice &amp; value() const</div><div class="ttdef"><b>Definition</b> <a href="#l00057">wide_columns.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WideColumn_html_ae86d411b6b4f6a90ff77544beee037be"><div class="ttname"><a href="../../d8/de4/classROCKSDB__NAMESPACE_1_1WideColumn.html#ae86d411b6b4f6a90ff77544beee037be">ROCKSDB_NAMESPACE::WideColumn::value</a></div><div class="ttdeci">Slice &amp; value()</div><div class="ttdef"><b>Definition</b> <a href="#l00060">wide_columns.h:60</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2status_8h_html"><div class="ttname"><a href="../../d9/dd0/include_2rocksdb_2status_8h.html">status.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a140e1a17cda68907c5b700c9e536f970"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a140e1a17cda68907c5b700c9e536f970">ROCKSDB_NAMESPACE::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const BlobFileAddition &amp;blob_file_addition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d70/blob__file__addition_8cc_source.html#l00132">blob_file_addition.cc:132</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a1dc28f4d7734a6cd015a54e54a3d39a0"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1dc28f4d7734a6cd015a54e54a3d39a0">ROCKSDB_NAMESPACE::operator==</a></div><div class="ttdeci">bool operator==(const BlobFileAddition &amp;lhs, const BlobFileAddition &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d70/blob__file__addition_8cc_source.html#l00120">blob_file_addition.cc:120</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a563c29699c57f5c752202d64e4fa1948"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a563c29699c57f5c752202d64e4fa1948">ROCKSDB_NAMESPACE::kNoWideColumns</a></div><div class="ttdeci">const WideColumns kNoWideColumns</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d7c/wide__columns_8cc_source.html#l00013">wide_columns.cc:13</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6185c1ff5be0299f2d50183ebfd37c0e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6185c1ff5be0299f2d50183ebfd37c0e">ROCKSDB_NAMESPACE::operator!=</a></div><div class="ttdeci">bool operator!=(const BlobFileAddition &amp;lhs, const BlobFileAddition &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d70/blob__file__addition_8cc_source.html#l00128">blob_file_addition.cc:128</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8999596cfeae56f7b79618791c7dfc3c"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8999596cfeae56f7b79618791c7dfc3c">ROCKSDB_NAMESPACE::kDefaultWideColumnName</a></div><div class="ttdeci">const Slice kDefaultWideColumnName</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d7c/wide__columns_8cc_source.html#l00011">wide_columns.cc:11</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa3d6cbb70dfce12fe11d4a341f361d09"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">ROCKSDB_NAMESPACE::WideColumns</a></div><div class="ttdeci">std::vector&lt; WideColumn &gt; WideColumns</div><div class="ttdef"><b>Definition</b> <a href="#l00096">wide_columns.h:96</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="arocksdb__namespace_8h_html"><div class="ttname"><a href="../../da/df5/rocksdb__namespace_8h.html">rocksdb_namespace.h</a></div></div>
+<div class="ttc" id="aslice_8h_html"><div class="ttname"><a href="../../d0/d48/slice_8h.html">slice.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_8784722d8c2e7f3978e4945ad578533f.html">rocksdb</a></li><li class="navelem"><a class="el" href="../../d4/dde/wide__columns_8h.html">wide_columns.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

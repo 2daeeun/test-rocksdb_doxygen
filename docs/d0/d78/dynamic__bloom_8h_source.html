@@ -1,0 +1,373 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: util/dynamic_bloom.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d0/d78/dynamic__bloom_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">dynamic_bloom.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d0/d78/dynamic__bloom_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc. All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d00/port_8h.html">port/port.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d48/slice_8h.html">rocksdb/slice.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/dc9/multiget__context_8h.html">table/multiget_context.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/dfb/hash_8h.html">util/hash.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">class </span>Slice;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">class </span>Allocator;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">class </span>Logger;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// A Bloom filter intended only to be used in memory, never serialized in a way</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">// that could lead to schema incompatibility. Supports opt-in lock-free</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// concurrent access.</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">//</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// This implementation is also intended for applications generally preferring</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// speed vs. maximum accuracy: roughly 0.9x BF op latency for 1.1x FP rate.</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// For 1% FP rate, that means that the latency of a look-up triggered by an FP</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// should be less than roughly 100x the cost of a Bloom filter op.</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">//</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// For simplicity and performance, the current implementation requires</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// num_probes to be a multiple of two and &lt;= 10.</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">//</span></div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="};">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html">   36</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#afca7c3c114bed6cb4bc5e0b408f632d2">DynamicBloom</a> {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="comment">// allocator: pass allocator to bloom filter, hence trace the usage of memory</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// total_bits: fixed total bits for the bloom</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// num_probes: number of hash probes for a single key</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="comment">// hash_func:  customized hash function</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// huge_page_tlb_size:  if &gt;0, try to allocate bloom bytes from huge page TLB</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">//                      within this page size. Need to reserve huge pages for</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">//                      it to be allocated, like:</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">//                         sysctl -w vm.nr_hugepages=20</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">//                     See linux doc Documentation/vm/hugetlbpage.txt</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#afca7c3c114bed6cb4bc5e0b408f632d2">DynamicBloom</a>(<a class="code hl_class" href="../../d9/d14/classROCKSDB__NAMESPACE_1_1Allocator.html">Allocator</a>* allocator, uint32_t total_bits,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                        uint32_t num_probes = 6, <span class="keywordtype">size_t</span> huge_page_tlb_size = 0,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                        <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* logger = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#af1c9f98f1f1d922ce25c8b9d0277fb7a">   51</a></span>  <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#af1c9f98f1f1d922ce25c8b9d0277fb7a">~DynamicBloom</a>() {}</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// Assuming single threaded access to this function.</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3f88cec146b8e7a22e34888a31d064b2">Add</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="comment">// Like Add, but may be called concurrent with other functions.</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">void</span> AddConcurrently(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">// Assuming single threaded access to this function.</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordtype">void</span> AddHash(uint32_t hash);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// Like AddHash, but may be called concurrent with other functions.</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordtype">void</span> AddHashConcurrently(uint32_t hash);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// Multithreaded access to this function is OK</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordtype">bool</span> MayContain(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordtype">void</span> MayContain(<span class="keywordtype">int</span> num_keys, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* keys, <span class="keywordtype">bool</span>* may_match) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// Multithreaded access to this function is OK</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordtype">bool</span> MayContainHash(uint32_t hash) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">void</span> Prefetch(uint32_t h);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// Length of the structure, in 64-bit words. For this structure, &quot;word&quot;</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">// will always refer to 64-bit words.</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aea23aa422b41d0936482a6eed4b5cc1d">   78</a></span>  uint32_t <a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aea23aa422b41d0936482a6eed4b5cc1d">kLen</a>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">// We make the k probes in pairs, two for each 64-bit read/write. Thus,</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// this stores k/2, the number of words to double-probe.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aa4a2867a913d3303c7eabde1e4feed4c">   81</a></span>  <span class="keyword">const</span> uint32_t <a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aa4a2867a913d3303c7eabde1e4feed4c">kNumDoubleProbes</a>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5697e64dbdfa5a3c2b38b629127159d8">   83</a></span>  std::atomic&lt;uint64_t&gt;* <a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5697e64dbdfa5a3c2b38b629127159d8">data_</a>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="comment">// or_func(ptr, mask) should effect *ptr |= mask with the appropriate</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="comment">// concurrency safety, working with bytes.</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> OrFunc&gt;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a2af75a9b221324790bb8ecb7ff2d756a">AddHash</a>(uint32_t hash, <span class="keyword">const</span> OrFunc&amp; or_func);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#ad5203a912d4c9cc402638e1e33a56146">DoubleProbe</a>(uint32_t h32, <span class="keywordtype">size_t</span> a) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>};</div>
+</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a3e8ee02e6a59028b7b740ad448bf07bc">   93</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a3e8ee02e6a59028b7b740ad448bf07bc">DynamicBloom::Add</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key) { <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a2af75a9b221324790bb8ecb7ff2d756a">AddHash</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a56ff6f54fe7615b43cdb8ec26e844971">BloomHash</a>(key)); }</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aeeee77fb9686d7d58183636d6ccabe94">   95</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aeeee77fb9686d7d58183636d6ccabe94">DynamicBloom::AddConcurrently</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a22c2e0677286e6ab4be10831ff66a08b">AddHashConcurrently</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a56ff6f54fe7615b43cdb8ec26e844971">BloomHash</a>(key));</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
+</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="foldopen" id="foldopen00099" data-start="{" data-end="}">
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a2af75a9b221324790bb8ecb7ff2d756a">   99</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a2af75a9b221324790bb8ecb7ff2d756a">DynamicBloom::AddHash</a>(uint32_t hash) {</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a2af75a9b221324790bb8ecb7ff2d756a">AddHash</a>(hash, [](std::atomic&lt;uint64_t&gt;* ptr, uint64_t mask) {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    ptr-&gt;store(ptr-&gt;load(std::memory_order_relaxed) | mask,</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>               std::memory_order_relaxed);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  });</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
+</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="foldopen" id="foldopen00106" data-start="{" data-end="}">
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a22c2e0677286e6ab4be10831ff66a08b">  106</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a22c2e0677286e6ab4be10831ff66a08b">DynamicBloom::AddHashConcurrently</a>(uint32_t hash) {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a2af75a9b221324790bb8ecb7ff2d756a">AddHash</a>(hash, [](std::atomic&lt;uint64_t&gt;* ptr, uint64_t mask) {</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="comment">// Happens-before between AddHash and MaybeContains is handled by</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="comment">// access to versions_-&gt;LastSequence(), so all we have to do here is</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="comment">// avoid races (so we don&#39;t give the compiler a license to mess up</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="comment">// our code) and not lose bits.  std::memory_order_relaxed is enough</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="comment">// for that.</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">if</span> ((mask &amp; ptr-&gt;load(std::memory_order_relaxed)) != mask) {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      ptr-&gt;fetch_or(mask, std::memory_order_relaxed);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  });</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>}</div>
+</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="foldopen" id="foldopen00119" data-start="{" data-end="}">
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5d60e879768cc91a7b6c8519dfe31145">  119</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5d60e879768cc91a7b6c8519dfe31145">DynamicBloom::MayContain</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">return</span> (<a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a07db49fa2a194c1af4aacfd75efc3659">MayContainHash</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a56ff6f54fe7615b43cdb8ec26e844971">BloomHash</a>(key)));</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>}</div>
+</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="foldopen" id="foldopen00123" data-start="{" data-end="}">
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a486be4073b1beade91fc60608524d081">  123</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5d60e879768cc91a7b6c8519dfe31145">DynamicBloom::MayContain</a>(<span class="keywordtype">int</span> num_keys, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* keys,</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                                     <span class="keywordtype">bool</span>* may_match)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  std::array&lt;uint32_t, MultiGetContext::MAX_BATCH_SIZE&gt; hashes;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  std::array&lt;size_t, MultiGetContext::MAX_BATCH_SIZE&gt; byte_offsets;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_keys; ++i) {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    hashes[i] = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a56ff6f54fe7615b43cdb8ec26e844971">BloomHash</a>(keys[i]);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordtype">size_t</span> a = <a class="code hl_function" href="../../da/df2/hash__test_8cc.html#ace9094df44a43910378b2cb2b0dc71c9">FastRange32</a>(hashes[i], <a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aea23aa422b41d0936482a6eed4b5cc1d">kLen</a>);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#a4ab872a9f47760fa61d748ac66017609">PREFETCH</a>(<a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5697e64dbdfa5a3c2b38b629127159d8">data_</a> + a, 0, 3);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    byte_offsets[i] = a;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_keys; i++) {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    may_match[i] = <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#ad5203a912d4c9cc402638e1e33a56146">DoubleProbe</a>(hashes[i], byte_offsets[i]);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>}</div>
+</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="preprocessor">#if defined(_MSC_VER)</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="preprocessor">#pragma warning(push)</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment">// local variable is initialized but not referenced</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="preprocessor">#pragma warning(disable : 4189)</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="preprocessor">#endif</span></div>
+<div class="foldopen" id="foldopen00144" data-start="{" data-end="}">
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#ae2ac7395d72001a96b606ac7872ca190">  144</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#ae2ac7395d72001a96b606ac7872ca190">DynamicBloom::Prefetch</a>(uint32_t h32) {</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="keywordtype">size_t</span> a = <a class="code hl_function" href="../../da/df2/hash__test_8cc.html#ace9094df44a43910378b2cb2b0dc71c9">FastRange32</a>(h32, <a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aea23aa422b41d0936482a6eed4b5cc1d">kLen</a>);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#a4ab872a9f47760fa61d748ac66017609">PREFETCH</a>(<a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5697e64dbdfa5a3c2b38b629127159d8">data_</a> + a, 0, 3);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>}</div>
+</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="preprocessor">#if defined(_MSC_VER)</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="preprocessor">#pragma warning(pop)</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">// Speed hacks in this implementation:</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment">// * Uses fastrange instead of %</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment">// * Minimum logic to determine first (and all) probed memory addresses.</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment">//   (Uses constant bit-xor offsets from the starting probe address.)</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">// * (Major) Two probes per 64-bit memory fetch/write.</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">//   Code simplification / optimization: only allow even number of probes.</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">// * Very fast and effective (murmur-like) hash expansion/re-mixing. (At</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">// least on recent CPUs, integer multiplication is very cheap. Each 64-bit</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment">// remix provides five pairs of bit addresses within a uint64_t.)</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">//   Code simplification / optimization: only allow up to 10 probes, from a</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">//   single 64-bit remix.</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">//</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">// The FP rate penalty for this implementation, vs. standard Bloom filter, is</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment">// roughly 1.12x on top of the 1.15x penalty for a 512-bit cache-local Bloom.</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment">// This implementation does not explicitly use the cache line size, but is</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment">// effectively cache-local (up to 16 probes) because of the bit-xor offsetting.</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">//</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment">// NB: could easily be upgraded to support a 64-bit hash and</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">// total_bits &gt; 2^32 (512MB). (The latter is a bad idea without the former,</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment">// because of false positives.)</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
+<div class="foldopen" id="foldopen00173" data-start="{" data-end="}">
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a07db49fa2a194c1af4aacfd75efc3659">  173</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a07db49fa2a194c1af4aacfd75efc3659">DynamicBloom::MayContainHash</a>(uint32_t h32)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  <span class="keywordtype">size_t</span> a = <a class="code hl_function" href="../../da/df2/hash__test_8cc.html#ace9094df44a43910378b2cb2b0dc71c9">FastRange32</a>(h32, <a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aea23aa422b41d0936482a6eed4b5cc1d">kLen</a>);</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#a4ab872a9f47760fa61d748ac66017609">PREFETCH</a>(<a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5697e64dbdfa5a3c2b38b629127159d8">data_</a> + a, 0, 3);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#ad5203a912d4c9cc402638e1e33a56146">DoubleProbe</a>(h32, a);</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>}</div>
+</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="foldopen" id="foldopen00179" data-start="{" data-end="}">
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#ad5203a912d4c9cc402638e1e33a56146">  179</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#ad5203a912d4c9cc402638e1e33a56146">DynamicBloom::DoubleProbe</a>(uint32_t h32, <span class="keywordtype">size_t</span> byte_offset)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="comment">// Expand/remix with 64-bit golden ratio</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  uint64_t h = 0x9e3779b97f4a7c13ULL * h32;</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0;; ++i) {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="comment">// Two bit probes per uint64_t probe</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    uint64_t mask =</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        ((uint64_t)1 &lt;&lt; (h &amp; 63)) | ((uint64_t)1 &lt;&lt; ((h &gt;&gt; 6) &amp; 63));</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    uint64_t val = <a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5697e64dbdfa5a3c2b38b629127159d8">data_</a>[byte_offset ^ i].load(std::memory_order_relaxed);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keywordflow">if</span> (i + 1 &gt;= <a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aa4a2867a913d3303c7eabde1e4feed4c">kNumDoubleProbes</a>) {</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>      <span class="keywordflow">return</span> (val &amp; mask) == mask;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((val &amp; mask) != mask) {</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    }</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    h = (h &gt;&gt; 12) | (h &lt;&lt; 52);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  }</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>}</div>
+</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> OrFunc&gt;</div>
+<div class="foldopen" id="foldopen00197" data-start="{" data-end="}">
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno"><a class="line" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a21321b3cb612c44277cf3105c8802660">  197</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a2af75a9b221324790bb8ecb7ff2d756a">DynamicBloom::AddHash</a>(uint32_t h32, <span class="keyword">const</span> OrFunc&amp; or_func) {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="keywordtype">size_t</span> a = <a class="code hl_function" href="../../da/df2/hash__test_8cc.html#ace9094df44a43910378b2cb2b0dc71c9">FastRange32</a>(h32, <a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aea23aa422b41d0936482a6eed4b5cc1d">kLen</a>);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#a4ab872a9f47760fa61d748ac66017609">PREFETCH</a>(<a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5697e64dbdfa5a3c2b38b629127159d8">data_</a> + a, 0, 3);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="comment">// Expand/remix with 64-bit golden ratio</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  uint64_t h = 0x9e3779b97f4a7c13ULL * h32;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0;; ++i) {</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="comment">// Two bit probes per uint64_t probe</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    uint64_t mask =</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        ((uint64_t)1 &lt;&lt; (h &amp; 63)) | ((uint64_t)1 &lt;&lt; ((h &gt;&gt; 6) &amp; 63));</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    or_func(&amp;<a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5697e64dbdfa5a3c2b38b629127159d8">data_</a>[a ^ i], mask);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="keywordflow">if</span> (i + 1 &gt;= <a class="code hl_variable" href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aa4a2867a913d3303c7eabde1e4feed4c">kNumDoubleProbes</a>) {</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    }</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    h = (h &gt;&gt; 12) | (h &lt;&lt; 52);</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  }</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>}</div>
+</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Allocator_html"><div class="ttname"><a href="../../d9/d14/classROCKSDB__NAMESPACE_1_1Allocator.html">ROCKSDB_NAMESPACE::Allocator</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/da9/allocator_8h_source.html#l00023">allocator.h:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_a07db49fa2a194c1af4aacfd75efc3659"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a07db49fa2a194c1af4aacfd75efc3659">ROCKSDB_NAMESPACE::DynamicBloom::MayContainHash</a></div><div class="ttdeci">bool MayContainHash(uint32_t hash) const</div><div class="ttdef"><b>Definition</b> <a href="#l00173">dynamic_bloom.h:173</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_a22c2e0677286e6ab4be10831ff66a08b"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a22c2e0677286e6ab4be10831ff66a08b">ROCKSDB_NAMESPACE::DynamicBloom::AddHashConcurrently</a></div><div class="ttdeci">void AddHashConcurrently(uint32_t hash)</div><div class="ttdef"><b>Definition</b> <a href="#l00106">dynamic_bloom.h:106</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_a2af75a9b221324790bb8ecb7ff2d756a"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a2af75a9b221324790bb8ecb7ff2d756a">ROCKSDB_NAMESPACE::DynamicBloom::AddHash</a></div><div class="ttdeci">void AddHash(uint32_t hash)</div><div class="ttdef"><b>Definition</b> <a href="#l00099">dynamic_bloom.h:99</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_a3e8ee02e6a59028b7b740ad448bf07bc"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a3e8ee02e6a59028b7b740ad448bf07bc">ROCKSDB_NAMESPACE::DynamicBloom::Add</a></div><div class="ttdeci">void Add(const Slice &amp;key)</div><div class="ttdef"><b>Definition</b> <a href="#l00093">dynamic_bloom.h:93</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_a5697e64dbdfa5a3c2b38b629127159d8"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5697e64dbdfa5a3c2b38b629127159d8">ROCKSDB_NAMESPACE::DynamicBloom::data_</a></div><div class="ttdeci">std::atomic&lt; uint64_t &gt; * data_</div><div class="ttdef"><b>Definition</b> <a href="#l00083">dynamic_bloom.h:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_a5d60e879768cc91a7b6c8519dfe31145"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#a5d60e879768cc91a7b6c8519dfe31145">ROCKSDB_NAMESPACE::DynamicBloom::MayContain</a></div><div class="ttdeci">bool MayContain(const Slice &amp;key) const</div><div class="ttdef"><b>Definition</b> <a href="#l00119">dynamic_bloom.h:119</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_aa4a2867a913d3303c7eabde1e4feed4c"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aa4a2867a913d3303c7eabde1e4feed4c">ROCKSDB_NAMESPACE::DynamicBloom::kNumDoubleProbes</a></div><div class="ttdeci">const uint32_t kNumDoubleProbes</div><div class="ttdef"><b>Definition</b> <a href="#l00081">dynamic_bloom.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_ad5203a912d4c9cc402638e1e33a56146"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#ad5203a912d4c9cc402638e1e33a56146">ROCKSDB_NAMESPACE::DynamicBloom::DoubleProbe</a></div><div class="ttdeci">bool DoubleProbe(uint32_t h32, size_t a) const</div><div class="ttdef"><b>Definition</b> <a href="#l00179">dynamic_bloom.h:179</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_ae2ac7395d72001a96b606ac7872ca190"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#ae2ac7395d72001a96b606ac7872ca190">ROCKSDB_NAMESPACE::DynamicBloom::Prefetch</a></div><div class="ttdeci">void Prefetch(uint32_t h)</div><div class="ttdef"><b>Definition</b> <a href="#l00144">dynamic_bloom.h:144</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_aea23aa422b41d0936482a6eed4b5cc1d"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aea23aa422b41d0936482a6eed4b5cc1d">ROCKSDB_NAMESPACE::DynamicBloom::kLen</a></div><div class="ttdeci">uint32_t kLen</div><div class="ttdef"><b>Definition</b> <a href="#l00078">dynamic_bloom.h:78</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_aeeee77fb9686d7d58183636d6ccabe94"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#aeeee77fb9686d7d58183636d6ccabe94">ROCKSDB_NAMESPACE::DynamicBloom::AddConcurrently</a></div><div class="ttdeci">void AddConcurrently(const Slice &amp;key)</div><div class="ttdef"><b>Definition</b> <a href="#l00095">dynamic_bloom.h:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_af1c9f98f1f1d922ce25c8b9d0277fb7a"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#af1c9f98f1f1d922ce25c8b9d0277fb7a">ROCKSDB_NAMESPACE::DynamicBloom::~DynamicBloom</a></div><div class="ttdeci">~DynamicBloom()</div><div class="ttdef"><b>Definition</b> <a href="#l00051">dynamic_bloom.h:51</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DynamicBloom_html_afca7c3c114bed6cb4bc5e0b408f632d2"><div class="ttname"><a href="../../d8/d68/classROCKSDB__NAMESPACE_1_1DynamicBloom.html#afca7c3c114bed6cb4bc5e0b408f632d2">ROCKSDB_NAMESPACE::DynamicBloom::DynamicBloom</a></div><div class="ttdeci">DynamicBloom(Allocator *allocator, uint32_t total_bits, uint32_t num_probes=6, size_t huge_page_tlb_size=0, Logger *logger=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="../../de/d38/dynamic__bloom_8cc_source.html#l00028">dynamic_bloom.cc:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Logger_html"><div class="ttname"><a href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">ROCKSDB_NAMESPACE::Logger</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l01218">env.h:1218</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="ahash_8h_html"><div class="ttname"><a href="../../db/dfb/hash_8h.html">hash.h</a></div></div>
+<div class="ttc" id="ahash__test_8cc_html_ace9094df44a43910378b2cb2b0dc71c9"><div class="ttname"><a href="../../da/df2/hash__test_8cc.html#ace9094df44a43910378b2cb2b0dc71c9">FastRange32</a></div><div class="ttdeci">uint32_t FastRange32(uint32_t hash, uint32_t range)</div><div class="ttdef"><b>Definition</b> <a href="../../da/df2/hash__test_8cc_source.html#l00556">hash_test.cc:556</a></div></div>
+<div class="ttc" id="amultiget__context_8h_html"><div class="ttname"><a href="../../d0/dc9/multiget__context_8h.html">multiget_context.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a3f88cec146b8e7a22e34888a31d064b2"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3f88cec146b8e7a22e34888a31d064b2">ROCKSDB_NAMESPACE::Add</a></div><div class="ttdeci">void Add(std::map&lt; std::string, double &gt; *stats, const std::string &amp;key, const T &amp;t)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d1e/block__cache__tier_8cc_source.html#l00135">block_cache_tier.cc:135</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a56ff6f54fe7615b43cdb8ec26e844971"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a56ff6f54fe7615b43cdb8ec26e844971">ROCKSDB_NAMESPACE::BloomHash</a></div><div class="ttdeci">uint32_t BloomHash(const Slice &amp;key)</div><div class="ttdef"><b>Definition</b> <a href="../../db/dfb/hash_8h_source.html#l00093">hash.h:93</a></div></div>
+<div class="ttc" id="aport_8h_html"><div class="ttname"><a href="../../da/d00/port_8h.html">port.h</a></div></div>
+<div class="ttc" id="aport__posix_8h_html_a4ab872a9f47760fa61d748ac66017609"><div class="ttname"><a href="../../dc/d7c/port__posix_8h.html#a4ab872a9f47760fa61d748ac66017609">PREFETCH</a></div><div class="ttdeci">#define PREFETCH(addr, rw, locality)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00226">port_posix.h:226</a></div></div>
+<div class="ttc" id="aslice_8h_html"><div class="ttname"><a href="../../d0/d48/slice_8h.html">slice.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_23ec12649285f9fabf3a6b7380226c28.html">util</a></li><li class="navelem"><a class="el" href="../../d0/d78/dynamic__bloom_8h.html">dynamic_bloom.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

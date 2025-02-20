@@ -1,0 +1,540 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/persistent_cache/persistent_cache_tier.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d0/df0/persistent__cache__tier_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">persistent_cache_tier.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d0/df0/persistent__cache__tier_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2013, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;limits&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;list&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/dd1/histogram_8h.html">monitoring/histogram.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d81/env_8h.html">rocksdb/env.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/de4/persistent__cache_8h.html">rocksdb/persistent_cache.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dd0/include_2rocksdb_2status_8h.html">rocksdb/status.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d2f/system__clock_8h.html">rocksdb/system_clock.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// Persistent Cache</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">//</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// Persistent cache is tiered key-value cache that can use persistent medium. It</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// is a generic design and can leverage any storage medium -- disk/SSD/NVM/RAM.</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">// The code has been kept generic but significant benchmark/design/development</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// time has been spent to make sure the cache performs appropriately for</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// respective storage medium.</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// The file defines</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// PersistentCacheTier    : Implementation that handles individual cache tier</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// PersistentTieresCache  : Implementation that handles all tiers as a logical</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">//                          unit</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">//</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// PersistentTieredCache architecture:</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// +--------------------------+ PersistentCacheTier that handles multiple tiers</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">// | +----------------+       |</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">// | | RAM            | PersistentCacheTier that handles RAM (VolatileCacheImpl)</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">// | +----------------+       |</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// |   | next                 |</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">// |   v                      |</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">// | +----------------+       |</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">// | | NVM            | PersistentCacheTier implementation that handles NVM</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">// | +----------------+ (BlockCacheImpl)</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">// |   | next                 |</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">// |   V                      |</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// | +----------------+       |</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">// | | LE-SSD         | PersistentCacheTier implementation that handles LE-SSD</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">// | +----------------+ (BlockCacheImpl)</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">// |   |                      |</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">// |   V                      |</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">// |  null                    |</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">// +--------------------------+</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">//               |</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">//               V</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">//              null</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">// Persistent Cache Config</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">//</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">// This struct captures all the options that are used to configure persistent</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">// cache. Some of the terminologies used in naming the options are</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">//</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">// dispatch size :</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">// This is the size in which IO is dispatched to the device</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">//</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">// write buffer size :</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">// This is the size of an individual write buffer size. Write buffers are</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// grouped to form buffered file.</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">//</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">// cache size :</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">// This is the logical maximum for the cache size</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">//</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">// qdepth :</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">// This is the max number of IOs that can issues to the device in parallel</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">//</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">// pepeling :</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">// The writer code path follows pipelined architecture, which means the</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">// operations are handed off from one stage to another</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">//</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">// pipelining backlog size :</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">// With the pipelined architecture, there can always be backlogging of ops in</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">// pipeline queues. This is the maximum backlog size after which ops are dropped</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">// from queue</span></div>
+<div class="foldopen" id="foldopen00083" data-start="{" data-end="};">
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html">   83</a></span><span class="keyword">struct </span><a class="code hl_function" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a5e35bdad605ec645598800eea82f9b48">PersistentCacheConfig</a> {</div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a5e35bdad605ec645598800eea82f9b48">   84</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a5e35bdad605ec645598800eea82f9b48">PersistentCacheConfig</a>(</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* <span class="keyword">const</span> _env, <span class="keyword">const</span> std::string&amp; _path, <span class="keyword">const</span> uint64_t _cache_size,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      <span class="keyword">const</span> std::shared_ptr&lt;Logger&gt;&amp; _log,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      <span class="keyword">const</span> uint32_t _write_buffer_size = 1 * 1024 * 1024 <span class="comment">/*1MB*/</span>) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aba8e773270253201ac3575d42270d5c6">env</a> = _env;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a1ceca8315600eb2c55ebd75c4803f42c">clock</a> = (<a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aba8e773270253201ac3575d42270d5c6">env</a> != <span class="keyword">nullptr</span>) ? <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aba8e773270253201ac3575d42270d5c6">env</a>-&gt;GetSystemClock().get()</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                             : <a class="code hl_function" href="../../dc/d06/classROCKSDB__NAMESPACE_1_1SystemClock.html#a9f8828ba8806ca0dafc5c6b25f8eadd1">SystemClock::Default</a>().get();</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a7183a9500257cd754d57ac74a7dc91dd">path</a> = _path;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aa514b40867dfa1af86e9fa81951a1e5e">log</a> = _log;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a52993c5e2cd15690771a1d7fda6e04fd">cache_size</a> = _cache_size;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a6dd42687bef6b6ba3b44f7f506d25388">writer_dispatch_size</a> = <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#ac1eac8ee7d67f56c245e326636ba28d4">write_buffer_size</a> = _write_buffer_size;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="comment">// Validate the settings. Our intentions are to catch erroneous settings ahead</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="comment">// of time instead going violating invariants or causing dead locks.</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="comment">//</span></div>
+<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a703b3992c0d8a4f2399914c74b607006">  101</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a703b3992c0d8a4f2399914c74b607006">ValidateSettings</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="comment">// (1) check pre-conditions for variables</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aba8e773270253201ac3575d42270d5c6">env</a> || <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a7183a9500257cd754d57ac74a7dc91dd">path</a>.empty()) {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fdd2c6692215a7d1894f2052ffc5609">Status::InvalidArgument</a>(<span class="stringliteral">&quot;empty or null args&quot;</span>);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="comment">// (2) assert size related invariants</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="comment">// - cache size cannot be less than cache file size</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="comment">// - individual write buffer size cannot be greater than cache file size</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="comment">// - total write buffer size cannot be less than 2X cache file size</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">if</span> (cache_size &lt; cache_file_size || write_buffer_size &gt;= <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a939df7c40d866f02036575065b73fe07">cache_file_size</a> ||</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#ac1eac8ee7d67f56c245e326636ba28d4">write_buffer_size</a> * <a class="code hl_function" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a63fe40864c1ae19fbf0a5accd419f269">write_buffer_count</a>() &lt; 2 * <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a939df7c40d866f02036575065b73fe07">cache_file_size</a>) {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fdd2c6692215a7d1894f2052ffc5609">Status::InvalidArgument</a>(<span class="stringliteral">&quot;invalid cache size&quot;</span>);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    }</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="comment">// (2) check writer settings</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="comment">// - Queue depth cannot be 0</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="comment">// - writer_dispatch_size cannot be greater than writer_buffer_size</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="comment">// - dispatch size and buffer size need to be aligned</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a8643adce5d145cdf631348b7a683c60b">writer_qdepth</a> || <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a6dd42687bef6b6ba3b44f7f506d25388">writer_dispatch_size</a> &gt; <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#ac1eac8ee7d67f56c245e326636ba28d4">write_buffer_size</a> ||</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#ac1eac8ee7d67f56c245e326636ba28d4">write_buffer_size</a> % <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a6dd42687bef6b6ba3b44f7f506d25388">writer_dispatch_size</a>) {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fdd2c6692215a7d1894f2052ffc5609">Status::InvalidArgument</a>(<span class="stringliteral">&quot;invalid writer settings&quot;</span>);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    }</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  }</div>
+</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="comment">// Env abstraction to use for system level operations</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aba8e773270253201ac3575d42270d5c6">  131</a></span>  <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aba8e773270253201ac3575d42270d5c6">env</a>;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a1ceca8315600eb2c55ebd75c4803f42c">  132</a></span>  <a class="code hl_class" href="../../dc/d06/classROCKSDB__NAMESPACE_1_1SystemClock.html">SystemClock</a>* <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a1ceca8315600eb2c55ebd75c4803f42c">clock</a>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="comment">// Path for the block cache where blocks are persisted</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a7183a9500257cd754d57ac74a7dc91dd">  136</a></span>  std::string <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a7183a9500257cd754d57ac74a7dc91dd">path</a>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="comment">// Log handle for logging messages</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aa514b40867dfa1af86e9fa81951a1e5e">  141</a></span>  std::shared_ptr&lt;Logger&gt; <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aa514b40867dfa1af86e9fa81951a1e5e">log</a>;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="comment">// Enable direct IO for reading</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a805e41b2c27f257829d818d837f87bb8">  146</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a805e41b2c27f257829d818d837f87bb8">enable_direct_reads</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">// Enable direct IO for writing</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#afa3a0cca0eb399af45fa08d31ef5c42f">  151</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#afa3a0cca0eb399af45fa08d31ef5c42f">enable_direct_writes</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="comment">// Logical cache size</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a52993c5e2cd15690771a1d7fda6e04fd">  156</a></span>  uint64_t <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a52993c5e2cd15690771a1d7fda6e04fd">cache_size</a> = std::numeric_limits&lt;uint64_t&gt;::max();</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="comment">// cache-file-size</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="comment">// Cache consists of multiples of small files. This parameter defines the</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="comment">// size of an individual cache file</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="comment">// default: 1M</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a939df7c40d866f02036575065b73fe07">  164</a></span>  uint32_t <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a939df7c40d866f02036575065b73fe07">cache_file_size</a> = 100ULL * 1024 * 1024;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="comment">// writer-qdepth</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="comment">// The writers can issues IO to the devices in parallel. This parameter</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="comment">// controls the max number if IOs that can issues in parallel to the block</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="comment">// device</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  <span class="comment">// default :1</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a8643adce5d145cdf631348b7a683c60b">  173</a></span>  uint32_t <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a8643adce5d145cdf631348b7a683c60b">writer_qdepth</a> = 1;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <span class="comment">// pipeline-writes</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <span class="comment">// The write optionally follow pipelined architecture. This helps</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="comment">// avoid regression in the eviction code path of the primary tier. This</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="comment">// parameter defines if pipelining is enabled or disabled</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <span class="comment">// default: true</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a9741a249e7791a2a2abb0a452bce0fa6">  182</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a9741a249e7791a2a2abb0a452bce0fa6">pipeline_writes</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <span class="comment">// max-write-pipeline-backlog-size</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="comment">// Max pipeline buffer size. This is the maximum backlog we can accumulate</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="comment">// while waiting for writes. After the limit, new ops will be dropped.</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="comment">// Default: 1GiB</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a244f280431687832ad0e800a2791a10c">  190</a></span>  uint64_t <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a244f280431687832ad0e800a2791a10c">max_write_pipeline_backlog_size</a> = 1ULL * 1024 * 1024 * 1024;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  <span class="comment">// write-buffer-size</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="comment">// This is the size in which buffer slabs are allocated.</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="comment">// Default: 1M</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#ac1eac8ee7d67f56c245e326636ba28d4">  197</a></span>  uint32_t <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#ac1eac8ee7d67f56c245e326636ba28d4">write_buffer_size</a> = 1ULL * 1024 * 1024;</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="comment">// write-buffer-count</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="comment">// This is the total number of buffer slabs. This is calculated as a factor of</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="comment">// file size in order to avoid dead lock.</span></div>
+<div class="foldopen" id="foldopen00203" data-start="{" data-end="}">
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a63fe40864c1ae19fbf0a5accd419f269">  203</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a63fe40864c1ae19fbf0a5accd419f269">write_buffer_count</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    assert(<a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#ac1eac8ee7d67f56c245e326636ba28d4">write_buffer_size</a>);</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>((<a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a8643adce5d145cdf631348b7a683c60b">writer_qdepth</a> + 1.2) * <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a939df7c40d866f02036575065b73fe07">cache_file_size</a> /</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>                               <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#ac1eac8ee7d67f56c245e326636ba28d4">write_buffer_size</a>);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  }</div>
+</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="comment">// writer-dispatch-size</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  <span class="comment">// The writer thread will dispatch the IO at the specified IO size</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  <span class="comment">// default: 1M</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a6dd42687bef6b6ba3b44f7f506d25388">  214</a></span>  uint64_t <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a6dd42687bef6b6ba3b44f7f506d25388">writer_dispatch_size</a> = 1ULL * 1024 * 1024;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <span class="comment">// is_compressed</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  <span class="comment">// This option determines if the cache will run in compressed mode or</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <span class="comment">// uncompressed mode</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#af356dc57e7156041b21c8a6c1bb39095">  220</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#af356dc57e7156041b21c8a6c1bb39095">is_compressed</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#adbd238d117851d56190f93ee36b0c014">  222</a></span>  <a class="code hl_function" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a5e35bdad605ec645598800eea82f9b48">PersistentCacheConfig</a> <a class="code hl_function" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#adbd238d117851d56190f93ee36b0c014">MakePersistentCacheConfig</a>(</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>      <span class="keyword">const</span> std::string&amp; <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a7183a9500257cd754d57ac74a7dc91dd">path</a>, <span class="keyword">const</span> uint64_t size,</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>      <span class="keyword">const</span> std::shared_ptr&lt;Logger&gt;&amp; <a class="code hl_variable" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aa514b40867dfa1af86e9fa81951a1e5e">log</a>);</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  std::string <a class="code hl_function" href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aae702fbedd9c672d50a5d04281925ca2">ToString</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>};</div>
+</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment">// Persistent Cache Tier</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="comment">//</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="comment">// This a logical abstraction that defines a tier of the persistent cache. Tiers</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="comment">// can be stacked over one another. PersistentCahe provides the basic definition</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="comment">// for accessing/storing in the cache. PersistentCacheTier extends the interface</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment">// to enable management and stacking of tiers.</span></div>
+<div class="foldopen" id="foldopen00235" data-start="{" data-end="};">
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html">  235</a></span><span class="keyword">class </span><a class="code hl_class" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html">PersistentCacheTier</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d0/d11/classROCKSDB__NAMESPACE_1_1PersistentCache.html">PersistentCache</a> {</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a3f2a090a475a21187147c8be9c34b3cf">  237</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a3f2a090a475a21187147c8be9c34b3cf">Tier</a> = std::shared_ptr&lt;PersistentCacheTier&gt;;</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a2ac50d9bb5b872dd67c7c891211be960">  239</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a2ac50d9bb5b872dd67c7c891211be960">~PersistentCacheTier</a>() {}</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <span class="comment">// Open the persistent cache tier</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> Open();</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  <span class="comment">// Close the persistent cache tier</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> Close();</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <span class="comment">// Reserve space up to &#39;size&#39; bytes</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> Reserve(<span class="keyword">const</span> <span class="keywordtype">size_t</span> size);</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <span class="comment">// Erase a key from the cache</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> Erase(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key);</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <span class="comment">// Print stats to string recursively</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <span class="keyword">virtual</span> std::string PrintStats();</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <a class="code hl_typedef" href="../../d0/d11/classROCKSDB__NAMESPACE_1_1PersistentCache.html#a88b79b565df677e22ff2308ddb9697da">PersistentCache::StatsType</a> <a class="code hl_class" href="../../dd/dbb/classROCKSDB__NAMESPACE_1_1Stats.html">Stats</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <span class="comment">// Insert to page cache</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#aab29a3f14d670c505435991fec5fec96">  259</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#aab29a3f14d670c505435991fec5fec96">Insert</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; page_key, <span class="keyword">const</span> <span class="keywordtype">char</span>* data,</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                <span class="keyword">const</span> <span class="keywordtype">size_t</span> size) <span class="keyword">override</span> = 0;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <span class="comment">// Lookup page cache by page identifier</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ab3a02377702e265a0e816dd7e43f62ff">  263</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ab3a02377702e265a0e816dd7e43f62ff">Lookup</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; page_key, std::unique_ptr&lt;<span class="keywordtype">char</span>[]&gt;* data,</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                <span class="keywordtype">size_t</span>* size) <span class="keyword">override</span> = 0;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <span class="comment">// Does it store compressed data ?</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ae7e4dd663eb0c30ffe527cf79b1d8208">  267</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ae7e4dd663eb0c30ffe527cf79b1d8208">IsCompressed</a>() <span class="keyword">override</span> = 0;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#aa9423aaf77283165ec573685300f6c06">  269</a></span>  std::string <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#aa9423aaf77283165ec573685300f6c06">GetPrintableOptions</a>() <span class="keyword">const override</span> = 0;</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  uint64_t <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ac05a6d5df58c07200aad9a8c70902d70">NewId</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  <span class="comment">// Return a reference to next tier</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a0df057976be327c6ecbfc4624b15bce1">  274</a></span>  <span class="keyword">virtual</span> <a class="code hl_typedef" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a3f2a090a475a21187147c8be9c34b3cf">Tier</a>&amp; <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a0df057976be327c6ecbfc4624b15bce1">next_tier</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a454bad646c8a12c3d013cbc81ba8b2e5">next_tier_</a>; }</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="comment">// Set the value for next tier</span></div>
+<div class="foldopen" id="foldopen00277" data-start="{" data-end="}">
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a1438244e6a26b379292b7e53c57e4e8c">  277</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a1438244e6a26b379292b7e53c57e4e8c">set_next_tier</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a3f2a090a475a21187147c8be9c34b3cf">Tier</a>&amp; tier) {</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    assert(!<a class="code hl_variable" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a454bad646c8a12c3d013cbc81ba8b2e5">next_tier_</a>);</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <a class="code hl_variable" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a454bad646c8a12c3d013cbc81ba8b2e5">next_tier_</a> = tier;</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  }</div>
+</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
+<div class="foldopen" id="foldopen00282" data-start="{" data-end="}">
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ac0293898c00f1cb9fc839186b3b55ead">  282</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ac0293898c00f1cb9fc839186b3b55ead">TEST_Flush</a>() {</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a454bad646c8a12c3d013cbc81ba8b2e5">next_tier_</a>) {</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>      <a class="code hl_variable" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a454bad646c8a12c3d013cbc81ba8b2e5">next_tier_</a>-&gt;TEST_Flush();</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    }</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  }</div>
+</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a454bad646c8a12c3d013cbc81ba8b2e5">  289</a></span>  <a class="code hl_typedef" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a3f2a090a475a21187147c8be9c34b3cf">Tier</a> <a class="code hl_variable" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a454bad646c8a12c3d013cbc81ba8b2e5">next_tier_</a>;  <span class="comment">// next tier</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno"><a class="line" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a4ab5711847f568cdd93019f944b0a61c">  290</a></span>  std::atomic&lt;uint64_t&gt; <a class="code hl_variable" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a4ab5711847f568cdd93019f944b0a61c">last_id_</a>{1};</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>};</div>
+</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="comment">// PersistentTieredCache</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="comment">//</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="comment">// Abstraction that helps you construct a tiers of persistent caches as a</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="comment">// unified cache. The tier(s) of cache will act a single tier for management</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="comment">// ease and support PersistentCache methods for accessing data.</span></div>
+<div class="foldopen" id="foldopen00298" data-start="{" data-end="};">
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html">  298</a></span><span class="keyword">class </span><a class="code hl_class" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html">PersistentTieredCache</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html">PersistentCacheTier</a> {</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html">~PersistentTieredCache</a>();</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a3637d6a930af6738015b5db64cd6111d">Open</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a53147d4120f2583afb601b9bea87c9da">Close</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#aa1b073e094a661babe10ff72d2fe771f">Erase</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  std::string <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a217c76a5bcb56369a36d007334ad164f">PrintStats</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  <a class="code hl_typedef" href="../../d0/d11/classROCKSDB__NAMESPACE_1_1PersistentCache.html#a88b79b565df677e22ff2308ddb9697da">PersistentCache::StatsType</a> <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ac9f3a0a3a4f3ef49230ac35f51736af3">Stats</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a8e80b3fb467b928d2804f716c6201f86">Insert</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; page_key, <span class="keyword">const</span> <span class="keywordtype">char</span>* data,</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>                <span class="keyword">const</span> <span class="keywordtype">size_t</span> size) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a06e58953bd405b14cf19ad6f5c8bd334">Lookup</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; page_key, std::unique_ptr&lt;<span class="keywordtype">char</span>[]&gt;* data,</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>                <span class="keywordtype">size_t</span>* size) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a4857590f7397ed8c1bff921dcbae66f2">IsCompressed</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
+<div class="foldopen" id="foldopen00313" data-start="{" data-end="}">
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno"><a class="line" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a25169c89973ab4bd2f3c8494ca9b428f">  313</a></span>  std::string <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a25169c89973ab4bd2f3c8494ca9b428f">GetPrintableOptions</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;PersistentTieredCache&quot;</span>;</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  }</div>
+</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  <span class="keywordtype">void</span> AddTier(<span class="keyword">const</span> Tier&amp; tier);</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
+<div class="foldopen" id="foldopen00319" data-start="{" data-end="}">
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a023e7043cec4d7d9e7643c1dd1ef4aed">  319</a></span>  <a class="code hl_typedef" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a3f2a090a475a21187147c8be9c34b3cf">Tier</a>&amp; <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a023e7043cec4d7d9e7643c1dd1ef4aed">next_tier</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    <span class="keyword">auto</span> it = <a class="code hl_variable" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ae67c072a01dfee908456fd0ddbf402d6">tiers_</a>.end();</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    <span class="keywordflow">return</span> (*it)-&gt;next_tier();</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  }</div>
+</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span> </div>
+<div class="foldopen" id="foldopen00324" data-start="{" data-end="}">
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno"><a class="line" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#aa49427df69bc9a331a884038aabc3068">  324</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#aa49427df69bc9a331a884038aabc3068">set_next_tier</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a3f2a090a475a21187147c8be9c34b3cf">Tier</a>&amp; tier)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    <span class="keyword">auto</span> it = <a class="code hl_variable" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ae67c072a01dfee908456fd0ddbf402d6">tiers_</a>.end();</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    (*it)-&gt;set_next_tier(tier);</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  }</div>
+</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
+<div class="foldopen" id="foldopen00329" data-start="{" data-end="}">
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno"><a class="line" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ab4b1fcde549f717126019d475bc7d2a2">  329</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ab4b1fcde549f717126019d475bc7d2a2">TEST_Flush</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    assert(!<a class="code hl_variable" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ae67c072a01dfee908456fd0ddbf402d6">tiers_</a>.empty());</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <a class="code hl_variable" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ae67c072a01dfee908456fd0ddbf402d6">tiers_</a>.front()-&gt;TEST_Flush();</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ac0293898c00f1cb9fc839186b3b55ead">PersistentCacheTier::TEST_Flush</a>();</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  }</div>
+</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno"><a class="line" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ae67c072a01dfee908456fd0ddbf402d6">  336</a></span>  std::list&lt;Tier&gt; <a class="code hl_variable" href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ae67c072a01dfee908456fd0ddbf402d6">tiers_</a>;  <span class="comment">// list of tiers top-down</span></div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>};</div>
+</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span> </div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">ROCKSDB_NAMESPACE::Env</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00154">env.h:154</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html">ROCKSDB_NAMESPACE::PersistentCacheTier</a></div><div class="ttdef"><b>Definition</b> <a href="#l00235">persistent_cache_tier.h:235</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_a0df057976be327c6ecbfc4624b15bce1"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a0df057976be327c6ecbfc4624b15bce1">ROCKSDB_NAMESPACE::PersistentCacheTier::next_tier</a></div><div class="ttdeci">virtual Tier &amp; next_tier()</div><div class="ttdef"><b>Definition</b> <a href="#l00274">persistent_cache_tier.h:274</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_a1438244e6a26b379292b7e53c57e4e8c"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a1438244e6a26b379292b7e53c57e4e8c">ROCKSDB_NAMESPACE::PersistentCacheTier::set_next_tier</a></div><div class="ttdeci">virtual void set_next_tier(const Tier &amp;tier)</div><div class="ttdef"><b>Definition</b> <a href="#l00277">persistent_cache_tier.h:277</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_a2ac50d9bb5b872dd67c7c891211be960"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a2ac50d9bb5b872dd67c7c891211be960">ROCKSDB_NAMESPACE::PersistentCacheTier::~PersistentCacheTier</a></div><div class="ttdeci">virtual ~PersistentCacheTier()</div><div class="ttdef"><b>Definition</b> <a href="#l00239">persistent_cache_tier.h:239</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_a3f2a090a475a21187147c8be9c34b3cf"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a3f2a090a475a21187147c8be9c34b3cf">ROCKSDB_NAMESPACE::PersistentCacheTier::Tier</a></div><div class="ttdeci">std::shared_ptr&lt; PersistentCacheTier &gt; Tier</div><div class="ttdef"><b>Definition</b> <a href="#l00237">persistent_cache_tier.h:237</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_a454bad646c8a12c3d013cbc81ba8b2e5"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a454bad646c8a12c3d013cbc81ba8b2e5">ROCKSDB_NAMESPACE::PersistentCacheTier::next_tier_</a></div><div class="ttdeci">Tier next_tier_</div><div class="ttdef"><b>Definition</b> <a href="#l00289">persistent_cache_tier.h:289</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_a4ab5711847f568cdd93019f944b0a61c"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a4ab5711847f568cdd93019f944b0a61c">ROCKSDB_NAMESPACE::PersistentCacheTier::last_id_</a></div><div class="ttdeci">std::atomic&lt; uint64_t &gt; last_id_</div><div class="ttdef"><b>Definition</b> <a href="#l00290">persistent_cache_tier.h:290</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_aa9423aaf77283165ec573685300f6c06"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#aa9423aaf77283165ec573685300f6c06">ROCKSDB_NAMESPACE::PersistentCacheTier::GetPrintableOptions</a></div><div class="ttdeci">std::string GetPrintableOptions() const override=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_aab29a3f14d670c505435991fec5fec96"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#aab29a3f14d670c505435991fec5fec96">ROCKSDB_NAMESPACE::PersistentCacheTier::Insert</a></div><div class="ttdeci">Status Insert(const Slice &amp;page_key, const char *data, const size_t size) override=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_ab3a02377702e265a0e816dd7e43f62ff"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ab3a02377702e265a0e816dd7e43f62ff">ROCKSDB_NAMESPACE::PersistentCacheTier::Lookup</a></div><div class="ttdeci">Status Lookup(const Slice &amp;page_key, std::unique_ptr&lt; char[]&gt; *data, size_t *size) override=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_ac0293898c00f1cb9fc839186b3b55ead"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ac0293898c00f1cb9fc839186b3b55ead">ROCKSDB_NAMESPACE::PersistentCacheTier::TEST_Flush</a></div><div class="ttdeci">virtual void TEST_Flush()</div><div class="ttdef"><b>Definition</b> <a href="#l00282">persistent_cache_tier.h:282</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_ac05a6d5df58c07200aad9a8c70902d70"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ac05a6d5df58c07200aad9a8c70902d70">ROCKSDB_NAMESPACE::PersistentCacheTier::NewId</a></div><div class="ttdeci">uint64_t NewId() override</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00101">persistent_cache_tier.cc:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_ae7e4dd663eb0c30ffe527cf79b1d8208"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#ae7e4dd663eb0c30ffe527cf79b1d8208">ROCKSDB_NAMESPACE::PersistentCacheTier::IsCompressed</a></div><div class="ttdeci">bool IsCompressed() override=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCache_html"><div class="ttname"><a href="../../d0/d11/classROCKSDB__NAMESPACE_1_1PersistentCache.html">ROCKSDB_NAMESPACE::PersistentCache</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/de4/persistent__cache_8h_source.html#l00026">persistent_cache.h:26</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCache_html_a88b79b565df677e22ff2308ddb9697da"><div class="ttname"><a href="../../d0/d11/classROCKSDB__NAMESPACE_1_1PersistentCache.html#a88b79b565df677e22ff2308ddb9697da">ROCKSDB_NAMESPACE::PersistentCache::StatsType</a></div><div class="ttdeci">std::vector&lt; std::map&lt; std::string, double &gt; &gt; StatsType</div><div class="ttdef"><b>Definition</b> <a href="../../db/de4/persistent__cache_8h_source.html#l00028">persistent_cache.h:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html">ROCKSDB_NAMESPACE::PersistentTieredCache</a></div><div class="ttdef"><b>Definition</b> <a href="#l00298">persistent_cache_tier.h:298</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_a023e7043cec4d7d9e7643c1dd1ef4aed"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a023e7043cec4d7d9e7643c1dd1ef4aed">ROCKSDB_NAMESPACE::PersistentTieredCache::next_tier</a></div><div class="ttdeci">Tier &amp; next_tier() override</div><div class="ttdef"><b>Definition</b> <a href="#l00319">persistent_cache_tier.h:319</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_a06e58953bd405b14cf19ad6f5c8bd334"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a06e58953bd405b14cf19ad6f5c8bd334">ROCKSDB_NAMESPACE::PersistentTieredCache::Lookup</a></div><div class="ttdeci">Status Lookup(const Slice &amp;page_key, std::unique_ptr&lt; char[]&gt; *data, size_t *size) override</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00145">persistent_cache_tier.cc:145</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_a217c76a5bcb56369a36d007334ad164f"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a217c76a5bcb56369a36d007334ad164f">ROCKSDB_NAMESPACE::PersistentTieredCache::PrintStats</a></div><div class="ttdeci">std::string PrintStats() override</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00134">persistent_cache_tier.cc:134</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_a25169c89973ab4bd2f3c8494ca9b428f"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a25169c89973ab4bd2f3c8494ca9b428f">ROCKSDB_NAMESPACE::PersistentTieredCache::GetPrintableOptions</a></div><div class="ttdeci">std::string GetPrintableOptions() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00313">persistent_cache_tier.h:313</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_a3637d6a930af6738015b5db64cd6111d"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a3637d6a930af6738015b5db64cd6111d">ROCKSDB_NAMESPACE::PersistentTieredCache::Open</a></div><div class="ttdeci">Status Open() override</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00110">persistent_cache_tier.cc:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_a4857590f7397ed8c1bff921dcbae66f2"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a4857590f7397ed8c1bff921dcbae66f2">ROCKSDB_NAMESPACE::PersistentTieredCache::IsCompressed</a></div><div class="ttdeci">bool IsCompressed() override</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00159">persistent_cache_tier.cc:159</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_a53147d4120f2583afb601b9bea87c9da"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a53147d4120f2583afb601b9bea87c9da">ROCKSDB_NAMESPACE::PersistentTieredCache::Close</a></div><div class="ttdeci">Status Close() override</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00115">persistent_cache_tier.cc:115</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_a8e80b3fb467b928d2804f716c6201f86"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#a8e80b3fb467b928d2804f716c6201f86">ROCKSDB_NAMESPACE::PersistentTieredCache::Insert</a></div><div class="ttdeci">Status Insert(const Slice &amp;page_key, const char *data, const size_t size) override</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00139">persistent_cache_tier.cc:139</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_aa1b073e094a661babe10ff72d2fe771f"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#aa1b073e094a661babe10ff72d2fe771f">ROCKSDB_NAMESPACE::PersistentTieredCache::Erase</a></div><div class="ttdeci">bool Erase(const Slice &amp;key) override</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00124">persistent_cache_tier.cc:124</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_aa49427df69bc9a331a884038aabc3068"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#aa49427df69bc9a331a884038aabc3068">ROCKSDB_NAMESPACE::PersistentTieredCache::set_next_tier</a></div><div class="ttdeci">void set_next_tier(const Tier &amp;tier) override</div><div class="ttdef"><b>Definition</b> <a href="#l00324">persistent_cache_tier.h:324</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_ab4b1fcde549f717126019d475bc7d2a2"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ab4b1fcde549f717126019d475bc7d2a2">ROCKSDB_NAMESPACE::PersistentTieredCache::TEST_Flush</a></div><div class="ttdeci">void TEST_Flush() override</div><div class="ttdef"><b>Definition</b> <a href="#l00329">persistent_cache_tier.h:329</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_ac9f3a0a3a4f3ef49230ac35f51736af3"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ac9f3a0a3a4f3ef49230ac35f51736af3">ROCKSDB_NAMESPACE::PersistentTieredCache::Stats</a></div><div class="ttdeci">PersistentCache::StatsType Stats() override</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00129">persistent_cache_tier.cc:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentTieredCache_html_ae67c072a01dfee908456fd0ddbf402d6"><div class="ttname"><a href="../../dc/db6/classROCKSDB__NAMESPACE_1_1PersistentTieredCache.html#ae67c072a01dfee908456fd0ddbf402d6">ROCKSDB_NAMESPACE::PersistentTieredCache::tiers_</a></div><div class="ttdeci">std::list&lt; Tier &gt; tiers_</div><div class="ttdef"><b>Definition</b> <a href="#l00336">persistent_cache_tier.h:336</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Stats_html"><div class="ttname"><a href="../../dd/dbb/classROCKSDB__NAMESPACE_1_1Stats.html">ROCKSDB_NAMESPACE::Stats</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d58/db__stress__stat_8h_source.html#l00029">db_stress_stat.h:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a5fdd2c6692215a7d1894f2052ffc5609"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fdd2c6692215a7d1894f2052ffc5609">ROCKSDB_NAMESPACE::Status::InvalidArgument</a></div><div class="ttdeci">static Status InvalidArgument(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00217">status.h:217</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SystemClock_html"><div class="ttname"><a href="../../dc/d06/classROCKSDB__NAMESPACE_1_1SystemClock.html">ROCKSDB_NAMESPACE::SystemClock</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d2f/system__clock_8h_source.html#l00030">system_clock.h:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SystemClock_html_a9f8828ba8806ca0dafc5c6b25f8eadd1"><div class="ttname"><a href="../../dc/d06/classROCKSDB__NAMESPACE_1_1SystemClock.html#a9f8828ba8806ca0dafc5c6b25f8eadd1">ROCKSDB_NAMESPACE::SystemClock::Default</a></div><div class="ttdeci">static const std::shared_ptr&lt; SystemClock &gt; &amp; Default()</div><div class="ttdef"><b>Definition</b> <a href="../../de/d24/env__posix_8cc_source.html#l00523">env_posix.cc:523</a></div></div>
+<div class="ttc" id="aenv_8h_html"><div class="ttname"><a href="../../d5/d81/env_8h.html">env.h</a></div></div>
+<div class="ttc" id="ahistogram_8h_html"><div class="ttname"><a href="../../dd/dd1/histogram_8h.html">histogram.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2status_8h_html"><div class="ttname"><a href="../../d9/dd0/include_2rocksdb_2status_8h.html">status.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="apersistent__cache_8h_html"><div class="ttname"><a href="../../db/de4/persistent__cache_8h.html">persistent_cache.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a1ceca8315600eb2c55ebd75c4803f42c"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a1ceca8315600eb2c55ebd75c4803f42c">ROCKSDB_NAMESPACE::PersistentCacheConfig::clock</a></div><div class="ttdeci">SystemClock * clock</div><div class="ttdef"><b>Definition</b> <a href="#l00132">persistent_cache_tier.h:132</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a244f280431687832ad0e800a2791a10c"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a244f280431687832ad0e800a2791a10c">ROCKSDB_NAMESPACE::PersistentCacheConfig::max_write_pipeline_backlog_size</a></div><div class="ttdeci">uint64_t max_write_pipeline_backlog_size</div><div class="ttdef"><b>Definition</b> <a href="#l00190">persistent_cache_tier.h:190</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a52993c5e2cd15690771a1d7fda6e04fd"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a52993c5e2cd15690771a1d7fda6e04fd">ROCKSDB_NAMESPACE::PersistentCacheConfig::cache_size</a></div><div class="ttdeci">uint64_t cache_size</div><div class="ttdef"><b>Definition</b> <a href="#l00156">persistent_cache_tier.h:156</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a5e35bdad605ec645598800eea82f9b48"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a5e35bdad605ec645598800eea82f9b48">ROCKSDB_NAMESPACE::PersistentCacheConfig::PersistentCacheConfig</a></div><div class="ttdeci">PersistentCacheConfig(Env *const _env, const std::string &amp;_path, const uint64_t _cache_size, const std::shared_ptr&lt; Logger &gt; &amp;_log, const uint32_t _write_buffer_size=1 *1024 *1024)</div><div class="ttdef"><b>Definition</b> <a href="#l00084">persistent_cache_tier.h:84</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a63fe40864c1ae19fbf0a5accd419f269"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a63fe40864c1ae19fbf0a5accd419f269">ROCKSDB_NAMESPACE::PersistentCacheConfig::write_buffer_count</a></div><div class="ttdeci">size_t write_buffer_count() const</div><div class="ttdef"><b>Definition</b> <a href="#l00203">persistent_cache_tier.h:203</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a6dd42687bef6b6ba3b44f7f506d25388"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a6dd42687bef6b6ba3b44f7f506d25388">ROCKSDB_NAMESPACE::PersistentCacheConfig::writer_dispatch_size</a></div><div class="ttdeci">uint64_t writer_dispatch_size</div><div class="ttdef"><b>Definition</b> <a href="#l00214">persistent_cache_tier.h:214</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a703b3992c0d8a4f2399914c74b607006"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a703b3992c0d8a4f2399914c74b607006">ROCKSDB_NAMESPACE::PersistentCacheConfig::ValidateSettings</a></div><div class="ttdeci">Status ValidateSettings() const</div><div class="ttdef"><b>Definition</b> <a href="#l00101">persistent_cache_tier.h:101</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a7183a9500257cd754d57ac74a7dc91dd"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a7183a9500257cd754d57ac74a7dc91dd">ROCKSDB_NAMESPACE::PersistentCacheConfig::path</a></div><div class="ttdeci">std::string path</div><div class="ttdef"><b>Definition</b> <a href="#l00136">persistent_cache_tier.h:136</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a805e41b2c27f257829d818d837f87bb8"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a805e41b2c27f257829d818d837f87bb8">ROCKSDB_NAMESPACE::PersistentCacheConfig::enable_direct_reads</a></div><div class="ttdeci">bool enable_direct_reads</div><div class="ttdef"><b>Definition</b> <a href="#l00146">persistent_cache_tier.h:146</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a8643adce5d145cdf631348b7a683c60b"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a8643adce5d145cdf631348b7a683c60b">ROCKSDB_NAMESPACE::PersistentCacheConfig::writer_qdepth</a></div><div class="ttdeci">uint32_t writer_qdepth</div><div class="ttdef"><b>Definition</b> <a href="#l00173">persistent_cache_tier.h:173</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a939df7c40d866f02036575065b73fe07"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a939df7c40d866f02036575065b73fe07">ROCKSDB_NAMESPACE::PersistentCacheConfig::cache_file_size</a></div><div class="ttdeci">uint32_t cache_file_size</div><div class="ttdef"><b>Definition</b> <a href="#l00164">persistent_cache_tier.h:164</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_a9741a249e7791a2a2abb0a452bce0fa6"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#a9741a249e7791a2a2abb0a452bce0fa6">ROCKSDB_NAMESPACE::PersistentCacheConfig::pipeline_writes</a></div><div class="ttdeci">bool pipeline_writes</div><div class="ttdef"><b>Definition</b> <a href="#l00182">persistent_cache_tier.h:182</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_aa514b40867dfa1af86e9fa81951a1e5e"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aa514b40867dfa1af86e9fa81951a1e5e">ROCKSDB_NAMESPACE::PersistentCacheConfig::log</a></div><div class="ttdeci">std::shared_ptr&lt; Logger &gt; log</div><div class="ttdef"><b>Definition</b> <a href="#l00141">persistent_cache_tier.h:141</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_aae702fbedd9c672d50a5d04281925ca2"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aae702fbedd9c672d50a5d04281925ca2">ROCKSDB_NAMESPACE::PersistentCacheConfig::ToString</a></div><div class="ttdeci">std::string ToString() const</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00015">persistent_cache_tier.cc:15</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_aba8e773270253201ac3575d42270d5c6"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#aba8e773270253201ac3575d42270d5c6">ROCKSDB_NAMESPACE::PersistentCacheConfig::env</a></div><div class="ttdeci">Env * env</div><div class="ttdef"><b>Definition</b> <a href="#l00131">persistent_cache_tier.h:131</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_ac1eac8ee7d67f56c245e326636ba28d4"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#ac1eac8ee7d67f56c245e326636ba28d4">ROCKSDB_NAMESPACE::PersistentCacheConfig::write_buffer_size</a></div><div class="ttdeci">uint32_t write_buffer_size</div><div class="ttdef"><b>Definition</b> <a href="#l00197">persistent_cache_tier.h:197</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_adbd238d117851d56190f93ee36b0c014"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#adbd238d117851d56190f93ee36b0c014">ROCKSDB_NAMESPACE::PersistentCacheConfig::MakePersistentCacheConfig</a></div><div class="ttdeci">PersistentCacheConfig MakePersistentCacheConfig(const std::string &amp;path, const uint64_t size, const std::shared_ptr&lt; Logger &gt; &amp;log)</div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_af356dc57e7156041b21c8a6c1bb39095"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#af356dc57e7156041b21c8a6c1bb39095">ROCKSDB_NAMESPACE::PersistentCacheConfig::is_compressed</a></div><div class="ttdeci">bool is_compressed</div><div class="ttdef"><b>Definition</b> <a href="#l00220">persistent_cache_tier.h:220</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PersistentCacheConfig_html_afa3a0cca0eb399af45fa08d31ef5c42f"><div class="ttname"><a href="../../df/dbb/structROCKSDB__NAMESPACE_1_1PersistentCacheConfig.html#afa3a0cca0eb399af45fa08d31ef5c42f">ROCKSDB_NAMESPACE::PersistentCacheConfig::enable_direct_writes</a></div><div class="ttdeci">bool enable_direct_writes</div><div class="ttdef"><b>Definition</b> <a href="#l00151">persistent_cache_tier.h:151</a></div></div>
+<div class="ttc" id="asystem__clock_8h_html"><div class="ttname"><a href="../../df/d2f/system__clock_8h.html">system_clock.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_ac80ecde573b52e8729c1d4ee319d032.html">persistent_cache</a></li><li class="navelem"><a class="el" href="../../d0/df0/persistent__cache__tier_8h.html">persistent_cache_tier.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

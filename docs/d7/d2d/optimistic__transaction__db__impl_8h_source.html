@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/optimistic_transaction_db_impl.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d7/d2d/optimistic__transaction__db__impl_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">optimistic_transaction_db_impl.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d7/d2d/optimistic__transaction__db__impl_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d43/include_2rocksdb_2db_8h.html">rocksdb/db.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d5b/options_8h.html">rocksdb/options.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/d9c/optimistic__transaction__db_8h.html">rocksdb/utilities/optimistic_transaction_db.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d61/cast__util_8h.html">util/cast_util.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d50/mutexlock_8h.html">util/mutexlock.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="foldopen" id="foldopen00021" data-start="{" data-end="};">
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="../../d1/d66/classROCKSDB__NAMESPACE_1_1OccLockBucketsImplBase.html">   21</a></span><span class="keyword">class </span><a class="code hl_friend" href="../../df/d99/classROCKSDB__NAMESPACE_1_1OccLockBuckets.html#a9d9eef230afc7aefa1390ba6a0385108">OccLockBucketsImplBase</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../df/d99/classROCKSDB__NAMESPACE_1_1OccLockBuckets.html#ae022f54dc2449d1408d70782735df952">OccLockBuckets</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d1/d66/classROCKSDB__NAMESPACE_1_1OccLockBucketsImplBase.html#aa967650862af85cb6b8c7b0a23b02dbd">   23</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">port::Mutex</a>&amp; <a class="code hl_function" href="../../d1/d66/classROCKSDB__NAMESPACE_1_1OccLockBucketsImplBase.html#aa967650862af85cb6b8c7b0a23b02dbd">GetLockBucket</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, uint64_t seed) = 0;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>};</div>
+</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">template</span> &lt;<span class="keywordtype">bool</span> cache_aligned&gt;</div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html">   27</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a6fd96a825cc94256482c05298272fa57">OccLockBucketsImpl</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d1/d66/classROCKSDB__NAMESPACE_1_1OccLockBucketsImplBase.html">OccLockBucketsImplBase</a> {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a6fd96a825cc94256482c05298272fa57">   29</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a6fd96a825cc94256482c05298272fa57">OccLockBucketsImpl</a>(<span class="keywordtype">size_t</span> bucket_count) : <a class="code hl_variable" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a99526a67d131f3033437efb9b1c2ae93">locks_</a>(bucket_count) {}</div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#acda1647cc07acfa5c5a9f4021aeb3625">   30</a></span>  <a class="code hl_class" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">port::Mutex</a>&amp; <a class="code hl_function" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#acda1647cc07acfa5c5a9f4021aeb3625">GetLockBucket</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, uint64_t seed)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a99526a67d131f3033437efb9b1c2ae93">locks_</a>.Get(key, seed);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a5df334ed2b5f4721740057bcc8d00088">   33</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a5df334ed2b5f4721740057bcc8d00088">ApproximateMemoryUsage</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a99526a67d131f3033437efb9b1c2ae93">locks_</a>.ApproximateMemoryUsage();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
+</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="comment">// TODO: investigate optionally using folly::MicroLock to majorly save space</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#aeca085e14072192105e8fb07ea4aae2e">   39</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#aeca085e14072192105e8fb07ea4aae2e">M</a> = std::conditional_t&lt;cache_aligned, CacheAlignedWrapper&lt;port::Mutex&gt;,</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                               <a class="code hl_class" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">port::Mutex</a>&gt;;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a99526a67d131f3033437efb9b1c2ae93">   41</a></span>  <a class="code hl_class" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html">Striped&lt;M&gt;</a> <a class="code hl_variable" href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a99526a67d131f3033437efb9b1c2ae93">locks_</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>};</div>
+</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="foldopen" id="foldopen00044" data-start="{" data-end="};">
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html">   44</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ab7095cf116ff4cc99a2e3b4684a104e9">OptimisticTransactionDBImpl</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../d7/d52/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDB.html#a4c748ed795eef83556d0a982ad9ebeba">OptimisticTransactionDB</a> {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ab7095cf116ff4cc99a2e3b4684a104e9">   46</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ab7095cf116ff4cc99a2e3b4684a104e9">OptimisticTransactionDBImpl</a>(</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <a class="code hl_class" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html">DB</a>* db, <span class="keyword">const</span> <a class="code hl_struct" href="../../d0/d0c/structROCKSDB__NAMESPACE_1_1OptimisticTransactionDBOptions.html">OptimisticTransactionDBOptions</a>&amp; occ_options,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keywordtype">bool</span> take_ownership = <span class="keyword">true</span>)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      : <a class="code hl_function" href="../../d7/d52/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDB.html#a4c748ed795eef83556d0a982ad9ebeba">OptimisticTransactionDB</a>(db),</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <a class="code hl_variable" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ac64146ac014acd3ad488a58e11a0cd88">db_owner_</a>(take_ownership),</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <a class="code hl_variable" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a168185a1ae1893350eb6c046830fc59b">validate_policy_</a>(occ_options.validate_policy) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a168185a1ae1893350eb6c046830fc59b">validate_policy_</a> == <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af3b7a35260a716d29ace5b23b6035215aeaffdd2385c5f7c558fdd0ce8c856925">OccValidationPolicy::kValidateParallel</a>) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keyword">auto</span> bucketed_locks = occ_options.<a class="code hl_variable" href="../../d0/d0c/structROCKSDB__NAMESPACE_1_1OptimisticTransactionDBOptions.html#a850cb303a54e76bab26439e1ebce09b4">shared_lock_buckets</a>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      <span class="keywordflow">if</span> (!bucketed_locks) {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        uint32_t bucket_count = std::max(16u, occ_options.<a class="code hl_variable" href="../../d0/d0c/structROCKSDB__NAMESPACE_1_1OptimisticTransactionDBOptions.html#a914c6201f667bc134fe5171cd574dcf8">occ_lock_buckets</a>);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        bucketed_locks = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#acd3f1d32abf33ead8e20d62ddb19f951">MakeSharedOccLockBuckets</a>(bucket_count);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      <a class="code hl_variable" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#abc11875b4d6e52b923251f98d89be18f">bucketed_locks_</a> = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abfbc137fc639f1f3dce840cdb45f588c">static_cast_with_check&lt;OccLockBucketsImplBase&gt;</a>(</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>          std::move(bucketed_locks));</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  }</div>
+</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a5a47c9ea90d4618c1f1cc06e436e41e5">   63</a></span>  <a class="code hl_function" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a5a47c9ea90d4618c1f1cc06e436e41e5">~OptimisticTransactionDBImpl</a>() {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">// Prevent this stackable from destroying</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="comment">// base db</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ac64146ac014acd3ad488a58e11a0cd88">db_owner_</a>) {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      <a class="code hl_variable" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#a699bd3d1f75b242c44d0fd8d525aab91">db_</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  }</div>
+</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* BeginTransaction(<span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp; write_options,</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                                <span class="keyword">const</span> <a class="code hl_struct" href="../../de/d54/structROCKSDB__NAMESPACE_1_1OptimisticTransactionOptions.html">OptimisticTransactionOptions</a>&amp; txn_options,</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                                <a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* old_txn) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">// Transactional `DeleteRange()` is not yet supported.</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">using </span><a class="code hl_function" href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#a1cc3cf64773de96a41fef2ded73f6ad2">StackableDB::DeleteRange</a>;</div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a0a2c515ce6ee5d96de9757f583c92821">   77</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a0a2c515ce6ee5d96de9757f583c92821">DeleteRange</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp;, <a class="code hl_class" href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ColumnFamilyHandle</a>*, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp;,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                     <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp;)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a80198f888172bfab4d714628b7bfaec5">Status::NotSupported</a>();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  }</div>
+</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">// Range deletions also must not be snuck into `WriteBatch`es as they are</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">// incompatible with `OptimisticTransactionDB`.</span></div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a3a4f3d2f8d3edd83aa889a2a7269933c">   84</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a3a4f3d2f8d3edd83aa889a2a7269933c">Write</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp; write_opts, <a class="code hl_class" href="../../d6/d09/classROCKSDB__NAMESPACE_1_1WriteBatch.html">WriteBatch</a>* batch)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordflow">if</span> (batch-&gt;<a class="code hl_function" href="../../d6/d09/classROCKSDB__NAMESPACE_1_1WriteBatch.html#af9b345b49aa696d87ac9691b942a6805">HasDeleteRange</a>()) {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a80198f888172bfab4d714628b7bfaec5">Status::NotSupported</a>();</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#a8b27835eb74130a794ab7ad151fb5ac5">OptimisticTransactionDB::Write</a>(write_opts, batch);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  }</div>
+</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ac2f8412163e925958cf647e1d2ad3004">   91</a></span>  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af3b7a35260a716d29ace5b23b6035215">OccValidationPolicy</a> <a class="code hl_function" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ac2f8412163e925958cf647e1d2ad3004">GetValidatePolicy</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a168185a1ae1893350eb6c046830fc59b">validate_policy_</a>; }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ade36b6d66d5140bb0c6d91bd54237c34">   93</a></span>  <a class="code hl_class" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">port::Mutex</a>&amp; <a class="code hl_function" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ade36b6d66d5140bb0c6d91bd54237c34">GetLockBucket</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, uint64_t seed) {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#abc11875b4d6e52b923251f98d89be18f">bucketed_locks_</a>-&gt;GetLockBucket(key, seed);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#abc11875b4d6e52b923251f98d89be18f">   98</a></span>  std::shared_ptr&lt;OccLockBucketsImplBase&gt; <a class="code hl_variable" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#abc11875b4d6e52b923251f98d89be18f">bucketed_locks_</a>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ac64146ac014acd3ad488a58e11a0cd88">  100</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ac64146ac014acd3ad488a58e11a0cd88">db_owner_</a>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a168185a1ae1893350eb6c046830fc59b">  102</a></span>  <span class="keyword">const</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af3b7a35260a716d29ace5b23b6035215">OccValidationPolicy</a> <a class="code hl_variable" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a168185a1ae1893350eb6c046830fc59b">validate_policy_</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#aecffe73404e93182d2c26db84386b08e">ReinitializeTransaction</a>(<a class="code hl_class" href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">Transaction</a>* txn,</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                               <span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp; write_options,</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                               <span class="keyword">const</span> <a class="code hl_struct" href="../../de/d54/structROCKSDB__NAMESPACE_1_1OptimisticTransactionOptions.html">OptimisticTransactionOptions</a>&amp; txn_options =</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                                   <a class="code hl_struct" href="../../de/d54/structROCKSDB__NAMESPACE_1_1OptimisticTransactionOptions.html">OptimisticTransactionOptions</a>());</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>};</div>
+</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="acast__util_8h_html"><div class="ttname"><a href="../../d9/d61/cast__util_8h.html">cast_util.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ColumnFamilyHandle_html"><div class="ttname"><a href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ROCKSDB_NAMESPACE::ColumnFamilyHandle</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l00081">db.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DB_html"><div class="ttname"><a href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html">ROCKSDB_NAMESPACE::DB</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l00175">db.h:175</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DB_html_a8b27835eb74130a794ab7ad151fb5ac5"><div class="ttname"><a href="../../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#a8b27835eb74130a794ab7ad151fb5ac5">ROCKSDB_NAMESPACE::DB::Write</a></div><div class="ttdeci">virtual Status Write(const WriteOptions &amp;options, WriteBatch *updates)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OccLockBucketsImplBase_html"><div class="ttname"><a href="../../d1/d66/classROCKSDB__NAMESPACE_1_1OccLockBucketsImplBase.html">ROCKSDB_NAMESPACE::OccLockBucketsImplBase</a></div><div class="ttdef"><b>Definition</b> <a href="#l00021">optimistic_transaction_db_impl.h:21</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OccLockBucketsImplBase_html_aa967650862af85cb6b8c7b0a23b02dbd"><div class="ttname"><a href="../../d1/d66/classROCKSDB__NAMESPACE_1_1OccLockBucketsImplBase.html#aa967650862af85cb6b8c7b0a23b02dbd">ROCKSDB_NAMESPACE::OccLockBucketsImplBase::GetLockBucket</a></div><div class="ttdeci">virtual port::Mutex &amp; GetLockBucket(const Slice &amp;key, uint64_t seed)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OccLockBucketsImpl_html_a5df334ed2b5f4721740057bcc8d00088"><div class="ttname"><a href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a5df334ed2b5f4721740057bcc8d00088">ROCKSDB_NAMESPACE::OccLockBucketsImpl::ApproximateMemoryUsage</a></div><div class="ttdeci">size_t ApproximateMemoryUsage() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00033">optimistic_transaction_db_impl.h:33</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OccLockBucketsImpl_html_a6fd96a825cc94256482c05298272fa57"><div class="ttname"><a href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a6fd96a825cc94256482c05298272fa57">ROCKSDB_NAMESPACE::OccLockBucketsImpl::OccLockBucketsImpl</a></div><div class="ttdeci">OccLockBucketsImpl(size_t bucket_count)</div><div class="ttdef"><b>Definition</b> <a href="#l00029">optimistic_transaction_db_impl.h:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OccLockBucketsImpl_html_a99526a67d131f3033437efb9b1c2ae93"><div class="ttname"><a href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#a99526a67d131f3033437efb9b1c2ae93">ROCKSDB_NAMESPACE::OccLockBucketsImpl::locks_</a></div><div class="ttdeci">Striped&lt; M &gt; locks_</div><div class="ttdef"><b>Definition</b> <a href="#l00041">optimistic_transaction_db_impl.h:41</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OccLockBucketsImpl_html_acda1647cc07acfa5c5a9f4021aeb3625"><div class="ttname"><a href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#acda1647cc07acfa5c5a9f4021aeb3625">ROCKSDB_NAMESPACE::OccLockBucketsImpl::GetLockBucket</a></div><div class="ttdeci">port::Mutex &amp; GetLockBucket(const Slice &amp;key, uint64_t seed) override</div><div class="ttdef"><b>Definition</b> <a href="#l00030">optimistic_transaction_db_impl.h:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OccLockBucketsImpl_html_aeca085e14072192105e8fb07ea4aae2e"><div class="ttname"><a href="../../dd/d63/classROCKSDB__NAMESPACE_1_1OccLockBucketsImpl.html#aeca085e14072192105e8fb07ea4aae2e">ROCKSDB_NAMESPACE::OccLockBucketsImpl::M</a></div><div class="ttdeci">std::conditional_t&lt; cache_aligned, CacheAlignedWrapper&lt; port::Mutex &gt;, port::Mutex &gt; M</div><div class="ttdef"><b>Definition</b> <a href="#l00039">optimistic_transaction_db_impl.h:39</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OccLockBuckets_html_a9d9eef230afc7aefa1390ba6a0385108"><div class="ttname"><a href="../../df/d99/classROCKSDB__NAMESPACE_1_1OccLockBuckets.html#a9d9eef230afc7aefa1390ba6a0385108">ROCKSDB_NAMESPACE::OccLockBuckets::OccLockBucketsImplBase</a></div><div class="ttdeci">friend class OccLockBucketsImplBase</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d9c/optimistic__transaction__db_8h_source.html#l00056">optimistic_transaction_db.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OccLockBuckets_html_ae022f54dc2449d1408d70782735df952"><div class="ttname"><a href="../../df/d99/classROCKSDB__NAMESPACE_1_1OccLockBuckets.html#ae022f54dc2449d1408d70782735df952">ROCKSDB_NAMESPACE::OccLockBuckets::OccLockBuckets</a></div><div class="ttdeci">OccLockBuckets()</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d9c/optimistic__transaction__db_8h_source.html#l00057">optimistic_transaction_db.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl_html_a0a2c515ce6ee5d96de9757f583c92821"><div class="ttname"><a href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a0a2c515ce6ee5d96de9757f583c92821">ROCKSDB_NAMESPACE::OptimisticTransactionDBImpl::DeleteRange</a></div><div class="ttdeci">Status DeleteRange(const WriteOptions &amp;, ColumnFamilyHandle *, const Slice &amp;, const Slice &amp;) override</div><div class="ttdef"><b>Definition</b> <a href="#l00077">optimistic_transaction_db_impl.h:77</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl_html_a168185a1ae1893350eb6c046830fc59b"><div class="ttname"><a href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a168185a1ae1893350eb6c046830fc59b">ROCKSDB_NAMESPACE::OptimisticTransactionDBImpl::validate_policy_</a></div><div class="ttdeci">const OccValidationPolicy validate_policy_</div><div class="ttdef"><b>Definition</b> <a href="#l00102">optimistic_transaction_db_impl.h:102</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl_html_a3a4f3d2f8d3edd83aa889a2a7269933c"><div class="ttname"><a href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a3a4f3d2f8d3edd83aa889a2a7269933c">ROCKSDB_NAMESPACE::OptimisticTransactionDBImpl::Write</a></div><div class="ttdeci">Status Write(const WriteOptions &amp;write_opts, WriteBatch *batch) override</div><div class="ttdef"><b>Definition</b> <a href="#l00084">optimistic_transaction_db_impl.h:84</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl_html_a5a47c9ea90d4618c1f1cc06e436e41e5"><div class="ttname"><a href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#a5a47c9ea90d4618c1f1cc06e436e41e5">ROCKSDB_NAMESPACE::OptimisticTransactionDBImpl::~OptimisticTransactionDBImpl</a></div><div class="ttdeci">~OptimisticTransactionDBImpl()</div><div class="ttdef"><b>Definition</b> <a href="#l00063">optimistic_transaction_db_impl.h:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl_html_ab7095cf116ff4cc99a2e3b4684a104e9"><div class="ttname"><a href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ab7095cf116ff4cc99a2e3b4684a104e9">ROCKSDB_NAMESPACE::OptimisticTransactionDBImpl::OptimisticTransactionDBImpl</a></div><div class="ttdeci">OptimisticTransactionDBImpl(DB *db, const OptimisticTransactionDBOptions &amp;occ_options, bool take_ownership=true)</div><div class="ttdef"><b>Definition</b> <a href="#l00046">optimistic_transaction_db_impl.h:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl_html_abc11875b4d6e52b923251f98d89be18f"><div class="ttname"><a href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#abc11875b4d6e52b923251f98d89be18f">ROCKSDB_NAMESPACE::OptimisticTransactionDBImpl::bucketed_locks_</a></div><div class="ttdeci">std::shared_ptr&lt; OccLockBucketsImplBase &gt; bucketed_locks_</div><div class="ttdef"><b>Definition</b> <a href="#l00098">optimistic_transaction_db_impl.h:98</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl_html_ac2f8412163e925958cf647e1d2ad3004"><div class="ttname"><a href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ac2f8412163e925958cf647e1d2ad3004">ROCKSDB_NAMESPACE::OptimisticTransactionDBImpl::GetValidatePolicy</a></div><div class="ttdeci">OccValidationPolicy GetValidatePolicy() const</div><div class="ttdef"><b>Definition</b> <a href="#l00091">optimistic_transaction_db_impl.h:91</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl_html_ac64146ac014acd3ad488a58e11a0cd88"><div class="ttname"><a href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ac64146ac014acd3ad488a58e11a0cd88">ROCKSDB_NAMESPACE::OptimisticTransactionDBImpl::db_owner_</a></div><div class="ttdeci">bool db_owner_</div><div class="ttdef"><b>Definition</b> <a href="#l00100">optimistic_transaction_db_impl.h:100</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl_html_ade36b6d66d5140bb0c6d91bd54237c34"><div class="ttname"><a href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#ade36b6d66d5140bb0c6d91bd54237c34">ROCKSDB_NAMESPACE::OptimisticTransactionDBImpl::GetLockBucket</a></div><div class="ttdeci">port::Mutex &amp; GetLockBucket(const Slice &amp;key, uint64_t seed)</div><div class="ttdef"><b>Definition</b> <a href="#l00093">optimistic_transaction_db_impl.h:93</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl_html_aecffe73404e93182d2c26db84386b08e"><div class="ttname"><a href="../../d4/d71/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDBImpl.html#aecffe73404e93182d2c26db84386b08e">ROCKSDB_NAMESPACE::OptimisticTransactionDBImpl::ReinitializeTransaction</a></div><div class="ttdeci">void ReinitializeTransaction(Transaction *txn, const WriteOptions &amp;write_options, const OptimisticTransactionOptions &amp;txn_options=OptimisticTransactionOptions())</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d16/optimistic__transaction__db__impl_8cc_source.html#l00102">optimistic_transaction_db_impl.cc:102</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1OptimisticTransactionDB_html_a4c748ed795eef83556d0a982ad9ebeba"><div class="ttname"><a href="../../d7/d52/classROCKSDB__NAMESPACE_1_1OptimisticTransactionDB.html#a4c748ed795eef83556d0a982ad9ebeba">ROCKSDB_NAMESPACE::OptimisticTransactionDB::OptimisticTransactionDB</a></div><div class="ttdeci">OptimisticTransactionDB(const OptimisticTransactionDB &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StackableDB_html_a1cc3cf64773de96a41fef2ded73f6ad2"><div class="ttname"><a href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#a1cc3cf64773de96a41fef2ded73f6ad2">ROCKSDB_NAMESPACE::StackableDB::DeleteRange</a></div><div class="ttdeci">Status DeleteRange(const WriteOptions &amp;wopts, ColumnFamilyHandle *column_family, const Slice &amp;start_key, const Slice &amp;end_key) override</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d2d/stackable__db_8h_source.html#l00242">stackable_db.h:242</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StackableDB_html_a699bd3d1f75b242c44d0fd8d525aab91"><div class="ttname"><a href="../../dc/d62/classROCKSDB__NAMESPACE_1_1StackableDB.html#a699bd3d1f75b242c44d0fd8d525aab91">ROCKSDB_NAMESPACE::StackableDB::db_</a></div><div class="ttdeci">DB * db_</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d2d/stackable__db_8h_source.html#l00589">stackable_db.h:589</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a80198f888172bfab4d714628b7bfaec5"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a80198f888172bfab4d714628b7bfaec5">ROCKSDB_NAMESPACE::Status::NotSupported</a></div><div class="ttdeci">static Status NotSupported(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00210">status.h:210</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Striped_html"><div class="ttname"><a href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html">ROCKSDB_NAMESPACE::Striped</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d50/mutexlock_8h_source.html#l00166">mutexlock.h:166</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Transaction_html"><div class="ttname"><a href="../../da/d17/classROCKSDB__NAMESPACE_1_1Transaction.html">ROCKSDB_NAMESPACE::Transaction</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/db6/transaction_8h_source.html#l00136">transaction.h:136</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteBatch_html"><div class="ttname"><a href="../../d6/d09/classROCKSDB__NAMESPACE_1_1WriteBatch.html">ROCKSDB_NAMESPACE::WriteBatch</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d98/write__batch_8h_source.html#l00064">write_batch.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteBatch_html_af9b345b49aa696d87ac9691b942a6805"><div class="ttname"><a href="../../d6/d09/classROCKSDB__NAMESPACE_1_1WriteBatch.html#af9b345b49aa696d87ac9691b942a6805">ROCKSDB_NAMESPACE::WriteBatch::HasDeleteRange</a></div><div class="ttdeci">bool HasDeleteRange() const</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d61/write__batch_8cc_source.html#l00331">write_batch.cc:331</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">ROCKSDB_NAMESPACE::port::Mutex</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d4a/port__example_8h_source.html#l00030">port_example.h:30</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2db_8h_html"><div class="ttname"><a href="../../d5/d43/include_2rocksdb_2db_8h.html">db.h</a></div></div>
+<div class="ttc" id="amutexlock_8h_html"><div class="ttname"><a href="../../d9/d50/mutexlock_8h.html">mutexlock.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_abfbc137fc639f1f3dce840cdb45f588c"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abfbc137fc639f1f3dce840cdb45f588c">ROCKSDB_NAMESPACE::static_cast_with_check</a></div><div class="ttdeci">DestClass * static_cast_with_check(SrcClass *x)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d61/cast__util_8h_source.html#l00020">cast_util.h:20</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_acd3f1d32abf33ead8e20d62ddb19f951"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#acd3f1d32abf33ead8e20d62ddb19f951">ROCKSDB_NAMESPACE::MakeSharedOccLockBuckets</a></div><div class="ttdeci">std::shared_ptr&lt; OccLockBuckets &gt; MakeSharedOccLockBuckets(size_t bucket_count, bool cache_aligned=false)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d16/optimistic__transaction__db__impl_8cc_source.html#l00020">optimistic_transaction_db_impl.cc:20</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_af3b7a35260a716d29ace5b23b6035215"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af3b7a35260a716d29ace5b23b6035215">ROCKSDB_NAMESPACE::OccValidationPolicy</a></div><div class="ttdeci">OccValidationPolicy</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d9c/optimistic__transaction__db_8h_source.html#l00034">optimistic_transaction_db.h:34</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_af3b7a35260a716d29ace5b23b6035215aeaffdd2385c5f7c558fdd0ce8c856925"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af3b7a35260a716d29ace5b23b6035215aeaffdd2385c5f7c558fdd0ce8c856925">ROCKSDB_NAMESPACE::OccValidationPolicy::kValidateParallel</a></div><div class="ttdeci">@ kValidateParallel</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d9c/optimistic__transaction__db_8h_source.html#l00044">optimistic_transaction_db.h:44</a></div></div>
+<div class="ttc" id="aoptimistic__transaction__db_8h_html"><div class="ttname"><a href="../../d4/d9c/optimistic__transaction__db_8h.html">optimistic_transaction_db.h</a></div></div>
+<div class="ttc" id="aoptions_8h_html"><div class="ttname"><a href="../../d7/d5b/options_8h.html">options.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OptimisticTransactionDBOptions_html"><div class="ttname"><a href="../../d0/d0c/structROCKSDB__NAMESPACE_1_1OptimisticTransactionDBOptions.html">ROCKSDB_NAMESPACE::OptimisticTransactionDBOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d9c/optimistic__transaction__db_8h_source.html#l00068">optimistic_transaction_db.h:68</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OptimisticTransactionDBOptions_html_a850cb303a54e76bab26439e1ebce09b4"><div class="ttname"><a href="../../d0/d0c/structROCKSDB__NAMESPACE_1_1OptimisticTransactionDBOptions.html#a850cb303a54e76bab26439e1ebce09b4">ROCKSDB_NAMESPACE::OptimisticTransactionDBOptions::shared_lock_buckets</a></div><div class="ttdeci">std::shared_ptr&lt; OccLockBuckets &gt; shared_lock_buckets</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d9c/optimistic__transaction__db_8h_source.html#l00082">optimistic_transaction_db.h:82</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OptimisticTransactionDBOptions_html_a914c6201f667bc134fe5171cd574dcf8"><div class="ttname"><a href="../../d0/d0c/structROCKSDB__NAMESPACE_1_1OptimisticTransactionDBOptions.html#a914c6201f667bc134fe5171cd574dcf8">ROCKSDB_NAMESPACE::OptimisticTransactionDBOptions::occ_lock_buckets</a></div><div class="ttdeci">uint32_t occ_lock_buckets</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d9c/optimistic__transaction__db_8h_source.html#l00075">optimistic_transaction_db.h:75</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OptimisticTransactionOptions_html"><div class="ttname"><a href="../../de/d54/structROCKSDB__NAMESPACE_1_1OptimisticTransactionOptions.html">ROCKSDB_NAMESPACE::OptimisticTransactionOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d9c/optimistic__transaction__db_8h_source.html#l00025">optimistic_transaction_db.h:25</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1WriteOptions_html"><div class="ttname"><a href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">ROCKSDB_NAMESPACE::WriteOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01958">options.h:1958</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../d7/d2d/optimistic__transaction__db__impl_8h.html">optimistic_transaction_db_impl.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: memory/jemalloc_nodump_allocator.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d7/d89/jemalloc__nodump__allocator_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">jemalloc_nodump_allocator.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d7/d89/jemalloc__nodump__allocator_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/db3/jemalloc__helper_8h.html">port/jemalloc_helper.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d00/port_8h.html">port/port.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d02/memory__allocator_8h.html">rocksdb/memory_allocator.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d7a/thread__local_8h.html">util/thread_local.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/dce/memory__allocators_8h.html">utilities/memory_allocators.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#if defined(ROCKSDB_JEMALLOC) &amp;&amp; defined(ROCKSDB_PLATFORM_POSIX)</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;sys/mman.h&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#if (JEMALLOC_VERSION_MAJOR &gt;= 5) &amp;&amp; defined(MADV_DONTDUMP)</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#define ROCKSDB_JEMALLOC_NODUMP_ALLOCATOR</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif  </span><span class="comment">// (JEMALLOC_VERSION_MAJOR &gt;= 5) &amp;&amp; MADV_DONTDUMP</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#endif  </span><span class="comment">// ROCKSDB_JEMALLOC &amp;&amp; ROCKSDB_PLATFORM_POSIX</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// Allocation requests are randomly sharded across</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// `JemallocAllocatorOptions::num_arenas` arenas to reduce contention on per-</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// arena mutexes.</span></div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html">   31</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#ac56954ce75549ef150b1c15cc9b1c39f">JemallocNodumpAllocator</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html">BaseMemoryAllocator</a> {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#ac56954ce75549ef150b1c15cc9b1c39f">JemallocNodumpAllocator</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../db/d47/structROCKSDB__NAMESPACE_1_1JemallocAllocatorOptions.html">JemallocAllocatorOptions</a>&amp; options);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#ifdef ROCKSDB_JEMALLOC_NODUMP_ALLOCATOR</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_function" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#ac56954ce75549ef150b1c15cc9b1c39f">~JemallocNodumpAllocator</a>();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif  </span><span class="comment">// ROCKSDB_JEMALLOC_NODUMP_ALLOCATOR</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a39e74eae17da61a4d7ad31ecea62b419">   38</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a39e74eae17da61a4d7ad31ecea62b419">kClassName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;JemallocNodumpAllocator&quot;</span>; }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a808a14ab4d4252d6a89254afe6e11d68">   39</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a808a14ab4d4252d6a89254afe6e11d68">Name</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a39e74eae17da61a4d7ad31ecea62b419">kClassName</a>(); }</div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a0a433f3377fe0107d0c773102eb90f9c">   40</a></span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a0a433f3377fe0107d0c773102eb90f9c">IsSupported</a>() {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    std::string unused;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a0a433f3377fe0107d0c773102eb90f9c">IsSupported</a>(&amp;unused);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
+</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> IsSupported(std::string* why);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#ae4b1e38b97c186753330b550a2c79af4">   45</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#ae4b1e38b97c186753330b550a2c79af4">IsMutable</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> !<a class="code hl_variable" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#adb0756bbc7b3219a8bdbd63356a985b7">init_</a>; }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> PrepareOptions(<span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ConfigOptions</a>&amp; config_options) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#ifdef ROCKSDB_JEMALLOC_NODUMP_ALLOCATOR</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span>* Allocate(<span class="keywordtype">size_t</span> size) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordtype">void</span> Deallocate(<span class="keywordtype">void</span>* p) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordtype">size_t</span> UsableSize(<span class="keywordtype">void</span>* p, <span class="keywordtype">size_t</span> allocation_size) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#endif  </span><span class="comment">// ROCKSDB_JEMALLOC_NODUMP_ALLOCATOR</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#ifdef ROCKSDB_JEMALLOC_NODUMP_ALLOCATOR</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> InitializeArenas();</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  uint32_t GetArenaIndex() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">// Custom alloc hook to replace jemalloc default alloc.</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keyword">static</span> <span class="keywordtype">void</span>* Alloc(extent_hooks_t* extent, <span class="keywordtype">void</span>* new_addr, <span class="keywordtype">size_t</span> size,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                     <span class="keywordtype">size_t</span> alignment, <span class="keywordtype">bool</span>* zero, <span class="keywordtype">bool</span>* commit,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                     <span class="keywordtype">unsigned</span> arena_ind);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">// Destroy arena on destruction of the allocator, or on failure.</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">static</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> DestroyArena(uint32_t arena_index);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">// Destroy tcache on destruction of the allocator, or thread exit.</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> DestroyThreadSpecificCache(<span class="keywordtype">void</span>* ptr);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">// Get or create tcache. Return flag suitable to use with `mallocx`:</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// either MALLOCX_TCACHE_NONE or MALLOCX_TCACHE(tc).</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordtype">int</span> GetThreadSpecificCache(<span class="keywordtype">size_t</span> size);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#endif  </span><span class="comment">// ROCKSDB_JEMALLOC_NODUMP_ALLOCATOR</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#aab59adcfafb36e2dba94ce43a3677e4b">   76</a></span>  <a class="code hl_struct" href="../../db/d47/structROCKSDB__NAMESPACE_1_1JemallocAllocatorOptions.html">JemallocAllocatorOptions</a> <a class="code hl_variable" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#aab59adcfafb36e2dba94ce43a3677e4b">options_</a>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#ifdef ROCKSDB_JEMALLOC_NODUMP_ALLOCATOR</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">// A function pointer to jemalloc default alloc. Use atomic to make sure</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// NewJemallocNodumpAllocator is thread-safe.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">// Hack: original_alloc_ needs to be static for Alloc() to access it.</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">// alloc needs to be static to pass to jemalloc as function pointer. We can</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">// use a single process-wide value as long as we assume that any newly created</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="comment">// arena has the same original value in its `alloc` function pointer.</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keyword">static</span> std::atomic&lt;extent_alloc_t*&gt; original_alloc_;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="comment">// Custom hooks has to outlive corresponding arena.</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  std::vector&lt;std::unique_ptr&lt;extent_hooks_t&gt;&gt; per_arena_hooks_;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="comment">// Hold thread-local tcache index.</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <a class="code hl_class" href="../../d9/da5/classROCKSDB__NAMESPACE_1_1ThreadLocalPtr.html">ThreadLocalPtr</a> tcache_;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  std::vector&lt;uint32_t&gt; arena_indexes_;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#endif  </span><span class="comment">// ROCKSDB_JEMALLOC_NODUMP_ALLOCATOR</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#adb0756bbc7b3219a8bdbd63356a985b7">   97</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#adb0756bbc7b3219a8bdbd63356a985b7">init_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>};</div>
+</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BaseMemoryAllocator_html"><div class="ttname"><a href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html">ROCKSDB_NAMESPACE::BaseMemoryAllocator</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/dce/memory__allocators_8h_source.html#l00034">memory_allocators.h:34</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator_html_a0a433f3377fe0107d0c773102eb90f9c"><div class="ttname"><a href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a0a433f3377fe0107d0c773102eb90f9c">ROCKSDB_NAMESPACE::JemallocNodumpAllocator::IsSupported</a></div><div class="ttdeci">static bool IsSupported()</div><div class="ttdef"><b>Definition</b> <a href="#l00040">jemalloc_nodump_allocator.h:40</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator_html_a39e74eae17da61a4d7ad31ecea62b419"><div class="ttname"><a href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a39e74eae17da61a4d7ad31ecea62b419">ROCKSDB_NAMESPACE::JemallocNodumpAllocator::kClassName</a></div><div class="ttdeci">static const char * kClassName()</div><div class="ttdef"><b>Definition</b> <a href="#l00038">jemalloc_nodump_allocator.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator_html_a808a14ab4d4252d6a89254afe6e11d68"><div class="ttname"><a href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#a808a14ab4d4252d6a89254afe6e11d68">ROCKSDB_NAMESPACE::JemallocNodumpAllocator::Name</a></div><div class="ttdeci">const char * Name() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00039">jemalloc_nodump_allocator.h:39</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator_html_aab59adcfafb36e2dba94ce43a3677e4b"><div class="ttname"><a href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#aab59adcfafb36e2dba94ce43a3677e4b">ROCKSDB_NAMESPACE::JemallocNodumpAllocator::options_</a></div><div class="ttdeci">JemallocAllocatorOptions options_</div><div class="ttdef"><b>Definition</b> <a href="#l00076">jemalloc_nodump_allocator.h:76</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator_html_ac56954ce75549ef150b1c15cc9b1c39f"><div class="ttname"><a href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#ac56954ce75549ef150b1c15cc9b1c39f">ROCKSDB_NAMESPACE::JemallocNodumpAllocator::JemallocNodumpAllocator</a></div><div class="ttdeci">JemallocNodumpAllocator(const JemallocAllocatorOptions &amp;options)</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d97/jemalloc__nodump__allocator_8cc_source.html#l00065">jemalloc_nodump_allocator.cc:65</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator_html_adb0756bbc7b3219a8bdbd63356a985b7"><div class="ttname"><a href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#adb0756bbc7b3219a8bdbd63356a985b7">ROCKSDB_NAMESPACE::JemallocNodumpAllocator::init_</a></div><div class="ttdeci">bool init_</div><div class="ttdef"><b>Definition</b> <a href="#l00097">jemalloc_nodump_allocator.h:97</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator_html_ae4b1e38b97c186753330b550a2c79af4"><div class="ttname"><a href="../../d7/d74/classROCKSDB__NAMESPACE_1_1JemallocNodumpAllocator.html#ae4b1e38b97c186753330b550a2c79af4">ROCKSDB_NAMESPACE::JemallocNodumpAllocator::IsMutable</a></div><div class="ttdeci">bool IsMutable() const</div><div class="ttdef"><b>Definition</b> <a href="#l00045">jemalloc_nodump_allocator.h:45</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ThreadLocalPtr_html"><div class="ttname"><a href="../../d9/da5/classROCKSDB__NAMESPACE_1_1ThreadLocalPtr.html">ROCKSDB_NAMESPACE::ThreadLocalPtr</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d7a/thread__local_8h_source.html#l00044">thread_local.h:44</a></div></div>
+<div class="ttc" id="ajemalloc__helper_8h_html"><div class="ttname"><a href="../../df/db3/jemalloc__helper_8h.html">jemalloc_helper.h</a></div></div>
+<div class="ttc" id="amemory__allocator_8h_html"><div class="ttname"><a href="../../d7/d02/memory__allocator_8h.html">memory_allocator.h</a></div></div>
+<div class="ttc" id="amemory__allocators_8h_html"><div class="ttname"><a href="../../dd/dce/memory__allocators_8h.html">memory_allocators.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="aport_8h_html"><div class="ttname"><a href="../../da/d00/port_8h.html">port.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ConfigOptions_html"><div class="ttname"><a href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ROCKSDB_NAMESPACE::ConfigOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/ddb/convenience_8h_source.html#l00034">convenience.h:34</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1JemallocAllocatorOptions_html"><div class="ttname"><a href="../../db/d47/structROCKSDB__NAMESPACE_1_1JemallocAllocatorOptions.html">ROCKSDB_NAMESPACE::JemallocAllocatorOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d02/memory__allocator_8h_source.html#l00042">memory_allocator.h:42</a></div></div>
+<div class="ttc" id="athread__local_8h_html"><div class="ttname"><a href="../../d8/d7a/thread__local_8h.html">thread_local.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_267116d250309cbe7bd39c0026ee016a.html">memory</a></li><li class="navelem"><a class="el" href="../../d7/d89/jemalloc__nodump__allocator_8h.html">jemalloc_nodump_allocator.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

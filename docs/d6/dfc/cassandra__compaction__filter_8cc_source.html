@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/cassandra/cassandra_compaction_filter.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d6/dfc/cassandra__compaction__filter_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">cassandra_compaction_filter.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d6/dfc/cassandra__compaction__filter_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d90/cassandra__compaction__filter_8h.html">utilities/cassandra/cassandra_compaction_filter.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d48/slice_8h.html">rocksdb/slice.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/dc2/object__registry_8h.html">rocksdb/utilities/object_registry.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/db1/options__type_8h.html">rocksdb/utilities/options_type.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d21/utilities_2cassandra_2format_8h.html">utilities/cassandra/format.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/dd0/utilities_2cassandra_2merge__operator_8h.html">utilities/cassandra/merge_operator.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html">   16</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html">ROCKSDB_NAMESPACE::cassandra</a> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">static</span> std::unordered_map&lt;std::string, OptionTypeInfo&gt;</div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#add5af3ff8f6ffbe9b2b56839f15e4247">   18</a></span>    <a class="code hl_variable" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#add5af3ff8f6ffbe9b2b56839f15e4247">cassandra_filter_type_info</a> = {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        {<span class="stringliteral">&quot;purge_ttl_on_expiration&quot;</span>,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>         {offsetof(<span class="keyword">struct</span> <a class="code hl_struct" href="../../d0/d2a/structROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraOptions.html">CassandraOptions</a>, purge_ttl_on_expiration),</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca57f58630ea0106aa965e5bf61a49d02c">OptionType::kBoolean</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">OptionVerificationType::kNormal</a>,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">OptionTypeFlags::kNone</a>}},</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        {<span class="stringliteral">&quot;gc_grace_period_in_seconds&quot;</span>,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>         {offsetof(<span class="keyword">struct</span> <a class="code hl_struct" href="../../d0/d2a/structROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraOptions.html">CassandraOptions</a>, gc_grace_period_in_seconds),</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca93b8fef3be50b11316a75c44e594cf56">OptionType::kUInt32T</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">OptionVerificationType::kNormal</a>,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>          <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">OptionTypeFlags::kNone</a>}},</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>};</div>
+</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a00145334dc8f1d034d0c4f2c03a71c5a">   29</a></span><a class="code hl_function" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a00145334dc8f1d034d0c4f2c03a71c5a">CassandraCompactionFilter::CassandraCompactionFilter</a>(</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">bool</span> purge_ttl_on_expiration, int32_t gc_grace_period_in_seconds)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    : <a class="code hl_variable" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a6c28eda05e5045ebe7a9a738fb185d7e">options_</a>(gc_grace_period_in_seconds, 0, purge_ttl_on_expiration) {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <a class="code hl_function" href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#a10a019263f3ea488ab059ec116085f8a">RegisterOptions</a>(&amp;<a class="code hl_variable" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a6c28eda05e5045ebe7a9a738fb185d7e">options_</a>, &amp;<a class="code hl_variable" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#add5af3ff8f6ffbe9b2b56839f15e4247">cassandra_filter_type_info</a>);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
+</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a186852cd8867b0bb9670574719f4da7f">   35</a></span><a class="code hl_enumeration" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a3b2409f8d0ee581d797bdae20887ed84">CompactionFilter::Decision</a> <a class="code hl_function" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a186852cd8867b0bb9670574719f4da7f">CassandraCompactionFilter::FilterV2</a>(</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">int</span> <span class="comment">/*level*/</span>, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <span class="comment">/*key*/</span>, <a class="code hl_enumeration" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#abe91847b681b3ba23cb7228445f676d8">ValueType</a> value_type,</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; existing_value, std::string* new_value,</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    std::string* <span class="comment">/*skip_until*/</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordtype">bool</span> value_changed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_class" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html">RowValue</a> row_value =</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      <a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a826eb5363ed1cc7e892305b615a1d184">RowValue::Deserialize</a>(existing_value.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">data</a>(), existing_value.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>());</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_class" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html">RowValue</a> compacted =</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      <a class="code hl_variable" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a6c28eda05e5045ebe7a9a738fb185d7e">options_</a>.purge_ttl_on_expiration</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>          ? row_value.<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a8e5b1175b25787a3f7954f871ddb1c6c">RemoveExpiredColumns</a>(&amp;value_changed)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>          : row_value.<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#aed2e5dfe242a9102bb660f3c3831731c">ConvertExpiredColumnsToTombstones</a>(&amp;value_changed);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">if</span> (value_type == <a class="code hl_enumvalue" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#abe91847b681b3ba23cb7228445f676d8a2284ecaee13a6d35950f42642ae6a003">ValueType::kValue</a>) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    compacted = compacted.<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ae47d05a3f818a76b35dc9088a904eb6d">RemoveTombstones</a>(<a class="code hl_variable" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a6c28eda05e5045ebe7a9a738fb185d7e">options_</a>.gc_grace_period_in_seconds);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">if</span> (compacted.<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a16710e26bbc90a22bbb7a7e1831d81d6">Empty</a>()) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a3b2409f8d0ee581d797bdae20887ed84a016a4c677dea4af4b6898d79b133c29f">Decision::kRemove</a>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">if</span> (value_changed) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    compacted.<a class="code hl_function" href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a6694a40de02601c50dc84eb67ef81e53">Serialize</a>(new_value);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a3b2409f8d0ee581d797bdae20887ed84a2be5d84a7aba7914773ee53cd0316422">Decision::kChangeValue</a>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a3b2409f8d0ee581d797bdae20887ed84afae526507e17bfc6f0d14e125189063a">Decision::kKeep</a>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>}</div>
+</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#aeeca30861a1ae723e9bbf0a546ec809b">   63</a></span><a class="code hl_function" href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#aeeca30861a1ae723e9bbf0a546ec809b">CassandraCompactionFilterFactory::CassandraCompactionFilterFactory</a>(</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordtype">bool</span> purge_ttl_on_expiration, int32_t gc_grace_period_in_seconds)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    : <a class="code hl_variable" href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#a1b4bd14bb4e685d4368b096361ed27c0">options_</a>(gc_grace_period_in_seconds, 0, purge_ttl_on_expiration) {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <a class="code hl_function" href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#a10a019263f3ea488ab059ec116085f8a">RegisterOptions</a>(&amp;<a class="code hl_variable" href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#a1b4bd14bb4e685d4368b096361ed27c0">options_</a>, &amp;<a class="code hl_variable" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#add5af3ff8f6ffbe9b2b56839f15e4247">cassandra_filter_type_info</a>);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>std::unique_ptr&lt;CompactionFilter&gt;</div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#a0c3460c82475b4b0f40c0e28d883c1a5">   70</a></span><a class="code hl_function" href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#a0c3460c82475b4b0f40c0e28d883c1a5">CassandraCompactionFilterFactory::CreateCompactionFilter</a>(</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keyword">const</span> <a class="code hl_struct" href="../../db/d0c/structROCKSDB__NAMESPACE_1_1CompactionFilter_1_1Context.html">CompactionFilter::Context</a>&amp;) {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  std::unique_ptr&lt;CompactionFilter&gt; result(<span class="keyword">new</span> <a class="code hl_class" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html">CassandraCompactionFilter</a>(</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      <a class="code hl_variable" href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#a1b4bd14bb4e685d4368b096361ed27c0">options_</a>.purge_ttl_on_expiration, <a class="code hl_variable" href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#a1b4bd14bb4e685d4368b096361ed27c0">options_</a>.gc_grace_period_in_seconds));</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
+</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a5e3f7535a08741a9ebb0f38f5d0e00f7">   77</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a5e3f7535a08741a9ebb0f38f5d0e00f7">RegisterCassandraObjects</a>(<a class="code hl_class" href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html">ObjectLibrary</a>&amp; library,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                             <span class="keyword">const</span> std::string&amp; <span class="comment">/*arg*/</span>) {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  library.<a class="code hl_function" href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html#ad96a836de3ddda09e43fb2fd9868ea3a">AddFactory</a>&lt;<a class="code hl_class" href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html">MergeOperator</a>&gt;(</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      <a class="code hl_function" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#af8eaab9218cde0a964060faf649c59ed">CassandraValueMergeOperator::kClassName</a>(),</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      [](<span class="keyword">const</span> std::string&amp; <span class="comment">/*uri*/</span>, std::unique_ptr&lt;MergeOperator&gt;* guard,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>         std::string* <span class="comment">/* errmsg */</span>) {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        guard-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html">CassandraValueMergeOperator</a>(0));</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="keywordflow">return</span> guard-&gt;get();</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      });</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  library.<a class="code hl_function" href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html#ad96a836de3ddda09e43fb2fd9868ea3a">AddFactory</a>&lt;<a class="code hl_class" href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html">CompactionFilter</a>&gt;(</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      <a class="code hl_function" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#aaa5457e6b4d6b7066d73e7a397d662b4">CassandraCompactionFilter::kClassName</a>(),</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      [](<span class="keyword">const</span> std::string&amp; <span class="comment">/*uri*/</span>,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>         std::unique_ptr&lt;CompactionFilter&gt;* <span class="comment">/*guard */</span>,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>         std::string* <span class="comment">/* errmsg */</span>) {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html">CassandraCompactionFilter</a>(<span class="keyword">false</span>, 0);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      });</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  library.<a class="code hl_function" href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html#ad96a836de3ddda09e43fb2fd9868ea3a">AddFactory</a>&lt;<a class="code hl_class" href="../../da/daf/classROCKSDB__NAMESPACE_1_1CompactionFilterFactory.html">CompactionFilterFactory</a>&gt;(</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <a class="code hl_function" href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#a10816e1d8c64f88a9a6f4a8b28cbb191">CassandraCompactionFilterFactory::kClassName</a>(),</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      [](<span class="keyword">const</span> std::string&amp; <span class="comment">/*uri*/</span>,</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>         std::unique_ptr&lt;CompactionFilterFactory&gt;* guard,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>         std::string* <span class="comment">/* errmsg */</span>) {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        guard-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html">CassandraCompactionFilterFactory</a>(<span class="keyword">false</span>, 0));</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="keywordflow">return</span> guard-&gt;get();</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      });</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordtype">size_t</span> num_types;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(library.<a class="code hl_function" href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html#ab159201a78715c8f603a637a774970d7">GetFactoryCount</a>(&amp;num_types));</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>}</div>
+</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE::cassandra</span></div>
+</div>
+<div class="ttc" id="acassandra__compaction__filter_8h_html"><div class="ttname"><a href="../../d5/d90/cassandra__compaction__filter_8h.html">cassandra_compaction_filter.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilterFactory_html"><div class="ttname"><a href="../../da/daf/classROCKSDB__NAMESPACE_1_1CompactionFilterFactory.html">ROCKSDB_NAMESPACE::CompactionFilterFactory</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/db6/compaction__filter_8h_source.html#l00349">compaction_filter.h:349</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilter_html"><div class="ttname"><a href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html">ROCKSDB_NAMESPACE::CompactionFilter</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/db6/compaction__filter_8h_source.html#l00054">compaction_filter.h:54</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilter_html_a3b2409f8d0ee581d797bdae20887ed84"><div class="ttname"><a href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a3b2409f8d0ee581d797bdae20887ed84">ROCKSDB_NAMESPACE::CompactionFilter::Decision</a></div><div class="ttdeci">Decision</div><div class="ttdef"><b>Definition</b> <a href="../../d5/db6/compaction__filter_8h_source.html#l00075">compaction_filter.h:75</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilter_html_a3b2409f8d0ee581d797bdae20887ed84a016a4c677dea4af4b6898d79b133c29f"><div class="ttname"><a href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a3b2409f8d0ee581d797bdae20887ed84a016a4c677dea4af4b6898d79b133c29f">ROCKSDB_NAMESPACE::CompactionFilter::Decision::kRemove</a></div><div class="ttdeci">@ kRemove</div><div class="ttdef"><b>Definition</b> <a href="../../d5/db6/compaction__filter_8h_source.html#l00089">compaction_filter.h:89</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilter_html_a3b2409f8d0ee581d797bdae20887ed84a2be5d84a7aba7914773ee53cd0316422"><div class="ttname"><a href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a3b2409f8d0ee581d797bdae20887ed84a2be5d84a7aba7914773ee53cd0316422">ROCKSDB_NAMESPACE::CompactionFilter::Decision::kChangeValue</a></div><div class="ttdeci">@ kChangeValue</div><div class="ttdef"><b>Definition</b> <a href="../../d5/db6/compaction__filter_8h_source.html#l00095">compaction_filter.h:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilter_html_a3b2409f8d0ee581d797bdae20887ed84afae526507e17bfc6f0d14e125189063a"><div class="ttname"><a href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#a3b2409f8d0ee581d797bdae20887ed84afae526507e17bfc6f0d14e125189063a">ROCKSDB_NAMESPACE::CompactionFilter::Decision::kKeep</a></div><div class="ttdeci">@ kKeep</div><div class="ttdef"><b>Definition</b> <a href="../../d5/db6/compaction__filter_8h_source.html#l00077">compaction_filter.h:77</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilter_html_abe91847b681b3ba23cb7228445f676d8"><div class="ttname"><a href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#abe91847b681b3ba23cb7228445f676d8">ROCKSDB_NAMESPACE::CompactionFilter::ValueType</a></div><div class="ttdeci">ValueType</div><div class="ttdef"><b>Definition</b> <a href="../../d5/db6/compaction__filter_8h_source.html#l00058">compaction_filter.h:58</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionFilter_html_abe91847b681b3ba23cb7228445f676d8a2284ecaee13a6d35950f42642ae6a003"><div class="ttname"><a href="../../d9/d15/classROCKSDB__NAMESPACE_1_1CompactionFilter.html#abe91847b681b3ba23cb7228445f676d8a2284ecaee13a6d35950f42642ae6a003">ROCKSDB_NAMESPACE::CompactionFilter::kValue</a></div><div class="ttdeci">@ kValue</div><div class="ttdef"><b>Definition</b> <a href="../../d5/db6/compaction__filter_8h_source.html#l00060">compaction_filter.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Configurable_html_a10a019263f3ea488ab059ec116085f8a"><div class="ttname"><a href="../../da/dc0/classROCKSDB__NAMESPACE_1_1Configurable.html#a10a019263f3ea488ab059ec116085f8a">ROCKSDB_NAMESPACE::Configurable::RegisterOptions</a></div><div class="ttdeci">void RegisterOptions(T *opt_ptr, const std::unordered_map&lt; std::string, OptionTypeInfo &gt; *opt_map)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d0b/configurable_8h_source.html#l00376">configurable.h:376</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MergeOperator_html"><div class="ttname"><a href="../../dd/dd6/classROCKSDB__NAMESPACE_1_1MergeOperator.html">ROCKSDB_NAMESPACE::MergeOperator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00053">merge_operator.h:53</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ObjectLibrary_html"><div class="ttname"><a href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html">ROCKSDB_NAMESPACE::ObjectLibrary</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/dc2/object__registry_8h_source.html#l00043">object_registry.h:43</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ObjectLibrary_html_ab159201a78715c8f603a637a774970d7"><div class="ttname"><a href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html#ab159201a78715c8f603a637a774970d7">ROCKSDB_NAMESPACE::ObjectLibrary::GetFactoryCount</a></div><div class="ttdeci">size_t GetFactoryCount(size_t *num_types) const</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d74/object__registry_8cc_source.html#l00149">object_registry.cc:149</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ObjectLibrary_html_ad96a836de3ddda09e43fb2fd9868ea3a"><div class="ttname"><a href="../../d7/d78/classROCKSDB__NAMESPACE_1_1ObjectLibrary.html#ad96a836de3ddda09e43fb2fd9868ea3a">ROCKSDB_NAMESPACE::ObjectLibrary::AddFactory</a></div><div class="ttdeci">const FactoryFunc&lt; T &gt; &amp; AddFactory(const std::string &amp;name, const FactoryFunc&lt; T &gt; &amp;func)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/dc2/object__registry_8h_source.html#l00237">object_registry.h:237</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a47c51c16ecee27b619768f1b817a342c"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">ROCKSDB_NAMESPACE::Slice::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00060">slice.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a5230d45b66475f5e342a7654313d4c0e"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">ROCKSDB_NAMESPACE::Slice::data</a></div><div class="ttdeci">const char * data() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00057">slice.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory_html"><div class="ttname"><a href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html">ROCKSDB_NAMESPACE::cassandra::CassandraCompactionFilterFactory</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d90/cassandra__compaction__filter_8h_source.html#l00042">cassandra_compaction_filter.h:42</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory_html_a0c3460c82475b4b0f40c0e28d883c1a5"><div class="ttname"><a href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#a0c3460c82475b4b0f40c0e28d883c1a5">ROCKSDB_NAMESPACE::cassandra::CassandraCompactionFilterFactory::CreateCompactionFilter</a></div><div class="ttdeci">std::unique_ptr&lt; CompactionFilter &gt; CreateCompactionFilter(const CompactionFilter::Context &amp;context) override</div><div class="ttdef"><b>Definition</b> <a href="#l00070">cassandra_compaction_filter.cc:70</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory_html_a10816e1d8c64f88a9a6f4a8b28cbb191"><div class="ttname"><a href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#a10816e1d8c64f88a9a6f4a8b28cbb191">ROCKSDB_NAMESPACE::cassandra::CassandraCompactionFilterFactory::kClassName</a></div><div class="ttdeci">static const char * kClassName()</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d90/cassandra__compaction__filter_8h_source.html#l00050">cassandra_compaction_filter.h:50</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory_html_a1b4bd14bb4e685d4368b096361ed27c0"><div class="ttname"><a href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#a1b4bd14bb4e685d4368b096361ed27c0">ROCKSDB_NAMESPACE::cassandra::CassandraCompactionFilterFactory::options_</a></div><div class="ttdeci">CassandraOptions options_</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d90/cassandra__compaction__filter_8h_source.html#l00054">cassandra_compaction_filter.h:54</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory_html_aeeca30861a1ae723e9bbf0a546ec809b"><div class="ttname"><a href="../../dd/da8/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilterFactory.html#aeeca30861a1ae723e9bbf0a546ec809b">ROCKSDB_NAMESPACE::cassandra::CassandraCompactionFilterFactory::CassandraCompactionFilterFactory</a></div><div class="ttdeci">CassandraCompactionFilterFactory(bool purge_ttl_on_expiration, int32_t gc_grace_period_in_seconds)</div><div class="ttdef"><b>Definition</b> <a href="#l00063">cassandra_compaction_filter.cc:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter_html"><div class="ttname"><a href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html">ROCKSDB_NAMESPACE::cassandra::CassandraCompactionFilter</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d90/cassandra__compaction__filter_8h_source.html#l00027">cassandra_compaction_filter.h:27</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter_html_a00145334dc8f1d034d0c4f2c03a71c5a"><div class="ttname"><a href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a00145334dc8f1d034d0c4f2c03a71c5a">ROCKSDB_NAMESPACE::cassandra::CassandraCompactionFilter::CassandraCompactionFilter</a></div><div class="ttdeci">CassandraCompactionFilter(bool purge_ttl_on_expiration, int32_t gc_grace_period_in_seconds)</div><div class="ttdef"><b>Definition</b> <a href="#l00029">cassandra_compaction_filter.cc:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter_html_a186852cd8867b0bb9670574719f4da7f"><div class="ttname"><a href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a186852cd8867b0bb9670574719f4da7f">ROCKSDB_NAMESPACE::cassandra::CassandraCompactionFilter::FilterV2</a></div><div class="ttdeci">Decision FilterV2(int level, const Slice &amp;key, ValueType value_type, const Slice &amp;existing_value, std::string *new_value, std::string *skip_until) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00035">cassandra_compaction_filter.cc:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter_html_a6c28eda05e5045ebe7a9a738fb185d7e"><div class="ttname"><a href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#a6c28eda05e5045ebe7a9a738fb185d7e">ROCKSDB_NAMESPACE::cassandra::CassandraCompactionFilter::options_</a></div><div class="ttdeci">CassandraOptions options_</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d90/cassandra__compaction__filter_8h_source.html#l00039">cassandra_compaction_filter.h:39</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter_html_aaa5457e6b4d6b7066d73e7a397d662b4"><div class="ttname"><a href="../../de/d2a/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraCompactionFilter.html#aaa5457e6b4d6b7066d73e7a397d662b4">ROCKSDB_NAMESPACE::cassandra::CassandraCompactionFilter::kClassName</a></div><div class="ttdeci">static const char * kClassName()</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d90/cassandra__compaction__filter_8h_source.html#l00031">cassandra_compaction_filter.h:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator_html"><div class="ttname"><a href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html">ROCKSDB_NAMESPACE::cassandra::CassandraValueMergeOperator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dd0/utilities_2cassandra_2merge__operator_8h_source.html#l00017">merge_operator.h:17</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator_html_af8eaab9218cde0a964060faf649c59ed"><div class="ttname"><a href="../../dd/d82/classROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraValueMergeOperator.html#af8eaab9218cde0a964060faf649c59ed">ROCKSDB_NAMESPACE::cassandra::CassandraValueMergeOperator::kClassName</a></div><div class="ttdeci">static const char * kClassName()</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dd0/utilities_2cassandra_2merge__operator_8h_source.html#l00030">merge_operator.h:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html">ROCKSDB_NAMESPACE::cassandra::RowValue</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d21/utilities_2cassandra_2format_8h_source.html#l00147">format.h:147</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a16710e26bbc90a22bbb7a7e1831d81d6"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a16710e26bbc90a22bbb7a7e1831d81d6">ROCKSDB_NAMESPACE::cassandra::RowValue::Empty</a></div><div class="ttdeci">bool Empty() const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00279">format.cc:279</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a6694a40de02601c50dc84eb67ef81e53"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a6694a40de02601c50dc84eb67ef81e53">ROCKSDB_NAMESPACE::cassandra::RowValue::Serialize</a></div><div class="ttdeci">void Serialize(std::string *dest) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00215">format.cc:215</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a826eb5363ed1cc7e892305b615a1d184"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a826eb5363ed1cc7e892305b615a1d184">ROCKSDB_NAMESPACE::cassandra::RowValue::Deserialize</a></div><div class="ttdeci">static RowValue Deserialize(const char *src, std::size_t size)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00281">format.cc:281</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_a8e5b1175b25787a3f7954f871ddb1c6c"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#a8e5b1175b25787a3f7954f871ddb1c6c">ROCKSDB_NAMESPACE::cassandra::RowValue::RemoveExpiredColumns</a></div><div class="ttdeci">RowValue RemoveExpiredColumns(bool *changed) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00223">format.cc:223</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_ae47d05a3f818a76b35dc9088a904eb6d"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#ae47d05a3f818a76b35dc9088a904eb6d">ROCKSDB_NAMESPACE::cassandra::RowValue::RemoveTombstones</a></div><div class="ttdeci">RowValue RemoveTombstones(int32_t gc_grace_period) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00262">format.cc:262</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue_html_aed2e5dfe242a9102bb660f3c3831731c"><div class="ttname"><a href="../../db/db7/classROCKSDB__NAMESPACE_1_1cassandra_1_1RowValue.html#aed2e5dfe242a9102bb660f3c3831731c">ROCKSDB_NAMESPACE::cassandra::RowValue::ConvertExpiredColumnsToTombstones</a></div><div class="ttdeci">RowValue ConvertExpiredColumnsToTombstones(bool *changed) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d1c/utilities_2cassandra_2format_8cc_source.html#l00242">format.cc:242</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1cassandra_html"><div class="ttname"><a href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html">ROCKSDB_NAMESPACE::cassandra</a></div><div class="ttdef"><b>Definition</b> <a href="#l00016">cassandra_compaction_filter.cc:16</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1cassandra_html_a5e3f7535a08741a9ebb0f38f5d0e00f7"><div class="ttname"><a href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#a5e3f7535a08741a9ebb0f38f5d0e00f7">ROCKSDB_NAMESPACE::cassandra::RegisterCassandraObjects</a></div><div class="ttdeci">int RegisterCassandraObjects(ObjectLibrary &amp;library, const std::string &amp;)</div><div class="ttdef"><b>Definition</b> <a href="#l00077">cassandra_compaction_filter.cc:77</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1cassandra_html_add5af3ff8f6ffbe9b2b56839f15e4247"><div class="ttname"><a href="../../d2/d15/namespaceROCKSDB__NAMESPACE_1_1cassandra.html#add5af3ff8f6ffbe9b2b56839f15e4247">ROCKSDB_NAMESPACE::cassandra::cassandra_filter_type_info</a></div><div class="ttdeci">static std::unordered_map&lt; std::string, OptionTypeInfo &gt; cassandra_filter_type_info</div><div class="ttdef"><b>Definition</b> <a href="#l00018">cassandra_compaction_filter.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1cee42e2e0421ec0ec3dde8242bcdf23a35c3ace1970663a16e5c65baa5941b13">ROCKSDB_NAMESPACE::OptionTypeFlags::kNone</a></div><div class="ttdeci">@ kNone</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00100">options_type.h:100</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a354442a8dee1acd0d0ea5a7f76ee5e5ca57f58630ea0106aa965e5bf61a49d02c"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca57f58630ea0106aa965e5bf61a49d02c">ROCKSDB_NAMESPACE::OptionType::kBoolean</a></div><div class="ttdeci">@ kBoolean</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00034">options_type.h:34</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a354442a8dee1acd0d0ea5a7f76ee5e5ca93b8fef3be50b11316a75c44e594cf56"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a354442a8dee1acd0d0ea5a7f76ee5e5ca93b8fef3be50b11316a75c44e594cf56">ROCKSDB_NAMESPACE::OptionType::kUInt32T</a></div><div class="ttdeci">@ kUInt32T</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00040">options_type.h:40</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3d88c0886310e9eaf6b8a521e6b96c79a07fa7a19aa722c635a15e94cb7f50416">ROCKSDB_NAMESPACE::OptionVerificationType::kNormal</a></div><div class="ttdeci">@ kNormal</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db1/options__type_8h_source.html#l00066">options_type.h:66</a></div></div>
+<div class="ttc" id="aobject__registry_8h_html"><div class="ttname"><a href="../../d0/dc2/object__registry_8h.html">object_registry.h</a></div></div>
+<div class="ttc" id="aoptions__type_8h_html"><div class="ttname"><a href="../../d2/db1/options__type_8h.html">options_type.h</a></div></div>
+<div class="ttc" id="aslice_8h_html"><div class="ttname"><a href="../../d0/d48/slice_8h.html">slice.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1CompactionFilter_1_1Context_html"><div class="ttname"><a href="../../db/d0c/structROCKSDB__NAMESPACE_1_1CompactionFilter_1_1Context.html">ROCKSDB_NAMESPACE::CompactionFilter::Context</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/db6/compaction__filter_8h_source.html#l00157">compaction_filter.h:157</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraOptions_html"><div class="ttname"><a href="../../d0/d2a/structROCKSDB__NAMESPACE_1_1cassandra_1_1CassandraOptions.html">ROCKSDB_NAMESPACE::cassandra::CassandraOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d3e/cassandra__options_8h_source.html#l00017">cassandra_options.h:17</a></div></div>
+<div class="ttc" id="autilities_2cassandra_2format_8h_html"><div class="ttname"><a href="../../df/d21/utilities_2cassandra_2format_8h.html">format.h</a></div></div>
+<div class="ttc" id="autilities_2cassandra_2merge__operator_8h_html"><div class="ttname"><a href="../../d4/dd0/utilities_2cassandra_2merge__operator_8h.html">merge_operator.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_4e4a4610226eb0ef406e45df788976ee.html">cassandra</a></li><li class="navelem"><a class="el" href="../../d6/dfc/cassandra__compaction__filter_8cc.html">cassandra_compaction_filter.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/cache_dump_load.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d5/d86/cache__dump__load_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">cache_dump_load.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d5/d86/cache__dump__load_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/dc0/cache__dump__load_8h.html">rocksdb/utilities/cache_dump_load.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d97/writable__file__writer_8h.html">file/writable_file_writer.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/dcd/lang_8h.html">port/lang.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d81/env_8h.html">rocksdb/env.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d8d/file__system_8h.html">rocksdb/file_system.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d01/table_2format_8h.html">table/format.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d96/crc32c_8h.html">util/crc32c.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d8d/cache__dump__load__impl_8h.html">utilities/cache_dump_load_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a804e37d0ac84da474baaa19d06c10906">   19</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a804e37d0ac84da474baaa19d06c10906">NewToFileCacheDumpWriter</a>(<span class="keyword">const</span> std::shared_ptr&lt;FileSystem&gt;&amp; fs,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                                  <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; file_opts,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                                  <span class="keyword">const</span> std::string&amp; file_name,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                                  std::unique_ptr&lt;CacheDumpWriter&gt;* writer) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  std::unique_ptr&lt;WritableFileWriter&gt; file_writer;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> io_s = <a class="code hl_function" href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html#ae12ff6392cd07af039d067add067dfb8">WritableFileWriter::Create</a>(fs, file_name, file_opts,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                                             &amp;file_writer, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordflow">if</span> (!io_s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">return</span> io_s;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  writer-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1ToFileCacheDumpWriter.html">ToFileCacheDumpWriter</a>(std::move(file_writer)));</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordflow">return</span> io_s;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}</div>
+</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab86c34d73ca31dfedfdf1e9df9d03e35">   33</a></span><a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab86c34d73ca31dfedfdf1e9df9d03e35">NewFromFileCacheDumpReader</a>(<span class="keyword">const</span> std::shared_ptr&lt;FileSystem&gt;&amp; fs,</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                                    <span class="keyword">const</span> <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>&amp; file_opts,</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                                    <span class="keyword">const</span> std::string&amp; file_name,</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                                    std::unique_ptr&lt;CacheDumpReader&gt;* reader) {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  std::unique_ptr&lt;RandomAccessFileReader&gt; file_reader;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> io_s = <a class="code hl_function" href="../../db/d39/classROCKSDB__NAMESPACE_1_1RandomAccessFileReader.html#a53e5958701cb07971b2126866714edf3">RandomAccessFileReader::Create</a>(fs, file_name, file_opts,</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                                                 &amp;file_reader, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">if</span> (!io_s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">return</span> io_s;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  reader-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../d8/dcb/classROCKSDB__NAMESPACE_1_1FromFileCacheDumpReader.html">FromFileCacheDumpReader</a>(std::move(file_reader)));</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">return</span> io_s;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a822120ff2ded11f988fa75a1e28a379e">   47</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a822120ff2ded11f988fa75a1e28a379e">NewDefaultCacheDumper</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d4/d58/structROCKSDB__NAMESPACE_1_1CacheDumpOptions.html">CacheDumpOptions</a>&amp; dump_options,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                             <span class="keyword">const</span> std::shared_ptr&lt;Cache&gt;&amp; cache,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                             std::unique_ptr&lt;CacheDumpWriter&gt;&amp;&amp; writer,</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                             std::unique_ptr&lt;CacheDumper&gt;* cache_dumper) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  cache_dumper-&gt;reset(</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <span class="keyword">new</span> <a class="code hl_class" href="../../de/d37/classROCKSDB__NAMESPACE_1_1CacheDumperImpl.html">CacheDumperImpl</a>(dump_options, cache, std::move(writer)));</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
+</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6f077057c83afa99da3536077edf9e64">   56</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6f077057c83afa99da3536077edf9e64">NewDefaultCacheDumpedLoader</a>(</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">const</span> <a class="code hl_struct" href="../../d4/d58/structROCKSDB__NAMESPACE_1_1CacheDumpOptions.html">CacheDumpOptions</a>&amp; dump_options,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keyword">const</span> <a class="code hl_struct" href="../../d4/d6c/structROCKSDB__NAMESPACE_1_1BlockBasedTableOptions.html">BlockBasedTableOptions</a>&amp; toptions,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">const</span> std::shared_ptr&lt;SecondaryCache&gt;&amp; secondary_cache,</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    std::unique_ptr&lt;CacheDumpReader&gt;&amp;&amp; reader,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    std::unique_ptr&lt;CacheDumpedLoader&gt;* cache_dump_loader) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  cache_dump_loader-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../da/df9/classROCKSDB__NAMESPACE_1_1CacheDumpedLoaderImpl.html">CacheDumpedLoaderImpl</a>(</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      dump_options, toptions, secondary_cache, std::move(reader)));</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="acache__dump__load_8h_html"><div class="ttname"><a href="../../da/dc0/cache__dump__load_8h.html">cache_dump_load.h</a></div></div>
+<div class="ttc" id="acache__dump__load__impl_8h_html"><div class="ttname"><a href="../../df/d8d/cache__dump__load__impl_8h.html">cache_dump_load_impl.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CacheDumpedLoaderImpl_html"><div class="ttname"><a href="../../da/df9/classROCKSDB__NAMESPACE_1_1CacheDumpedLoaderImpl.html">ROCKSDB_NAMESPACE::CacheDumpedLoaderImpl</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d8d/cache__dump__load__impl_8h_source.html#l00134">cache_dump_load_impl.h:134</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CacheDumperImpl_html"><div class="ttname"><a href="../../de/d37/classROCKSDB__NAMESPACE_1_1CacheDumperImpl.html">ROCKSDB_NAMESPACE::CacheDumperImpl</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d8d/cache__dump__load__impl_8h_source.html#l00094">cache_dump_load_impl.h:94</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FromFileCacheDumpReader_html"><div class="ttname"><a href="../../d8/dcb/classROCKSDB__NAMESPACE_1_1FromFileCacheDumpReader.html">ROCKSDB_NAMESPACE::FromFileCacheDumpReader</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d8d/cache__dump__load__impl_8h_source.html#l00212">cache_dump_load_impl.h:212</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IOStatus_html"><div class="ttname"><a href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">ROCKSDB_NAMESPACE::IOStatus</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dcd/io__status_8h_source.html#l00028">io_status.h:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RandomAccessFileReader_html_a53e5958701cb07971b2126866714edf3"><div class="ttname"><a href="../../db/d39/classROCKSDB__NAMESPACE_1_1RandomAccessFileReader.html#a53e5958701cb07971b2126866714edf3">ROCKSDB_NAMESPACE::RandomAccessFileReader::Create</a></div><div class="ttdeci">static IOStatus Create(const std::shared_ptr&lt; FileSystem &gt; &amp;fs, const std::string &amp;fname, const FileOptions &amp;file_opts, std::unique_ptr&lt; RandomAccessFileReader &gt; *reader, IODebugContext *dbg)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d08/random__access__file__reader_8cc_source.html#l00095">random_access_file_reader.cc:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ToFileCacheDumpWriter_html"><div class="ttname"><a href="../../d5/d8e/classROCKSDB__NAMESPACE_1_1ToFileCacheDumpWriter.html">ROCKSDB_NAMESPACE::ToFileCacheDumpWriter</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d8d/cache__dump__load__impl_8h_source.html#l00159">cache_dump_load_impl.h:159</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritableFileWriter_html_ae12ff6392cd07af039d067add067dfb8"><div class="ttname"><a href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html#ae12ff6392cd07af039d067add067dfb8">ROCKSDB_NAMESPACE::WritableFileWriter::Create</a></div><div class="ttdeci">static IOStatus Create(const std::shared_ptr&lt; FileSystem &gt; &amp;fs, const std::string &amp;fname, const FileOptions &amp;file_opts, std::unique_ptr&lt; WritableFileWriter &gt; *writer, IODebugContext *dbg)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d2d/writable__file__writer_8cc_source.html#l00046">writable_file_writer.cc:46</a></div></div>
+<div class="ttc" id="acrc32c_8h_html"><div class="ttname"><a href="../../d6/d96/crc32c_8h.html">crc32c.h</a></div></div>
+<div class="ttc" id="aenv_8h_html"><div class="ttname"><a href="../../d5/d81/env_8h.html">env.h</a></div></div>
+<div class="ttc" id="afile__system_8h_html"><div class="ttname"><a href="../../d6/d8d/file__system_8h.html">file_system.h</a></div></div>
+<div class="ttc" id="alang_8h_html"><div class="ttname"><a href="../../db/dcd/lang_8h.html">lang.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6f077057c83afa99da3536077edf9e64"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6f077057c83afa99da3536077edf9e64">ROCKSDB_NAMESPACE::NewDefaultCacheDumpedLoader</a></div><div class="ttdeci">Status NewDefaultCacheDumpedLoader(const CacheDumpOptions &amp;dump_options, const BlockBasedTableOptions &amp;toptions, const std::shared_ptr&lt; SecondaryCache &gt; &amp;secondary_cache, std::unique_ptr&lt; CacheDumpReader &gt; &amp;&amp;reader, std::unique_ptr&lt; CacheDumpedLoader &gt; *cache_dump_loader)</div><div class="ttdef"><b>Definition</b> <a href="#l00056">cache_dump_load.cc:56</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a804e37d0ac84da474baaa19d06c10906"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a804e37d0ac84da474baaa19d06c10906">ROCKSDB_NAMESPACE::NewToFileCacheDumpWriter</a></div><div class="ttdeci">IOStatus NewToFileCacheDumpWriter(const std::shared_ptr&lt; FileSystem &gt; &amp;fs, const FileOptions &amp;file_opts, const std::string &amp;file_name, std::unique_ptr&lt; CacheDumpWriter &gt; *writer)</div><div class="ttdef"><b>Definition</b> <a href="#l00019">cache_dump_load.cc:19</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a822120ff2ded11f988fa75a1e28a379e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a822120ff2ded11f988fa75a1e28a379e">ROCKSDB_NAMESPACE::NewDefaultCacheDumper</a></div><div class="ttdeci">Status NewDefaultCacheDumper(const CacheDumpOptions &amp;dump_options, const std::shared_ptr&lt; Cache &gt; &amp;cache, std::unique_ptr&lt; CacheDumpWriter &gt; &amp;&amp;writer, std::unique_ptr&lt; CacheDumper &gt; *cache_dumper)</div><div class="ttdef"><b>Definition</b> <a href="#l00047">cache_dump_load.cc:47</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab86c34d73ca31dfedfdf1e9df9d03e35"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab86c34d73ca31dfedfdf1e9df9d03e35">ROCKSDB_NAMESPACE::NewFromFileCacheDumpReader</a></div><div class="ttdeci">IOStatus NewFromFileCacheDumpReader(const std::shared_ptr&lt; FileSystem &gt; &amp;fs, const FileOptions &amp;file_opts, const std::string &amp;file_name, std::unique_ptr&lt; CacheDumpReader &gt; *reader)</div><div class="ttdef"><b>Definition</b> <a href="#l00033">cache_dump_load.cc:33</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockBasedTableOptions_html"><div class="ttname"><a href="../../d4/d6c/structROCKSDB__NAMESPACE_1_1BlockBasedTableOptions.html">ROCKSDB_NAMESPACE::BlockBasedTableOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/d98/table_8h_source.html#l00147">table.h:147</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1CacheDumpOptions_html"><div class="ttname"><a href="../../d4/d58/structROCKSDB__NAMESPACE_1_1CacheDumpOptions.html">ROCKSDB_NAMESPACE::CacheDumpOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/dc0/cache__dump__load_8h_source.html#l00068">cache_dump_load.h:68</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOptions_html"><div class="ttname"><a href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">ROCKSDB_NAMESPACE::FileOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00179">file_system.h:179</a></div></div>
+<div class="ttc" id="atable_2format_8h_html"><div class="ttname"><a href="../../d8/d01/table_2format_8h.html">format.h</a></div></div>
+<div class="ttc" id="awritable__file__writer_8h_html"><div class="ttname"><a href="../../da/d97/writable__file__writer_8h.html">writable_file_writer.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../d5/d86/cache__dump__load_8cc.html">cache_dump_load.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>
