@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: memory/arena.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('da/d0c/arena_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">arena.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../da/d0c/arena_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">// Arena is an implementation of Allocator class. For a request of small size,</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// it allocates a block with pre-defined block size. For a request of big</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// size, it uses malloc to directly get the requested size.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;deque&gt;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/da9/allocator_8h.html">memory/allocator.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d5a/mmap_8h.html">port/mmap.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d81/env_8h.html">rocksdb/env.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html">   25</a></span><span class="keyword">class </span><a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a1d35a3bfcc13277de78b76e4f8db1044">Arena</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d9/d14/classROCKSDB__NAMESPACE_1_1Allocator.html">Allocator</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="comment">// No copying allowed</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a1d35a3bfcc13277de78b76e4f8db1044">   28</a></span>  <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a1d35a3bfcc13277de78b76e4f8db1044">Arena</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a1d35a3bfcc13277de78b76e4f8db1044">Arena</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a570033251fd1306531042474cb193464">   29</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a570033251fd1306531042474cb193464">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a1d35a3bfcc13277de78b76e4f8db1044">Arena</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a45ebf682885868b21ee053ee1335ec68">   31</a></span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a45ebf682885868b21ee053ee1335ec68">kInlineSize</a> = 2048;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a0b532e0f68783654695128a050a59d2f">   32</a></span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a0b532e0f68783654695128a050a59d2f">kMinBlockSize</a> = 4096;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a8b72a7aa077dacde282a5fb60dcdb12a">   33</a></span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a8b72a7aa077dacde282a5fb60dcdb12a">kMaxBlockSize</a> = 2u &lt;&lt; 30;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#aad2f1101955ef3742c0488d170343b4f">   35</a></span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">unsigned</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#aad2f1101955ef3742c0488d170343b4f">kAlignUnit</a> = <span class="keyword">alignof</span>(std::max_align_t);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">static_assert</span>((<a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#aad2f1101955ef3742c0488d170343b4f">kAlignUnit</a> &amp; (<a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#aad2f1101955ef3742c0488d170343b4f">kAlignUnit</a> - 1)) == 0,</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                <span class="stringliteral">&quot;Pointer size should be power of 2&quot;</span>);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// huge_page_size: if 0, don&#39;t use huge page TLB. If &gt; 0 (should set to the</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// supported hugepage size of the system), block allocation will try huge</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="comment">// page TLB first. If allocation fails, will fall back to normal case.</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a1d35a3bfcc13277de78b76e4f8db1044">Arena</a>(<span class="keywordtype">size_t</span> block_size = <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a0b532e0f68783654695128a050a59d2f">kMinBlockSize</a>,</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                 <a class="code hl_class" href="../../d8/dc6/classROCKSDB__NAMESPACE_1_1AllocTracker.html">AllocTracker</a>* tracker = <span class="keyword">nullptr</span>, <span class="keywordtype">size_t</span> huge_page_size = 0);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a1d35a3bfcc13277de78b76e4f8db1044">~Arena</a>();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">char</span>* <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a2c9e24721efce3c0697c37bec39dde80">Allocate</a>(<span class="keywordtype">size_t</span> bytes) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// huge_page_size: if &gt;0, will try to allocate from huage page TLB.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// The argument will be the size of the page size for huge page TLB. Bytes</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// will be rounded up to multiple of the page size to allocate through mmap</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// anonymous option with huge page on. The extra  space allocated will be</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// wasted. If allocation fails, will fall back to normal case. To enable it,</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// need to reserve huge pages for it to be allocated, like:</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">//     sysctl -w vm.nr_hugepages=20</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="comment">// See linux doc Documentation/vm/hugetlbpage.txt for details.</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="comment">// huge page allocation can fail. In this case it will fail back to</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// normal cases. The messages will be logged to logger. So when calling with</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// huge_page_tlb_size &gt; 0, we highly recommend a logger is passed in.</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">// Otherwise, the error message will be printed out to stderr directly.</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordtype">char</span>* <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ae2613b2c7d0963c9aee25d0ef90beb8a">AllocateAligned</a>(<span class="keywordtype">size_t</span> bytes, <span class="keywordtype">size_t</span> huge_page_size = 0,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                        <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* logger = <span class="keyword">nullptr</span>) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">// Returns an estimate of the total memory usage of data allocated</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">// by the arena (exclude the space allocated but not yet used for future</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// allocations).</span></div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a2efad28a9b261ed53521008a19c6373d">   66</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a2efad28a9b261ed53521008a19c6373d">ApproximateMemoryUsage</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ad3b5412d3a15302fde57585b1d03f35b">blocks_memory_</a> + <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9f557c75c0781b6965785b60231e6196">blocks_</a>.size() * <span class="keyword">sizeof</span>(<span class="keywordtype">char</span>*) -</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>           <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a06f9753fa524ec00a0aac3e59291b45d">alloc_bytes_remaining_</a>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  }</div>
+</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a8348a018686420cef9d305313a789d84">   71</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a8348a018686420cef9d305313a789d84">MemoryAllocatedBytes</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ad3b5412d3a15302fde57585b1d03f35b">blocks_memory_</a>; }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9ae9dd8f8e7ddb77fc4ea2d6e16ab513">   73</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9ae9dd8f8e7ddb77fc4ea2d6e16ab513">AllocatedAndUnused</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a06f9753fa524ec00a0aac3e59291b45d">alloc_bytes_remaining_</a>; }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">// If an allocation is too big, we&#39;ll allocate an irregular block with the</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// same size of that allocation.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a4297656c5d437f9d38014fbfe75f0330">   77</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a4297656c5d437f9d38014fbfe75f0330">IrregularBlockNum</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ac66d93ded36732a92199d700464cedd7">irregular_block_num</a>; }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ae56b59330679ccb50c0fda44007cdad0">   79</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ae56b59330679ccb50c0fda44007cdad0">BlockSize</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9551a9efc0eefe03724f8e0164fd69e1">kBlockSize</a>; }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="foldopen" id="foldopen00081" data-start="{" data-end="}">
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a78855b2517ff00aa68c150083d8391cc">   81</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a78855b2517ff00aa68c150083d8391cc">IsInInlineBlock</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9f557c75c0781b6965785b60231e6196">blocks_</a>.empty() &amp;&amp; <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a3b78c6f44d4e01f9423a011cf1761abb">huge_blocks_</a>.empty();</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  }</div>
+</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="comment">// check and adjust the block_size so that the return value is</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="comment">//  1. in the range of [kMinBlockSize, kMaxBlockSize].</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">//  2. the multiple of align unit.</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">static</span> <span class="keywordtype">size_t</span> OptimizeBlockSize(<span class="keywordtype">size_t</span> block_size);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a486548b69f7088ad029fd0eacd12b25a">   91</a></span>  <span class="keyword">alignas</span>(std::max_align_t) <span class="keywordtype">char</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a486548b69f7088ad029fd0eacd12b25a">inline_block_</a>[<a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a45ebf682885868b21ee053ee1335ec68">kInlineSize</a>];</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="comment">// Number of bytes allocated in one block</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9551a9efc0eefe03724f8e0164fd69e1">   93</a></span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9551a9efc0eefe03724f8e0164fd69e1">kBlockSize</a>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="comment">// Allocated memory blocks</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9f557c75c0781b6965785b60231e6196">   95</a></span>  std::deque&lt;std::unique_ptr&lt;char[]&gt;&gt; <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9f557c75c0781b6965785b60231e6196">blocks_</a>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="comment">// Huge page allocations</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a3b78c6f44d4e01f9423a011cf1761abb">   97</a></span>  std::deque&lt;MemMapping&gt; <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a3b78c6f44d4e01f9423a011cf1761abb">huge_blocks_</a>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ac66d93ded36732a92199d700464cedd7">   98</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ac66d93ded36732a92199d700464cedd7">irregular_block_num</a> = 0;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="comment">// Stats for current active block.</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="comment">// For each block, we allocate aligned memory chucks from one end and</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="comment">// allocate unaligned memory chucks from the other end. Otherwise the</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="comment">// memory waste for alignment will be higher if we allocate both types of</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="comment">// memory from one direction.</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a74535c0e9556ead356100550752afff3">  105</a></span>  <span class="keywordtype">char</span>* <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a74535c0e9556ead356100550752afff3">unaligned_alloc_ptr_</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9dd7d27c085d75fe6674cd6a5ea72846">  106</a></span>  <span class="keywordtype">char</span>* <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9dd7d27c085d75fe6674cd6a5ea72846">aligned_alloc_ptr_</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="comment">// How many bytes left in currently active block?</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a06f9753fa524ec00a0aac3e59291b45d">  108</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a06f9753fa524ec00a0aac3e59291b45d">alloc_bytes_remaining_</a> = 0;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ae16967d1cdd32db4a70203cde6bce264">  110</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ae16967d1cdd32db4a70203cde6bce264">hugetlb_size_</a> = 0;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordtype">char</span>* <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#aca8c79a25f259abf773405d04158df9e">AllocateFromHugePage</a>(<span class="keywordtype">size_t</span> bytes);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordtype">char</span>* <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a3598e5a506848c06db5d706d83a9d2fa">AllocateFallback</a>(<span class="keywordtype">size_t</span> bytes, <span class="keywordtype">bool</span> aligned);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordtype">char</span>* <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a77d02b5e2575398d1701e5aa6ab7c62f">AllocateNewBlock</a>(<span class="keywordtype">size_t</span> block_bytes);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="comment">// Bytes of memory in blocks allocated so far</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ad3b5412d3a15302fde57585b1d03f35b">  117</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ad3b5412d3a15302fde57585b1d03f35b">blocks_memory_</a> = 0;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="comment">// Non-owned</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a2b2228a3b8f013d64cc7b73f344980ed">  119</a></span>  <a class="code hl_class" href="../../d8/dc6/classROCKSDB__NAMESPACE_1_1AllocTracker.html">AllocTracker</a>* <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a2b2228a3b8f013d64cc7b73f344980ed">tracker_</a>;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>};</div>
+</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="foldopen" id="foldopen00122" data-start="{" data-end="}">
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a2c9e24721efce3c0697c37bec39dde80">  122</a></span><span class="keyword">inline</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a2c9e24721efce3c0697c37bec39dde80">Arena::Allocate</a>(<span class="keywordtype">size_t</span> bytes) {</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="comment">// The semantics of what to return are a bit messy if we allow</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="comment">// 0-byte allocations, so we disallow them here (we don&#39;t need</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="comment">// them for our internal use).</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  assert(bytes &gt; 0);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="keywordflow">if</span> (bytes &lt;= <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a06f9753fa524ec00a0aac3e59291b45d">alloc_bytes_remaining_</a>) {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a74535c0e9556ead356100550752afff3">unaligned_alloc_ptr_</a> -= bytes;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a06f9753fa524ec00a0aac3e59291b45d">alloc_bytes_remaining_</a> -= bytes;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a74535c0e9556ead356100550752afff3">unaligned_alloc_ptr_</a>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  }</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a3598e5a506848c06db5d706d83a9d2fa">AllocateFallback</a>(bytes, <span class="keyword">false</span> <span class="comment">/* unaligned */</span>);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>}</div>
+</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">// Like std::destroy_at but a callable type</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00137" data-start="{" data-end="};">
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="../../d1/d58/structROCKSDB__NAMESPACE_1_1Destroyer.html">  137</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../d1/d58/structROCKSDB__NAMESPACE_1_1Destroyer.html">Destroyer</a> {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../d1/d58/structROCKSDB__NAMESPACE_1_1Destroyer.html#a2341417d61470af2ab37bd641a1eb203">  138</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d58/structROCKSDB__NAMESPACE_1_1Destroyer.html#a2341417d61470af2ab37bd641a1eb203">operator()</a>(T* ptr) { ptr-&gt;~T(); }</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>};</div>
+</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment">// Like std::unique_ptr but only placement-deletes the object (for</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment">// objects allocated on an arena).</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a06f64d48117f149e598d918b00666cfe">  144</a></span><span class="keyword">using </span><a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a06f64d48117f149e598d918b00666cfe">ScopedArenaPtr</a> = std::unique_ptr&lt;T, Destroyer&lt;T&gt;&gt;;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aallocator_8h_html"><div class="ttname"><a href="../../da/da9/allocator_8h.html">allocator.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AllocTracker_html"><div class="ttname"><a href="../../d8/dc6/classROCKSDB__NAMESPACE_1_1AllocTracker.html">ROCKSDB_NAMESPACE::AllocTracker</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/da9/allocator_8h_source.html#l00034">allocator.h:34</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Allocator_html"><div class="ttname"><a href="../../d9/d14/classROCKSDB__NAMESPACE_1_1Allocator.html">ROCKSDB_NAMESPACE::Allocator</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/da9/allocator_8h_source.html#l00023">allocator.h:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a06f9753fa524ec00a0aac3e59291b45d"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a06f9753fa524ec00a0aac3e59291b45d">ROCKSDB_NAMESPACE::Arena::alloc_bytes_remaining_</a></div><div class="ttdeci">size_t alloc_bytes_remaining_</div><div class="ttdef"><b>Definition</b> <a href="#l00108">arena.h:108</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a0b532e0f68783654695128a050a59d2f"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a0b532e0f68783654695128a050a59d2f">ROCKSDB_NAMESPACE::Arena::kMinBlockSize</a></div><div class="ttdeci">static constexpr size_t kMinBlockSize</div><div class="ttdef"><b>Definition</b> <a href="#l00032">arena.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a1d35a3bfcc13277de78b76e4f8db1044"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a1d35a3bfcc13277de78b76e4f8db1044">ROCKSDB_NAMESPACE::Arena::Arena</a></div><div class="ttdeci">Arena(const Arena &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a2b2228a3b8f013d64cc7b73f344980ed"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a2b2228a3b8f013d64cc7b73f344980ed">ROCKSDB_NAMESPACE::Arena::tracker_</a></div><div class="ttdeci">AllocTracker * tracker_</div><div class="ttdef"><b>Definition</b> <a href="#l00119">arena.h:119</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a2c9e24721efce3c0697c37bec39dde80"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a2c9e24721efce3c0697c37bec39dde80">ROCKSDB_NAMESPACE::Arena::Allocate</a></div><div class="ttdeci">char * Allocate(size_t bytes) override</div><div class="ttdef"><b>Definition</b> <a href="#l00122">arena.h:122</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a2efad28a9b261ed53521008a19c6373d"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a2efad28a9b261ed53521008a19c6373d">ROCKSDB_NAMESPACE::Arena::ApproximateMemoryUsage</a></div><div class="ttdeci">size_t ApproximateMemoryUsage() const</div><div class="ttdef"><b>Definition</b> <a href="#l00066">arena.h:66</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a3598e5a506848c06db5d706d83a9d2fa"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a3598e5a506848c06db5d706d83a9d2fa">ROCKSDB_NAMESPACE::Arena::AllocateFallback</a></div><div class="ttdeci">char * AllocateFallback(size_t bytes, bool aligned)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/dee/arena_8cc_source.html#l00063">arena.cc:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a3b78c6f44d4e01f9423a011cf1761abb"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a3b78c6f44d4e01f9423a011cf1761abb">ROCKSDB_NAMESPACE::Arena::huge_blocks_</a></div><div class="ttdeci">std::deque&lt; MemMapping &gt; huge_blocks_</div><div class="ttdef"><b>Definition</b> <a href="#l00097">arena.h:97</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a4297656c5d437f9d38014fbfe75f0330"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a4297656c5d437f9d38014fbfe75f0330">ROCKSDB_NAMESPACE::Arena::IrregularBlockNum</a></div><div class="ttdeci">size_t IrregularBlockNum() const</div><div class="ttdef"><b>Definition</b> <a href="#l00077">arena.h:77</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a45ebf682885868b21ee053ee1335ec68"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a45ebf682885868b21ee053ee1335ec68">ROCKSDB_NAMESPACE::Arena::kInlineSize</a></div><div class="ttdeci">static constexpr size_t kInlineSize</div><div class="ttdef"><b>Definition</b> <a href="#l00031">arena.h:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a486548b69f7088ad029fd0eacd12b25a"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a486548b69f7088ad029fd0eacd12b25a">ROCKSDB_NAMESPACE::Arena::inline_block_</a></div><div class="ttdeci">char inline_block_[kInlineSize]</div><div class="ttdef"><b>Definition</b> <a href="#l00091">arena.h:91</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a570033251fd1306531042474cb193464"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a570033251fd1306531042474cb193464">ROCKSDB_NAMESPACE::Arena::operator=</a></div><div class="ttdeci">void operator=(const Arena &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a74535c0e9556ead356100550752afff3"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a74535c0e9556ead356100550752afff3">ROCKSDB_NAMESPACE::Arena::unaligned_alloc_ptr_</a></div><div class="ttdeci">char * unaligned_alloc_ptr_</div><div class="ttdef"><b>Definition</b> <a href="#l00105">arena.h:105</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a77d02b5e2575398d1701e5aa6ab7c62f"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a77d02b5e2575398d1701e5aa6ab7c62f">ROCKSDB_NAMESPACE::Arena::AllocateNewBlock</a></div><div class="ttdeci">char * AllocateNewBlock(size_t block_bytes)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/dee/arena_8cc_source.html#l00145">arena.cc:145</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a78855b2517ff00aa68c150083d8391cc"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a78855b2517ff00aa68c150083d8391cc">ROCKSDB_NAMESPACE::Arena::IsInInlineBlock</a></div><div class="ttdeci">bool IsInInlineBlock() const</div><div class="ttdef"><b>Definition</b> <a href="#l00081">arena.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a8348a018686420cef9d305313a789d84"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a8348a018686420cef9d305313a789d84">ROCKSDB_NAMESPACE::Arena::MemoryAllocatedBytes</a></div><div class="ttdeci">size_t MemoryAllocatedBytes() const</div><div class="ttdef"><b>Definition</b> <a href="#l00071">arena.h:71</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a8b72a7aa077dacde282a5fb60dcdb12a"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a8b72a7aa077dacde282a5fb60dcdb12a">ROCKSDB_NAMESPACE::Arena::kMaxBlockSize</a></div><div class="ttdeci">static constexpr size_t kMaxBlockSize</div><div class="ttdef"><b>Definition</b> <a href="#l00033">arena.h:33</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a9551a9efc0eefe03724f8e0164fd69e1"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9551a9efc0eefe03724f8e0164fd69e1">ROCKSDB_NAMESPACE::Arena::kBlockSize</a></div><div class="ttdeci">const size_t kBlockSize</div><div class="ttdef"><b>Definition</b> <a href="#l00093">arena.h:93</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a9ae9dd8f8e7ddb77fc4ea2d6e16ab513"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9ae9dd8f8e7ddb77fc4ea2d6e16ab513">ROCKSDB_NAMESPACE::Arena::AllocatedAndUnused</a></div><div class="ttdeci">size_t AllocatedAndUnused() const</div><div class="ttdef"><b>Definition</b> <a href="#l00073">arena.h:73</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a9dd7d27c085d75fe6674cd6a5ea72846"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9dd7d27c085d75fe6674cd6a5ea72846">ROCKSDB_NAMESPACE::Arena::aligned_alloc_ptr_</a></div><div class="ttdeci">char * aligned_alloc_ptr_</div><div class="ttdef"><b>Definition</b> <a href="#l00106">arena.h:106</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_a9f557c75c0781b6965785b60231e6196"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#a9f557c75c0781b6965785b60231e6196">ROCKSDB_NAMESPACE::Arena::blocks_</a></div><div class="ttdeci">std::deque&lt; std::unique_ptr&lt; char[]&gt; &gt; blocks_</div><div class="ttdef"><b>Definition</b> <a href="#l00095">arena.h:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_aad2f1101955ef3742c0488d170343b4f"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#aad2f1101955ef3742c0488d170343b4f">ROCKSDB_NAMESPACE::Arena::kAlignUnit</a></div><div class="ttdeci">static constexpr unsigned kAlignUnit</div><div class="ttdef"><b>Definition</b> <a href="#l00035">arena.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_ac66d93ded36732a92199d700464cedd7"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ac66d93ded36732a92199d700464cedd7">ROCKSDB_NAMESPACE::Arena::irregular_block_num</a></div><div class="ttdeci">size_t irregular_block_num</div><div class="ttdef"><b>Definition</b> <a href="#l00098">arena.h:98</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_aca8c79a25f259abf773405d04158df9e"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#aca8c79a25f259abf773405d04158df9e">ROCKSDB_NAMESPACE::Arena::AllocateFromHugePage</a></div><div class="ttdeci">char * AllocateFromHugePage(size_t bytes)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/dee/arena_8cc_source.html#l00095">arena.cc:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_ad3b5412d3a15302fde57585b1d03f35b"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ad3b5412d3a15302fde57585b1d03f35b">ROCKSDB_NAMESPACE::Arena::blocks_memory_</a></div><div class="ttdeci">size_t blocks_memory_</div><div class="ttdef"><b>Definition</b> <a href="#l00117">arena.h:117</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_ae16967d1cdd32db4a70203cde6bce264"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ae16967d1cdd32db4a70203cde6bce264">ROCKSDB_NAMESPACE::Arena::hugetlb_size_</a></div><div class="ttdeci">size_t hugetlb_size_</div><div class="ttdef"><b>Definition</b> <a href="#l00110">arena.h:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_ae2613b2c7d0963c9aee25d0ef90beb8a"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ae2613b2c7d0963c9aee25d0ef90beb8a">ROCKSDB_NAMESPACE::Arena::AllocateAligned</a></div><div class="ttdeci">char * AllocateAligned(size_t bytes, size_t huge_page_size=0, Logger *logger=nullptr) override</div><div class="ttdef"><b>Definition</b> <a href="../../d2/dee/arena_8cc_source.html#l00108">arena.cc:108</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Arena_html_ae56b59330679ccb50c0fda44007cdad0"><div class="ttname"><a href="../../df/dfb/classROCKSDB__NAMESPACE_1_1Arena.html#ae56b59330679ccb50c0fda44007cdad0">ROCKSDB_NAMESPACE::Arena::BlockSize</a></div><div class="ttdeci">size_t BlockSize() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00079">arena.h:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Logger_html"><div class="ttname"><a href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">ROCKSDB_NAMESPACE::Logger</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l01218">env.h:1218</a></div></div>
+<div class="ttc" id="aenv_8h_html"><div class="ttname"><a href="../../d5/d81/env_8h.html">env.h</a></div></div>
+<div class="ttc" id="ammap_8h_html"><div class="ttname"><a href="../../d9/d5a/mmap_8h.html">mmap.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a06f64d48117f149e598d918b00666cfe"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a06f64d48117f149e598d918b00666cfe">ROCKSDB_NAMESPACE::ScopedArenaPtr</a></div><div class="ttdeci">std::unique_ptr&lt; T, Destroyer&lt; T &gt; &gt; ScopedArenaPtr</div><div class="ttdef"><b>Definition</b> <a href="#l00144">arena.h:144</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Destroyer_html"><div class="ttname"><a href="../../d1/d58/structROCKSDB__NAMESPACE_1_1Destroyer.html">ROCKSDB_NAMESPACE::Destroyer</a></div><div class="ttdef"><b>Definition</b> <a href="#l00137">arena.h:137</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Destroyer_html_a2341417d61470af2ab37bd641a1eb203"><div class="ttname"><a href="../../d1/d58/structROCKSDB__NAMESPACE_1_1Destroyer.html#a2341417d61470af2ab37bd641a1eb203">ROCKSDB_NAMESPACE::Destroyer::operator()</a></div><div class="ttdeci">void operator()(T *ptr)</div><div class="ttdef"><b>Definition</b> <a href="#l00138">arena.h:138</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_267116d250309cbe7bd39c0026ee016a.html">memory</a></li><li class="navelem"><a class="el" href="../../da/d0c/arena_8h.html">arena.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

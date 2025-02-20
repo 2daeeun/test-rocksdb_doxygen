@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: microbench/ribbon_bench.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('df/dc5/ribbon__bench_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">ribbon_bench.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../df/dc5/ribbon__bench_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// this is a simple micro-benchmark for compare ribbon filter vs. other filter</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// for more comprehensive, please check the dedicate util/filter_bench.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;benchmark/benchmark.h&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/ded/filter__policy__internal_8h.html">table/block_based/filter_policy_internal.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d9f/mock__block__based__table_8h.html">table/block_based/mock_block_based_table.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="foldopen" id="foldopen00014" data-start="{" data-end="};">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html">   14</a></span><span class="keyword">struct </span><a class="code hl_function" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a66a6af2f5d4ee099b01111e2c9711732">KeyMaker</a> {</div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a66a6af2f5d4ee099b01111e2c9711732">   15</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a66a6af2f5d4ee099b01111e2c9711732">KeyMaker</a>(<span class="keywordtype">size_t</span> avg_size)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      : <a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#abc64e5fcc06347a61211c1333deb3255">smallest_size_</a>(avg_size),</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a523bb8fa914bcfbb7233f90be9354361">buf_size_</a>(avg_size + 11),  <span class="comment">// pad to vary key size and alignment</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a9abf77207d8e5f3c5f5e52bc722497fb">buf_</a>(new char[<a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a523bb8fa914bcfbb7233f90be9354361">buf_size_</a>]) {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    memset(<a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a9abf77207d8e5f3c5f5e52bc722497fb">buf_</a>.get(), 0, <a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a523bb8fa914bcfbb7233f90be9354361">buf_size_</a>);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    assert(<a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#abc64e5fcc06347a61211c1333deb3255">smallest_size_</a> &gt; 8);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  }</div>
+</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#abc64e5fcc06347a61211c1333deb3255">   22</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#abc64e5fcc06347a61211c1333deb3255">smallest_size_</a>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a523bb8fa914bcfbb7233f90be9354361">   23</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a523bb8fa914bcfbb7233f90be9354361">buf_size_</a>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a9abf77207d8e5f3c5f5e52bc722497fb">   24</a></span>  std::unique_ptr&lt;char[]&gt; <a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a9abf77207d8e5f3c5f5e52bc722497fb">buf_</a>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// Returns a unique(-ish) key based on the given parameter values. Each</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="comment">// call returns a Slice from the same buffer so previously returned</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// Slices should be considered invalidated.</span></div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a58479610c385264bea728450c92941aa">   29</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a58479610c385264bea728450c92941aa">Get</a>(uint32_t filter_num, uint32_t val_num)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">size_t</span> start = val_num % 4;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">size_t</span> len = <a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#abc64e5fcc06347a61211c1333deb3255">smallest_size_</a>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="comment">// To get range [avg_size - 2, avg_size + 2]</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="comment">// use range [smallest_size, smallest_size + 4]</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    len += <a class="code hl_function" href="../../da/df2/hash__test_8cc.html#ace9094df44a43910378b2cb2b0dc71c9">FastRange32</a>((val_num &gt;&gt; 5) * 1234567891, 5);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">char</span> *data = <a class="code hl_variable" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a9abf77207d8e5f3c5f5e52bc722497fb">buf_</a>.get() + start;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="comment">// Populate key data such that all data makes it into a key of at</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="comment">// least 8 bytes. We also don&#39;t want all the within-filter key</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="comment">// variance confined to a contiguous 32 bits, because then a 32 bit</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="comment">// hash function can &quot;cheat&quot; the false positive rate by</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// approximating a perfect hash.</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab737420aba13b6d2301d1da9682f036e">EncodeFixed32</a>(data, val_num);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab737420aba13b6d2301d1da9682f036e">EncodeFixed32</a>(data + 4, filter_num + val_num);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="comment">// ensure clearing leftovers from different alignment</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab737420aba13b6d2301d1da9682f036e">EncodeFixed32</a>(data + 8, 0);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">return</span> {data, len};</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  }</div>
+</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
+</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">// benchmark arguments:</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">// 0. filter impl (like filter_bench -impl)</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">// 1. filter config bits_per_key</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">// 2. average data key length</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">// 3. data entry number</span></div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a037368f9b44b1660aef952586c5ecb44">   54</a></span><span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a037368f9b44b1660aef952586c5ecb44">CustomArguments</a>(benchmark::internal::Benchmark *b) {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">const</span> <span class="keyword">auto</span> kImplCount =</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy.html#a91e0e2255415dbdda05a27c701de05f0">BloomLikeFilterPolicy::GetAllFixedImpls</a>().size());</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_impl = 0; filter_impl &lt; kImplCount; ++filter_impl) {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> bits_per_key : {10, 20}) {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> key_len_avg : {10, 100}) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">for</span> (int64_t entry_num : {1 &lt;&lt; 10, 1 &lt;&lt; 20}) {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>          b-&gt;Args({filter_impl, bits_per_key, key_len_avg, entry_num});</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      }</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  b-&gt;ArgNames({<span class="stringliteral">&quot;filter_impl&quot;</span>, <span class="stringliteral">&quot;bits_per_key&quot;</span>, <span class="stringliteral">&quot;key_len_avg&quot;</span>, <span class="stringliteral">&quot;entry_num&quot;</span>});</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="foldopen" id="foldopen00069" data-start="{" data-end="}">
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2f779006b42b9599026b8871d5ee6cc6">   69</a></span><span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2f779006b42b9599026b8871d5ee6cc6">FilterBuild</a>(benchmark::State &amp;state) {</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// setup data</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">auto</span> filter = <a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy.html#a183fbeebb0bec7293417cf9820c66f1f">BloomLikeFilterPolicy::Create</a>(</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy.html#a91e0e2255415dbdda05a27c701de05f0">BloomLikeFilterPolicy::GetAllFixedImpls</a>().at(state.range(0)),</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(state.range(1)));</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">auto</span> tester = std::make_unique&lt;mock::MockBlockBasedTableTester&gt;(filter);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_struct" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html">KeyMaker</a> km(state.range(2));</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  std::unique_ptr&lt;const char[]&gt; owner;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keyword">const</span> int64_t kEntryNum = state.range(3);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keyword">auto</span> rnd = <a class="code hl_class" href="../../d7/dc7/classROCKSDB__NAMESPACE_1_1Random32.html">Random32</a>(12345);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  uint32_t filter_num = rnd.Next();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// run the test</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> _ : state) {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    std::unique_ptr&lt;FilterBitsBuilder&gt; builder(tester-&gt;GetBuilder());</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; kEntryNum; i++) {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      builder-&gt;AddKey(km.<a class="code hl_function" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a58479610c385264bea728450c92941aa">Get</a>(filter_num, i));</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keyword">auto</span> ret = builder-&gt;Finish(&amp;owner);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    state.counters[<span class="stringliteral">&quot;size&quot;</span>] = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(ret.size());</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  }</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
+</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a65d89a7f00f0d0d92bded4a31083eadc">   90</a></span><a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9853147630d7d79359a779a5af3cdc42">BENCHMARK</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2f779006b42b9599026b8871d5ee6cc6">FilterBuild</a>)-&gt;Apply(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a037368f9b44b1660aef952586c5ecb44">CustomArguments</a>);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a866726e954193d51c71c1be5acfc7ab6">   92</a></span><span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a866726e954193d51c71c1be5acfc7ab6">FilterQueryPositive</a>(benchmark::State &amp;state) {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">// setup data</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">auto</span> filter = <a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy.html#a183fbeebb0bec7293417cf9820c66f1f">BloomLikeFilterPolicy::Create</a>(</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      <a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy.html#a91e0e2255415dbdda05a27c701de05f0">BloomLikeFilterPolicy::GetAllFixedImpls</a>().at(state.range(0)),</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(state.range(1)));</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keyword">auto</span> tester = std::make_unique&lt;mock::MockBlockBasedTableTester&gt;(filter);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <a class="code hl_struct" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html">KeyMaker</a> km(state.range(2));</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  std::unique_ptr&lt;const char[]&gt; owner;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keyword">const</span> int64_t kEntryNum = state.range(3);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keyword">auto</span> rnd = <a class="code hl_class" href="../../d7/dc7/classROCKSDB__NAMESPACE_1_1Random32.html">Random32</a>(12345);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  uint32_t filter_num = rnd.Next();</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  std::unique_ptr&lt;FilterBitsBuilder&gt; builder(tester-&gt;GetBuilder());</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; kEntryNum; i++) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    builder-&gt;AddKey(km.<a class="code hl_function" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a58479610c385264bea728450c92941aa">Get</a>(filter_num, i));</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keyword">auto</span> data = builder-&gt;Finish(&amp;owner);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  std::unique_ptr&lt;FilterBitsReader&gt; reader{filter-&gt;GetFilterBitsReader(data)};</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="comment">// run test</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  uint32_t i = 0;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> _ : state) {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    i++;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    i = i % kEntryNum;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    reader-&gt;MayMatch(km.<a class="code hl_function" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a58479610c385264bea728450c92941aa">Get</a>(filter_num, i));</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  }</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>}</div>
+</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae5751f021d90209050ba32a3fdc75348">  118</a></span><a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9853147630d7d79359a779a5af3cdc42">BENCHMARK</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a866726e954193d51c71c1be5acfc7ab6">FilterQueryPositive</a>)-&gt;Apply(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a037368f9b44b1660aef952586c5ecb44">CustomArguments</a>);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="foldopen" id="foldopen00120" data-start="{" data-end="}">
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9c4b1dedc8e8b978401e1d2cbdf0e05c">  120</a></span><span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9c4b1dedc8e8b978401e1d2cbdf0e05c">FilterQueryNegative</a>(benchmark::State &amp;state) {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="comment">// setup data</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keyword">auto</span> filter = <a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy.html#a183fbeebb0bec7293417cf9820c66f1f">BloomLikeFilterPolicy::Create</a>(</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy.html#a91e0e2255415dbdda05a27c701de05f0">BloomLikeFilterPolicy::GetAllFixedImpls</a>().at(state.range(0)),</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(state.range(1)));</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keyword">auto</span> tester = std::make_unique&lt;mock::MockBlockBasedTableTester&gt;(filter);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <a class="code hl_struct" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html">KeyMaker</a> km(state.range(2));</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  std::unique_ptr&lt;const char[]&gt; owner;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keyword">const</span> int64_t kEntryNum = state.range(3);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keyword">auto</span> rnd = <a class="code hl_class" href="../../d7/dc7/classROCKSDB__NAMESPACE_1_1Random32.html">Random32</a>(12345);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  uint32_t filter_num = rnd.Next();</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  std::unique_ptr&lt;FilterBitsBuilder&gt; builder(tester-&gt;GetBuilder());</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; kEntryNum; i++) {</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    builder-&gt;AddKey(km.<a class="code hl_function" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a58479610c385264bea728450c92941aa">Get</a>(filter_num, i));</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  }</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="keyword">auto</span> data = builder-&gt;Finish(&amp;owner);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  std::unique_ptr&lt;FilterBitsReader&gt; reader{filter-&gt;GetFilterBitsReader(data)};</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="comment">// run test</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  uint32_t i = 0;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="keywordtype">double</span> fp_cnt = 0;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> _ : state) {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    i++;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keyword">auto</span> result = reader-&gt;MayMatch(km.<a class="code hl_function" href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a58479610c385264bea728450c92941aa">Get</a>(filter_num + 1, i));</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>      fp_cnt++;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  }</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  state.counters[<span class="stringliteral">&quot;fp_pct&quot;</span>] =</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      benchmark::Counter(fp_cnt * 100, benchmark::Counter::kAvgIterations);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>}</div>
+</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae24d07089a80186286f7a7f9173d6714">  151</a></span><a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9853147630d7d79359a779a5af3cdc42">BENCHMARK</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9c4b1dedc8e8b978401e1d2cbdf0e05c">FilterQueryNegative</a>)-&gt;Apply(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a037368f9b44b1660aef952586c5ecb44">CustomArguments</a>);</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="../../df/dc5/ribbon__bench_8cc.html#a5851750faa9cfec10f7cad1f3b89697e">  155</a></span><a class="code hl_function" href="../../df/dc5/ribbon__bench_8cc.html#a5851750faa9cfec10f7cad1f3b89697e">BENCHMARK_MAIN</a>();</div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy_html_a183fbeebb0bec7293417cf9820c66f1f"><div class="ttname"><a href="../../dc/db2/classROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy.html#a183fbeebb0bec7293417cf9820c66f1f">ROCKSDB_NAMESPACE::BloomLikeFilterPolicy::Create</a></div><div class="ttdeci">static std::shared_ptr&lt; const FilterPolicy &gt; Create(const std::string &amp;name, double bits_per_key)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d74/filter__policy_8cc_source.html#l01902">filter_policy.cc:1902</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy_html_a91e0e2255415dbdda05a27c701de05f0"><div class="ttname"><a href="../../dc/db2/classROCKSDB__NAMESPACE_1_1BloomLikeFilterPolicy.html#a91e0e2255415dbdda05a27c701de05f0">ROCKSDB_NAMESPACE::BloomLikeFilterPolicy::GetAllFixedImpls</a></div><div class="ttdeci">static const std::vector&lt; std::string &gt; &amp; GetAllFixedImpls()</div><div class="ttdef"><b>Definition</b> <a href="../../df/d74/filter__policy_8cc_source.html#l02066">filter_policy.cc:2066</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Random32_html"><div class="ttname"><a href="../../d7/dc7/classROCKSDB__NAMESPACE_1_1Random32.html">ROCKSDB_NAMESPACE::Random32</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d79/random_8h_source.html#l00107">random.h:107</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="afilter__policy__internal_8h_html"><div class="ttname"><a href="../../d2/ded/filter__policy__internal_8h.html">filter_policy_internal.h</a></div></div>
+<div class="ttc" id="ahash__test_8cc_html_ace9094df44a43910378b2cb2b0dc71c9"><div class="ttname"><a href="../../da/df2/hash__test_8cc.html#ace9094df44a43910378b2cb2b0dc71c9">FastRange32</a></div><div class="ttdeci">uint32_t FastRange32(uint32_t hash, uint32_t range)</div><div class="ttdef"><b>Definition</b> <a href="../../da/df2/hash__test_8cc_source.html#l00556">hash_test.cc:556</a></div></div>
+<div class="ttc" id="amock__block__based__table_8h_html"><div class="ttname"><a href="../../d7/d9f/mock__block__based__table_8h.html">mock_block_based_table.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a037368f9b44b1660aef952586c5ecb44"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a037368f9b44b1660aef952586c5ecb44">ROCKSDB_NAMESPACE::CustomArguments</a></div><div class="ttdeci">static void CustomArguments(benchmark::internal::Benchmark *b)</div><div class="ttdef"><b>Definition</b> <a href="#l00054">ribbon_bench.cc:54</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a2f779006b42b9599026b8871d5ee6cc6"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2f779006b42b9599026b8871d5ee6cc6">ROCKSDB_NAMESPACE::FilterBuild</a></div><div class="ttdeci">static void FilterBuild(benchmark::State &amp;state)</div><div class="ttdef"><b>Definition</b> <a href="#l00069">ribbon_bench.cc:69</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a866726e954193d51c71c1be5acfc7ab6"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a866726e954193d51c71c1be5acfc7ab6">ROCKSDB_NAMESPACE::FilterQueryPositive</a></div><div class="ttdeci">static void FilterQueryPositive(benchmark::State &amp;state)</div><div class="ttdef"><b>Definition</b> <a href="#l00092">ribbon_bench.cc:92</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a9853147630d7d79359a779a5af3cdc42"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9853147630d7d79359a779a5af3cdc42">ROCKSDB_NAMESPACE::BENCHMARK</a></div><div class="ttdeci">BENCHMARK(DBOpen) -&gt; Iterations(200)</div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a9c4b1dedc8e8b978401e1d2cbdf0e05c"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9c4b1dedc8e8b978401e1d2cbdf0e05c">ROCKSDB_NAMESPACE::FilterQueryNegative</a></div><div class="ttdeci">static void FilterQueryNegative(benchmark::State &amp;state)</div><div class="ttdef"><b>Definition</b> <a href="#l00120">ribbon_bench.cc:120</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab737420aba13b6d2301d1da9682f036e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab737420aba13b6d2301d1da9682f036e">ROCKSDB_NAMESPACE::EncodeFixed32</a></div><div class="ttdeci">void EncodeFixed32(char *buf, uint32_t value)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de8/coding__lean_8h_source.html#l00033">coding_lean.h:33</a></div></div>
+<div class="ttc" id="aribbon__bench_8cc_html_a5851750faa9cfec10f7cad1f3b89697e"><div class="ttname"><a href="../../df/dc5/ribbon__bench_8cc.html#a5851750faa9cfec10f7cad1f3b89697e">BENCHMARK_MAIN</a></div><div class="ttdeci">BENCHMARK_MAIN()</div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1KeyMaker_html"><div class="ttname"><a href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html">ROCKSDB_NAMESPACE::KeyMaker</a></div><div class="ttdef"><b>Definition</b> <a href="#l00014">ribbon_bench.cc:14</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1KeyMaker_html_a523bb8fa914bcfbb7233f90be9354361"><div class="ttname"><a href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a523bb8fa914bcfbb7233f90be9354361">ROCKSDB_NAMESPACE::KeyMaker::buf_size_</a></div><div class="ttdeci">size_t buf_size_</div><div class="ttdef"><b>Definition</b> <a href="#l00023">ribbon_bench.cc:23</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1KeyMaker_html_a58479610c385264bea728450c92941aa"><div class="ttname"><a href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a58479610c385264bea728450c92941aa">ROCKSDB_NAMESPACE::KeyMaker::Get</a></div><div class="ttdeci">Slice Get(uint32_t filter_num, uint32_t val_num) const</div><div class="ttdef"><b>Definition</b> <a href="#l00029">ribbon_bench.cc:29</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1KeyMaker_html_a66a6af2f5d4ee099b01111e2c9711732"><div class="ttname"><a href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a66a6af2f5d4ee099b01111e2c9711732">ROCKSDB_NAMESPACE::KeyMaker::KeyMaker</a></div><div class="ttdeci">KeyMaker(size_t avg_size)</div><div class="ttdef"><b>Definition</b> <a href="#l00015">ribbon_bench.cc:15</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1KeyMaker_html_a9abf77207d8e5f3c5f5e52bc722497fb"><div class="ttname"><a href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#a9abf77207d8e5f3c5f5e52bc722497fb">ROCKSDB_NAMESPACE::KeyMaker::buf_</a></div><div class="ttdeci">std::unique_ptr&lt; char[]&gt; buf_</div><div class="ttdef"><b>Definition</b> <a href="#l00024">ribbon_bench.cc:24</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1KeyMaker_html_abc64e5fcc06347a61211c1333deb3255"><div class="ttname"><a href="../../d8/de5/structROCKSDB__NAMESPACE_1_1KeyMaker.html#abc64e5fcc06347a61211c1333deb3255">ROCKSDB_NAMESPACE::KeyMaker::smallest_size_</a></div><div class="ttdeci">size_t smallest_size_</div><div class="ttdef"><b>Definition</b> <a href="#l00022">ribbon_bench.cc:22</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_a2eaef0660c983efb6ac26d65c7deecf.html">microbench</a></li><li class="navelem"><a class="el" href="../../df/dc5/ribbon__bench_8cc.html">ribbon_bench.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

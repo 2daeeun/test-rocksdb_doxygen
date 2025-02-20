@@ -1,0 +1,348 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: trace_replay/trace_record_result.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('dc/df6/trace__record__result_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">trace_record_result.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../dc/df6/trace__record__result_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d57/trace__record__result_8h.html">rocksdb/trace_record_result.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">// TraceRecordResult</span></div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="../../d8/da1/classROCKSDB__NAMESPACE_1_1TraceRecordResult.html#a02c9f5c263a26ab4bfe8b1150f8c7e44">   11</a></span><a class="code hl_function" href="../../d8/da1/classROCKSDB__NAMESPACE_1_1TraceRecordResult.html#a02c9f5c263a26ab4bfe8b1150f8c7e44">TraceRecordResult::TraceRecordResult</a>(<a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> trace_type)</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    : <a class="code hl_variable" href="../../d8/da1/classROCKSDB__NAMESPACE_1_1TraceRecordResult.html#a659917e7ecfb3ca75039010265c08812">trace_type_</a>(trace_type) {}</div>
+</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="../../d8/da1/classROCKSDB__NAMESPACE_1_1TraceRecordResult.html#a4586546e2442e339dacd7238835726b0">   14</a></span><a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> <a class="code hl_function" href="../../d8/da1/classROCKSDB__NAMESPACE_1_1TraceRecordResult.html#a4586546e2442e339dacd7238835726b0">TraceRecordResult::GetTraceType</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/da1/classROCKSDB__NAMESPACE_1_1TraceRecordResult.html#a659917e7ecfb3ca75039010265c08812">trace_type_</a>; }</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// TraceExecutionResult</span></div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a013061bd947eb8dfa0691e6cdfa292b3">   17</a></span><a class="code hl_function" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a013061bd947eb8dfa0691e6cdfa292b3">TraceExecutionResult::TraceExecutionResult</a>(uint64_t start_timestamp,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                                           uint64_t end_timestamp,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                                           <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> trace_type)</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    : <a class="code hl_function" href="../../d8/da1/classROCKSDB__NAMESPACE_1_1TraceRecordResult.html#a02c9f5c263a26ab4bfe8b1150f8c7e44">TraceRecordResult</a>(trace_type),</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      <a class="code hl_variable" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a8036eac7fd338f29c0f276b3b6dbbea1">ts_start_</a>(start_timestamp),</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      <a class="code hl_variable" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a0cd150fdae5780bd10493f3cc2d007d9">ts_end_</a>(end_timestamp) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  assert(<a class="code hl_variable" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a8036eac7fd338f29c0f276b3b6dbbea1">ts_start_</a> &lt;= <a class="code hl_variable" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a0cd150fdae5780bd10493f3cc2d007d9">ts_end_</a>);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>}</div>
+</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a624577b3ba35ebe2156d4704826c6354">   26</a></span>uint64_t <a class="code hl_function" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a624577b3ba35ebe2156d4704826c6354">TraceExecutionResult::GetStartTimestamp</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a8036eac7fd338f29c0f276b3b6dbbea1">ts_start_</a>; }</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a384963ceec0f0c9a9213a4748cd7d0f1">   28</a></span>uint64_t <a class="code hl_function" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a384963ceec0f0c9a9213a4748cd7d0f1">TraceExecutionResult::GetEndTimestamp</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a0cd150fdae5780bd10493f3cc2d007d9">ts_end_</a>; }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// StatusOnlyTraceExecutionResult</span></div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#a4e2e7b2d29b93e863b150c4293e69cc8">   31</a></span><a class="code hl_function" href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#a4e2e7b2d29b93e863b150c4293e69cc8">StatusOnlyTraceExecutionResult::StatusOnlyTraceExecutionResult</a>(</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> status, uint64_t start_timestamp, uint64_t end_timestamp,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> trace_type)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    : <a class="code hl_function" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a013061bd947eb8dfa0691e6cdfa292b3">TraceExecutionResult</a>(start_timestamp, end_timestamp, trace_type),</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      <a class="code hl_variable" href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#a8b057b63b4afa1de5ef80bb2454ec69b">status_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(status)) {}</div>
+</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#af2d151174eb87e6c148b9e08efdaad56">   37</a></span><span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a>&amp; <a class="code hl_function" href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#af2d151174eb87e6c148b9e08efdaad56">StatusOnlyTraceExecutionResult::GetStatus</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#a8b057b63b4afa1de5ef80bb2454ec69b">status_</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
+</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#a448b7fae02e8817e134b775f1e83b8fa">   41</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#a448b7fae02e8817e134b775f1e83b8fa">StatusOnlyTraceExecutionResult::Accept</a>(<a class="code hl_class" href="../../db/d39/classROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler.html">Handler</a>* handler) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  assert(handler != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordflow">return</span> handler-&gt;<a class="code hl_function" href="../../db/d39/classROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler.html#a70f77ad962982741bec41b45b0ea9e59">Handle</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
+</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">// SingleValueTraceExecutionResult</span></div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#aeae7c70176266612c5bf58c7cdc4a686">   47</a></span><a class="code hl_function" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#aeae7c70176266612c5bf58c7cdc4a686">SingleValueTraceExecutionResult::SingleValueTraceExecutionResult</a>(</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> status, <span class="keyword">const</span> std::string&amp; value, uint64_t start_timestamp,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    uint64_t end_timestamp, <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> trace_type)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    : <a class="code hl_function" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a013061bd947eb8dfa0691e6cdfa292b3">TraceExecutionResult</a>(start_timestamp, end_timestamp, trace_type),</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <a class="code hl_variable" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#ac9ea7e4365f29d37a87ba977536d7417">status_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(status)),</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <a class="code hl_variable" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#a58e28c438d89a3c7082406bfa20e9259">value_</a>(value) {}</div>
+</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#ae08937c70c91ad485c0401ffdc8958dd">   54</a></span><a class="code hl_function" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#aeae7c70176266612c5bf58c7cdc4a686">SingleValueTraceExecutionResult::SingleValueTraceExecutionResult</a>(</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> status, std::string&amp;&amp; value, uint64_t start_timestamp,</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    uint64_t end_timestamp, <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> trace_type)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    : <a class="code hl_function" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a013061bd947eb8dfa0691e6cdfa292b3">TraceExecutionResult</a>(start_timestamp, end_timestamp, trace_type),</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      <a class="code hl_variable" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#ac9ea7e4365f29d37a87ba977536d7417">status_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(status)),</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <a class="code hl_variable" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#a58e28c438d89a3c7082406bfa20e9259">value_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(value)) {}</div>
+</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#abd3a04b99eee36b7152e8aa517686b95">   61</a></span><a class="code hl_function" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#abd3a04b99eee36b7152e8aa517686b95">SingleValueTraceExecutionResult::~SingleValueTraceExecutionResult</a>() {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <a class="code hl_variable" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#a58e28c438d89a3c7082406bfa20e9259">value_</a>.clear();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>}</div>
+</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#abf4a236fd36388c0bedba44fd991fd4e">   65</a></span><span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a>&amp; <a class="code hl_function" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#abf4a236fd36388c0bedba44fd991fd4e">SingleValueTraceExecutionResult::GetStatus</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#ac9ea7e4365f29d37a87ba977536d7417">status_</a>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="foldopen" id="foldopen00069" data-start="{" data-end="}">
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#a35eb2bc9e9141d7cc9dac5d7b308ae03">   69</a></span><span class="keyword">const</span> std::string&amp; <a class="code hl_function" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#a35eb2bc9e9141d7cc9dac5d7b308ae03">SingleValueTraceExecutionResult::GetValue</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#a58e28c438d89a3c7082406bfa20e9259">value_</a>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
+</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#ad69c869c039b5d01e02e23db2f94c6d3">   73</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#ad69c869c039b5d01e02e23db2f94c6d3">SingleValueTraceExecutionResult::Accept</a>(<a class="code hl_class" href="../../db/d39/classROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler.html">Handler</a>* handler) {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  assert(handler != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">return</span> handler-&gt;<a class="code hl_function" href="../../db/d39/classROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler.html#a70f77ad962982741bec41b45b0ea9e59">Handle</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
+</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">// MultiValuesTraceExecutionResult</span></div>
+<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#ab3faaf06f2a562344dab8798d6838d74">   79</a></span><a class="code hl_function" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#ab3faaf06f2a562344dab8798d6838d74">MultiValuesTraceExecutionResult::MultiValuesTraceExecutionResult</a>(</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    std::vector&lt;Status&gt; multi_status, std::vector&lt;std::string&gt; values,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    uint64_t start_timestamp, uint64_t end_timestamp, <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> trace_type)</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    : <a class="code hl_function" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a013061bd947eb8dfa0691e6cdfa292b3">TraceExecutionResult</a>(start_timestamp, end_timestamp, trace_type),</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      <a class="code hl_variable" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#ad77cdaff5d53158e7320bc6389a476bb">multi_status_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(multi_status)),</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      <a class="code hl_variable" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#aa70e484646390fac5434c22ba7b86449">values_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(values)) {}</div>
+</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#a604206f34b086ae97847389e84707199">   86</a></span><a class="code hl_function" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#a604206f34b086ae97847389e84707199">MultiValuesTraceExecutionResult::~MultiValuesTraceExecutionResult</a>() {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <a class="code hl_variable" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#ad77cdaff5d53158e7320bc6389a476bb">multi_status_</a>.clear();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <a class="code hl_variable" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#aa70e484646390fac5434c22ba7b86449">values_</a>.clear();</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
+</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#a44a6c6b59c09b48dd9ed2a85f31d2f44">   91</a></span><span class="keyword">const</span> std::vector&lt;Status&gt;&amp; <a class="code hl_function" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#a44a6c6b59c09b48dd9ed2a85f31d2f44">MultiValuesTraceExecutionResult::GetMultiStatus</a>()<span class="keyword"></span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="keyword">    const </span>{</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#ad77cdaff5d53158e7320bc6389a476bb">multi_status_</a>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}</div>
+</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="foldopen" id="foldopen00096" data-start="{" data-end="}">
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#aa635f0ba2fdf52aa83b9853ad18a3c15">   96</a></span><span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; <a class="code hl_function" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#aa635f0ba2fdf52aa83b9853ad18a3c15">MultiValuesTraceExecutionResult::GetValues</a>()<span class="keyword"></span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="keyword">    const </span>{</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#aa70e484646390fac5434c22ba7b86449">values_</a>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
+</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#a666a47488ed9e3a63c47e4ae0f3b7b40">  101</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#a666a47488ed9e3a63c47e4ae0f3b7b40">MultiValuesTraceExecutionResult::Accept</a>(<a class="code hl_class" href="../../db/d39/classROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler.html">Handler</a>* handler) {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  assert(handler != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">return</span> handler-&gt;<a class="code hl_function" href="../../db/d39/classROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler.html#a70f77ad962982741bec41b45b0ea9e59">Handle</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
+</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">// IteratorTraceExecutionResult</span></div>
+<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#adb590a4d17797a2391434a3814d2f03c">  107</a></span><a class="code hl_function" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#adb590a4d17797a2391434a3814d2f03c">IteratorTraceExecutionResult::IteratorTraceExecutionResult</a>(</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordtype">bool</span> valid, <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> status, <a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>&amp;&amp; key, <a class="code hl_class" href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">PinnableSlice</a>&amp;&amp; value,</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    uint64_t start_timestamp, uint64_t end_timestamp, <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> trace_type)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    : <a class="code hl_function" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a013061bd947eb8dfa0691e6cdfa292b3">TraceExecutionResult</a>(start_timestamp, end_timestamp, trace_type),</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a961a35c6adb5cdd0ef17182bbba84007">valid_</a>(valid),</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a6009567b44f7182201cf4760b1536664">status_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(status)),</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a8fd9619192d1953d5650ada598682284">key_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(key)),</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a38629b1e802198519bbd3023080ddfef">value_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(value)) {}</div>
+</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a0448107aa232ffc26da41881d9e9073c">  116</a></span><a class="code hl_function" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#adb590a4d17797a2391434a3814d2f03c">IteratorTraceExecutionResult::IteratorTraceExecutionResult</a>(</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordtype">bool</span> valid, <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> status, <span class="keyword">const</span> std::string&amp; key, <span class="keyword">const</span> std::string&amp; value,</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    uint64_t start_timestamp, uint64_t end_timestamp, <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">TraceType</a> trace_type)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    : <a class="code hl_function" href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a013061bd947eb8dfa0691e6cdfa292b3">TraceExecutionResult</a>(start_timestamp, end_timestamp, trace_type),</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a961a35c6adb5cdd0ef17182bbba84007">valid_</a>(valid),</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a6009567b44f7182201cf4760b1536664">status_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(status)) {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a8fd9619192d1953d5650ada598682284">key_</a>.PinSelf(key);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a38629b1e802198519bbd3023080ddfef">value_</a>.PinSelf(value);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
+</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="foldopen" id="foldopen00126" data-start="{" data-end="}">
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#aa404d69a4245f9bd039c7d83e6d68fbf">  126</a></span><a class="code hl_function" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#aa404d69a4245f9bd039c7d83e6d68fbf">IteratorTraceExecutionResult::~IteratorTraceExecutionResult</a>() {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a8fd9619192d1953d5650ada598682284">key_</a>.clear();</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a38629b1e802198519bbd3023080ddfef">value_</a>.clear();</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>}</div>
+</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#ae4e0a8bf8ac1739caeeaca579071f619">  131</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#ae4e0a8bf8ac1739caeeaca579071f619">IteratorTraceExecutionResult::GetValid</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a961a35c6adb5cdd0ef17182bbba84007">valid_</a>; }</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="foldopen" id="foldopen00133" data-start="{" data-end="}">
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a6a2b54cfa8051115225de0ba6ac84f7e">  133</a></span><span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a>&amp; <a class="code hl_function" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a6a2b54cfa8051115225de0ba6ac84f7e">IteratorTraceExecutionResult::GetStatus</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a6009567b44f7182201cf4760b1536664">status_</a>;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
+</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a9fcc9dfcb0da96e3550adc3ef5c9d89e">  137</a></span><a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a9fcc9dfcb0da96e3550adc3ef5c9d89e">IteratorTraceExecutionResult::GetKey</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a8fd9619192d1953d5650ada598682284">key_</a>); }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#aef6771a2ff94756126527516d71efde8">  139</a></span><a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#aef6771a2ff94756126527516d71efde8">IteratorTraceExecutionResult::GetValue</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(<a class="code hl_variable" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a38629b1e802198519bbd3023080ddfef">value_</a>); }</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="foldopen" id="foldopen00141" data-start="{" data-end="}">
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#aa35cbe1b6f6e5a69e8cc7a1d12d00e70">  141</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#aa35cbe1b6f6e5a69e8cc7a1d12d00e70">IteratorTraceExecutionResult::Accept</a>(<a class="code hl_class" href="../../db/d39/classROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler.html">Handler</a>* handler) {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  assert(handler != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <span class="keywordflow">return</span> handler-&gt;<a class="code hl_function" href="../../db/d39/classROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler.html#a70f77ad962982741bec41b45b0ea9e59">Handle</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>}</div>
+</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_a38629b1e802198519bbd3023080ddfef"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a38629b1e802198519bbd3023080ddfef">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::value_</a></div><div class="ttdeci">PinnableSlice value_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00184">trace_record_result.h:184</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_a6009567b44f7182201cf4760b1536664"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a6009567b44f7182201cf4760b1536664">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::status_</a></div><div class="ttdeci">Status status_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00182">trace_record_result.h:182</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_a6a2b54cfa8051115225de0ba6ac84f7e"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a6a2b54cfa8051115225de0ba6ac84f7e">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::GetStatus</a></div><div class="ttdeci">virtual const Status &amp; GetStatus() const</div><div class="ttdef"><b>Definition</b> <a href="#l00133">trace_record_result.cc:133</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_a8fd9619192d1953d5650ada598682284"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a8fd9619192d1953d5650ada598682284">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::key_</a></div><div class="ttdeci">PinnableSlice key_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00183">trace_record_result.h:183</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_a961a35c6adb5cdd0ef17182bbba84007"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a961a35c6adb5cdd0ef17182bbba84007">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::valid_</a></div><div class="ttdeci">bool valid_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00181">trace_record_result.h:181</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_a9fcc9dfcb0da96e3550adc3ef5c9d89e"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#a9fcc9dfcb0da96e3550adc3ef5c9d89e">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::GetKey</a></div><div class="ttdeci">virtual Slice GetKey() const</div><div class="ttdef"><b>Definition</b> <a href="#l00137">trace_record_result.cc:137</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_aa35cbe1b6f6e5a69e8cc7a1d12d00e70"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#aa35cbe1b6f6e5a69e8cc7a1d12d00e70">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::Accept</a></div><div class="ttdeci">Status Accept(Handler *handler) override</div><div class="ttdef"><b>Definition</b> <a href="#l00141">trace_record_result.cc:141</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_aa404d69a4245f9bd039c7d83e6d68fbf"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#aa404d69a4245f9bd039c7d83e6d68fbf">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::~IteratorTraceExecutionResult</a></div><div class="ttdeci">~IteratorTraceExecutionResult() override</div><div class="ttdef"><b>Definition</b> <a href="#l00126">trace_record_result.cc:126</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_adb590a4d17797a2391434a3814d2f03c"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#adb590a4d17797a2391434a3814d2f03c">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::IteratorTraceExecutionResult</a></div><div class="ttdeci">IteratorTraceExecutionResult(bool valid, Status status, PinnableSlice &amp;&amp;key, PinnableSlice &amp;&amp;value, uint64_t start_timestamp, uint64_t end_timestamp, TraceType trace_type)</div><div class="ttdef"><b>Definition</b> <a href="#l00107">trace_record_result.cc:107</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_ae4e0a8bf8ac1739caeeaca579071f619"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#ae4e0a8bf8ac1739caeeaca579071f619">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::GetValid</a></div><div class="ttdeci">virtual bool GetValid() const</div><div class="ttdef"><b>Definition</b> <a href="#l00131">trace_record_result.cc:131</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult_html_aef6771a2ff94756126527516d71efde8"><div class="ttname"><a href="../../df/d0f/classROCKSDB__NAMESPACE_1_1IteratorTraceExecutionResult.html#aef6771a2ff94756126527516d71efde8">ROCKSDB_NAMESPACE::IteratorTraceExecutionResult::GetValue</a></div><div class="ttdeci">virtual Slice GetValue() const</div><div class="ttdef"><b>Definition</b> <a href="#l00139">trace_record_result.cc:139</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult_html_a44a6c6b59c09b48dd9ed2a85f31d2f44"><div class="ttname"><a href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#a44a6c6b59c09b48dd9ed2a85f31d2f44">ROCKSDB_NAMESPACE::MultiValuesTraceExecutionResult::GetMultiStatus</a></div><div class="ttdeci">virtual const std::vector&lt; Status &gt; &amp; GetMultiStatus() const</div><div class="ttdef"><b>Definition</b> <a href="#l00091">trace_record_result.cc:91</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult_html_a604206f34b086ae97847389e84707199"><div class="ttname"><a href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#a604206f34b086ae97847389e84707199">ROCKSDB_NAMESPACE::MultiValuesTraceExecutionResult::~MultiValuesTraceExecutionResult</a></div><div class="ttdeci">~MultiValuesTraceExecutionResult() override</div><div class="ttdef"><b>Definition</b> <a href="#l00086">trace_record_result.cc:86</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult_html_a666a47488ed9e3a63c47e4ae0f3b7b40"><div class="ttname"><a href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#a666a47488ed9e3a63c47e4ae0f3b7b40">ROCKSDB_NAMESPACE::MultiValuesTraceExecutionResult::Accept</a></div><div class="ttdeci">Status Accept(Handler *handler) override</div><div class="ttdef"><b>Definition</b> <a href="#l00101">trace_record_result.cc:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult_html_aa635f0ba2fdf52aa83b9853ad18a3c15"><div class="ttname"><a href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#aa635f0ba2fdf52aa83b9853ad18a3c15">ROCKSDB_NAMESPACE::MultiValuesTraceExecutionResult::GetValues</a></div><div class="ttdeci">virtual const std::vector&lt; std::string &gt; &amp; GetValues() const</div><div class="ttdef"><b>Definition</b> <a href="#l00096">trace_record_result.cc:96</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult_html_aa70e484646390fac5434c22ba7b86449"><div class="ttname"><a href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#aa70e484646390fac5434c22ba7b86449">ROCKSDB_NAMESPACE::MultiValuesTraceExecutionResult::values_</a></div><div class="ttdeci">std::vector&lt; std::string &gt; values_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00148">trace_record_result.h:148</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult_html_ab3faaf06f2a562344dab8798d6838d74"><div class="ttname"><a href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#ab3faaf06f2a562344dab8798d6838d74">ROCKSDB_NAMESPACE::MultiValuesTraceExecutionResult::MultiValuesTraceExecutionResult</a></div><div class="ttdeci">MultiValuesTraceExecutionResult(std::vector&lt; Status &gt; multi_status, std::vector&lt; std::string &gt; values, uint64_t start_timestamp, uint64_t end_timestamp, TraceType trace_type)</div><div class="ttdef"><b>Definition</b> <a href="#l00079">trace_record_result.cc:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult_html_ad77cdaff5d53158e7320bc6389a476bb"><div class="ttname"><a href="../../d0/d6a/classROCKSDB__NAMESPACE_1_1MultiValuesTraceExecutionResult.html#ad77cdaff5d53158e7320bc6389a476bb">ROCKSDB_NAMESPACE::MultiValuesTraceExecutionResult::multi_status_</a></div><div class="ttdeci">std::vector&lt; Status &gt; multi_status_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00147">trace_record_result.h:147</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnableSlice_html"><div class="ttname"><a href="../../d9/dd6/classROCKSDB__NAMESPACE_1_1PinnableSlice.html">ROCKSDB_NAMESPACE::PinnableSlice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00138">slice.h:138</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult_html_a35eb2bc9e9141d7cc9dac5d7b308ae03"><div class="ttname"><a href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#a35eb2bc9e9141d7cc9dac5d7b308ae03">ROCKSDB_NAMESPACE::SingleValueTraceExecutionResult::GetValue</a></div><div class="ttdeci">virtual const std::string &amp; GetValue() const</div><div class="ttdef"><b>Definition</b> <a href="#l00069">trace_record_result.cc:69</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult_html_a58e28c438d89a3c7082406bfa20e9259"><div class="ttname"><a href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#a58e28c438d89a3c7082406bfa20e9259">ROCKSDB_NAMESPACE::SingleValueTraceExecutionResult::value_</a></div><div class="ttdeci">std::string value_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00124">trace_record_result.h:124</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult_html_abd3a04b99eee36b7152e8aa517686b95"><div class="ttname"><a href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#abd3a04b99eee36b7152e8aa517686b95">ROCKSDB_NAMESPACE::SingleValueTraceExecutionResult::~SingleValueTraceExecutionResult</a></div><div class="ttdeci">~SingleValueTraceExecutionResult() override</div><div class="ttdef"><b>Definition</b> <a href="#l00061">trace_record_result.cc:61</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult_html_abf4a236fd36388c0bedba44fd991fd4e"><div class="ttname"><a href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#abf4a236fd36388c0bedba44fd991fd4e">ROCKSDB_NAMESPACE::SingleValueTraceExecutionResult::GetStatus</a></div><div class="ttdeci">virtual const Status &amp; GetStatus() const</div><div class="ttdef"><b>Definition</b> <a href="#l00065">trace_record_result.cc:65</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult_html_ac9ea7e4365f29d37a87ba977536d7417"><div class="ttname"><a href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#ac9ea7e4365f29d37a87ba977536d7417">ROCKSDB_NAMESPACE::SingleValueTraceExecutionResult::status_</a></div><div class="ttdeci">Status status_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00123">trace_record_result.h:123</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult_html_ad69c869c039b5d01e02e23db2f94c6d3"><div class="ttname"><a href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#ad69c869c039b5d01e02e23db2f94c6d3">ROCKSDB_NAMESPACE::SingleValueTraceExecutionResult::Accept</a></div><div class="ttdeci">Status Accept(Handler *handler) override</div><div class="ttdef"><b>Definition</b> <a href="#l00073">trace_record_result.cc:73</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult_html_aeae7c70176266612c5bf58c7cdc4a686"><div class="ttname"><a href="../../d6/d78/classROCKSDB__NAMESPACE_1_1SingleValueTraceExecutionResult.html#aeae7c70176266612c5bf58c7cdc4a686">ROCKSDB_NAMESPACE::SingleValueTraceExecutionResult::SingleValueTraceExecutionResult</a></div><div class="ttdeci">SingleValueTraceExecutionResult(Status status, const std::string &amp;value, uint64_t start_timestamp, uint64_t end_timestamp, TraceType trace_type)</div><div class="ttdef"><b>Definition</b> <a href="#l00047">trace_record_result.cc:47</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult_html_a448b7fae02e8817e134b775f1e83b8fa"><div class="ttname"><a href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#a448b7fae02e8817e134b775f1e83b8fa">ROCKSDB_NAMESPACE::StatusOnlyTraceExecutionResult::Accept</a></div><div class="ttdeci">Status Accept(Handler *handler) override</div><div class="ttdef"><b>Definition</b> <a href="#l00041">trace_record_result.cc:41</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult_html_a4e2e7b2d29b93e863b150c4293e69cc8"><div class="ttname"><a href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#a4e2e7b2d29b93e863b150c4293e69cc8">ROCKSDB_NAMESPACE::StatusOnlyTraceExecutionResult::StatusOnlyTraceExecutionResult</a></div><div class="ttdeci">StatusOnlyTraceExecutionResult(Status status, uint64_t start_timestamp, uint64_t end_timestamp, TraceType trace_type)</div><div class="ttdef"><b>Definition</b> <a href="#l00031">trace_record_result.cc:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult_html_a8b057b63b4afa1de5ef80bb2454ec69b"><div class="ttname"><a href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#a8b057b63b4afa1de5ef80bb2454ec69b">ROCKSDB_NAMESPACE::StatusOnlyTraceExecutionResult::status_</a></div><div class="ttdeci">Status status_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00097">trace_record_result.h:97</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult_html_af2d151174eb87e6c148b9e08efdaad56"><div class="ttname"><a href="../../d4/dfd/classROCKSDB__NAMESPACE_1_1StatusOnlyTraceExecutionResult.html#af2d151174eb87e6c148b9e08efdaad56">ROCKSDB_NAMESPACE::StatusOnlyTraceExecutionResult::GetStatus</a></div><div class="ttdeci">virtual const Status &amp; GetStatus() const</div><div class="ttdef"><b>Definition</b> <a href="#l00037">trace_record_result.cc:37</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TraceExecutionResult_html_a013061bd947eb8dfa0691e6cdfa292b3"><div class="ttname"><a href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a013061bd947eb8dfa0691e6cdfa292b3">ROCKSDB_NAMESPACE::TraceExecutionResult::TraceExecutionResult</a></div><div class="ttdeci">TraceExecutionResult(uint64_t start_timestamp, uint64_t end_timestamp, TraceType trace_type)</div><div class="ttdef"><b>Definition</b> <a href="#l00017">trace_record_result.cc:17</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TraceExecutionResult_html_a0cd150fdae5780bd10493f3cc2d007d9"><div class="ttname"><a href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a0cd150fdae5780bd10493f3cc2d007d9">ROCKSDB_NAMESPACE::TraceExecutionResult::ts_end_</a></div><div class="ttdeci">uint64_t ts_end_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00079">trace_record_result.h:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TraceExecutionResult_html_a384963ceec0f0c9a9213a4748cd7d0f1"><div class="ttname"><a href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a384963ceec0f0c9a9213a4748cd7d0f1">ROCKSDB_NAMESPACE::TraceExecutionResult::GetEndTimestamp</a></div><div class="ttdeci">virtual uint64_t GetEndTimestamp() const</div><div class="ttdef"><b>Definition</b> <a href="#l00028">trace_record_result.cc:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TraceExecutionResult_html_a624577b3ba35ebe2156d4704826c6354"><div class="ttname"><a href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a624577b3ba35ebe2156d4704826c6354">ROCKSDB_NAMESPACE::TraceExecutionResult::GetStartTimestamp</a></div><div class="ttdeci">virtual uint64_t GetStartTimestamp() const</div><div class="ttdef"><b>Definition</b> <a href="#l00026">trace_record_result.cc:26</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TraceExecutionResult_html_a8036eac7fd338f29c0f276b3b6dbbea1"><div class="ttname"><a href="../../d3/d8d/classROCKSDB__NAMESPACE_1_1TraceExecutionResult.html#a8036eac7fd338f29c0f276b3b6dbbea1">ROCKSDB_NAMESPACE::TraceExecutionResult::ts_start_</a></div><div class="ttdeci">uint64_t ts_start_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00078">trace_record_result.h:78</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler_html"><div class="ttname"><a href="../../db/d39/classROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler.html">ROCKSDB_NAMESPACE::TraceRecordResult::Handler</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00035">trace_record_result.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler_html_a70f77ad962982741bec41b45b0ea9e59"><div class="ttname"><a href="../../db/d39/classROCKSDB__NAMESPACE_1_1TraceRecordResult_1_1Handler.html#a70f77ad962982741bec41b45b0ea9e59">ROCKSDB_NAMESPACE::TraceRecordResult::Handler::Handle</a></div><div class="ttdeci">virtual Status Handle(const StatusOnlyTraceExecutionResult &amp;result)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TraceRecordResult_html_a02c9f5c263a26ab4bfe8b1150f8c7e44"><div class="ttname"><a href="../../d8/da1/classROCKSDB__NAMESPACE_1_1TraceRecordResult.html#a02c9f5c263a26ab4bfe8b1150f8c7e44">ROCKSDB_NAMESPACE::TraceRecordResult::TraceRecordResult</a></div><div class="ttdeci">TraceRecordResult(TraceType trace_type)</div><div class="ttdef"><b>Definition</b> <a href="#l00011">trace_record_result.cc:11</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TraceRecordResult_html_a4586546e2442e339dacd7238835726b0"><div class="ttname"><a href="../../d8/da1/classROCKSDB__NAMESPACE_1_1TraceRecordResult.html#a4586546e2442e339dacd7238835726b0">ROCKSDB_NAMESPACE::TraceRecordResult::GetTraceType</a></div><div class="ttdeci">virtual TraceType GetTraceType() const</div><div class="ttdef"><b>Definition</b> <a href="#l00014">trace_record_result.cc:14</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TraceRecordResult_html_a659917e7ecfb3ca75039010265c08812"><div class="ttname"><a href="../../d8/da1/classROCKSDB__NAMESPACE_1_1TraceRecordResult.html#a659917e7ecfb3ca75039010265c08812">ROCKSDB_NAMESPACE::TraceRecordResult::trace_type_</a></div><div class="ttdeci">TraceType trace_type_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d57/trace__record__result_8h_source.html#l00052">trace_record_result.h:52</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6bdc8fce90c625710420e4fbed2ba1e9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6bdc8fce90c625710420e4fbed2ba1e9">ROCKSDB_NAMESPACE::TraceType</a></div><div class="ttdeci">TraceType</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d42/trace__record_8h_source.html#l00022">trace_record.h:22</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="atrace__record__result_8h_html"><div class="ttname"><a href="../../df/d57/trace__record__result_8h.html">trace_record_result.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_0e2cd41f6b4683183af8096b99f1f629.html">trace_replay</a></li><li class="navelem"><a class="el" href="../../dc/df6/trace__record__result_8cc.html">trace_record_result.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

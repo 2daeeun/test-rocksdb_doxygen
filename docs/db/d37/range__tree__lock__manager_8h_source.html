@@ -1,0 +1,323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/range/range_tree/range_tree_lock_manager.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('db/d37/range__tree__lock__manager_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">range_tree_lock_manager.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../db/d37/range__tree__lock__manager_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef OS_WIN</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">// For DeadlockInfoBuffer:</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d7a/thread__local_8h.html">util/thread_local.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/dd3/point__lock__manager_8h.html">utilities/transactions/lock/point/point_lock_manager.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d4b/range__lock__manager_8h.html">utilities/transactions/lock/range/range_lock_manager.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// Lock Tree library:</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d77/lock__request_8h.html">utilities/transactions/lock/range/range_tree/lib/locktree/lock_request.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d36/locktree_8h.html">utilities/transactions/lock/range/range_tree/lib/locktree/locktree.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/db7/range__tree__lock__tracker_8h.html">utilities/transactions/lock/range/range_tree/range_tree_lock_tracker.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9bce5360dd18db4c0360ec1db888effa">   21</a></span><span class="keyword">typedef</span> <a class="code hl_class" href="../../d3/d3c/classROCKSDB__NAMESPACE_1_1DeadlockInfoBufferTempl.html">DeadlockInfoBufferTempl&lt;RangeDeadlockPath&gt;</a> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9bce5360dd18db4c0360ec1db888effa">RangeDeadlockInfoBuffer</a>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// A Range Lock Manager that uses PerconaFT&#39;s locktree library</span></div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html">   24</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a9c01c5bf43fe36eed4cf7299ceed725b">RangeTreeLockManager</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../df/d8a/classROCKSDB__NAMESPACE_1_1RangeLockManagerBase.html">RangeLockManagerBase</a>,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                             <span class="keyword">public</span> <a class="code hl_class" href="../../d3/dc6/classROCKSDB__NAMESPACE_1_1RangeLockManagerHandle.html">RangeLockManagerHandle</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#ae29262ca2b72943b8e27d870dc0e88e1">   27</a></span>  <a class="code hl_class" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html">LockManager</a>* <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#ae29262ca2b72943b8e27d870dc0e88e1">getLockManager</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <span class="keyword">this</span>; }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordtype">void</span> AddColumnFamily(<span class="keyword">const</span> <a class="code hl_class" href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ColumnFamilyHandle</a>* cfh) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordtype">void</span> RemoveColumnFamily(<span class="keyword">const</span> <a class="code hl_class" href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ColumnFamilyHandle</a>* cfh) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">void</span> Resize(uint32_t) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  std::vector&lt;DeadlockPath&gt; GetDeadlockInfoBuffer() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  std::vector&lt;RangeDeadlockPath&gt; GetRangeDeadlockInfoBuffer() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">void</span> SetRangeDeadlockInfoBufferSize(uint32_t target_size) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="comment">// Get a lock on a range</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">//  @note only exclusive locks are currently supported (requesting a</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">//  non-exclusive lock will get an exclusive one)</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">using </span><a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a016478864f14a575c295de787f2b6d74">LockManager::TryLock</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> TryLock(<a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>* txn, <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> column_family_id,</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                 <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>&amp; start_endp, <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>&amp; end_endp, <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                 <span class="keywordtype">bool</span> exclusive) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">void</span> UnLock(<a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>* txn, <span class="keyword">const</span> <a class="code hl_class" href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html">LockTracker</a>&amp; tracker,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>              <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">void</span> UnLock(<a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>* txn, <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> column_family_id,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>              <span class="keyword">const</span> std::string&amp; key, <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env) <span class="keyword">override</span>;</div>
+<div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a8a667fb9c1989557a553aff076141a71">   50</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a8a667fb9c1989557a553aff076141a71">UnLock</a>(<a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>*, <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a>, <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>&amp;,</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>              <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>&amp;, <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>*)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// TODO: range unlock does nothing...</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
+</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html">RangeTreeLockManager</a>(</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      std::shared_ptr&lt;TransactionDBMutexFactory&gt; mutex_factory);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <a class="code hl_class" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html">~RangeTreeLockManager</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a738b4a18656320b0ec89fff2098664ba">   60</a></span>  <span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a738b4a18656320b0ec89fff2098664ba">SetMaxLockMemory</a>(<span class="keywordtype">size_t</span> max_lock_memory)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#abc3c2ffa774fe198b22d6dcb735a7a5b">ltm_</a>.set_max_lock_memory(max_lock_memory);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
+</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a2967be140dcaac9764673eb3746c108c">   64</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a2967be140dcaac9764673eb3746c108c">GetMaxLockMemory</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#abc3c2ffa774fe198b22d6dcb735a7a5b">ltm_</a>.get_max_lock_memory(); }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <a class="code hl_class" href="../../d1/df9/classROCKSDB__NAMESPACE_1_1Counters.html">Counters</a> GetStatus() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#ad2bbc8c53489feaa1b1702ecf41b6b92">   68</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#ad2bbc8c53489feaa1b1702ecf41b6b92">IsPointLockSupported</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="comment">// One could have acquired a point lock (it is reduced to range lock)</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
+</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_struct" href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html">PointLockStatus</a> GetPointLockStatus() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">// This is from LockManager</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <a class="code hl_typedef" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a5bd737991c128260e2e21ab6e91a488e">LockManager::RangeLockStatus</a> GetRangeLockStatus() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">// This has the same meaning as GetRangeLockStatus but is from</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">// RangeLockManagerHandle</span></div>
+<div class="foldopen" id="foldopen00080" data-start="{" data-end="}">
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a1ed11af0d5e4ae5a7645bcb9ff8f8701">   80</a></span>  <a class="code hl_typedef" href="../../d3/dc6/classROCKSDB__NAMESPACE_1_1RangeLockManagerHandle.html#a6f6dc39ed540850dfa2072f46a413e6f">RangeLockManagerHandle::RangeLockStatus</a> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a1ed11af0d5e4ae5a7645bcb9ff8f8701">GetRangeLockStatusData</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a771d9f0d1bb31e2c54b0c47a95ed24cc">GetRangeLockStatus</a>();</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
+</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a5b4532341d7d478429c291f4dea9e1c1">   84</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a5b4532341d7d478429c291f4dea9e1c1">IsRangeLockSupported</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#ac88f43f723da7977e5b1b0b07b490939">   86</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d8/d7d/classROCKSDB__NAMESPACE_1_1LockTrackerFactory.html">LockTrackerFactory</a>&amp; <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#ac88f43f723da7977e5b1b0b07b490939">GetLockTrackerFactory</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1RangeTreeLockTrackerFactory.html#af2862b7102aa6e47568aa2e96c7f7c18">RangeTreeLockTrackerFactory::Get</a>();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  }</div>
+</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="comment">// Get the locktree which stores locks for the Column Family with given cf_id</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  std::shared_ptr&lt;toku::locktree&gt; GetLockTreeForCF(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> cf_id);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a31fd2601c0b49763dacb9c473dbb35fe">   93</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a31fd2601c0b49763dacb9c473dbb35fe">SetEscalationBarrierFunc</a>(<a class="code hl_typedef" href="../../d3/dc6/classROCKSDB__NAMESPACE_1_1RangeLockManagerHandle.html#aa5bbba6f6818a1615c71e6f9c626b5a4">EscalationBarrierFunc</a> func)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <a class="code hl_variable" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a4d8ad21eb9c98880e5f25662fbe2fa1e">barrier_func_</a> = func;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#abc3c2ffa774fe198b22d6dcb735a7a5b">   98</a></span>  <a class="code hl_class" href="../../d1/dad/classtoku_1_1locktree__manager.html">toku::locktree_manager</a> <a class="code hl_variable" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#abc3c2ffa774fe198b22d6dcb735a7a5b">ltm_</a>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="foldopen" id="foldopen00100" data-start="{" data-end="};">
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a4d8ad21eb9c98880e5f25662fbe2fa1e">  100</a></span>  <a class="code hl_typedef" href="../../d3/dc6/classROCKSDB__NAMESPACE_1_1RangeLockManagerHandle.html#aa5bbba6f6818a1615c71e6f9c626b5a4">EscalationBarrierFunc</a> <a class="code hl_variable" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a4d8ad21eb9c98880e5f25662fbe2fa1e">barrier_func_</a> =</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      [](<span class="keyword">const</span> <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>&amp;, <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>&amp;) -&gt; <span class="keywordtype">bool</span> { <span class="keywordflow">return</span> <span class="keyword">false</span>; };</div>
+</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a2a41ca48404db5c7901c66b73bf2db9e">  103</a></span>  std::shared_ptr&lt;TransactionDBMutexFactory&gt; <a class="code hl_variable" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a2a41ca48404db5c7901c66b73bf2db9e">mutex_factory_</a>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="comment">// Map from cf_id to locktree*. Can only be accessed while holding the</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="comment">// ltree_map_mutex_. Must use a custom deleter that calls ltm_.release_lt</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a804771cd5e6deee638ceafcec46be951">  107</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a804771cd5e6deee638ceafcec46be951">LockTreeMap</a> =</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      std::unordered_map&lt;ColumnFamilyId, std::shared_ptr&lt;toku::locktree&gt;&gt;;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a34c5d86cb9f47c3d80a86c3050ea6074">  109</a></span>  <a class="code hl_typedef" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a804771cd5e6deee638ceafcec46be951">LockTreeMap</a> <a class="code hl_variable" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a34c5d86cb9f47c3d80a86c3050ea6074">ltree_map_</a>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#aeca4c6af4df32d81421d39644159f113">  111</a></span>  <a class="code hl_class" href="../../d2/d7b/classROCKSDB__NAMESPACE_1_1InstrumentedMutex.html">InstrumentedMutex</a> <a class="code hl_variable" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#aeca4c6af4df32d81421d39644159f113">ltree_map_mutex_</a>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="comment">// Per-thread cache of ltree_map_.</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="comment">// (uses the same approach as TransactionLockMgr::lock_maps_cache_)</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a3acc4308ba4d1afaa522c67accd1274e">  115</a></span>  std::unique_ptr&lt;ThreadLocalPtr&gt; <a class="code hl_variable" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a3acc4308ba4d1afaa522c67accd1274e">ltree_lookup_cache_</a>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a6ad937dc94f76546488fde59d41eba75">  117</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9bce5360dd18db4c0360ec1db888effa">RangeDeadlockInfoBuffer</a> <a class="code hl_variable" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a6ad937dc94f76546488fde59d41eba75">dlock_buffer_</a>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  std::shared_ptr&lt;toku::locktree&gt; <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a6e16c0d0765d932ac44186aa24cc69a7">MakeLockTreePtr</a>(<a class="code hl_class" href="../../d7/d25/classtoku_1_1locktree.html">toku::locktree</a>* lt);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a5dfc40823addfc7fc650ddc1e275151e">CompareDbtEndpoints</a>(<span class="keywordtype">void</span>* arg, <span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a>* a_key, <span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a>* b_key);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// Callbacks</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a6413bb3894b426839fd003339f324046">on_create</a>(<a class="code hl_class" href="../../d7/d25/classtoku_1_1locktree.html">toku::locktree</a>*, <span class="keywordtype">void</span>*);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a504658f2c0eeae87d8391cad03648f92">  124</a></span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a504658f2c0eeae87d8391cad03648f92">on_destroy</a>(<a class="code hl_class" href="../../d7/d25/classtoku_1_1locktree.html">toku::locktree</a>*) {}</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> on_escalate(<a class="code hl_typedef" href="../../d3/d15/txn__subst_8h.html#a11d4b23774fa63c66a784e821a1a89f9">TXNID</a> txnid, <span class="keyword">const</span> <a class="code hl_class" href="../../d7/d25/classtoku_1_1locktree.html">toku::locktree</a>* lt,</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                          <span class="keyword">const</span> <a class="code hl_class" href="../../d9/d86/classtoku_1_1range__buffer.html">toku::range_buffer</a>&amp; buffer, <span class="keywordtype">void</span>* extra);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> OnEscalationBarrierCheck(<span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a>* a, <span class="keyword">const</span> <a class="code hl_typedef" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a>* b, <span class="keywordtype">void</span>* extra);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>};</div>
+</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="keywordtype">void</span> serialize_endpoint(<span class="keyword">const</span> Endpoint&amp; endp, std::string* buf);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="keywordtype">void</span> wait_callback_for_locktree(<span class="keywordtype">void</span>* cdata, <a class="code hl_typedef" href="../../d2/de6/namespacetoku.html#addb0ef945c585a3fc781d869533741a7">toku::lock_wait_infos</a>* infos);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">#endif  </span><span class="comment">// OS_WIN</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ColumnFamilyHandle_html"><div class="ttname"><a href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ROCKSDB_NAMESPACE::ColumnFamilyHandle</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l00081">db.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Counters_html"><div class="ttname"><a href="../../d1/df9/classROCKSDB__NAMESPACE_1_1Counters.html">ROCKSDB_NAMESPACE::Counters</a></div><div class="ttdef"><b>Definition</b> <a href="../../d2/d05/merge__test_8cc_source.html#l00129">merge_test.cc:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DeadlockInfoBufferTempl_html"><div class="ttname"><a href="../../d3/d3c/classROCKSDB__NAMESPACE_1_1DeadlockInfoBufferTempl.html">ROCKSDB_NAMESPACE::DeadlockInfoBufferTempl</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/dd3/point__lock__manager_8h_source.html#l00031">point_lock_manager.h:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Endpoint_html"><div class="ttname"><a href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">ROCKSDB_NAMESPACE::Endpoint</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/db6/transaction_8h_source.html#l00085">transaction.h:85</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">ROCKSDB_NAMESPACE::Env</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00154">env.h:154</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InstrumentedMutex_html"><div class="ttname"><a href="../../d2/d7b/classROCKSDB__NAMESPACE_1_1InstrumentedMutex.html">ROCKSDB_NAMESPACE::InstrumentedMutex</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d64/instrumented__mutex_8h_source.html#l00020">instrumented_mutex.h:20</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html">ROCKSDB_NAMESPACE::LockManager</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/ded/lock__manager_8h_source.html#l00018">lock_manager.h:18</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a016478864f14a575c295de787f2b6d74"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a016478864f14a575c295de787f2b6d74">ROCKSDB_NAMESPACE::LockManager::TryLock</a></div><div class="ttdeci">virtual Status TryLock(PessimisticTransaction *txn, ColumnFamilyId column_family_id, const std::string &amp;key, Env *env, bool exclusive)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a5bd737991c128260e2e21ab6e91a488e"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a5bd737991c128260e2e21ab6e91a488e">ROCKSDB_NAMESPACE::LockManager::RangeLockStatus</a></div><div class="ttdeci">std::unordered_multimap&lt; ColumnFamilyId, RangeLockInfo &gt; RangeLockStatus</div><div class="ttdef"><b>Definition</b> <a href="../../dd/ded/lock__manager_8h_source.html#l00064">lock_manager.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockTrackerFactory_html"><div class="ttname"><a href="../../d8/d7d/classROCKSDB__NAMESPACE_1_1LockTrackerFactory.html">ROCKSDB_NAMESPACE::LockTrackerFactory</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00200">lock_tracker.h:200</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockTracker_html"><div class="ttname"><a href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html">ROCKSDB_NAMESPACE::LockTracker</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00064">lock_tracker.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PessimisticTransaction_html"><div class="ttname"><a href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">ROCKSDB_NAMESPACE::PessimisticTransaction</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/dd5/pessimistic__transaction_8h_source.html#l00036">pessimistic_transaction.h:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockManagerBase_html"><div class="ttname"><a href="../../df/d8a/classROCKSDB__NAMESPACE_1_1RangeLockManagerBase.html">ROCKSDB_NAMESPACE::RangeLockManagerBase</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d4b/range__lock__manager_8h_source.html#l00022">range_lock_manager.h:22</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockManagerHandle_html"><div class="ttname"><a href="../../d3/dc6/classROCKSDB__NAMESPACE_1_1RangeLockManagerHandle.html">ROCKSDB_NAMESPACE::RangeLockManagerHandle</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00087">transaction_db.h:87</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockManagerHandle_html_a6f6dc39ed540850dfa2072f46a413e6f"><div class="ttname"><a href="../../d3/dc6/classROCKSDB__NAMESPACE_1_1RangeLockManagerHandle.html#a6f6dc39ed540850dfa2072f46a413e6f">ROCKSDB_NAMESPACE::RangeLockManagerHandle::RangeLockStatus</a></div><div class="ttdeci">std::unordered_multimap&lt; ColumnFamilyId, RangeLockInfo &gt; RangeLockStatus</div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00097">transaction_db.h:97</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeLockManagerHandle_html_aa5bbba6f6818a1615c71e6f9c626b5a4"><div class="ttname"><a href="../../d3/dc6/classROCKSDB__NAMESPACE_1_1RangeLockManagerHandle.html#aa5bbba6f6818a1615c71e6f9c626b5a4">ROCKSDB_NAMESPACE::RangeLockManagerHandle::EscalationBarrierFunc</a></div><div class="ttdeci">std::function&lt; bool(const Endpoint &amp;a, const Endpoint &amp;b)&gt; EscalationBarrierFunc</div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00109">transaction_db.h:109</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html">ROCKSDB_NAMESPACE::RangeTreeLockManager</a></div><div class="ttdef"><b>Definition</b> <a href="#l00024">range_tree_lock_manager.h:25</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a1ed11af0d5e4ae5a7645bcb9ff8f8701"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a1ed11af0d5e4ae5a7645bcb9ff8f8701">ROCKSDB_NAMESPACE::RangeTreeLockManager::GetRangeLockStatusData</a></div><div class="ttdeci">RangeLockManagerHandle::RangeLockStatus GetRangeLockStatusData() override</div><div class="ttdef"><b>Definition</b> <a href="#l00080">range_tree_lock_manager.h:80</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a2967be140dcaac9764673eb3746c108c"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a2967be140dcaac9764673eb3746c108c">ROCKSDB_NAMESPACE::RangeTreeLockManager::GetMaxLockMemory</a></div><div class="ttdeci">size_t GetMaxLockMemory() override</div><div class="ttdef"><b>Definition</b> <a href="#l00064">range_tree_lock_manager.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a2a41ca48404db5c7901c66b73bf2db9e"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a2a41ca48404db5c7901c66b73bf2db9e">ROCKSDB_NAMESPACE::RangeTreeLockManager::mutex_factory_</a></div><div class="ttdeci">std::shared_ptr&lt; TransactionDBMutexFactory &gt; mutex_factory_</div><div class="ttdef"><b>Definition</b> <a href="#l00103">range_tree_lock_manager.h:103</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a31fd2601c0b49763dacb9c473dbb35fe"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a31fd2601c0b49763dacb9c473dbb35fe">ROCKSDB_NAMESPACE::RangeTreeLockManager::SetEscalationBarrierFunc</a></div><div class="ttdeci">void SetEscalationBarrierFunc(EscalationBarrierFunc func) override</div><div class="ttdef"><b>Definition</b> <a href="#l00093">range_tree_lock_manager.h:93</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a34c5d86cb9f47c3d80a86c3050ea6074"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a34c5d86cb9f47c3d80a86c3050ea6074">ROCKSDB_NAMESPACE::RangeTreeLockManager::ltree_map_</a></div><div class="ttdeci">LockTreeMap ltree_map_</div><div class="ttdef"><b>Definition</b> <a href="#l00109">range_tree_lock_manager.h:109</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a3acc4308ba4d1afaa522c67accd1274e"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a3acc4308ba4d1afaa522c67accd1274e">ROCKSDB_NAMESPACE::RangeTreeLockManager::ltree_lookup_cache_</a></div><div class="ttdeci">std::unique_ptr&lt; ThreadLocalPtr &gt; ltree_lookup_cache_</div><div class="ttdef"><b>Definition</b> <a href="#l00115">range_tree_lock_manager.h:115</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a4d8ad21eb9c98880e5f25662fbe2fa1e"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a4d8ad21eb9c98880e5f25662fbe2fa1e">ROCKSDB_NAMESPACE::RangeTreeLockManager::barrier_func_</a></div><div class="ttdeci">EscalationBarrierFunc barrier_func_</div><div class="ttdef"><b>Definition</b> <a href="#l00100">range_tree_lock_manager.h:100</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a504658f2c0eeae87d8391cad03648f92"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a504658f2c0eeae87d8391cad03648f92">ROCKSDB_NAMESPACE::RangeTreeLockManager::on_destroy</a></div><div class="ttdeci">static void on_destroy(toku::locktree *)</div><div class="ttdef"><b>Definition</b> <a href="#l00124">range_tree_lock_manager.h:124</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a5b4532341d7d478429c291f4dea9e1c1"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a5b4532341d7d478429c291f4dea9e1c1">ROCKSDB_NAMESPACE::RangeTreeLockManager::IsRangeLockSupported</a></div><div class="ttdeci">bool IsRangeLockSupported() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00084">range_tree_lock_manager.h:84</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a5dfc40823addfc7fc650ddc1e275151e"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a5dfc40823addfc7fc650ddc1e275151e">ROCKSDB_NAMESPACE::RangeTreeLockManager::CompareDbtEndpoints</a></div><div class="ttdeci">static int CompareDbtEndpoints(void *arg, const DBT *a_key, const DBT *b_key)</div><div class="ttdef"><b>Definition</b> <a href="../../da/d76/range__tree__lock__manager_8cc_source.html#l00204">range_tree_lock_manager.cc:204</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a6413bb3894b426839fd003339f324046"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a6413bb3894b426839fd003339f324046">ROCKSDB_NAMESPACE::RangeTreeLockManager::on_create</a></div><div class="ttdeci">static int on_create(toku::locktree *, void *)</div><div class="ttdef"><b>Definition</b> <a href="../../da/d76/range__tree__lock__manager_8cc_source.html#l00268">range_tree_lock_manager.cc:268</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a6ad937dc94f76546488fde59d41eba75"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a6ad937dc94f76546488fde59d41eba75">ROCKSDB_NAMESPACE::RangeTreeLockManager::dlock_buffer_</a></div><div class="ttdeci">RangeDeadlockInfoBuffer dlock_buffer_</div><div class="ttdef"><b>Definition</b> <a href="#l00117">range_tree_lock_manager.h:117</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a6e16c0d0765d932ac44186aa24cc69a7"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a6e16c0d0765d932ac44186aa24cc69a7">ROCKSDB_NAMESPACE::RangeTreeLockManager::MakeLockTreePtr</a></div><div class="ttdeci">std::shared_ptr&lt; toku::locktree &gt; MakeLockTreePtr(toku::locktree *lt)</div><div class="ttdef"><b>Definition</b> <a href="../../da/d76/range__tree__lock__manager_8cc_source.html#l00362">range_tree_lock_manager.cc:362</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a738b4a18656320b0ec89fff2098664ba"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a738b4a18656320b0ec89fff2098664ba">ROCKSDB_NAMESPACE::RangeTreeLockManager::SetMaxLockMemory</a></div><div class="ttdeci">int SetMaxLockMemory(size_t max_lock_memory) override</div><div class="ttdef"><b>Definition</b> <a href="#l00060">range_tree_lock_manager.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a771d9f0d1bb31e2c54b0c47a95ed24cc"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a771d9f0d1bb31e2c54b0c47a95ed24cc">ROCKSDB_NAMESPACE::RangeTreeLockManager::GetRangeLockStatus</a></div><div class="ttdeci">LockManager::RangeLockStatus GetRangeLockStatus() override</div><div class="ttdef"><b>Definition</b> <a href="../../da/d76/range__tree__lock__manager_8cc_source.html#l00488">range_tree_lock_manager.cc:488</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a804771cd5e6deee638ceafcec46be951"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a804771cd5e6deee638ceafcec46be951">ROCKSDB_NAMESPACE::RangeTreeLockManager::LockTreeMap</a></div><div class="ttdeci">std::unordered_map&lt; ColumnFamilyId, std::shared_ptr&lt; toku::locktree &gt; &gt; LockTreeMap</div><div class="ttdef"><b>Definition</b> <a href="#l00107">range_tree_lock_manager.h:107</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a8a667fb9c1989557a553aff076141a71"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a8a667fb9c1989557a553aff076141a71">ROCKSDB_NAMESPACE::RangeTreeLockManager::UnLock</a></div><div class="ttdeci">void UnLock(PessimisticTransaction *, ColumnFamilyId, const Endpoint &amp;, const Endpoint &amp;, Env *) override</div><div class="ttdef"><b>Definition</b> <a href="#l00050">range_tree_lock_manager.h:50</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_a9c01c5bf43fe36eed4cf7299ceed725b"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#a9c01c5bf43fe36eed4cf7299ceed725b">ROCKSDB_NAMESPACE::RangeTreeLockManager::RangeTreeLockManager</a></div><div class="ttdeci">RangeTreeLockManager(std::shared_ptr&lt; TransactionDBMutexFactory &gt; mutex_factory)</div><div class="ttdef"><b>Definition</b> <a href="../../da/d76/range__tree__lock__manager_8cc_source.html#l00260">range_tree_lock_manager.cc:260</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_abc3c2ffa774fe198b22d6dcb735a7a5b"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#abc3c2ffa774fe198b22d6dcb735a7a5b">ROCKSDB_NAMESPACE::RangeTreeLockManager::ltm_</a></div><div class="ttdeci">toku::locktree_manager ltm_</div><div class="ttdef"><b>Definition</b> <a href="#l00098">range_tree_lock_manager.h:98</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_ac88f43f723da7977e5b1b0b07b490939"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#ac88f43f723da7977e5b1b0b07b490939">ROCKSDB_NAMESPACE::RangeTreeLockManager::GetLockTrackerFactory</a></div><div class="ttdeci">const LockTrackerFactory &amp; GetLockTrackerFactory() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00086">range_tree_lock_manager.h:86</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_ad2bbc8c53489feaa1b1702ecf41b6b92"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#ad2bbc8c53489feaa1b1702ecf41b6b92">ROCKSDB_NAMESPACE::RangeTreeLockManager::IsPointLockSupported</a></div><div class="ttdeci">bool IsPointLockSupported() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00068">range_tree_lock_manager.h:68</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_ae29262ca2b72943b8e27d870dc0e88e1"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#ae29262ca2b72943b8e27d870dc0e88e1">ROCKSDB_NAMESPACE::RangeTreeLockManager::getLockManager</a></div><div class="ttdeci">LockManager * getLockManager() override</div><div class="ttdef"><b>Definition</b> <a href="#l00027">range_tree_lock_manager.h:27</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockManager_html_aeca4c6af4df32d81421d39644159f113"><div class="ttname"><a href="../../d0/de2/classROCKSDB__NAMESPACE_1_1RangeTreeLockManager.html#aeca4c6af4df32d81421d39644159f113">ROCKSDB_NAMESPACE::RangeTreeLockManager::ltree_map_mutex_</a></div><div class="ttdeci">InstrumentedMutex ltree_map_mutex_</div><div class="ttdef"><b>Definition</b> <a href="#l00111">range_tree_lock_manager.h:111</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RangeTreeLockTrackerFactory_html_af2862b7102aa6e47568aa2e96c7f7c18"><div class="ttname"><a href="../../d8/d56/classROCKSDB__NAMESPACE_1_1RangeTreeLockTrackerFactory.html#af2862b7102aa6e47568aa2e96c7f7c18">ROCKSDB_NAMESPACE::RangeTreeLockTrackerFactory::Get</a></div><div class="ttdeci">static const RangeTreeLockTrackerFactory &amp; Get()</div><div class="ttdef"><b>Definition</b> <a href="../../d2/db7/range__tree__lock__tracker_8h_source.html#l00135">range_tree_lock_tracker.h:135</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclasstoku_1_1locktree__manager_html"><div class="ttname"><a href="../../d1/dad/classtoku_1_1locktree__manager.html">toku::locktree_manager</a></div><div class="ttdef"><b>Definition</b> <a href="../../dc/d36/locktree_8h_source.html#l00125">locktree.h:125</a></div></div>
+<div class="ttc" id="aclasstoku_1_1locktree_html"><div class="ttname"><a href="../../d7/d25/classtoku_1_1locktree.html">toku::locktree</a></div><div class="ttdef"><b>Definition</b> <a href="../../dc/d36/locktree_8h_source.html#l00287">locktree.h:287</a></div></div>
+<div class="ttc" id="aclasstoku_1_1range__buffer_html"><div class="ttname"><a href="../../d9/d86/classtoku_1_1range__buffer.html">toku::range_buffer</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d2a/range__buffer_8h_source.html#l00066">range_buffer.h:66</a></div></div>
+<div class="ttc" id="alock__request_8h_html"><div class="ttname"><a href="../../df/d77/lock__request_8h.html">lock_request.h</a></div></div>
+<div class="ttc" id="alocktree_8h_html"><div class="ttname"><a href="../../dc/d36/locktree_8h.html">locktree.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8a39a75cbd2dd36afa8c75d6fc169606"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ROCKSDB_NAMESPACE::ColumnFamilyId</a></div><div class="ttdeci">uint32_t ColumnFamilyId</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00019">types.h:19</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a9bce5360dd18db4c0360ec1db888effa"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9bce5360dd18db4c0360ec1db888effa">ROCKSDB_NAMESPACE::RangeDeadlockInfoBuffer</a></div><div class="ttdeci">DeadlockInfoBufferTempl&lt; RangeDeadlockPath &gt; RangeDeadlockInfoBuffer</div><div class="ttdef"><b>Definition</b> <a href="#l00021">range_tree_lock_manager.h:21</a></div></div>
+<div class="ttc" id="anamespacetoku_html_addb0ef945c585a3fc781d869533741a7"><div class="ttname"><a href="../../d2/de6/namespacetoku.html#addb0ef945c585a3fc781d869533741a7">toku::lock_wait_infos</a></div><div class="ttdeci">std::vector&lt; lock_wait_info &gt; lock_wait_infos</div><div class="ttdef"><b>Definition</b> <a href="../../df/d77/lock__request_8h_source.html#l00075">lock_request.h:75</a></div></div>
+<div class="ttc" id="apoint__lock__manager_8h_html"><div class="ttname"><a href="../../d3/dd3/point__lock__manager_8h.html">point_lock_manager.h</a></div></div>
+<div class="ttc" id="arange__lock__manager_8h_html"><div class="ttname"><a href="../../da/d4b/range__lock__manager_8h.html">range_lock_manager.h</a></div></div>
+<div class="ttc" id="arange__tree__lock__tracker_8h_html"><div class="ttname"><a href="../../d2/db7/range__tree__lock__tracker_8h.html">range_tree_lock_tracker.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockStatus_html"><div class="ttname"><a href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html">ROCKSDB_NAMESPACE::PointLockStatus</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00041">lock_tracker.h:41</a></div></div>
+<div class="ttc" id="athread__local_8h_html"><div class="ttname"><a href="../../d8/d7a/thread__local_8h.html">thread_local.h</a></div></div>
+<div class="ttc" id="atxn__subst_8h_html_a11d4b23774fa63c66a784e821a1a89f9"><div class="ttname"><a href="../../d3/d15/txn__subst_8h.html#a11d4b23774fa63c66a784e821a1a89f9">TXNID</a></div><div class="ttdeci">uint64_t TXNID</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d15/txn__subst_8h_source.html#l00014">txn_subst.h:14</a></div></div>
+<div class="ttc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_html_a2546b46f9811705f7d7bbe3a17c5f014"><div class="ttname"><a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html#a2546b46f9811705f7d7bbe3a17c5f014">DBT</a></div><div class="ttdeci">struct __toku_dbt DBT</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h_source.html#l00012">db.h:12</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../dir_3eff4fc1b9bdc927695daa6eaf220609.html">range</a></li><li class="navelem"><a class="el" href="../../dir_1fdd669514be316dc6b9821c4ef31e1a.html">range_tree</a></li><li class="navelem"><a class="el" href="../../db/d37/range__tree__lock__manager_8h.html">range_tree_lock_manager.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

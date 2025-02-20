@@ -1,0 +1,25 @@
+var classROCKSDB__NAMESPACE_1_1TestFSWritableFile =
+[
+    [ "TestFSWritableFile", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#ae5e9e945f8755d16e7a65915826f154d", null ],
+    [ "~TestFSWritableFile", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#ab1a375fe2992faafb060e0d0fb27fef9", null ],
+    [ "Append", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#aae4d82df1ce71c900e72b0ec2e1d2a14", null ],
+    [ "Append", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#afa256deb8cee3c82053d3baf59fa69ba", null ],
+    [ "Close", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#a898fedbf2d1efec0819eaafd224aac71", null ],
+    [ "Flush", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#a9694a49f45e55d4b7d114baafc9f6f43", null ],
+    [ "GetFileSize", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#ac02b48fe31bf3bfb6d92e65fbfe3d578", null ],
+    [ "GetRequiredBufferAlignment", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#aeda3a62baf525e7b681bd925f5e83d8b", null ],
+    [ "IsSyncThreadSafe", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#ab17bc6bf6939c4ce30e4404c8ec3a65c", null ],
+    [ "PositionedAppend", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#ab452ae1f2225ef64a12c3c871bfb5002", null ],
+    [ "PositionedAppend", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#a5d71a659e2fcb8367249af65cc117eb0", null ],
+    [ "RangeSync", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#a1a64ed367cadc6b50bc39ae48e2749e6", null ],
+    [ "Sync", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#ae5b5556c4dd46a4a56ac301284cea756", null ],
+    [ "Truncate", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#ab0ac4faeb4570bdb84ea7f29bc8079f9", null ],
+    [ "use_direct_io", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#aa2c543753774f22db00349af5c6ed852", null ],
+    [ "file_opts_", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#a0b118818a41d3ab39473302ae032071c", null ],
+    [ "fs_", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#ab341a3e50a396ed0a923db9906d5cab4", null ],
+    [ "mutex_", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#abc9c6e5d5160d7656c2b15eca160f5f4", null ],
+    [ "state_", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#a1b5c77fd265426783c5a58f5c1cb005e", null ],
+    [ "target_", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#ad5ad554c4e0282c1cbe46a0ea4158249", null ],
+    [ "unsync_data_loss_", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#a85af50cb8b88f1e72f796f47965b6236", null ],
+    [ "writable_file_opened_", "dc/d18/classROCKSDB__NAMESPACE_1_1TestFSWritableFile.html#a90d52670c63f485696e201300e4fe893", null ]
+];

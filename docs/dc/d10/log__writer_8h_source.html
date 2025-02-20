@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/log_writer.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('dc/d10/log__writer_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">log_writer.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../dc/d10/log__writer_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/dff/log__format_8h.html">db/log_format.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/d17/compression__type_8h.html">rocksdb/compression_type.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d81/env_8h.html">rocksdb/env.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dcd/io__status_8h.html">rocksdb/io_status.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d48/slice_8h.html">rocksdb/slice.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dd0/include_2rocksdb_2status_8h.html">rocksdb/status.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/daf/compression_8h.html">util/compression.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d0c/hash__containers_8h.html">util/hash_containers.h</a>&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">class </span>WritableFileWriter;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d2/d53/namespaceROCKSDB__NAMESPACE_1_1log.html">log</a> {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span></div>
+<div class="foldopen" id="foldopen00074" data-start="{" data-end="};">
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html">   74</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a5c2d5a10e935c7bf6a4acfe741c8a034">Writer</a> {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// Create a writer that will append data to &quot;*dest&quot;.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">// &quot;*dest&quot; must be initially empty.</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">// &quot;*dest&quot; must remain live while this Writer is in use.</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a5c2d5a10e935c7bf6a4acfe741c8a034">Writer</a>(std::unique_ptr&lt;WritableFileWriter&gt;&amp;&amp; dest,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                  uint64_t log_number, <span class="keywordtype">bool</span> recycle_log_files,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                  <span class="keywordtype">bool</span> manual_flush = <span class="keyword">false</span>,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5">CompressionType</a> compressionType = <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5aa1babd632a7e989f50266abdf8d61c1d">kNoCompression</a>);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">// No copying allowed</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a64533b907101e7c6ad2ca58e01ce418a">   84</a></span>  <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a64533b907101e7c6ad2ca58e01ce418a">Writer</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a5c2d5a10e935c7bf6a4acfe741c8a034">Writer</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ac43b3dbbfac1974db0249a627930adad">   85</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ac43b3dbbfac1974db0249a627930adad">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a5c2d5a10e935c7bf6a4acfe741c8a034">Writer</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a5c2d5a10e935c7bf6a4acfe741c8a034">~Writer</a>();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ab1853e77a57e05327b4c9224d405c873">AddRecord</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp; write_options, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; slice);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a75f2f3f64154ba4c37b791d64900804a">AddCompressionTypeRecord</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp; write_options);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="comment">// If there are column families in `cf_to_ts_sz` not included in</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">// `recorded_cf_to_ts_sz_` and its user-defined timestamp size is non-zero,</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="comment">// adds a record of type kUserDefinedTimestampSizeType or</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="comment">// kRecyclableUserDefinedTimestampSizeType for these column families.</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="comment">// This timestamp size record applies to all subsequent records.</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a3285d3edb0a3d2621e18c97a2b291cef">MaybeAddUserDefinedTimestampSizeRecord</a>(</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      <span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp; write_options,</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a681fad678e9fdd16a662cd98d5208fca">UnorderedMap&lt;uint32_t, size_t&gt;</a>&amp; cf_to_ts_sz);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a5ff71a1f25b08fce03fc81844c61ceb2">  101</a></span>  <a class="code hl_class" href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html">WritableFileWriter</a>* <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a5ff71a1f25b08fce03fc81844c61ceb2">file</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a3f87ef2f289508962855ac063bcfc208">dest_</a>.get(); }</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a67090399fdd50ac34c748b3de2afc5ce">  102</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html">WritableFileWriter</a>* <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a67090399fdd50ac34c748b3de2afc5ce">file</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a3f87ef2f289508962855ac063bcfc208">dest_</a>.get(); }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#aedd7f58c579d668829a8f510f7207342">  104</a></span>  uint64_t <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#aedd7f58c579d668829a8f510f7207342">get_log_number</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a4b502a38419b22ea5c414fa4ccb32376">log_number_</a>; }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> WriteBuffer(<span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp; write_options);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> Close(<span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp; write_options);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="comment">// If closing the writer through file(), call this afterwards to modify</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="comment">// this object&#39;s state to reflect that. Returns true if the destination file</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="comment">// has been closed. If it hasn&#39;t been closed, returns false with no change.</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordtype">bool</span> PublishIfClosed();</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordtype">bool</span> BufferIsEmpty();</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#aefc50fb5c3424ddca3d56c76093ec3f5">  117</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#aefc50fb5c3424ddca3d56c76093ec3f5">TEST_block_offset</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a60291a36840e8616159fdb5c3aba302f">block_offset_</a>; }</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a3f87ef2f289508962855ac063bcfc208">  120</a></span>  std::unique_ptr&lt;WritableFileWriter&gt; <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a3f87ef2f289508962855ac063bcfc208">dest_</a>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a60291a36840e8616159fdb5c3aba302f">  121</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a60291a36840e8616159fdb5c3aba302f">block_offset_</a>;  <span class="comment">// Current offset in block</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a4b502a38419b22ea5c414fa4ccb32376">  122</a></span>  uint64_t <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a4b502a38419b22ea5c414fa4ccb32376">log_number_</a>;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a17ab4abcff09e2d0cf4a48a3b7b67161">  123</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a17ab4abcff09e2d0cf4a48a3b7b67161">recycle_log_files_</a>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#afa6f6c4929e5fec7777e9ec6c1c55b21">  124</a></span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#afa6f6c4929e5fec7777e9ec6c1c55b21">header_size_</a>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="comment">// crc32c values for all supported record types.  These are</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="comment">// pre-computed to reduce the overhead of computing the crc of the</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="comment">// record type stored in the header.</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a9f415f170d411f92b429e455cc3fd1eb">  129</a></span>  uint32_t <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a9f415f170d411f92b429e455cc3fd1eb">type_crc_</a>[<a class="code hl_variable" href="../../d2/d53/namespaceROCKSDB__NAMESPACE_1_1log.html#aa03ed1180bddab66d92c4a061fe6abfa">kMaxRecordType</a> + 1];</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <a class="code hl_class" href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">IOStatus</a> <a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ac2257c745c1865cda01cb9401d2b2a55">EmitPhysicalRecord</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>&amp; write_options,</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                              <a class="code hl_enumeration" href="../../d2/d53/namespaceROCKSDB__NAMESPACE_1_1log.html#a046504e665b162b624ce8812b479f2ec">RecordType</a> <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a>, <span class="keyword">const</span> <span class="keywordtype">char</span>* ptr, <span class="keywordtype">size_t</span> length);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="comment">// If true, it does not flush after each write. Instead it relies on the upper</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="comment">// layer to manually does the flush by calling ::WriteBuffer()</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a7717e4bd86ba9597ff12ad5b2579d26c">  136</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a7717e4bd86ba9597ff12ad5b2579d26c">manual_flush_</a>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="comment">// Compression Type</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ae164de4d6cb318c389674e186ced2b24">  139</a></span>  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5">CompressionType</a> <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ae164de4d6cb318c389674e186ced2b24">compression_type_</a>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a9c096db659f7305f94956d07826cfa02">  140</a></span>  <a class="code hl_class" href="../../d0/dcc/classROCKSDB__NAMESPACE_1_1StreamingCompress.html">StreamingCompress</a>* <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a9c096db659f7305f94956d07826cfa02">compress_</a>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="comment">// Reusable compressed output buffer</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#aae6d708ffbf5713aae72395b98b879fd">  142</a></span>  std::unique_ptr&lt;char[]&gt; <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#aae6d708ffbf5713aae72395b98b879fd">compressed_buffer_</a>;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="comment">// The recorded user-defined timestamp size that have been written so far.</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="comment">// Since the user-defined timestamp size cannot be changed while the DB is</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="comment">// running, existing entry in this map cannot be updated.</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a337826e313e06908b5680e738cac04ea">  147</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a681fad678e9fdd16a662cd98d5208fca">UnorderedMap&lt;uint32_t, size_t&gt;</a> <a class="code hl_variable" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a337826e313e06908b5680e738cac04ea">recorded_cf_to_ts_sz_</a>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>};</div>
+</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>}  <span class="comment">// namespace log</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IOStatus_html"><div class="ttname"><a href="../../d4/d77/classROCKSDB__NAMESPACE_1_1IOStatus.html">ROCKSDB_NAMESPACE::IOStatus</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dcd/io__status_8h_source.html#l00028">io_status.h:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StreamingCompress_html"><div class="ttname"><a href="../../d0/dcc/classROCKSDB__NAMESPACE_1_1StreamingCompress.html">ROCKSDB_NAMESPACE::StreamingCompress</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/daf/compression_8h_source.html#l01747">compression.h:1747</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritableFileWriter_html"><div class="ttname"><a href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html">ROCKSDB_NAMESPACE::WritableFileWriter</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d97/writable__file__writer_8h_source.html#l00040">writable_file_writer.h:40</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a17ab4abcff09e2d0cf4a48a3b7b67161"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a17ab4abcff09e2d0cf4a48a3b7b67161">ROCKSDB_NAMESPACE::log::Writer::recycle_log_files_</a></div><div class="ttdeci">bool recycle_log_files_</div><div class="ttdef"><b>Definition</b> <a href="#l00123">log_writer.h:123</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a3285d3edb0a3d2621e18c97a2b291cef"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a3285d3edb0a3d2621e18c97a2b291cef">ROCKSDB_NAMESPACE::log::Writer::MaybeAddUserDefinedTimestampSizeRecord</a></div><div class="ttdeci">IOStatus MaybeAddUserDefinedTimestampSizeRecord(const WriteOptions &amp;write_options, const UnorderedMap&lt; uint32_t, size_t &gt; &amp;cf_to_ts_sz)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/da4/log__writer_8cc_source.html#l00254">log_writer.cc:254</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a337826e313e06908b5680e738cac04ea"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a337826e313e06908b5680e738cac04ea">ROCKSDB_NAMESPACE::log::Writer::recorded_cf_to_ts_sz_</a></div><div class="ttdeci">UnorderedMap&lt; uint32_t, size_t &gt; recorded_cf_to_ts_sz_</div><div class="ttdef"><b>Definition</b> <a href="#l00147">log_writer.h:147</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a3f87ef2f289508962855ac063bcfc208"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a3f87ef2f289508962855ac063bcfc208">ROCKSDB_NAMESPACE::log::Writer::dest_</a></div><div class="ttdeci">std::unique_ptr&lt; WritableFileWriter &gt; dest_</div><div class="ttdef"><b>Definition</b> <a href="#l00120">log_writer.h:120</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a4b502a38419b22ea5c414fa4ccb32376"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a4b502a38419b22ea5c414fa4ccb32376">ROCKSDB_NAMESPACE::log::Writer::log_number_</a></div><div class="ttdeci">uint64_t log_number_</div><div class="ttdef"><b>Definition</b> <a href="#l00122">log_writer.h:122</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a5c2d5a10e935c7bf6a4acfe741c8a034"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a5c2d5a10e935c7bf6a4acfe741c8a034">ROCKSDB_NAMESPACE::log::Writer::Writer</a></div><div class="ttdeci">Writer(std::unique_ptr&lt; WritableFileWriter &gt; &amp;&amp;dest, uint64_t log_number, bool recycle_log_files, bool manual_flush=false, CompressionType compressionType=kNoCompression)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/da4/log__writer_8cc_source.html#l00023">log_writer.cc:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a5ff71a1f25b08fce03fc81844c61ceb2"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a5ff71a1f25b08fce03fc81844c61ceb2">ROCKSDB_NAMESPACE::log::Writer::file</a></div><div class="ttdeci">WritableFileWriter * file()</div><div class="ttdef"><b>Definition</b> <a href="#l00101">log_writer.h:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a60291a36840e8616159fdb5c3aba302f"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a60291a36840e8616159fdb5c3aba302f">ROCKSDB_NAMESPACE::log::Writer::block_offset_</a></div><div class="ttdeci">size_t block_offset_</div><div class="ttdef"><b>Definition</b> <a href="#l00121">log_writer.h:121</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a64533b907101e7c6ad2ca58e01ce418a"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a64533b907101e7c6ad2ca58e01ce418a">ROCKSDB_NAMESPACE::log::Writer::Writer</a></div><div class="ttdeci">Writer(const Writer &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a67090399fdd50ac34c748b3de2afc5ce"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a67090399fdd50ac34c748b3de2afc5ce">ROCKSDB_NAMESPACE::log::Writer::file</a></div><div class="ttdeci">const WritableFileWriter * file() const</div><div class="ttdef"><b>Definition</b> <a href="#l00102">log_writer.h:102</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a75f2f3f64154ba4c37b791d64900804a"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a75f2f3f64154ba4c37b791d64900804a">ROCKSDB_NAMESPACE::log::Writer::AddCompressionTypeRecord</a></div><div class="ttdeci">IOStatus AddCompressionTypeRecord(const WriteOptions &amp;write_options)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/da4/log__writer_8cc_source.html#l00202">log_writer.cc:202</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a7717e4bd86ba9597ff12ad5b2579d26c"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a7717e4bd86ba9597ff12ad5b2579d26c">ROCKSDB_NAMESPACE::log::Writer::manual_flush_</a></div><div class="ttdeci">bool manual_flush_</div><div class="ttdef"><b>Definition</b> <a href="#l00136">log_writer.h:136</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a9c096db659f7305f94956d07826cfa02"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a9c096db659f7305f94956d07826cfa02">ROCKSDB_NAMESPACE::log::Writer::compress_</a></div><div class="ttdeci">StreamingCompress * compress_</div><div class="ttdef"><b>Definition</b> <a href="#l00140">log_writer.h:140</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_a9f415f170d411f92b429e455cc3fd1eb"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#a9f415f170d411f92b429e455cc3fd1eb">ROCKSDB_NAMESPACE::log::Writer::type_crc_</a></div><div class="ttdeci">uint32_t type_crc_[kMaxRecordType+1]</div><div class="ttdef"><b>Definition</b> <a href="#l00129">log_writer.h:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_aae6d708ffbf5713aae72395b98b879fd"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#aae6d708ffbf5713aae72395b98b879fd">ROCKSDB_NAMESPACE::log::Writer::compressed_buffer_</a></div><div class="ttdeci">std::unique_ptr&lt; char[]&gt; compressed_buffer_</div><div class="ttdef"><b>Definition</b> <a href="#l00142">log_writer.h:142</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_ab1853e77a57e05327b4c9224d405c873"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ab1853e77a57e05327b4c9224d405c873">ROCKSDB_NAMESPACE::log::Writer::AddRecord</a></div><div class="ttdeci">IOStatus AddRecord(const WriteOptions &amp;write_options, const Slice &amp;slice)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/da4/log__writer_8cc_source.html#l00094">log_writer.cc:94</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_ac2257c745c1865cda01cb9401d2b2a55"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ac2257c745c1865cda01cb9401d2b2a55">ROCKSDB_NAMESPACE::log::Writer::EmitPhysicalRecord</a></div><div class="ttdeci">IOStatus EmitPhysicalRecord(const WriteOptions &amp;write_options, RecordType type, const char *ptr, size_t length)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/da4/log__writer_8cc_source.html#l00302">log_writer.cc:302</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_ac43b3dbbfac1974db0249a627930adad"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ac43b3dbbfac1974db0249a627930adad">ROCKSDB_NAMESPACE::log::Writer::operator=</a></div><div class="ttdeci">void operator=(const Writer &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_ae164de4d6cb318c389674e186ced2b24"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ae164de4d6cb318c389674e186ced2b24">ROCKSDB_NAMESPACE::log::Writer::compression_type_</a></div><div class="ttdeci">CompressionType compression_type_</div><div class="ttdef"><b>Definition</b> <a href="#l00139">log_writer.h:139</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_aedd7f58c579d668829a8f510f7207342"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#aedd7f58c579d668829a8f510f7207342">ROCKSDB_NAMESPACE::log::Writer::get_log_number</a></div><div class="ttdeci">uint64_t get_log_number() const</div><div class="ttdef"><b>Definition</b> <a href="#l00104">log_writer.h:104</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_aefc50fb5c3424ddca3d56c76093ec3f5"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#aefc50fb5c3424ddca3d56c76093ec3f5">ROCKSDB_NAMESPACE::log::Writer::TEST_block_offset</a></div><div class="ttdeci">size_t TEST_block_offset() const</div><div class="ttdef"><b>Definition</b> <a href="#l00117">log_writer.h:117</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_afa6f6c4929e5fec7777e9ec6c1c55b21"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#afa6f6c4929e5fec7777e9ec6c1c55b21">ROCKSDB_NAMESPACE::log::Writer::header_size_</a></div><div class="ttdeci">int header_size_</div><div class="ttdef"><b>Definition</b> <a href="#l00124">log_writer.h:124</a></div></div>
+<div class="ttc" id="acompression_8h_html"><div class="ttname"><a href="../../d1/daf/compression_8h.html">compression.h</a></div></div>
+<div class="ttc" id="acompression__type_8h_html"><div class="ttname"><a href="../../d4/d17/compression__type_8h.html">compression_type.h</a></div></div>
+<div class="ttc" id="aenv_8h_html"><div class="ttname"><a href="../../d5/d81/env_8h.html">env.h</a></div></div>
+<div class="ttc" id="ahash__containers_8h_html"><div class="ttname"><a href="../../d8/d0c/hash__containers_8h.html">hash_containers.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2status_8h_html"><div class="ttname"><a href="../../d9/dd0/include_2rocksdb_2status_8h.html">status.h</a></div></div>
+<div class="ttc" id="aio__status_8h_html"><div class="ttname"><a href="../../d9/dcd/io__status_8h.html">io_status.h</a></div></div>
+<div class="ttc" id="alog__format_8h_html"><div class="ttname"><a href="../../d4/dff/log__format_8h.html">log_format.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1log_html"><div class="ttname"><a href="../../d2/d53/namespaceROCKSDB__NAMESPACE_1_1log.html">ROCKSDB_NAMESPACE::log</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dff/log__format_8h_source.html#l00018">log_format.h:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1log_html_a046504e665b162b624ce8812b479f2ec"><div class="ttname"><a href="../../d2/d53/namespaceROCKSDB__NAMESPACE_1_1log.html#a046504e665b162b624ce8812b479f2ec">ROCKSDB_NAMESPACE::log::RecordType</a></div><div class="ttdeci">RecordType</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dff/log__format_8h_source.html#l00020">log_format.h:20</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1log_html_aa03ed1180bddab66d92c4a061fe6abfa"><div class="ttname"><a href="../../d2/d53/namespaceROCKSDB__NAMESPACE_1_1log.html#aa03ed1180bddab66d92c4a061fe6abfa">ROCKSDB_NAMESPACE::log::kMaxRecordType</a></div><div class="ttdeci">constexpr int kMaxRecordType</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dff/log__format_8h_source.html#l00043">log_format.h:43</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a681fad678e9fdd16a662cd98d5208fca"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a681fad678e9fdd16a662cd98d5208fca">ROCKSDB_NAMESPACE::UnorderedMap</a></div><div class="ttdeci">std::unordered_map&lt; K, V &gt; UnorderedMap</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d0c/hash__containers_8h_source.html#l00041">hash_containers.h:41</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aacfc9de2946b33f6a70b6fce4aec79d5"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5">ROCKSDB_NAMESPACE::CompressionType</a></div><div class="ttdeci">CompressionType</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d17/compression__type_8h_source.html#l00018">compression_type.h:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aacfc9de2946b33f6a70b6fce4aec79d5aa1babd632a7e989f50266abdf8d61c1d"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5aa1babd632a7e989f50266abdf8d61c1d">ROCKSDB_NAMESPACE::kNoCompression</a></div><div class="ttdeci">@ kNoCompression</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d17/compression__type_8h_source.html#l00021">compression_type.h:21</a></div></div>
+<div class="ttc" id="aslice_8h_html"><div class="ttname"><a href="../../d0/d48/slice_8h.html">slice.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1WriteOptions_html"><div class="ttname"><a href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">ROCKSDB_NAMESPACE::WriteOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01958">options.h:1958</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1aligned__storage_html"><div class="ttname"><a href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">ROCKSDB_NAMESPACE::type</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../dc/d10/log__writer_8h.html">log_writer.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

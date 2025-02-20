@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/point/point_lock_manager_test.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('de/d5a/point__lock__manager__test_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">point_lock_manager_test.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../de/d5a/point__lock__manager__test_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2020-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dc1/point__lock__manager__test_8h.html">utilities/transactions/lock/point/point_lock_manager_test.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// This test is not applicable for Range Lock manager as Range Lock Manager</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// operates on Column Families, not their ids.</span></div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae477838825a7ffc34e5f69bcab86561f">   13</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html">PointLockManagerTest</a>, LockNonExistingColumnFamily) {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <a class="code hl_class" href="../../dd/d18/classROCKSDB__NAMESPACE_1_1MockColumnFamilyHandle.html">MockColumnFamilyHandle</a> cf(1024);</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  locker_-&gt;RemoveColumnFamily(&amp;cf);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keyword">auto</span> txn = NewTxn();</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">auto</span> s = locker_-&gt;TryLock(txn, 1024, <span class="stringliteral">&quot;k&quot;</span>, env_, <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.IsInvalidArgument());</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a74f4189ea570bab9a65d47104659ef9c">ASSERT_STREQ</a>(s.getState(), <span class="stringliteral">&quot;Column family id not found: 1024&quot;</span>);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">delete</span> txn;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>}</div>
+</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a125339a8b016a2a16736e1fe252cf485">   23</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html">PointLockManagerTest</a>, LockStatus) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <a class="code hl_class" href="../../dd/d18/classROCKSDB__NAMESPACE_1_1MockColumnFamilyHandle.html">MockColumnFamilyHandle</a> cf1(1024), cf2(2048);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  locker_-&gt;AddColumnFamily(&amp;cf1);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  locker_-&gt;AddColumnFamily(&amp;cf2);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keyword">auto</span> txn1 = NewTxn();</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn1, 1024, <span class="stringliteral">&quot;k1&quot;</span>, env_, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn1, 2048, <span class="stringliteral">&quot;k1&quot;</span>, env_, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">auto</span> txn2 = NewTxn();</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn2, 1024, <span class="stringliteral">&quot;k2&quot;</span>, env_, <span class="keyword">false</span>));</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn2, 2048, <span class="stringliteral">&quot;k2&quot;</span>, env_, <span class="keyword">false</span>));</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">auto</span> s = locker_-&gt;GetPointLockStatus();</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(s.size(), 4u);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">for</span> (uint32_t cf_id : {1024, 2048}) {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(s.count(cf_id), 2u);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">auto</span> range = s.equal_range(cf_id);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = range.first; it != range.second; it++) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(it-&gt;second.key == <span class="stringliteral">&quot;k1&quot;</span> || it-&gt;second.key == <span class="stringliteral">&quot;k2&quot;</span>);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      <span class="keywordflow">if</span> (it-&gt;second.key == <span class="stringliteral">&quot;k1&quot;</span>) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(it-&gt;second.exclusive, <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(it-&gt;second.ids.size(), 1u);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(it-&gt;second.ids[0], txn1-&gt;GetID());</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (it-&gt;second.key == <span class="stringliteral">&quot;k2&quot;</span>) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(it-&gt;second.exclusive, <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(it-&gt;second.ids.size(), 1u);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(it-&gt;second.ids[0], txn2-&gt;GetID());</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    }</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="comment">// Cleanup</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  locker_-&gt;UnLock(txn1, 1024, <span class="stringliteral">&quot;k1&quot;</span>, env_);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  locker_-&gt;UnLock(txn1, 2048, <span class="stringliteral">&quot;k1&quot;</span>, env_);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  locker_-&gt;UnLock(txn2, 1024, <span class="stringliteral">&quot;k2&quot;</span>, env_);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  locker_-&gt;UnLock(txn2, 2048, <span class="stringliteral">&quot;k2&quot;</span>, env_);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">delete</span> txn1;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keyword">delete</span> txn2;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>}</div>
+</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab4acb57ac89773a188372a21a8de440e">   65</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html">PointLockManagerTest</a>, UnlockExclusive) {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <a class="code hl_class" href="../../dd/d18/classROCKSDB__NAMESPACE_1_1MockColumnFamilyHandle.html">MockColumnFamilyHandle</a> cf(1);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  locker_-&gt;AddColumnFamily(&amp;cf);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">auto</span> txn1 = NewTxn();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn1, 1, <span class="stringliteral">&quot;k&quot;</span>, env_, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  locker_-&gt;UnLock(txn1, 1, <span class="stringliteral">&quot;k&quot;</span>, env_);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">auto</span> txn2 = NewTxn();</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn2, 1, <span class="stringliteral">&quot;k&quot;</span>, env_, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// Cleanup</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  locker_-&gt;UnLock(txn2, 1, <span class="stringliteral">&quot;k&quot;</span>, env_);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">delete</span> txn1;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keyword">delete</span> txn2;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
+</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a06396826b126d70772b4cb221911d5b6">   83</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html">PointLockManagerTest</a>, UnlockShared) {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <a class="code hl_class" href="../../dd/d18/classROCKSDB__NAMESPACE_1_1MockColumnFamilyHandle.html">MockColumnFamilyHandle</a> cf(1);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  locker_-&gt;AddColumnFamily(&amp;cf);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keyword">auto</span> txn1 = NewTxn();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn1, 1, <span class="stringliteral">&quot;k&quot;</span>, env_, <span class="keyword">false</span>));</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  locker_-&gt;UnLock(txn1, 1, <span class="stringliteral">&quot;k&quot;</span>, env_);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">auto</span> txn2 = NewTxn();</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn2, 1, <span class="stringliteral">&quot;k&quot;</span>, env_, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="comment">// Cleanup</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  locker_-&gt;UnLock(txn2, 1, <span class="stringliteral">&quot;k&quot;</span>, env_);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keyword">delete</span> txn1;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keyword">delete</span> txn2;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
+</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">// This test doesn&#39;t work with Range Lock Manager, because Range Lock Manager</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">// doesn&#39;t support deadlock_detect_depth.</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9df9fd269a8e9c69866239a6320a827a">  104</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html">PointLockManagerTest</a>, DeadlockDepthExceeded) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="comment">// Tests that when detecting deadlock, if the detection depth is exceeded,</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="comment">// it&#39;s also viewed as deadlock.</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <a class="code hl_class" href="../../dd/d18/classROCKSDB__NAMESPACE_1_1MockColumnFamilyHandle.html">MockColumnFamilyHandle</a> cf(1);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  locker_-&gt;AddColumnFamily(&amp;cf);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <a class="code hl_struct" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">TransactionOptions</a> txn_opt;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  txn_opt.<a class="code hl_variable" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html#a6bd068cb6990803202ea0bd644780f1b">deadlock_detect</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  txn_opt.<a class="code hl_variable" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html#a9ec97a9bdc2d44eadb97fdf1c4f47fd4">deadlock_detect_depth</a> = 1;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  txn_opt.<a class="code hl_variable" href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html#a0a5704ff92f53ee3d35eac84cc8b30fc">lock_timeout</a> = 1000000;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keyword">auto</span> txn1 = NewTxn(txn_opt);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keyword">auto</span> txn2 = NewTxn(txn_opt);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keyword">auto</span> txn3 = NewTxn(txn_opt);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">auto</span> txn4 = NewTxn(txn_opt);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="comment">// &quot;a -&gt;(k) b&quot; means transaction a is waiting for transaction b to release</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="comment">// the held lock on key k.</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="comment">// txn4 -&gt;(k3) -&gt; txn3 -&gt;(k2) txn2 -&gt;(k1) txn1</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="comment">// txn3&#39;s deadlock detection will exceed the detection depth 1,</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="comment">// which will be viewed as a deadlock.</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// NOTE:</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="comment">// txn4 -&gt;(k3) -&gt; txn3 must be set up before</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="comment">// txn3 -&gt;(k2) -&gt; txn2, because to trigger deadlock detection for txn3,</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="comment">// it must have another txn waiting on it, which is txn4 in this case.</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn1, 1, <span class="stringliteral">&quot;k1&quot;</span>, env_, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <a class="code hl_typedef" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#afc6f29d029401f7520152663acb0fb61">port::Thread</a> t1 = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aff81d4f2d670154a3e9f4361165d28f6">BlockUntilWaitingTxn</a>(wait_sync_point_name_, [&amp;]() {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn2, 1, <span class="stringliteral">&quot;k2&quot;</span>, env_, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="comment">// block because txn1 is holding a lock on k1.</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn2, 1, <span class="stringliteral">&quot;k1&quot;</span>, env_, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  });</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn3, 1, <span class="stringliteral">&quot;k3&quot;</span>, env_, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <a class="code hl_typedef" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#afc6f29d029401f7520152663acb0fb61">port::Thread</a> t2 = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aff81d4f2d670154a3e9f4361165d28f6">BlockUntilWaitingTxn</a>(wait_sync_point_name_, [&amp;]() {</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="comment">// block because txn3 is holding a lock on k1.</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(locker_-&gt;TryLock(txn4, 1, <span class="stringliteral">&quot;k3&quot;</span>, env_, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  });</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="keyword">auto</span> s = locker_-&gt;TryLock(txn3, 1, <span class="stringliteral">&quot;k2&quot;</span>, env_, <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.IsBusy());</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(s.subcode(), <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34a083b1df7f551b4a82906fa3fb66e54d3">Status::SubCode::kDeadlock</a>);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  std::vector&lt;DeadlockPath&gt; deadlock_paths = locker_-&gt;GetDeadlockInfoBuffer();</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(deadlock_paths.size(), 1u);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(deadlock_paths[0].limit_exceeded);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  locker_-&gt;UnLock(txn1, 1, <span class="stringliteral">&quot;k1&quot;</span>, env_);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  locker_-&gt;UnLock(txn3, 1, <span class="stringliteral">&quot;k3&quot;</span>, env_);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  t1.join();</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  t2.join();</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keyword">delete</span> txn4;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keyword">delete</span> txn3;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="keyword">delete</span> txn2;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keyword">delete</span> txn1;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>}</div>
+</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a06720b07e1e088e68a7e950ae516b138">  160</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a>(<a class="code hl_class" href="../../de/dd3/classROCKSDB__NAMESPACE_1_1PointLockManager.html">PointLockManager</a>, <a class="code hl_class" href="../../d4/d81/classROCKSDB__NAMESPACE_1_1AnyLockManagerTest.html">AnyLockManagerTest</a>,</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                        <a class="code hl_function" href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">::testing::Values</a>(<span class="keyword">nullptr</span>));</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="../../de/d5a/point__lock__manager__test_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627">  165</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  ROCKSDB_NAMESPACE::port::InstallStackTraceHandler();</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <a class="code hl_function" href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">::testing::InitGoogleTest</a>(&amp;argc, argv);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a>();</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>}</div>
+</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="ttc" id="acache__bench_8cc_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/db4/cache__bench_8cc_source.html#l00011">cache_bench.cc:11</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AnyLockManagerTest_html"><div class="ttname"><a href="../../d4/d81/classROCKSDB__NAMESPACE_1_1AnyLockManagerTest.html">ROCKSDB_NAMESPACE::AnyLockManagerTest</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00088">point_lock_manager_test.h:89</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MockColumnFamilyHandle_html"><div class="ttname"><a href="../../dd/d18/classROCKSDB__NAMESPACE_1_1MockColumnFamilyHandle.html">ROCKSDB_NAMESPACE::MockColumnFamilyHandle</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00019">point_lock_manager_test.h:19</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockManagerTest_html"><div class="ttname"><a href="../../d6/da4/classROCKSDB__NAMESPACE_1_1PointLockManagerTest.html">ROCKSDB_NAMESPACE::PointLockManagerTest</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00042">point_lock_manager_test.h:42</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockManager_html"><div class="ttname"><a href="../../de/dd3/classROCKSDB__NAMESPACE_1_1PointLockManager.html">ROCKSDB_NAMESPACE::PointLockManager</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/dd3/point__lock__manager_8h_source.html#l00110">point_lock_manager.h:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a384eddcdea39c77626913680da62aa34a083b1df7f551b4a82906fa3fb66e54d3"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34a083b1df7f551b4a82906fa3fb66e54d3">ROCKSDB_NAMESPACE::Status::kDeadlock</a></div><div class="ttdeci">@ kDeadlock</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00106">status.h:106</a></div></div>
+<div class="ttc" id="agtest_8h_html_a0ee66d464d1a06c20c1929cae09d8758"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a></div><div class="ttdeci">#define TEST_F(test_fixture, test_name)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22085">gtest.h:22085</a></div></div>
+<div class="ttc" id="agtest_8h_html_a1a6db8b1338ee7040329322b77779086"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a></div><div class="ttdeci">#define ASSERT_EQ(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21769">gtest.h:21769</a></div></div>
+<div class="ttc" id="agtest_8h_html_a74f4189ea570bab9a65d47104659ef9c"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a74f4189ea570bab9a65d47104659ef9c">ASSERT_STREQ</a></div><div class="ttdeci">#define ASSERT_STREQ(s1, s2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21817">gtest.h:21817</a></div></div>
+<div class="ttc" id="agtest_8h_html_a853a3792807489591d3d4a2f2ff9359f"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a></div><div class="ttdeci">int RUN_ALL_TESTS() GTEST_MUST_USE_RESULT_</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22109">gtest.h:22109</a></div></div>
+<div class="ttc" id="agtest_8h_html_a9e411d086a08ba0cd14b73fb2f8d028f"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a></div><div class="ttdeci">#define INSTANTIATE_TEST_CASE_P(prefix, test_case_name, generator,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l18912">gtest.h:18912</a></div></div>
+<div class="ttc" id="agtest_8h_html_ae9244bfbda562e8b798789b001993fa5"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a></div><div class="ttdeci">#define ASSERT_TRUE(condition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21682">gtest.h:21682</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_afc6f29d029401f7520152663acb0fb61"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#afc6f29d029401f7520152663acb0fb61">ROCKSDB_NAMESPACE::port::Thread</a></div><div class="ttdeci">std::thread Thread</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00166">port_posix.h:166</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aff81d4f2d670154a3e9f4361165d28f6"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aff81d4f2d670154a3e9f4361165d28f6">ROCKSDB_NAMESPACE::BlockUntilWaitingTxn</a></div><div class="ttdeci">port::Thread BlockUntilWaitingTxn(const char *sync_point_name, std::function&lt; void()&gt; f)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dc1/point__lock__manager__test_8h_source.html#l00193">point_lock_manager_test.h:193</a></div></div>
+<div class="ttc" id="anamespacetesting_html_a0c5a07d0439f323cd4353c718e277a10"><div class="ttname"><a href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">testing::Values</a></div><div class="ttdeci">internal::ValueArray1&lt; T1 &gt; Values(T1 v1)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l17841">gtest.h:17841</a></div></div>
+<div class="ttc" id="anamespacetesting_html_aee3f6f99df893f576f705f66c0559482"><div class="ttname"><a href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">testing::InitGoogleTest</a></div><div class="ttdeci">void InitGoogleTest(int *argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d8c/gtest-all_8cc_source.html#l07404">gtest-all.cc:7404</a></div></div>
+<div class="ttc" id="apoint__lock__manager__test_8h_html"><div class="ttname"><a href="../../d9/dc1/point__lock__manager__test_8h.html">point_lock_manager_test.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionOptions_html"><div class="ttname"><a href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html">ROCKSDB_NAMESPACE::TransactionOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00274">transaction_db.h:274</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionOptions_html_a0a5704ff92f53ee3d35eac84cc8b30fc"><div class="ttname"><a href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html#a0a5704ff92f53ee3d35eac84cc8b30fc">ROCKSDB_NAMESPACE::TransactionOptions::lock_timeout</a></div><div class="ttdeci">int64_t lock_timeout</div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00303">transaction_db.h:303</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionOptions_html_a6bd068cb6990803202ea0bd644780f1b"><div class="ttname"><a href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html#a6bd068cb6990803202ea0bd644780f1b">ROCKSDB_NAMESPACE::TransactionOptions::deadlock_detect</a></div><div class="ttdeci">bool deadlock_detect</div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00282">transaction_db.h:282</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionOptions_html_a9ec97a9bdc2d44eadb97fdf1c4f47fd4"><div class="ttname"><a href="../../dc/d28/structROCKSDB__NAMESPACE_1_1TransactionOptions.html#a9ec97a9bdc2d44eadb97fdf1c4f47fd4">ROCKSDB_NAMESPACE::TransactionOptions::deadlock_detect_depth</a></div><div class="ttdeci">int64_t deadlock_detect_depth</div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00313">transaction_db.h:313</a></div></div>
+<div class="ttc" id="atestharness_8h_html_a6892e90ee417adfb0c66aa7a49769895"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a></div><div class="ttdeci">#define ASSERT_OK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00082">testharness.h:82</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../dir_744d54e823ec883aaf889c7c7ed29705.html">point</a></li><li class="navelem"><a class="el" href="../../de/d5a/point__lock__manager__test_8cc.html">point_lock_manager_test.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

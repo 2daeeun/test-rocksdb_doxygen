@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['sanitylevel_0',['SanityLevel',['../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html#a7ffa75ae6fe140ae8f989aaceea4604d',1,'ROCKSDB_NAMESPACE::ConfigOptions']]],
+  ['seekstatstate_1',['SeekStatState',['../d5/d36/classROCKSDB__NAMESPACE_1_1BlockBasedTableIterator.html#a84d0e62c9b0e2651b00eb49ebc8d22a2',1,'ROCKSDB_NAMESPACE::BlockBasedTableIterator']]],
+  ['seektype_2',['SeekType',['../d3/d00/classROCKSDB__NAMESPACE_1_1IteratorSeekQueryTraceRecord.html#a60e5ea23a31ee732bad091138b7897fb',1,'ROCKSDB_NAMESPACE::IteratorSeekQueryTraceRecord']]],
+  ['seqnotimetesttype_3',['SeqnoTimeTestType',['../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5603cabdb2b8f1cc8e4ca8aa050bd2a3',1,'ROCKSDB_NAMESPACE']]],
+  ['severity_4',['Severity',['../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a0544a1d60b41a3a7f34cbaaf8854959b',1,'ROCKSDB_NAMESPACE::Status']]],
+  ['sharefilesnaming_5',['ShareFilesNaming',['../d7/d80/structROCKSDB__NAMESPACE_1_1BackupEngineOptions.html#ad8a615d2b5e02df6aeb0c935dfacf678',1,'ROCKSDB_NAMESPACE::BackupEngineOptions']]],
+  ['sizeapproximationflags_6',['SizeApproximationFlags',['../d4/dc0/classROCKSDB__NAMESPACE_1_1DB.html#ad03f67e5d3c9abc8242ec2b76c70212f',1,'ROCKSDB_NAMESPACE::DB']]],
+  ['skippolicy_7',['SkipPolicy',['../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3a24a6ca508684f631a0b50fe6991d72',1,'ROCKSDB_NAMESPACE']]],
+  ['snapshotaction_8',['SnapshotAction',['../d1/d23/namespaceROCKSDB__NAMESPACE.html#a71a18f167526dd408afbc86c4d158e92',1,'ROCKSDB_NAMESPACE']]],
+  ['snapshotbackup_9',['SnapshotBackup',['../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6aadca8c7429785d9dadb578cf262e5b',1,'ROCKSDB_NAMESPACE']]],
+  ['snapshotcheckerresult_10',['SnapshotCheckerResult',['../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1b',1,'ROCKSDB_NAMESPACE']]],
+  ['state_11',['State',['../df/d2c/classROCKSDB__NAMESPACE_1_1DBImpl_1_1WBMStallInterface.html#a0d2e2d5905a790f0246da51f67251961',1,'ROCKSDB_NAMESPACE::DBImpl::WBMStallInterface::State'],['../d7/d44/classROCKSDB__NAMESPACE_1_1WriteThread.html#a5749d967367077c234d3799f63e60187',1,'ROCKSDB_NAMESPACE::WriteThread::State'],['../df/d2d/classROCKSDB__NAMESPACE_1_1LDBCommandExecuteResult.html#a4cb211375cdef47468fc817fe9f382ec',1,'ROCKSDB_NAMESPACE::LDBCommandExecuteResult::State'],['../d7/dc7/structROCKSDB__NAMESPACE_1_1BlockBasedTableBuilder_1_1Rep.html#afd7fd05e098264a5438741b5752bccd5',1,'ROCKSDB_NAMESPACE::BlockBasedTableBuilder::Rep::State']]],
+  ['state_12',['state',['../d3/df1/classtoku_1_1lock__request.html#ad8bea4ae0c23a4384f6c1c25403bf9ee',1,'toku::lock_request']]],
+  ['statetype_13',['StateType',['../d5/db4/structROCKSDB__NAMESPACE_1_1ThreadStatus.html#ad3b646b0416f76da5bf83879d7051fff',1,'ROCKSDB_NAMESPACE::ThreadStatus']]],
+  ['statslevel_14',['StatsLevel',['../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74af3883e3f704a47d422b0f72f2b651',1,'ROCKSDB_NAMESPACE']]],
+  ['statsversionkeytype_15',['StatsVersionKeyType',['../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0b3ba9421a13e7f72f34ca6387e2ae35',1,'ROCKSDB_NAMESPACE']]],
+  ['subcode_16',['SubCode',['../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34',1,'ROCKSDB_NAMESPACE::Status']]]
+];

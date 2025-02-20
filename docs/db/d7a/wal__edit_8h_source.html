@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/wal_edit.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('db/d7a/wal__edit_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">wal_edit.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../db/d7a/wal__edit_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// WAL related classes used in VersionEdit and VersionSet.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Modifications to WalAddition and WalDeletion may need to update</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// VersionEdit and its related tests.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;ostream&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/de0/event__logger_8h.html">logging/event_logger.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d00/port_8h.html">port/port.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/df5/rocksdb__namespace_8h.html">rocksdb/rocksdb_namespace.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">class </span>JSONWriter;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">class </span>Slice;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">class </span>Status;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">   28</a></span><span class="keyword">using </span><a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> = uint64_t;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// Metadata of a WAL.</span></div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html">   31</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a360d9ccade3e58b0a3f291ed19c62237">WalMetadata</a> {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a360d9ccade3e58b0a3f291ed19c62237">   33</a></span>  <a class="code hl_function" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a360d9ccade3e58b0a3f291ed19c62237">WalMetadata</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#afbf25069a9e7d4ff69844a370815c69e">   35</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#afbf25069a9e7d4ff69844a370815c69e">WalMetadata</a>(uint64_t synced_size_bytes)</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      : <a class="code hl_variable" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1cb71cd0af51b796a6925167567be78d">synced_size_bytes_</a>(synced_size_bytes) {}</div>
+</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#ad630da719fc596e3161ebb8741ccd404">   38</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#ad630da719fc596e3161ebb8741ccd404">HasSyncedSize</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1cb71cd0af51b796a6925167567be78d">synced_size_bytes_</a> != <a class="code hl_variable" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1786b18073bc38a4f2da1c20612e0e35">kUnknownWalSize</a>; }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a7b01a467147142c50a9677740eef246f">   40</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a7b01a467147142c50a9677740eef246f">SetSyncedSizeInBytes</a>(uint64_t bytes) { <a class="code hl_variable" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1cb71cd0af51b796a6925167567be78d">synced_size_bytes_</a> = bytes; }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a27173287b530a153d5b5bac9d0ded4f9">   42</a></span>  uint64_t <a class="code hl_function" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a27173287b530a153d5b5bac9d0ded4f9">GetSyncedSizeInBytes</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1cb71cd0af51b796a6925167567be78d">synced_size_bytes_</a>; }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1dc28f4d7734a6cd015a54e54a3d39a0">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html">WalMetadata</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_class" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html">WalMetadata</a>&amp; rhs);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6185c1ff5be0299f2d50183ebfd37c0e">operator!=</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html">WalMetadata</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_class" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html">WalMetadata</a>&amp; rhs);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// The size of WAL is unknown, used when the WAL is not synced yet or is</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// empty.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1786b18073bc38a4f2da1c20612e0e35">   49</a></span>  <span class="keyword">constexpr</span> <span class="keyword">static</span> uint64_t <a class="code hl_variable" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1786b18073bc38a4f2da1c20612e0e35">kUnknownWalSize</a> =</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      std::numeric_limits&lt;uint64_t&gt;::max();</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// Size of the most recently synced WAL in bytes.</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1cb71cd0af51b796a6925167567be78d">   53</a></span>  uint64_t <a class="code hl_variable" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1cb71cd0af51b796a6925167567be78d">synced_size_bytes_</a> = <a class="code hl_variable" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1786b18073bc38a4f2da1c20612e0e35">kUnknownWalSize</a>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>};</div>
+</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#ac2c2129ef8321440624d01d60bb2a13f">   56</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_friend" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#ac2c2129ef8321440624d01d60bb2a13f">operator==</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a360d9ccade3e58b0a3f291ed19c62237">WalMetadata</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_function" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a360d9ccade3e58b0a3f291ed19c62237">WalMetadata</a>&amp; rhs) {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">return</span> lhs.<a class="code hl_variable" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1cb71cd0af51b796a6925167567be78d">synced_size_bytes_</a> == rhs.<a class="code hl_variable" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1cb71cd0af51b796a6925167567be78d">synced_size_bytes_</a>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
+</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a50af364f88937e19bd6b0750ec3ddd95">   60</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_friend" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a50af364f88937e19bd6b0750ec3ddd95">operator!=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a360d9ccade3e58b0a3f291ed19c62237">WalMetadata</a>&amp; lhs, <span class="keyword">const</span> <a class="code hl_function" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a360d9ccade3e58b0a3f291ed19c62237">WalMetadata</a>&amp; rhs) {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">return</span> !(lhs == rhs);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
+</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">// These tags are persisted to MANIFEST, so it&#39;s part of the user API.</span></div>
+<div class="foldopen" id="foldopen00065" data-start="{" data-end="};">
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d0b4c94326a6d9bcfdee2812c8a8615">   65</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d0b4c94326a6d9bcfdee2812c8a8615">WalAdditionTag</a> : uint32_t {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">// Indicates that there are no more tags.</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d0b4c94326a6d9bcfdee2812c8a8615a0de86bbcdd9cc86fd540e678777219f0">   67</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aab80a09dd7f436f547cc8cea55791041ab9d150a7b6748bf6a92e4e2c6ed538e9">kTerminate</a> = 1,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="comment">// Synced Size in bytes.</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d0b4c94326a6d9bcfdee2812c8a8615a7cce99fa7bd5cad93196392f89401794">   69</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d0b4c94326a6d9bcfdee2812c8a8615a7cce99fa7bd5cad93196392f89401794">kSyncedSize</a> = 2,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// Add tags in the future, such as checksum?</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>};</div>
+</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">// Records the event of adding a WAL in VersionEdit.</span></div>
+<div class="foldopen" id="foldopen00074" data-start="{" data-end="};">
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html">   74</a></span><span class="keyword">class </span><a class="code hl_function" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a804fdcdf5848a734b35935ed18bc928c">WalAddition</a> {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a804fdcdf5848a734b35935ed18bc928c">   76</a></span>  <a class="code hl_function" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a804fdcdf5848a734b35935ed18bc928c">WalAddition</a>() : <a class="code hl_variable" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a31fcabf8a903d40a14cfa57f579b2206">number_</a>(0), <a class="code hl_variable" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a9e4166047c1aefe55b697dd7874390ff">metadata_</a>() {}</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a86280e2b8426294e0d72a59dd55867f8">   78</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a86280e2b8426294e0d72a59dd55867f8">WalAddition</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> number) : <a class="code hl_variable" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a31fcabf8a903d40a14cfa57f579b2206">number_</a>(number), <a class="code hl_variable" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a9e4166047c1aefe55b697dd7874390ff">metadata_</a>() {}</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="foldopen" id="foldopen00080" data-start="{" data-end="}">
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#acf79fa3d77c3d3ae94c6a11cef418cff">   80</a></span>  <a class="code hl_function" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#acf79fa3d77c3d3ae94c6a11cef418cff">WalAddition</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> number, <a class="code hl_class" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html">WalMetadata</a> meta)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      : <a class="code hl_variable" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a31fcabf8a903d40a14cfa57f579b2206">number_</a>(number), <a class="code hl_variable" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a9e4166047c1aefe55b697dd7874390ff">metadata_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(meta)) {}</div>
+</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a59dbe8f893c796aed2a4021960a35f73">   83</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> <a class="code hl_function" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a59dbe8f893c796aed2a4021960a35f73">GetLogNumber</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a31fcabf8a903d40a14cfa57f579b2206">number_</a>; }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#aee39b83a6d08da04a3e589bc2f521814">   85</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html">WalMetadata</a>&amp; <a class="code hl_function" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#aee39b83a6d08da04a3e589bc2f521814">GetMetadata</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a9e4166047c1aefe55b697dd7874390ff">metadata_</a>; }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keywordtype">void</span> EncodeTo(std::string* dst) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> DecodeFrom(<a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* src);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  std::string DebugString() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a31fcabf8a903d40a14cfa57f579b2206">   94</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> <a class="code hl_variable" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a31fcabf8a903d40a14cfa57f579b2206">number_</a>;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a9e4166047c1aefe55b697dd7874390ff">   95</a></span>  <a class="code hl_class" href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html">WalMetadata</a> <a class="code hl_variable" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a9e4166047c1aefe55b697dd7874390ff">metadata_</a>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>};</div>
+</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>std::ostream&amp; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a140e1a17cda68907c5b700c9e536f970">operator&lt;&lt;</a>(std::ostream&amp; os, <span class="keyword">const</span> <a class="code hl_class" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html">WalAddition</a>&amp; wal);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><a class="code hl_class" href="../../dd/dab/classROCKSDB__NAMESPACE_1_1JSONWriter.html">JSONWriter</a>&amp; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a140e1a17cda68907c5b700c9e536f970">operator&lt;&lt;</a>(<a class="code hl_class" href="../../dd/dab/classROCKSDB__NAMESPACE_1_1JSONWriter.html">JSONWriter</a>&amp; jw, <span class="keyword">const</span> <a class="code hl_class" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html">WalAddition</a>&amp; wal);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a33c4e357abf0a5d2052313bf6ebad856">  101</a></span><span class="keyword">using </span><a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a33c4e357abf0a5d2052313bf6ebad856">WalAdditions</a> = std::vector&lt;WalAddition&gt;;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">// Records the event of deleting WALs before the specified log number.</span></div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="};">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html">  104</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a953370ced2efe6f1969037b298762aaa">WalDeletion</a> {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a953370ced2efe6f1969037b298762aaa">  106</a></span>  <a class="code hl_function" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a953370ced2efe6f1969037b298762aaa">WalDeletion</a>() : <a class="code hl_variable" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a2b4570080ec9388a505f3501138a1358">number_</a>(<a class="code hl_variable" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a5850915b47e27bfedc5716a6d98553da">kEmpty</a>) {}</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a500758706578dfd8a78bd8dd0cafc3ec">  108</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a500758706578dfd8a78bd8dd0cafc3ec">WalDeletion</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> number) : <a class="code hl_variable" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a2b4570080ec9388a505f3501138a1358">number_</a>(number) {}</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a0a73600d277ed9c5bcc4644d92ebb4b4">  110</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> <a class="code hl_function" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a0a73600d277ed9c5bcc4644d92ebb4b4">GetLogNumber</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a2b4570080ec9388a505f3501138a1358">number_</a>; }</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordtype">void</span> EncodeTo(std::string* dst) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> DecodeFrom(<a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* src);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  std::string DebugString() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#ad3b3b1d71b84ea807b3f9f4ca0c85bcf">  118</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#ad3b3b1d71b84ea807b3f9f4ca0c85bcf">IsEmpty</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a2b4570080ec9388a505f3501138a1358">number_</a> == <a class="code hl_variable" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a5850915b47e27bfedc5716a6d98553da">kEmpty</a>; }</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#aa8e2be758aed4d5f2a6fcf8687b2efcc">  120</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#aa8e2be758aed4d5f2a6fcf8687b2efcc">Reset</a>() { <a class="code hl_variable" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a2b4570080ec9388a505f3501138a1358">number_</a> = <a class="code hl_variable" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a5850915b47e27bfedc5716a6d98553da">kEmpty</a>; }</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a5850915b47e27bfedc5716a6d98553da">  123</a></span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> <a class="code hl_variable" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a5850915b47e27bfedc5716a6d98553da">kEmpty</a> = 0;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a2b4570080ec9388a505f3501138a1358">  125</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> <a class="code hl_variable" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a2b4570080ec9388a505f3501138a1358">number_</a>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>};</div>
+</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>std::ostream&amp; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a140e1a17cda68907c5b700c9e536f970">operator&lt;&lt;</a>(std::ostream&amp; os, <span class="keyword">const</span> <a class="code hl_class" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html">WalDeletion</a>&amp; wal);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><a class="code hl_class" href="../../dd/dab/classROCKSDB__NAMESPACE_1_1JSONWriter.html">JSONWriter</a>&amp; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a140e1a17cda68907c5b700c9e536f970">operator&lt;&lt;</a>(<a class="code hl_class" href="../../dd/dab/classROCKSDB__NAMESPACE_1_1JSONWriter.html">JSONWriter</a>&amp; jw, <span class="keyword">const</span> <a class="code hl_class" href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html">WalDeletion</a>&amp; wal);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">// Used in VersionSet to keep the current set of WALs.</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">//</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">// When a WAL is synced or becomes obsoleted,</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">// a VersionEdit is logged to MANIFEST and</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">// the WAL is added to or deleted from WalSet.</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment">//</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment">// Not thread safe, needs external synchronization such as holding DB mutex.</span></div>
+<div class="foldopen" id="foldopen00138" data-start="{" data-end="};">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html">  138</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html">WalSet</a> {</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="comment">// Add WAL(s).</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="comment">// If the WAL is closed,</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <span class="comment">// then there must be an existing unclosed WAL,</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <span class="comment">// otherwise, return Status::Corruption.</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="comment">// Can happen when applying a VersionEdit or recovering from MANIFEST.</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#aa211310bf0b9754fc663389d44b142c6">AddWal</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html">WalAddition</a>&amp; wal);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a155317dc260993281a560df7d18d4012">AddWals</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a33c4e357abf0a5d2052313bf6ebad856">WalAdditions</a>&amp; wals);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">// Delete WALs with log number smaller than the specified wal number.</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">// Can happen when applying a VersionEdit or recovering from MANIFEST.</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a7eefb2c3b66bf5838427f8ee90fd7e8a">DeleteWalsBefore</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> wal);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="comment">// Resets the internal state.</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a01bcf12efe9c810188256ee558275833">Reset</a>();</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="comment">// WALs with number less than MinWalNumberToKeep should not exist in WalSet.</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a09b667d64d62e3ac16e47412cb1f0c18">  156</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> <a class="code hl_function" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a09b667d64d62e3ac16e47412cb1f0c18">GetMinWalNumberToKeep</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a339199471c85172dae9bf6a20e169f01">min_wal_number_to_keep_</a>; }</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#aa17d5a5538bfa8ac31833b1dfb912181">  158</a></span>  <span class="keyword">const</span> std::map&lt;WalNumber, WalMetadata&gt;&amp; <a class="code hl_function" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#aa17d5a5538bfa8ac31833b1dfb912181">GetWals</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a4ef9b31503f8c351e1657cced0dcead5">wals_</a>; }</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="comment">// Checks whether there are missing or corrupted WALs.</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="comment">// Returns Status::OK if there is no missing nor corrupted WAL,</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="comment">// otherwise returns Status::Corruption.</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="comment">// logs_on_disk is a map from log number to the log filename.</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="comment">// Note that logs_on_disk may contain logs that is obsolete but</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="comment">// haven&#39;t been deleted from disk.</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> CheckWals(</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>      <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env,</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>      <span class="keyword">const</span> std::unordered_map&lt;WalNumber, std::string&gt;&amp; logs_on_disk) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a4ef9b31503f8c351e1657cced0dcead5">  171</a></span>  std::map&lt;WalNumber, WalMetadata&gt; <a class="code hl_variable" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a4ef9b31503f8c351e1657cced0dcead5">wals_</a>;</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  <span class="comment">// WAL number &lt; min_wal_number_to_keep_ should not exist in wals_.</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="comment">// It&#39;s monotonically increasing, in-memory only, not written to MANIFEST.</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a339199471c85172dae9bf6a20e169f01">  174</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">WalNumber</a> <a class="code hl_variable" href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a339199471c85172dae9bf6a20e169f01">min_wal_number_to_keep_</a> = 0;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>};</div>
+</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">ROCKSDB_NAMESPACE::Env</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00154">env.h:154</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1JSONWriter_html"><div class="ttname"><a href="../../dd/dab/classROCKSDB__NAMESPACE_1_1JSONWriter.html">ROCKSDB_NAMESPACE::JSONWriter</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/de0/event__logger_8h_source.html#l00018">event_logger.h:18</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalAddition_html"><div class="ttname"><a href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html">ROCKSDB_NAMESPACE::WalAddition</a></div><div class="ttdef"><b>Definition</b> <a href="#l00074">wal_edit.h:74</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalAddition_html_a31fcabf8a903d40a14cfa57f579b2206"><div class="ttname"><a href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a31fcabf8a903d40a14cfa57f579b2206">ROCKSDB_NAMESPACE::WalAddition::number_</a></div><div class="ttdeci">WalNumber number_</div><div class="ttdef"><b>Definition</b> <a href="#l00094">wal_edit.h:94</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalAddition_html_a59dbe8f893c796aed2a4021960a35f73"><div class="ttname"><a href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a59dbe8f893c796aed2a4021960a35f73">ROCKSDB_NAMESPACE::WalAddition::GetLogNumber</a></div><div class="ttdeci">WalNumber GetLogNumber() const</div><div class="ttdef"><b>Definition</b> <a href="#l00083">wal_edit.h:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalAddition_html_a804fdcdf5848a734b35935ed18bc928c"><div class="ttname"><a href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a804fdcdf5848a734b35935ed18bc928c">ROCKSDB_NAMESPACE::WalAddition::WalAddition</a></div><div class="ttdeci">WalAddition()</div><div class="ttdef"><b>Definition</b> <a href="#l00076">wal_edit.h:76</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalAddition_html_a86280e2b8426294e0d72a59dd55867f8"><div class="ttname"><a href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a86280e2b8426294e0d72a59dd55867f8">ROCKSDB_NAMESPACE::WalAddition::WalAddition</a></div><div class="ttdeci">WalAddition(WalNumber number)</div><div class="ttdef"><b>Definition</b> <a href="#l00078">wal_edit.h:78</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalAddition_html_a9e4166047c1aefe55b697dd7874390ff"><div class="ttname"><a href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#a9e4166047c1aefe55b697dd7874390ff">ROCKSDB_NAMESPACE::WalAddition::metadata_</a></div><div class="ttdeci">WalMetadata metadata_</div><div class="ttdef"><b>Definition</b> <a href="#l00095">wal_edit.h:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalAddition_html_acf79fa3d77c3d3ae94c6a11cef418cff"><div class="ttname"><a href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#acf79fa3d77c3d3ae94c6a11cef418cff">ROCKSDB_NAMESPACE::WalAddition::WalAddition</a></div><div class="ttdeci">WalAddition(WalNumber number, WalMetadata meta)</div><div class="ttdef"><b>Definition</b> <a href="#l00080">wal_edit.h:80</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalAddition_html_aee39b83a6d08da04a3e589bc2f521814"><div class="ttname"><a href="../../de/d86/classROCKSDB__NAMESPACE_1_1WalAddition.html#aee39b83a6d08da04a3e589bc2f521814">ROCKSDB_NAMESPACE::WalAddition::GetMetadata</a></div><div class="ttdeci">const WalMetadata &amp; GetMetadata() const</div><div class="ttdef"><b>Definition</b> <a href="#l00085">wal_edit.h:85</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalDeletion_html"><div class="ttname"><a href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html">ROCKSDB_NAMESPACE::WalDeletion</a></div><div class="ttdef"><b>Definition</b> <a href="#l00104">wal_edit.h:104</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalDeletion_html_a0a73600d277ed9c5bcc4644d92ebb4b4"><div class="ttname"><a href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a0a73600d277ed9c5bcc4644d92ebb4b4">ROCKSDB_NAMESPACE::WalDeletion::GetLogNumber</a></div><div class="ttdeci">WalNumber GetLogNumber() const</div><div class="ttdef"><b>Definition</b> <a href="#l00110">wal_edit.h:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalDeletion_html_a2b4570080ec9388a505f3501138a1358"><div class="ttname"><a href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a2b4570080ec9388a505f3501138a1358">ROCKSDB_NAMESPACE::WalDeletion::number_</a></div><div class="ttdeci">WalNumber number_</div><div class="ttdef"><b>Definition</b> <a href="#l00125">wal_edit.h:125</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalDeletion_html_a500758706578dfd8a78bd8dd0cafc3ec"><div class="ttname"><a href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a500758706578dfd8a78bd8dd0cafc3ec">ROCKSDB_NAMESPACE::WalDeletion::WalDeletion</a></div><div class="ttdeci">WalDeletion(WalNumber number)</div><div class="ttdef"><b>Definition</b> <a href="#l00108">wal_edit.h:108</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalDeletion_html_a5850915b47e27bfedc5716a6d98553da"><div class="ttname"><a href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a5850915b47e27bfedc5716a6d98553da">ROCKSDB_NAMESPACE::WalDeletion::kEmpty</a></div><div class="ttdeci">static constexpr WalNumber kEmpty</div><div class="ttdef"><b>Definition</b> <a href="#l00123">wal_edit.h:123</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalDeletion_html_a953370ced2efe6f1969037b298762aaa"><div class="ttname"><a href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#a953370ced2efe6f1969037b298762aaa">ROCKSDB_NAMESPACE::WalDeletion::WalDeletion</a></div><div class="ttdeci">WalDeletion()</div><div class="ttdef"><b>Definition</b> <a href="#l00106">wal_edit.h:106</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalDeletion_html_aa8e2be758aed4d5f2a6fcf8687b2efcc"><div class="ttname"><a href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#aa8e2be758aed4d5f2a6fcf8687b2efcc">ROCKSDB_NAMESPACE::WalDeletion::Reset</a></div><div class="ttdeci">void Reset()</div><div class="ttdef"><b>Definition</b> <a href="#l00120">wal_edit.h:120</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalDeletion_html_ad3b3b1d71b84ea807b3f9f4ca0c85bcf"><div class="ttname"><a href="../../dd/d83/classROCKSDB__NAMESPACE_1_1WalDeletion.html#ad3b3b1d71b84ea807b3f9f4ca0c85bcf">ROCKSDB_NAMESPACE::WalDeletion::IsEmpty</a></div><div class="ttdeci">bool IsEmpty() const</div><div class="ttdef"><b>Definition</b> <a href="#l00118">wal_edit.h:118</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalMetadata_html"><div class="ttname"><a href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html">ROCKSDB_NAMESPACE::WalMetadata</a></div><div class="ttdef"><b>Definition</b> <a href="#l00031">wal_edit.h:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalMetadata_html_a1786b18073bc38a4f2da1c20612e0e35"><div class="ttname"><a href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1786b18073bc38a4f2da1c20612e0e35">ROCKSDB_NAMESPACE::WalMetadata::kUnknownWalSize</a></div><div class="ttdeci">static constexpr uint64_t kUnknownWalSize</div><div class="ttdef"><b>Definition</b> <a href="#l00049">wal_edit.h:49</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalMetadata_html_a1cb71cd0af51b796a6925167567be78d"><div class="ttname"><a href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a1cb71cd0af51b796a6925167567be78d">ROCKSDB_NAMESPACE::WalMetadata::synced_size_bytes_</a></div><div class="ttdeci">uint64_t synced_size_bytes_</div><div class="ttdef"><b>Definition</b> <a href="#l00053">wal_edit.h:53</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalMetadata_html_a27173287b530a153d5b5bac9d0ded4f9"><div class="ttname"><a href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a27173287b530a153d5b5bac9d0ded4f9">ROCKSDB_NAMESPACE::WalMetadata::GetSyncedSizeInBytes</a></div><div class="ttdeci">uint64_t GetSyncedSizeInBytes() const</div><div class="ttdef"><b>Definition</b> <a href="#l00042">wal_edit.h:42</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalMetadata_html_a360d9ccade3e58b0a3f291ed19c62237"><div class="ttname"><a href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a360d9ccade3e58b0a3f291ed19c62237">ROCKSDB_NAMESPACE::WalMetadata::WalMetadata</a></div><div class="ttdeci">WalMetadata()=default</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalMetadata_html_a50af364f88937e19bd6b0750ec3ddd95"><div class="ttname"><a href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a50af364f88937e19bd6b0750ec3ddd95">ROCKSDB_NAMESPACE::WalMetadata::operator!=</a></div><div class="ttdeci">friend bool operator!=(const WalMetadata &amp;lhs, const WalMetadata &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="#l00060">wal_edit.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalMetadata_html_a7b01a467147142c50a9677740eef246f"><div class="ttname"><a href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#a7b01a467147142c50a9677740eef246f">ROCKSDB_NAMESPACE::WalMetadata::SetSyncedSizeInBytes</a></div><div class="ttdeci">void SetSyncedSizeInBytes(uint64_t bytes)</div><div class="ttdef"><b>Definition</b> <a href="#l00040">wal_edit.h:40</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalMetadata_html_ac2c2129ef8321440624d01d60bb2a13f"><div class="ttname"><a href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#ac2c2129ef8321440624d01d60bb2a13f">ROCKSDB_NAMESPACE::WalMetadata::operator==</a></div><div class="ttdeci">friend bool operator==(const WalMetadata &amp;lhs, const WalMetadata &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="#l00056">wal_edit.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalMetadata_html_ad630da719fc596e3161ebb8741ccd404"><div class="ttname"><a href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#ad630da719fc596e3161ebb8741ccd404">ROCKSDB_NAMESPACE::WalMetadata::HasSyncedSize</a></div><div class="ttdeci">bool HasSyncedSize() const</div><div class="ttdef"><b>Definition</b> <a href="#l00038">wal_edit.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalMetadata_html_afbf25069a9e7d4ff69844a370815c69e"><div class="ttname"><a href="../../d0/d55/classROCKSDB__NAMESPACE_1_1WalMetadata.html#afbf25069a9e7d4ff69844a370815c69e">ROCKSDB_NAMESPACE::WalMetadata::WalMetadata</a></div><div class="ttdeci">WalMetadata(uint64_t synced_size_bytes)</div><div class="ttdef"><b>Definition</b> <a href="#l00035">wal_edit.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalSet_html"><div class="ttname"><a href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html">ROCKSDB_NAMESPACE::WalSet</a></div><div class="ttdef"><b>Definition</b> <a href="#l00138">wal_edit.h:138</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalSet_html_a01bcf12efe9c810188256ee558275833"><div class="ttname"><a href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a01bcf12efe9c810188256ee558275833">ROCKSDB_NAMESPACE::WalSet::Reset</a></div><div class="ttdeci">void Reset()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d96/wal__edit_8cc_source.html#l00164">wal_edit.cc:164</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalSet_html_a09b667d64d62e3ac16e47412cb1f0c18"><div class="ttname"><a href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a09b667d64d62e3ac16e47412cb1f0c18">ROCKSDB_NAMESPACE::WalSet::GetMinWalNumberToKeep</a></div><div class="ttdeci">WalNumber GetMinWalNumberToKeep() const</div><div class="ttdef"><b>Definition</b> <a href="#l00156">wal_edit.h:156</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalSet_html_a155317dc260993281a560df7d18d4012"><div class="ttname"><a href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a155317dc260993281a560df7d18d4012">ROCKSDB_NAMESPACE::WalSet::AddWals</a></div><div class="ttdeci">Status AddWals(const WalAdditions &amp;wals)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d96/wal__edit_8cc_source.html#l00145">wal_edit.cc:145</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalSet_html_a339199471c85172dae9bf6a20e169f01"><div class="ttname"><a href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a339199471c85172dae9bf6a20e169f01">ROCKSDB_NAMESPACE::WalSet::min_wal_number_to_keep_</a></div><div class="ttdeci">WalNumber min_wal_number_to_keep_</div><div class="ttdef"><b>Definition</b> <a href="#l00174">wal_edit.h:174</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalSet_html_a4ef9b31503f8c351e1657cced0dcead5"><div class="ttname"><a href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a4ef9b31503f8c351e1657cced0dcead5">ROCKSDB_NAMESPACE::WalSet::wals_</a></div><div class="ttdeci">std::map&lt; WalNumber, WalMetadata &gt; wals_</div><div class="ttdef"><b>Definition</b> <a href="#l00171">wal_edit.h:171</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalSet_html_a7eefb2c3b66bf5838427f8ee90fd7e8a"><div class="ttname"><a href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#a7eefb2c3b66bf5838427f8ee90fd7e8a">ROCKSDB_NAMESPACE::WalSet::DeleteWalsBefore</a></div><div class="ttdeci">Status DeleteWalsBefore(WalNumber wal)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d96/wal__edit_8cc_source.html#l00156">wal_edit.cc:156</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalSet_html_aa17d5a5538bfa8ac31833b1dfb912181"><div class="ttname"><a href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#aa17d5a5538bfa8ac31833b1dfb912181">ROCKSDB_NAMESPACE::WalSet::GetWals</a></div><div class="ttdeci">const std::map&lt; WalNumber, WalMetadata &gt; &amp; GetWals() const</div><div class="ttdef"><b>Definition</b> <a href="#l00158">wal_edit.h:158</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalSet_html_aa211310bf0b9754fc663389d44b142c6"><div class="ttname"><a href="../../d4/d21/classROCKSDB__NAMESPACE_1_1WalSet.html#aa211310bf0b9754fc663389d44b142c6">ROCKSDB_NAMESPACE::WalSet::AddWal</a></div><div class="ttdeci">Status AddWal(const WalAddition &amp;wal)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d96/wal__edit_8cc_source.html#l00107">wal_edit.cc:107</a></div></div>
+<div class="ttc" id="aevent__logger_8h_html"><div class="ttname"><a href="../../d9/de0/event__logger_8h.html">event_logger.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a140e1a17cda68907c5b700c9e536f970"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a140e1a17cda68907c5b700c9e536f970">ROCKSDB_NAMESPACE::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const BlobFileAddition &amp;blob_file_addition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d70/blob__file__addition_8cc_source.html#l00132">blob_file_addition.cc:132</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a1dc28f4d7734a6cd015a54e54a3d39a0"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1dc28f4d7734a6cd015a54e54a3d39a0">ROCKSDB_NAMESPACE::operator==</a></div><div class="ttdeci">bool operator==(const BlobFileAddition &amp;lhs, const BlobFileAddition &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d70/blob__file__addition_8cc_source.html#l00120">blob_file_addition.cc:120</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a33c4e357abf0a5d2052313bf6ebad856"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a33c4e357abf0a5d2052313bf6ebad856">ROCKSDB_NAMESPACE::WalAdditions</a></div><div class="ttdeci">std::vector&lt; WalAddition &gt; WalAdditions</div><div class="ttdef"><b>Definition</b> <a href="#l00101">wal_edit.h:101</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6185c1ff5be0299f2d50183ebfd37c0e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6185c1ff5be0299f2d50183ebfd37c0e">ROCKSDB_NAMESPACE::operator!=</a></div><div class="ttdeci">bool operator!=(const BlobFileAddition &amp;lhs, const BlobFileAddition &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d70/blob__file__addition_8cc_source.html#l00128">blob_file_addition.cc:128</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8d0b4c94326a6d9bcfdee2812c8a8615"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d0b4c94326a6d9bcfdee2812c8a8615">ROCKSDB_NAMESPACE::WalAdditionTag</a></div><div class="ttdeci">WalAdditionTag</div><div class="ttdef"><b>Definition</b> <a href="#l00065">wal_edit.h:65</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8d0b4c94326a6d9bcfdee2812c8a8615a7cce99fa7bd5cad93196392f89401794"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8d0b4c94326a6d9bcfdee2812c8a8615a7cce99fa7bd5cad93196392f89401794">ROCKSDB_NAMESPACE::WalAdditionTag::kSyncedSize</a></div><div class="ttdeci">@ kSyncedSize</div><div class="ttdef"><b>Definition</b> <a href="#l00069">wal_edit.h:69</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aab80a09dd7f436f547cc8cea55791041ab9d150a7b6748bf6a92e4e2c6ed538e9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aab80a09dd7f436f547cc8cea55791041ab9d150a7b6748bf6a92e4e2c6ed538e9">ROCKSDB_NAMESPACE::kTerminate</a></div><div class="ttdeci">@ kTerminate</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d42/version__edit_8h_source.html#l00078">version_edit.h:78</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ac67871ad12e5a26bb7d3a14ff0bd0db7"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac67871ad12e5a26bb7d3a14ff0bd0db7">ROCKSDB_NAMESPACE::WalNumber</a></div><div class="ttdeci">uint64_t WalNumber</div><div class="ttdef"><b>Definition</b> <a href="#l00028">wal_edit.h:28</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="aport_8h_html"><div class="ttname"><a href="../../da/d00/port_8h.html">port.h</a></div></div>
+<div class="ttc" id="arocksdb__namespace_8h_html"><div class="ttname"><a href="../../da/df5/rocksdb__namespace_8h.html">rocksdb_namespace.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../db/d7a/wal__edit_8h.html">wal_edit.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: env/env_basic_test.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d9/d7a/env__basic__test_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">env_basic_test.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d9/d7a/env__basic__test_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">// Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d00/mock__env_8h.html">env/mock_env.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/dae/file__util_8h.html">file/file_util.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/ddb/convenience_8h.html">rocksdb/convenience.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d81/env_8h.html">rocksdb/env.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/df3/env__encryption_8h.html">rocksdb/env_encryption.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d42/testharness_8h.html">test_util/testharness.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span>{</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">using </span>CreateEnvFunc = Env*();</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// These functions are used to create the various environments under which this</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// test can execute. These functions are used to allow the test cases to be</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">// created without the Env being initialized, thereby eliminating a potential</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// static initialization fiasco/race condition when attempting to get a</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// custom/configured env prior to main being invoked.</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">static</span> Env* GetDefaultEnv() { <span class="keywordflow">return</span> Env::Default(); }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">static</span> Env* GetMockEnv() {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">static</span> std::unique_ptr&lt;Env&gt; mock_env(MockEnv::Create(Env::Default()));</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordflow">return</span> mock_env.get();</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">static</span> Env* NewTestEncryptedEnv(Env* base, <span class="keyword">const</span> std::string&amp; provider_id) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  ConfigOptions config_opts;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  config_opts.invoke_prepare_options = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  std::shared_ptr&lt;EncryptionProvider&gt; provider;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(EncryptionProvider::CreateFromString(config_opts, provider_id,</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                                 &amp;provider));</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8cf7afa903b555250edbe3802281c85">NewEncryptedEnv</a>(base, provider);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">static</span> Env* GetCtrEncryptedEnv() {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">static</span> std::unique_ptr&lt;Env&gt; ctr_encrypt_env(</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      NewTestEncryptedEnv(Env::Default(), <span class="stringliteral">&quot;CTR://test&quot;</span>));</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">return</span> ctr_encrypt_env.get();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">static</span> Env* GetMemoryEnv() {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">static</span> std::unique_ptr&lt;Env&gt; mem_env(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a46c2c91ef346f20afb224f78011fc430">NewMemEnv</a>(Env::Default()));</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">return</span> mem_env.get();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword">static</span> Env* GetTestEnv() {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">static</span> std::shared_ptr&lt;Env&gt; env_guard;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keyword">static</span> Env* custom_env = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">if</span> (custom_env == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* env_uri = getenv(<span class="stringliteral">&quot;TEST_ENV_URI&quot;</span>);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">if</span> (env_uri != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(Env::CreateFromUri(ConfigOptions(), env_uri, <span class="comment">/*fs_uri=*/</span><span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                                   &amp;custom_env, &amp;env_guard));</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a6ae7443947f25abc58bfcfcfc56b0d75">EXPECT_NE</a>(custom_env, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">return</span> custom_env;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">static</span> Env* GetTestFS() {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">static</span> std::shared_ptr&lt;Env&gt; fs_env_guard;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">static</span> Env* fs_env = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordflow">if</span> (fs_env == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* fs_uri = getenv(<span class="stringliteral">&quot;TEST_FS_URI&quot;</span>);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">if</span> (fs_uri != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(Env::CreateFromUri(ConfigOptions(), <span class="comment">/*env_uri=*/</span><span class="stringliteral">&quot;&quot;</span>, fs_uri,</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                                   &amp;fs_env, &amp;fs_env_guard));</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a6ae7443947f25abc58bfcfcfc56b0d75">EXPECT_NE</a>(fs_env, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">return</span> fs_env;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>}</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}  <span class="comment">// namespace</span></div>
+<div class="foldopen" id="foldopen00085" data-start="{" data-end="};">
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">   85</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a5b7af26156f9059f3091c140206de0e0">EnvBasicTestWithParam</a></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    : <span class="keyword">public</span> <a class="code hl_class" href="../../db/d9f/classtesting_1_1Test.html">testing::Test</a>,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      <span class="keyword">public</span> <a class="code hl_class" href="../../d5/d86/classtesting_1_1WithParamInterface.html">::testing::WithParamInterface</a>&lt;CreateEnvFunc*&gt; {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ae0cc3cd05ea8326658ec825150325ea9">   89</a></span>  <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* <a class="code hl_variable" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ae0cc3cd05ea8326658ec825150325ea9">env_</a>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a0b75d34de1e2bc57778d44866e696152">   90</a></span>  <span class="keyword">const</span> <a class="code hl_struct" href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">EnvOptions</a> <a class="code hl_variable" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a0b75d34de1e2bc57778d44866e696152">soptions_</a>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a0bfe94a58e0375ecce7eb326c7409d26">   91</a></span>  std::string <a class="code hl_variable" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a0bfe94a58e0375ecce7eb326c7409d26">test_dir_</a>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a5b7af26156f9059f3091c140206de0e0">   93</a></span>  <a class="code hl_function" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a5b7af26156f9059f3091c140206de0e0">EnvBasicTestWithParam</a>() : <a class="code hl_variable" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ae0cc3cd05ea8326658ec825150325ea9">env_</a>(<a class="code hl_function" href="../../d5/d86/classtesting_1_1WithParamInterface.html#a672a0902e8b65aedd0d98c7f5d65b9e1">GetParam</a>()()) {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <a class="code hl_variable" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a0bfe94a58e0375ecce7eb326c7409d26">test_dir_</a> = <a class="code hl_function" href="../../de/d4f/namespaceROCKSDB__NAMESPACE_1_1test.html#a6830c127633c3e6557d9f6316b25a19b">test::PerThreadDBPath</a>(<a class="code hl_variable" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ae0cc3cd05ea8326658ec825150325ea9">env_</a>, <span class="stringliteral">&quot;env_basic_test&quot;</span>);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ac6b1d4a4f4cc3766b6d0e72bec060889">   97</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ac6b1d4a4f4cc3766b6d0e72bec060889">SetUp</a>()<span class="keyword"> override </span>{ <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_variable" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ae0cc3cd05ea8326658ec825150325ea9">env_</a>-&gt;CreateDirIfMissing(<a class="code hl_variable" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a0bfe94a58e0375ecce7eb326c7409d26">test_dir_</a>)); }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ad5048fbefaca368d871aed0371c4cdac">   99</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ad5048fbefaca368d871aed0371c4cdac">TearDown</a>()<span class="keyword"> override </span>{ <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a10d859c33664dff5210340eaf6e843b7">DestroyDir</a>(<a class="code hl_variable" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ae0cc3cd05ea8326658ec825150325ea9">env_</a>, <a class="code hl_variable" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a0bfe94a58e0375ecce7eb326c7409d26">test_dir_</a>)); }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>};</div>
+</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d6/d83/classROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam.html">  102</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d6/d83/classROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam.html">EnvMoreTestWithParam</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a5b7af26156f9059f3091c140206de0e0">EnvBasicTestWithParam</a> {};</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6dc9bbd89908f3c2b224babade71984d">  104</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a>(EnvDefault, <a class="code hl_class" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">EnvBasicTestWithParam</a>,</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                        <a class="code hl_function" href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">::testing::Values</a>(&amp;GetDefaultEnv));</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a74c2a52dd7de304fce96bdbe8c42ba28">  106</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a>(EnvDefault, <a class="code hl_class" href="../../d6/d83/classROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam.html">EnvMoreTestWithParam</a>,</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                        <a class="code hl_function" href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">::testing::Values</a>(&amp;GetDefaultEnv));</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae97b31bf113ffa606255cbd21fb42458">  109</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a>(<a class="code hl_class" href="../../d1/dae/classROCKSDB__NAMESPACE_1_1MockEnv.html">MockEnv</a>, <a class="code hl_class" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">EnvBasicTestWithParam</a>,</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                        <a class="code hl_function" href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">::testing::Values</a>(&amp;GetMockEnv));</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">// next statements run env test against default encryption code.</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1c8697a610e1d099d18569d8ebfc9c51">  113</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a>(EncryptedEnv, <a class="code hl_class" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">EnvBasicTestWithParam</a>,</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                        <a class="code hl_function" href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">::testing::Values</a>(&amp;GetCtrEncryptedEnv));</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a879939ad2e28a2d0d81cd1083164d88f">  115</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a>(EncryptedEnv, <a class="code hl_class" href="../../d6/d83/classROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam.html">EnvMoreTestWithParam</a>,</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                        <a class="code hl_function" href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">::testing::Values</a>(&amp;GetCtrEncryptedEnv));</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad59cdbb0d7afd23c2ab8cc894a4f27e6">  118</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a>(MemEnv, <a class="code hl_class" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">EnvBasicTestWithParam</a>,</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                        <a class="code hl_function" href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">::testing::Values</a>(&amp;GetMemoryEnv));</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="keyword">namespace </span>{</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment">// Returns a vector of 0 or 1 Env*, depending whether an Env is registered for</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment">// TEST_ENV_URI.</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment">//</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment">// The purpose of returning an empty vector (instead of nullptr) is that gtest</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">// ValuesIn() will skip running tests when given an empty collection.</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>std::vector&lt;CreateEnvFunc*&gt; GetCustomEnvs() {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  std::vector&lt;CreateEnvFunc*&gt; res;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* uri = getenv(<span class="stringliteral">&quot;TEST_ENV_URI&quot;</span>);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keywordflow">if</span> (uri != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    res.push_back(&amp;GetTestEnv);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  uri = getenv(<span class="stringliteral">&quot;TEST_FS_URI&quot;</span>);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="keywordflow">if</span> (uri != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    res.push_back(&amp;GetTestFS);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>}</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}  <span class="comment">// anonymous namespace</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab5e6bea0739e6ad90be834d607fcc9b5">  143</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a>(<a class="code hl_class" href="../../de/dfd/classROCKSDB__NAMESPACE_1_1CustomEnv.html">CustomEnv</a>, <a class="code hl_class" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">EnvBasicTestWithParam</a>,</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                        <a class="code hl_function" href="../../d0/d75/namespacetesting.html#a1ea676418f688f049f19dacff6584be2">::testing::ValuesIn</a>(GetCustomEnvs()));</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aee557647bbcbabc0c3079abdc983136c">  146</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a>(<a class="code hl_class" href="../../de/dfd/classROCKSDB__NAMESPACE_1_1CustomEnv.html">CustomEnv</a>, <a class="code hl_class" href="../../d6/d83/classROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam.html">EnvMoreTestWithParam</a>,</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                        <a class="code hl_function" href="../../d0/d75/namespacetesting.html#a1ea676418f688f049f19dacff6584be2">::testing::ValuesIn</a>(GetCustomEnvs()));</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="foldopen" id="foldopen00149" data-start="{" data-end="}">
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#addba6b6936588c24183265570b883df1">  149</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#abd3bb216dafbffa36044a6030216ecda">TEST_P</a>(<a class="code hl_class" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">EnvBasicTestWithParam</a>, Basics) {</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  uint64_t file_size;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  std::unique_ptr&lt;WritableFile&gt; writable_file;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  std::vector&lt;std::string&gt; children;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="comment">// Check that the directory is empty.</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#afe5c21c8234dd0fc5745cbd2e7187642">Status::NotFound</a>(), env_-&gt;FileExists(test_dir_ + <span class="stringliteral">&quot;/non_existent&quot;</span>));</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(!env_-&gt;GetFileSize(test_dir_ + <span class="stringliteral">&quot;/non_existent&quot;</span>, &amp;file_size).ok());</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetChildren(test_dir_, &amp;children));</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0U, children.size());</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="comment">// Create a file.</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;NewWritableFile(test_dir_ + <span class="stringliteral">&quot;/f&quot;</span>, &amp;writable_file, soptions_));</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Close());</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  writable_file.reset();</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="comment">// Check that the file exists.</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;FileExists(test_dir_ + <span class="stringliteral">&quot;/f&quot;</span>));</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetFileSize(test_dir_ + <span class="stringliteral">&quot;/f&quot;</span>, &amp;file_size));</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0U, file_size);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetChildren(test_dir_, &amp;children));</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(1U, children.size());</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(<span class="stringliteral">&quot;f&quot;</span>, children[0]);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;DeleteFile(test_dir_ + <span class="stringliteral">&quot;/f&quot;</span>));</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  <span class="comment">// Write to the file.</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>      env_-&gt;NewWritableFile(test_dir_ + <span class="stringliteral">&quot;/f1&quot;</span>, &amp;writable_file, soptions_));</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Append(<span class="stringliteral">&quot;abc&quot;</span>));</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Close());</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  writable_file.reset();</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>      env_-&gt;NewWritableFile(test_dir_ + <span class="stringliteral">&quot;/f2&quot;</span>, &amp;writable_file, soptions_));</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Close());</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  writable_file.reset();</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="comment">// Check for expected size.</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetFileSize(test_dir_ + <span class="stringliteral">&quot;/f1&quot;</span>, &amp;file_size));</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(3U, file_size);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="comment">// Check that renaming works.</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>      !env_-&gt;RenameFile(test_dir_ + <span class="stringliteral">&quot;/non_existent&quot;</span>, test_dir_ + <span class="stringliteral">&quot;/g&quot;</span>).ok());</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;RenameFile(test_dir_ + <span class="stringliteral">&quot;/f1&quot;</span>, test_dir_ + <span class="stringliteral">&quot;/g&quot;</span>));</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#afe5c21c8234dd0fc5745cbd2e7187642">Status::NotFound</a>(), env_-&gt;FileExists(test_dir_ + <span class="stringliteral">&quot;/f1&quot;</span>));</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;FileExists(test_dir_ + <span class="stringliteral">&quot;/g&quot;</span>));</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetFileSize(test_dir_ + <span class="stringliteral">&quot;/g&quot;</span>, &amp;file_size));</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(3U, file_size);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="comment">// Check that renaming overwriting works</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;RenameFile(test_dir_ + <span class="stringliteral">&quot;/f2&quot;</span>, test_dir_ + <span class="stringliteral">&quot;/g&quot;</span>));</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetFileSize(test_dir_ + <span class="stringliteral">&quot;/g&quot;</span>, &amp;file_size));</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0U, file_size);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <span class="comment">// Check that opening non-existent file fails.</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  std::unique_ptr&lt;SequentialFile&gt; seq_file;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  std::unique_ptr&lt;RandomAccessFile&gt; rand_file;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(!env_-&gt;NewSequentialFile(test_dir_ + <span class="stringliteral">&quot;/non_existent&quot;</span>, &amp;seq_file,</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>                                       soptions_)</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                   .ok());</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(!seq_file);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#ac7e2835b078577eb259c9f43b0dc2e69">ASSERT_NOK</a>(env_-&gt;NewRandomAccessFile(test_dir_ + <span class="stringliteral">&quot;/non_existent&quot;</span>, &amp;rand_file,</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                                       soptions_));</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(!rand_file);</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <span class="comment">// Check that deleting works.</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#ac7e2835b078577eb259c9f43b0dc2e69">ASSERT_NOK</a>(env_-&gt;DeleteFile(test_dir_ + <span class="stringliteral">&quot;/non_existent&quot;</span>));</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;DeleteFile(test_dir_ + <span class="stringliteral">&quot;/g&quot;</span>));</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#afe5c21c8234dd0fc5745cbd2e7187642">Status::NotFound</a>(), env_-&gt;FileExists(test_dir_ + <span class="stringliteral">&quot;/g&quot;</span>));</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetChildren(test_dir_, &amp;children));</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0U, children.size());</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = env_-&gt;GetChildren(test_dir_ + <span class="stringliteral">&quot;/non_existent&quot;</span>, &amp;children);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#abad803bbeb3e3c84affdae4551f372d9">IsNotFound</a>());</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>}</div>
+</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="foldopen" id="foldopen00224" data-start="{" data-end="}">
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a416421863ea666cb535e087deed3e4f8">  224</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#abd3bb216dafbffa36044a6030216ecda">TEST_P</a>(<a class="code hl_class" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">EnvBasicTestWithParam</a>, ReadWrite) {</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  std::unique_ptr&lt;WritableFile&gt; writable_file;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  std::unique_ptr&lt;SequentialFile&gt; seq_file;</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  std::unique_ptr&lt;RandomAccessFile&gt; rand_file;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> result;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  <span class="keywordtype">char</span> scratch[100];</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;NewWritableFile(test_dir_ + <span class="stringliteral">&quot;/f&quot;</span>, &amp;writable_file, soptions_));</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Append(<span class="stringliteral">&quot;hello &quot;</span>));</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Append(<span class="stringliteral">&quot;world&quot;</span>));</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Close());</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  writable_file.reset();</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <span class="comment">// Read sequentially.</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;NewSequentialFile(test_dir_ + <span class="stringliteral">&quot;/f&quot;</span>, &amp;seq_file, soptions_));</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(seq_file-&gt;Read(5, &amp;result, scratch));  <span class="comment">// Read &quot;hello&quot;.</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0, result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a9461fff79c10c649f034322ac5b51ffc">compare</a>(<span class="stringliteral">&quot;hello&quot;</span>));</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(seq_file-&gt;Skip(1));</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(seq_file-&gt;Read(1000, &amp;result, scratch));  <span class="comment">// Read &quot;world&quot;.</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0, result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a9461fff79c10c649f034322ac5b51ffc">compare</a>(<span class="stringliteral">&quot;world&quot;</span>));</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(seq_file-&gt;Read(1000, &amp;result, scratch));  <span class="comment">// Try reading past EOF.</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0U, result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>());</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(seq_file-&gt;Skip(100));  <span class="comment">// Try to skip past end of file.</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(seq_file-&gt;Read(1000, &amp;result, scratch));</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0U, result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>());</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <span class="comment">// Random reads.</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;NewRandomAccessFile(test_dir_ + <span class="stringliteral">&quot;/f&quot;</span>, &amp;rand_file, soptions_));</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(rand_file-&gt;Read(6, 5, &amp;result, scratch));  <span class="comment">// Read &quot;world&quot;.</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0, result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a9461fff79c10c649f034322ac5b51ffc">compare</a>(<span class="stringliteral">&quot;world&quot;</span>));</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(rand_file-&gt;Read(0, 5, &amp;result, scratch));  <span class="comment">// Read &quot;hello&quot;.</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0, result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a9461fff79c10c649f034322ac5b51ffc">compare</a>(<span class="stringliteral">&quot;hello&quot;</span>));</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(rand_file-&gt;Read(10, 100, &amp;result, scratch));  <span class="comment">// Read &quot;d&quot;.</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0, result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a9461fff79c10c649f034322ac5b51ffc">compare</a>(<span class="stringliteral">&quot;d&quot;</span>));</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="comment">// Too high offset.</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(rand_file-&gt;Read(1000, 5, &amp;result, scratch).ok());</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>}</div>
+</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="foldopen" id="foldopen00263" data-start="{" data-end="}">
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a72d8029c7302b20c987ca9e70439f781">  263</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#abd3bb216dafbffa36044a6030216ecda">TEST_P</a>(<a class="code hl_class" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">EnvBasicTestWithParam</a>, Misc) {</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  std::unique_ptr&lt;WritableFile&gt; writable_file;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;NewWritableFile(test_dir_ + <span class="stringliteral">&quot;/b&quot;</span>, &amp;writable_file, soptions_));</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <span class="comment">// These are no-ops, but we test they return success.</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Sync());</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Flush());</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Close());</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  writable_file.reset();</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>}</div>
+</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
+<div class="foldopen" id="foldopen00274" data-start="{" data-end="}">
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af6d6153711a45998f99c649530eadf4d">  274</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#abd3bb216dafbffa36044a6030216ecda">TEST_P</a>(<a class="code hl_class" href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">EnvBasicTestWithParam</a>, LargeWrite) {</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> kWriteSize = 300 * 1024;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="keywordtype">char</span>* scratch = <span class="keyword">new</span> <span class="keywordtype">char</span>[kWriteSize * 2];</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  std::string write_data;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; kWriteSize; ++i) {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    write_data.append(1, <span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span><span class="keyword">&gt;</span>(i));</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  }</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  std::unique_ptr&lt;WritableFile&gt; writable_file;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;NewWritableFile(test_dir_ + <span class="stringliteral">&quot;/f&quot;</span>, &amp;writable_file, soptions_));</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Append(<span class="stringliteral">&quot;foo&quot;</span>));</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Append(write_data));</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Close());</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  writable_file.reset();</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  std::unique_ptr&lt;SequentialFile&gt; seq_file;</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> result;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;NewSequentialFile(test_dir_ + <span class="stringliteral">&quot;/f&quot;</span>, &amp;seq_file, soptions_));</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(seq_file-&gt;Read(3, &amp;result, scratch));  <span class="comment">// Read &quot;foo&quot;.</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0, result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a9461fff79c10c649f034322ac5b51ffc">compare</a>(<span class="stringliteral">&quot;foo&quot;</span>));</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <span class="keywordtype">size_t</span> read = 0;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  std::string read_data;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  <span class="keywordflow">while</span> (read &lt; kWriteSize) {</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(seq_file-&gt;Read(kWriteSize - read, &amp;result, scratch));</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    read_data.append(result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">data</a>(), result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>());</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    read += result.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>();</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  }</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(write_data == read_data);</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="keyword">delete</span>[] scratch;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>}</div>
+</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
+<div class="foldopen" id="foldopen00307" data-start="{" data-end="}">
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a364fc1a945c3ba76f672c4a4c0cc6bc6">  307</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#abd3bb216dafbffa36044a6030216ecda">TEST_P</a>(<a class="code hl_class" href="../../d6/d83/classROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam.html">EnvMoreTestWithParam</a>, GetModTime) {</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;CreateDirIfMissing(test_dir_ + <span class="stringliteral">&quot;/dir1&quot;</span>));</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  uint64_t mtime1 = 0x0;</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetFileModificationTime(test_dir_ + <span class="stringliteral">&quot;/dir1&quot;</span>, &amp;mtime1));</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>}</div>
+</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
+<div class="foldopen" id="foldopen00313" data-start="{" data-end="}">
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5761f0f97a1de5a83fab6f4fe0672b03">  313</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#abd3bb216dafbffa36044a6030216ecda">TEST_P</a>(<a class="code hl_class" href="../../d6/d83/classROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam.html">EnvMoreTestWithParam</a>, MakeDir) {</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;CreateDir(test_dir_ + <span class="stringliteral">&quot;/j&quot;</span>));</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;FileExists(test_dir_ + <span class="stringliteral">&quot;/j&quot;</span>));</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  std::vector&lt;std::string&gt; children;</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetChildren(test_dir_, &amp;children));</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(1U, children.size());</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  <span class="comment">// fail because file already exists</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(!env_-&gt;CreateDir(test_dir_ + <span class="stringliteral">&quot;/j&quot;</span>).ok());</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;CreateDirIfMissing(test_dir_ + <span class="stringliteral">&quot;/j&quot;</span>));</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;DeleteDir(test_dir_ + <span class="stringliteral">&quot;/j&quot;</span>));</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#afe5c21c8234dd0fc5745cbd2e7187642">Status::NotFound</a>(), env_-&gt;FileExists(test_dir_ + <span class="stringliteral">&quot;/j&quot;</span>));</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>}</div>
+</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
+<div class="foldopen" id="foldopen00326" data-start="{" data-end="}">
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aaa01aca074e9d82cde4bf819da4b91d9">  326</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#abd3bb216dafbffa36044a6030216ecda">TEST_P</a>(<a class="code hl_class" href="../../d6/d83/classROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam.html">EnvMoreTestWithParam</a>, GetChildren) {</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <span class="comment">// empty folder returns empty vector</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  std::vector&lt;std::string&gt; children;</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  std::vector&lt;Env::FileAttributes&gt; childAttr;</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;CreateDirIfMissing(test_dir_));</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetChildren(test_dir_, &amp;children));</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;FileExists(test_dir_));</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetChildrenFileAttributes(test_dir_, &amp;childAttr));</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0U, children.size());</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0U, childAttr.size());</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  <span class="comment">// folder with contents returns relative path to test dir</span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;CreateDirIfMissing(test_dir_ + <span class="stringliteral">&quot;/niu&quot;</span>));</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;CreateDirIfMissing(test_dir_ + <span class="stringliteral">&quot;/you&quot;</span>));</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;CreateDirIfMissing(test_dir_ + <span class="stringliteral">&quot;/guo&quot;</span>));</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetChildren(test_dir_, &amp;children));</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetChildrenFileAttributes(test_dir_, &amp;childAttr));</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(3U, children.size());</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(3U, childAttr.size());</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; each : children) {</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    env_-&gt;DeleteDir(test_dir_ + <span class="stringliteral">&quot;/&quot;</span> + each).PermitUncheckedError();</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  }  <span class="comment">// necessary for default POSIX env</span></div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  <span class="comment">// non-exist directory returns IOError</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;DeleteDir(test_dir_));</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#ac7e2835b078577eb259c9f43b0dc2e69">ASSERT_NOK</a>(env_-&gt;FileExists(test_dir_));</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#ac7e2835b078577eb259c9f43b0dc2e69">ASSERT_NOK</a>(env_-&gt;GetChildren(test_dir_, &amp;children));</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#ac7e2835b078577eb259c9f43b0dc2e69">ASSERT_NOK</a>(env_-&gt;GetChildrenFileAttributes(test_dir_, &amp;childAttr));</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  <span class="comment">// if dir is a file, returns IOError</span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;CreateDir(test_dir_));</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  std::unique_ptr&lt;WritableFile&gt; writable_file;</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>      env_-&gt;NewWritableFile(test_dir_ + <span class="stringliteral">&quot;/file&quot;</span>, &amp;writable_file, soptions_));</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(writable_file-&gt;Close());</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  writable_file.reset();</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#ac7e2835b078577eb259c9f43b0dc2e69">ASSERT_NOK</a>(env_-&gt;GetChildren(test_dir_ + <span class="stringliteral">&quot;/file&quot;</span>, &amp;children));</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(0U, children.size());</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>}</div>
+</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> </div>
+<div class="foldopen" id="foldopen00366" data-start="{" data-end="}">
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa989f16afdf0a5e52dd28aa747a2f21e">  366</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#abd3bb216dafbffa36044a6030216ecda">TEST_P</a>(<a class="code hl_class" href="../../d6/d83/classROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam.html">EnvMoreTestWithParam</a>, GetChildrenIgnoresDotAndDotDot) {</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>  <span class="keyword">auto</span>* env = <a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">Env::Default</a>();</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env-&gt;CreateDirIfMissing(test_dir_));</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>  <span class="comment">// Create a single file</span></div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>  std::string path = test_dir_;</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>  <span class="keyword">const</span> <a class="code hl_struct" href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">EnvOptions</a> soptions;</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span><span class="preprocessor">#ifdef OS_WIN</span></div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>  path.append(<span class="stringliteral">&quot;\\test_file&quot;</span>);</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  path.append(<span class="stringliteral">&quot;/test_file&quot;</span>);</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  std::string data(<span class="stringliteral">&quot;test data&quot;</span>);</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  std::unique_ptr&lt;WritableFile&gt; <a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">file</a>;</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env-&gt;NewWritableFile(path, &amp;<a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">file</a>, soptions));</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">file</a>-&gt;Append(<span class="stringliteral">&quot;test data&quot;</span>));</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  <span class="comment">// get the children</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  std::vector&lt;std::string&gt; result;</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env-&gt;GetChildren(test_dir_, &amp;result));</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>  <span class="comment">// expect only one file named `test_data`, i.e. no `.` or `..` names</span></div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(result.size(), 1);</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(result.at(0), <span class="stringliteral">&quot;test_file&quot;</span>);</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>}</div>
+</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span> </div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="foldopen" id="foldopen00393" data-start="{" data-end="}">
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno"><a class="line" href="../../d9/d7a/env__basic__test_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627">  393</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  ROCKSDB_NAMESPACE::port::InstallStackTraceHandler();</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  <a class="code hl_function" href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">::testing::InitGoogleTest</a>(&amp;argc, argv);</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a>();</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>}</div>
+</div>
+<div class="ttc" id="acache__bench_8cc_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/db4/cache__bench_8cc_source.html#l00011">cache_bench.cc:11</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CustomEnv_html"><div class="ttname"><a href="../../de/dfd/classROCKSDB__NAMESPACE_1_1CustomEnv.html">ROCKSDB_NAMESPACE::CustomEnv</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d30/options__test_8cc_source.html#l01366">options_test.cc:1366</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam_html"><div class="ttname"><a href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html">ROCKSDB_NAMESPACE::EnvBasicTestWithParam</a></div><div class="ttdef"><b>Definition</b> <a href="#l00085">env_basic_test.cc:87</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam_html_a0b75d34de1e2bc57778d44866e696152"><div class="ttname"><a href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a0b75d34de1e2bc57778d44866e696152">ROCKSDB_NAMESPACE::EnvBasicTestWithParam::soptions_</a></div><div class="ttdeci">const EnvOptions soptions_</div><div class="ttdef"><b>Definition</b> <a href="#l00090">env_basic_test.cc:90</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam_html_a0bfe94a58e0375ecce7eb326c7409d26"><div class="ttname"><a href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a0bfe94a58e0375ecce7eb326c7409d26">ROCKSDB_NAMESPACE::EnvBasicTestWithParam::test_dir_</a></div><div class="ttdeci">std::string test_dir_</div><div class="ttdef"><b>Definition</b> <a href="#l00091">env_basic_test.cc:91</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam_html_a5b7af26156f9059f3091c140206de0e0"><div class="ttname"><a href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#a5b7af26156f9059f3091c140206de0e0">ROCKSDB_NAMESPACE::EnvBasicTestWithParam::EnvBasicTestWithParam</a></div><div class="ttdeci">EnvBasicTestWithParam()</div><div class="ttdef"><b>Definition</b> <a href="#l00093">env_basic_test.cc:93</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam_html_ac6b1d4a4f4cc3766b6d0e72bec060889"><div class="ttname"><a href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ac6b1d4a4f4cc3766b6d0e72bec060889">ROCKSDB_NAMESPACE::EnvBasicTestWithParam::SetUp</a></div><div class="ttdeci">void SetUp() override</div><div class="ttdef"><b>Definition</b> <a href="#l00097">env_basic_test.cc:97</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam_html_ad5048fbefaca368d871aed0371c4cdac"><div class="ttname"><a href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ad5048fbefaca368d871aed0371c4cdac">ROCKSDB_NAMESPACE::EnvBasicTestWithParam::TearDown</a></div><div class="ttdeci">void TearDown() override</div><div class="ttdef"><b>Definition</b> <a href="#l00099">env_basic_test.cc:99</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam_html_ae0cc3cd05ea8326658ec825150325ea9"><div class="ttname"><a href="../../d6/d30/classROCKSDB__NAMESPACE_1_1EnvBasicTestWithParam.html#ae0cc3cd05ea8326658ec825150325ea9">ROCKSDB_NAMESPACE::EnvBasicTestWithParam::env_</a></div><div class="ttdeci">Env * env_</div><div class="ttdef"><b>Definition</b> <a href="#l00089">env_basic_test.cc:89</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam_html"><div class="ttname"><a href="../../d6/d83/classROCKSDB__NAMESPACE_1_1EnvMoreTestWithParam.html">ROCKSDB_NAMESPACE::EnvMoreTestWithParam</a></div><div class="ttdef"><b>Definition</b> <a href="#l00102">env_basic_test.cc:102</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">ROCKSDB_NAMESPACE::Env</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00154">env.h:154</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a6ab2e37815691608582aa44201663888"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">ROCKSDB_NAMESPACE::Env::Default</a></div><div class="ttdeci">static Env * Default()</div><div class="ttdef"><b>Definition</b> <a href="../../de/d24/env__posix_8cc_source.html#l00498">env_posix.cc:498</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MockEnv_html"><div class="ttname"><a href="../../d1/dae/classROCKSDB__NAMESPACE_1_1MockEnv.html">ROCKSDB_NAMESPACE::MockEnv</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d00/mock__env_8h_source.html#l00129">mock_env.h:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a47c51c16ecee27b619768f1b817a342c"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">ROCKSDB_NAMESPACE::Slice::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00060">slice.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a5230d45b66475f5e342a7654313d4c0e"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">ROCKSDB_NAMESPACE::Slice::data</a></div><div class="ttdeci">const char * data() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00057">slice.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a9461fff79c10c649f034322ac5b51ffc"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a9461fff79c10c649f034322ac5b51ffc">ROCKSDB_NAMESPACE::Slice::compare</a></div><div class="ttdeci">int compare(const Slice &amp;b) const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00242">slice.h:242</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_abad803bbeb3e3c84affdae4551f372d9"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#abad803bbeb3e3c84affdae4551f372d9">ROCKSDB_NAMESPACE::Status::IsNotFound</a></div><div class="ttdeci">bool IsNotFound() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00340">status.h:340</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_afe5c21c8234dd0fc5745cbd2e7187642"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#afe5c21c8234dd0fc5745cbd2e7187642">ROCKSDB_NAMESPACE::Status::NotFound</a></div><div class="ttdeci">static Status NotFound(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00191">status.h:191</a></div></div>
+<div class="ttc" id="aclasstesting_1_1Test_html"><div class="ttname"><a href="../../db/d9f/classtesting_1_1Test.html">testing::Test</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l20178">gtest.h:20178</a></div></div>
+<div class="ttc" id="aclasstesting_1_1WithParamInterface_html"><div class="ttname"><a href="../../d5/d86/classtesting_1_1WithParamInterface.html">testing::WithParamInterface</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21564">gtest.h:21564</a></div></div>
+<div class="ttc" id="aclasstesting_1_1WithParamInterface_html_a672a0902e8b65aedd0d98c7f5d65b9e1"><div class="ttname"><a href="../../d5/d86/classtesting_1_1WithParamInterface.html#a672a0902e8b65aedd0d98c7f5d65b9e1">testing::WithParamInterface&lt; CreateEnvFunc * &gt;::GetParam</a></div><div class="ttdeci">const ParamType &amp; GetParam() const</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21574">gtest.h:21574</a></div></div>
+<div class="ttc" id="aconvenience_8h_html"><div class="ttname"><a href="../../d3/ddb/convenience_8h.html">convenience.h</a></div></div>
+<div class="ttc" id="aenv_8h_html"><div class="ttname"><a href="../../d5/d81/env_8h.html">env.h</a></div></div>
+<div class="ttc" id="aenv__encryption_8h_html"><div class="ttname"><a href="../../d6/df3/env__encryption_8h.html">env_encryption.h</a></div></div>
+<div class="ttc" id="afile__util_8h_html"><div class="ttname"><a href="../../d0/dae/file__util_8h.html">file_util.h</a></div></div>
+<div class="ttc" id="agtest_8h_html_a1a6db8b1338ee7040329322b77779086"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a></div><div class="ttdeci">#define ASSERT_EQ(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21769">gtest.h:21769</a></div></div>
+<div class="ttc" id="agtest_8h_html_a6ae7443947f25abc58bfcfcfc56b0d75"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a6ae7443947f25abc58bfcfcfc56b0d75">EXPECT_NE</a></div><div class="ttdeci">#define EXPECT_NE(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21739">gtest.h:21739</a></div></div>
+<div class="ttc" id="agtest_8h_html_a853a3792807489591d3d4a2f2ff9359f"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a></div><div class="ttdeci">int RUN_ALL_TESTS() GTEST_MUST_USE_RESULT_</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22109">gtest.h:22109</a></div></div>
+<div class="ttc" id="agtest_8h_html_a9e411d086a08ba0cd14b73fb2f8d028f"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a9e411d086a08ba0cd14b73fb2f8d028f">INSTANTIATE_TEST_CASE_P</a></div><div class="ttdeci">#define INSTANTIATE_TEST_CASE_P(prefix, test_case_name, generator,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l18912">gtest.h:18912</a></div></div>
+<div class="ttc" id="agtest_8h_html_abd3bb216dafbffa36044a6030216ecda"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#abd3bb216dafbffa36044a6030216ecda">TEST_P</a></div><div class="ttdeci">#define TEST_P(test_case_name, test_name)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l18871">gtest.h:18871</a></div></div>
+<div class="ttc" id="agtest_8h_html_ae9244bfbda562e8b798789b001993fa5"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a></div><div class="ttdeci">#define ASSERT_TRUE(condition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21682">gtest.h:21682</a></div></div>
+<div class="ttc" id="amock__env_8h_html"><div class="ttname"><a href="../../d8/d00/mock__env_8h.html">mock_env.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1test_html_a6830c127633c3e6557d9f6316b25a19b"><div class="ttname"><a href="../../de/d4f/namespaceROCKSDB__NAMESPACE_1_1test.html#a6830c127633c3e6557d9f6316b25a19b">ROCKSDB_NAMESPACE::test::PerThreadDBPath</a></div><div class="ttdeci">std::string PerThreadDBPath(std::string dir, std::string name)</div><div class="ttdef"><b>Definition</b> <a href="../../da/d18/testharness_8cc_source.html#l00041">testharness.cc:41</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a10d859c33664dff5210340eaf6e843b7"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a10d859c33664dff5210340eaf6e843b7">ROCKSDB_NAMESPACE::DestroyDir</a></div><div class="ttdeci">Status DestroyDir(Env *env, const std::string &amp;dir)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d2b/file__util_8cc_source.html#l00264">file_util.cc:264</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a46c2c91ef346f20afb224f78011fc430"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a46c2c91ef346f20afb224f78011fc430">ROCKSDB_NAMESPACE::NewMemEnv</a></div><div class="ttdeci">Env * NewMemEnv(Env *base_env)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/mock__env_8cc_source.html#l01055">mock_env.cc:1055</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa8cf7afa903b555250edbe3802281c85"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8cf7afa903b555250edbe3802281c85">ROCKSDB_NAMESPACE::NewEncryptedEnv</a></div><div class="ttdeci">Env * NewEncryptedEnv(Env *base_env, const std::shared_ptr&lt; EncryptionProvider &gt; &amp;provider)</div><div class="ttdef"><b>Definition</b> <a href="../../da/dc5/env__encryption_8cc_source.html#l00812">env_encryption.cc:812</a></div></div>
+<div class="ttc" id="anamespacetesting_html_a0c5a07d0439f323cd4353c718e277a10"><div class="ttname"><a href="../../d0/d75/namespacetesting.html#a0c5a07d0439f323cd4353c718e277a10">testing::Values</a></div><div class="ttdeci">internal::ValueArray1&lt; T1 &gt; Values(T1 v1)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l17841">gtest.h:17841</a></div></div>
+<div class="ttc" id="anamespacetesting_html_a1ea676418f688f049f19dacff6584be2"><div class="ttname"><a href="../../d0/d75/namespacetesting.html#a1ea676418f688f049f19dacff6584be2">testing::ValuesIn</a></div><div class="ttdeci">internal::ParamGenerator&lt; typename ::testing::internal::IteratorTraits&lt; ForwardIterator &gt;::value_type &gt; ValuesIn(ForwardIterator begin, ForwardIterator end)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l17803">gtest.h:17803</a></div></div>
+<div class="ttc" id="anamespacetesting_html_aee3f6f99df893f576f705f66c0559482"><div class="ttname"><a href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">testing::InitGoogleTest</a></div><div class="ttdeci">void InitGoogleTest(int *argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d8c/gtest-all_8cc_source.html#l07404">gtest-all.cc:7404</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1EnvOptions_html"><div class="ttname"><a href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">ROCKSDB_NAMESPACE::EnvOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00076">env.h:76</a></div></div>
+<div class="ttc" id="atestharness_8h_html"><div class="ttname"><a href="../../dc/d42/testharness_8h.html">testharness.h</a></div></div>
+<div class="ttc" id="atestharness_8h_html_a6892e90ee417adfb0c66aa7a49769895"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a></div><div class="ttdeci">#define ASSERT_OK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00082">testharness.h:82</a></div></div>
+<div class="ttc" id="atestharness_8h_html_a72818a1b73e08f703b93b673513ca08a"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a></div><div class="ttdeci">#define EXPECT_OK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00085">testharness.h:85</a></div></div>
+<div class="ttc" id="atestharness_8h_html_ac7e2835b078577eb259c9f43b0dc2e69"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#ac7e2835b078577eb259c9f43b0dc2e69">ASSERT_NOK</a></div><div class="ttdeci">#define ASSERT_NOK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00084">testharness.h:84</a></div></div>
+<div class="ttc" id="atoku__instrumentation_8h_html_a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac"><div class="ttname"><a href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">toku_instr_object_type::file</a></div><div class="ttdeci">@ file</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d8a/toku__instrumentation_8h_source.html#l00054">toku_instrumentation.h:54</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_e51542386d3b21171ca4996d416c0411.html">env</a></li><li class="navelem"><a class="el" href="../../d9/d7a/env__basic__test_8cc.html">env_basic_test.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

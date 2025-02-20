@@ -1,0 +1,428 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/agg_merge/agg_merge.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('db/d90/agg__merge_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">agg_merge.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../db/d90/agg__merge_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2017-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d77/agg__merge_8h.html">rocksdb/utilities/agg_merge.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;deque&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/dcd/lang_8h.html">port/lang.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/dd6/likely_8h.html">port/likely.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/dca/include_2rocksdb_2merge__operator_8h.html">rocksdb/merge_operator.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d48/slice_8h.html">rocksdb/slice.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/db1/options__type_8h.html">rocksdb/utilities/options_type.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/dc0/coding_8h.html">util/coding.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/dc8/agg__merge__impl_8h.html">utilities/agg_merge/agg_merge_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/daf/merge__operators_8h.html">utilities/merge_operators.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">   25</a></span><span class="keyword">static</span> std::unordered_map&lt;std::string, std::unique_ptr&lt;Aggregator&gt;&gt; <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">func_map</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0a9b66d1bf3961a1b5ffffe82c58f808">   26</a></span><span class="keyword">const</span> std::string <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0a9b66d1bf3961a1b5ffffe82c58f808">kUnnamedFuncName</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a780f295ea5a82c41279183dbb7862754">   27</a></span><span class="keyword">const</span> std::string <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a780f295ea5a82c41279183dbb7862754">kErrorFuncName</a> = <span class="stringliteral">&quot;kErrorFuncName&quot;</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a16f9721dbcbf2166c9d8b83321738a25">   29</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a16f9721dbcbf2166c9d8b83321738a25">AddAggregator</a>(<span class="keyword">const</span> std::string&amp; function_name,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                     std::unique_ptr&lt;Aggregator&gt;&amp;&amp; agg) {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">if</span> (function_name == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a780f295ea5a82c41279183dbb7862754">kErrorFuncName</a>) {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fdd2c6692215a7d1894f2052ffc5609">Status::InvalidArgument</a>(</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="stringliteral">&quot;Cannot register function name kErrorFuncName&quot;</span>);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">func_map</a>.emplace(function_name, std::move(agg));</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
+</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>AggMergeOperator::AggMergeOperator() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a767c084b7b202abf62abc10be3b3560f">   41</a></span>std::string <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a767c084b7b202abf62abc10be3b3560f">EncodeAggFuncAndPayloadNoCheck</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; function_name,</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                                           <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value) {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  std::string result;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40303fbe16e1a012b260024841977046">PutLengthPrefixedSlice</a>(&amp;result, function_name);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  result += value.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ToString</a>();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
+</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab8fdda8183c7c4e567a184d836fc94c4">   49</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab8fdda8183c7c4e567a184d836fc94c4">EncodeAggFuncAndPayload</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; function_name, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; payload,</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                               std::string&amp; output) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">if</span> (function_name == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a780f295ea5a82c41279183dbb7862754">kErrorFuncName</a>) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fdd2c6692215a7d1894f2052ffc5609">Status::InvalidArgument</a>(<span class="stringliteral">&quot;Cannot use error function name&quot;</span>);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">if</span> (function_name != <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0a9b66d1bf3961a1b5ffffe82c58f808">kUnnamedFuncName</a> &amp;&amp;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">func_map</a>.find(function_name.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ToString</a>()) == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">func_map</a>.end()) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fdd2c6692215a7d1894f2052ffc5609">Status::InvalidArgument</a>(<span class="stringliteral">&quot;Function name not registered&quot;</span>);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  output = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a767c084b7b202abf62abc10be3b3560f">EncodeAggFuncAndPayloadNoCheck</a>(function_name, payload);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
+</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a92731852947d386cf3ae156723edbe37">   62</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a92731852947d386cf3ae156723edbe37">ExtractAggFuncAndValue</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; op, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; func, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value) {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  value = op;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abd78a2e743487dfc612a2404156f4faf">GetLengthPrefixedSlice</a>(&amp;value, &amp;func);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad83fdc75b09e522f1a890e8d1ba68828">   67</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad83fdc75b09e522f1a890e8d1ba68828">ExtractList</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; encoded_list, std::vector&lt;Slice&gt;&amp; decoded_list) {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  decoded_list.clear();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> list_slice = encoded_list;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> item;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordflow">while</span> (<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abd78a2e743487dfc612a2404156f4faf">GetLengthPrefixedSlice</a>(&amp;list_slice, &amp;item)) {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    decoded_list.push_back(item);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">return</span> list_slice.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">empty</a>();</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
+</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="};">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html">   77</a></span><span class="keyword">class </span><a class="code hl_class" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html">AggMergeOperator::Accumulator</a> {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a7f22addeb7e770343f79047ee2732408">   79</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a7f22addeb7e770343f79047ee2732408">Add</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; op, <span class="keywordtype">bool</span> is_partial_aggregation) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a36e3ec08fd13de6186bdbf6fec39cc09">ignore_operands_</a>) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> my_func;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> my_value;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordtype">bool</span> ret = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a92731852947d386cf3ae156723edbe37">ExtractAggFuncAndValue</a>(op, my_func, my_value);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">if</span> (!ret) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a36e3ec08fd13de6186bdbf6fec39cc09">ignore_operands_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="comment">// Determine whether we need to do partial merge.</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">if</span> (is_partial_aggregation &amp;&amp; !my_func.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">empty</a>()) {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      <span class="keyword">auto</span> f = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">func_map</a>.find(my_func.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ToString</a>());</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <span class="keywordflow">if</span> (f == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">func_map</a>.end() || !f-&gt;second-&gt;DoPartialAggregate()) {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      }</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ac4630fd22fe99cf809da961922bd30b9">func_valid_</a>) {</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      <span class="keywordflow">if</span> (my_func != <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0a9b66d1bf3961a1b5ffffe82c58f808">kUnnamedFuncName</a>) {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#acbdf5f02c2bc3485b0a0828bd34e16f6">func_</a> = my_func;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ac4630fd22fe99cf809da961922bd30b9">func_valid_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      }</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#acbdf5f02c2bc3485b0a0828bd34e16f6">func_</a> != my_func) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <span class="comment">// User switched aggregation function. Need to aggregate the older</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      <span class="comment">// one first.</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="comment">// Previous aggreagion can&#39;t be done in partial merge</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      <span class="keywordflow">if</span> (is_partial_aggregation) {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ac4630fd22fe99cf809da961922bd30b9">func_valid_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a36e3ec08fd13de6186bdbf6fec39cc09">ignore_operands_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      }</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      <span class="comment">// We could consider stashing an iterator into the hash of aggregators</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      <span class="comment">// to avoid repeated lookups when the aggregator doesn&#39;t change.</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      <span class="keyword">auto</span> f = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">func_map</a>.find(<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#acbdf5f02c2bc3485b0a0828bd34e16f6">func_</a>.ToString());</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      <span class="keywordflow">if</span> (f == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">func_map</a>.end() || !f-&gt;second-&gt;Aggregate(<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a068ea2ed1dd75f3cabb0a4e7b54b0324">values_</a>, <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ad723b59fd4eca117339ccdf3b2b20b17">scratch_</a>)) {</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ac4630fd22fe99cf809da961922bd30b9">func_valid_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a36e3ec08fd13de6186bdbf6fec39cc09">ignore_operands_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      }</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <a class="code hl_function" href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a>(<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ad723b59fd4eca117339ccdf3b2b20b17">scratch_</a>, <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a0bf28e1ec1309409a41f0970a9c80f76">aggregated_</a>);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a068ea2ed1dd75f3cabb0a4e7b54b0324">values_</a>.clear();</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a068ea2ed1dd75f3cabb0a4e7b54b0324">values_</a>.emplace_back(<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a0bf28e1ec1309409a41f0970a9c80f76">aggregated_</a>);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#acbdf5f02c2bc3485b0a0828bd34e16f6">func_</a> = my_func;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a068ea2ed1dd75f3cabb0a4e7b54b0324">values_</a>.push_back(my_value);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  }</div>
+</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="comment">// Return false if aggregation fails.</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="comment">// One possible reason</span></div>
+<div class="foldopen" id="foldopen00134" data-start="{" data-end="}">
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a270f81189bbac27d171f85af86fd5ea9">  134</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a270f81189bbac27d171f85af86fd5ea9">GetResult</a>(std::string&amp; result) {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ac4630fd22fe99cf809da961922bd30b9">func_valid_</a>) {</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keyword">auto</span> f = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">func_map</a>.find(<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#acbdf5f02c2bc3485b0a0828bd34e16f6">func_</a>.ToString());</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">if</span> (f == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">func_map</a>.end()) {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    }</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keywordflow">if</span> (!f-&gt;second-&gt;Aggregate(<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a068ea2ed1dd75f3cabb0a4e7b54b0324">values_</a>, <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ad723b59fd4eca117339ccdf3b2b20b17">scratch_</a>)) {</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    }</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    result = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a767c084b7b202abf62abc10be3b3560f">EncodeAggFuncAndPayloadNoCheck</a>(<a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#acbdf5f02c2bc3485b0a0828bd34e16f6">func_</a>, <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ad723b59fd4eca117339ccdf3b2b20b17">scratch_</a>);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  }</div>
+</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="foldopen" id="foldopen00149" data-start="{" data-end="}">
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a1c3538ff45d28fee2a65113e9dbd8451">  149</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a1c3538ff45d28fee2a65113e9dbd8451">Clear</a>() {</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#acbdf5f02c2bc3485b0a0828bd34e16f6">func_</a>.clear();</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a068ea2ed1dd75f3cabb0a4e7b54b0324">values_</a>.clear();</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a0bf28e1ec1309409a41f0970a9c80f76">aggregated_</a>.clear();</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ad723b59fd4eca117339ccdf3b2b20b17">scratch_</a>.clear();</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a36e3ec08fd13de6186bdbf6fec39cc09">ignore_operands_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ac4630fd22fe99cf809da961922bd30b9">func_valid_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  }</div>
+</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#acbdf5f02c2bc3485b0a0828bd34e16f6">  159</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#acbdf5f02c2bc3485b0a0828bd34e16f6">func_</a>;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a068ea2ed1dd75f3cabb0a4e7b54b0324">  160</a></span>  std::vector&lt;Slice&gt; <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a068ea2ed1dd75f3cabb0a4e7b54b0324">values_</a>;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a0bf28e1ec1309409a41f0970a9c80f76">  161</a></span>  std::string <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a0bf28e1ec1309409a41f0970a9c80f76">aggregated_</a>;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ad723b59fd4eca117339ccdf3b2b20b17">  162</a></span>  std::string <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ad723b59fd4eca117339ccdf3b2b20b17">scratch_</a>;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a36e3ec08fd13de6186bdbf6fec39cc09">  163</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a36e3ec08fd13de6186bdbf6fec39cc09">ignore_operands_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ac4630fd22fe99cf809da961922bd30b9">  164</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ac4630fd22fe99cf809da961922bd30b9">func_valid_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>};</div>
+</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment">// Creating and using a new Accumulator might invoke multiple malloc and is</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">// expensive if it needs to be done when processing each merge operation.</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment">// AggMergeOperator&#39;s merge operators can be invoked concurrently by multiple</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">// threads so we cannot simply create one Aggregator and reuse.</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment">// We use thread local instances instead.</span></div>
+<div class="foldopen" id="foldopen00172" data-start="{" data-end="}">
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a9fc54f43a07cdb13b4898487142bbeb3">  172</a></span><a class="code hl_class" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html">AggMergeOperator::Accumulator</a>&amp; <a class="code hl_function" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a9fc54f43a07cdb13b4898487142bbeb3">AggMergeOperator::GetTLSAccumulator</a>() {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="keyword">static</span> <span class="keyword">thread_local</span> <a class="code hl_class" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html">Accumulator</a> tls_acc;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  tls_acc.<a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a1c3538ff45d28fee2a65113e9dbd8451">Clear</a>();</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <span class="keywordflow">return</span> tls_acc;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>}</div>
+</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="foldopen" id="foldopen00178" data-start="{" data-end="}">
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a8ee12176afe17c83edbde000540203ae">  178</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a8ee12176afe17c83edbde000540203ae">AggMergeOperator::PackAllMergeOperands</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html">MergeOperationInput</a>&amp; merge_in,</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                                            <a class="code hl_struct" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html">MergeOperationOutput</a>&amp; merge_out) {</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  merge_out.<a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">new_value</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40303fbe16e1a012b260024841977046">PutLengthPrefixedSlice</a>(&amp;merge_out.<a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">new_value</a>, <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a780f295ea5a82c41279183dbb7862754">kErrorFuncName</a>);</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="keywordflow">if</span> (merge_in.<a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">existing_value</a> != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40303fbe16e1a012b260024841977046">PutLengthPrefixedSlice</a>(&amp;merge_out.<a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">new_value</a>, *merge_in.<a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">existing_value</a>);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  }</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; op : merge_in.<a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a0cdff7031ad6dd4a7c277cb49d43e572">operand_list</a>) {</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40303fbe16e1a012b260024841977046">PutLengthPrefixedSlice</a>(&amp;merge_out.<a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">new_value</a>, op);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  }</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>}</div>
+</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="foldopen" id="foldopen00190" data-start="{" data-end="}">
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a35d2464a60255d3460c51285a5f3e541">  190</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a35d2464a60255d3460c51285a5f3e541">AggMergeOperator::FullMergeV2</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html">MergeOperationInput</a>&amp; merge_in,</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                                   <a class="code hl_struct" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html">MergeOperationOutput</a>* merge_out)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  <a class="code hl_class" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html">Accumulator</a>&amp; agg = <a class="code hl_function" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a9fc54f43a07cdb13b4898487142bbeb3">GetTLSAccumulator</a>();</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="keywordflow">if</span> (merge_in.<a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">existing_value</a> != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    agg.<a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a7f22addeb7e770343f79047ee2732408">Add</a>(*merge_in.<a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">existing_value</a>, <span class="comment">/*is_partial_aggregation=*/</span><span class="keyword">false</span>);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  }</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; e : merge_in.<a class="code hl_variable" href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a0cdff7031ad6dd4a7c277cb49d43e572">operand_list</a>) {</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    agg.<a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a7f22addeb7e770343f79047ee2732408">Add</a>(e, <span class="comment">/*is_partial_aggregation=*/</span><span class="keyword">false</span>);</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  }</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keywordtype">bool</span> succ = agg.<a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a270f81189bbac27d171f85af86fd5ea9">GetResult</a>(merge_out-&gt;<a class="code hl_variable" href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">new_value</a>);</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="keywordflow">if</span> (!succ) {</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="comment">// If aggregation can&#39;t happen, pack all merge operands. In contrast to</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="comment">// merge operator, we don&#39;t want to fail the DB. If users insert wrong</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <span class="comment">// format or call unregistered an aggregation function, we still hope</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="comment">// the DB can continue functioning with other keys.</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <a class="code hl_function" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a8ee12176afe17c83edbde000540203ae">PackAllMergeOperands</a>(merge_in, *merge_out);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  agg.<a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a1c3538ff45d28fee2a65113e9dbd8451">Clear</a>();</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>}</div>
+</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="foldopen" id="foldopen00212" data-start="{" data-end="}">
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno"><a class="line" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a81d531a8200e3ef042318653fec7b777">  212</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a81d531a8200e3ef042318653fec7b777">AggMergeOperator::PartialMergeMulti</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <span class="comment">/*key*/</span>,</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>                                         <span class="keyword">const</span> std::deque&lt;Slice&gt;&amp; operand_list,</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>                                         std::string* new_value,</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>                                         <a class="code hl_class" href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">Logger</a>* <span class="comment">/*logger*/</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <a class="code hl_class" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html">Accumulator</a>&amp; agg = <a class="code hl_function" href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a9fc54f43a07cdb13b4898487142bbeb3">GetTLSAccumulator</a>();</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  <span class="keywordtype">bool</span> do_aggregation = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; item : operand_list) {</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    do_aggregation = agg.<a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a7f22addeb7e770343f79047ee2732408">Add</a>(item, <span class="comment">/*is_partial_aggregation=*/</span><span class="keyword">true</span>);</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keywordflow">if</span> (!do_aggregation) {</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    }</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  }</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <span class="keywordflow">if</span> (do_aggregation) {</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    do_aggregation = agg.<a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a270f81189bbac27d171f85af86fd5ea9">GetResult</a>(*new_value);</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  }</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  agg.<a class="code hl_function" href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a1c3538ff45d28fee2a65113e9dbd8451">Clear</a>();</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <span class="keywordflow">return</span> do_aggregation;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>}</div>
+</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="foldopen" id="foldopen00231" data-start="{" data-end="}">
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae7031f48166df39be6d03fdfcbedf068">  231</a></span>std::shared_ptr&lt;MergeOperator&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae7031f48166df39be6d03fdfcbedf068">GetAggMergeOperator</a>() {</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <a class="code hl_define" href="../../db/dcd/lang_8h.html#a82268742e2c686158aa38d42e1eedee8">STATIC_AVOID_DESTRUCTION</a>(std::shared_ptr&lt;MergeOperator&gt;, instance)</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  (std::make_shared&lt;AggMergeOperator&gt;());</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  assert(instance);</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="keywordflow">return</span> instance;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>}</div>
+</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aagg__merge_8h_html"><div class="ttname"><a href="../../d1/d77/agg__merge_8h.html">agg_merge.h</a></div></div>
+<div class="ttc" id="aagg__merge__impl_8h_html"><div class="ttname"><a href="../../d5/dc8/agg__merge__impl_8h.html">agg_merge_impl.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator_html"><div class="ttname"><a href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html">ROCKSDB_NAMESPACE::AggMergeOperator::Accumulator</a></div><div class="ttdef"><b>Definition</b> <a href="#l00077">agg_merge.cc:77</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator_html_a068ea2ed1dd75f3cabb0a4e7b54b0324"><div class="ttname"><a href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a068ea2ed1dd75f3cabb0a4e7b54b0324">ROCKSDB_NAMESPACE::AggMergeOperator::Accumulator::values_</a></div><div class="ttdeci">std::vector&lt; Slice &gt; values_</div><div class="ttdef"><b>Definition</b> <a href="#l00160">agg_merge.cc:160</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator_html_a0bf28e1ec1309409a41f0970a9c80f76"><div class="ttname"><a href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a0bf28e1ec1309409a41f0970a9c80f76">ROCKSDB_NAMESPACE::AggMergeOperator::Accumulator::aggregated_</a></div><div class="ttdeci">std::string aggregated_</div><div class="ttdef"><b>Definition</b> <a href="#l00161">agg_merge.cc:161</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator_html_a1c3538ff45d28fee2a65113e9dbd8451"><div class="ttname"><a href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a1c3538ff45d28fee2a65113e9dbd8451">ROCKSDB_NAMESPACE::AggMergeOperator::Accumulator::Clear</a></div><div class="ttdeci">void Clear()</div><div class="ttdef"><b>Definition</b> <a href="#l00149">agg_merge.cc:149</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator_html_a270f81189bbac27d171f85af86fd5ea9"><div class="ttname"><a href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a270f81189bbac27d171f85af86fd5ea9">ROCKSDB_NAMESPACE::AggMergeOperator::Accumulator::GetResult</a></div><div class="ttdeci">bool GetResult(std::string &amp;result)</div><div class="ttdef"><b>Definition</b> <a href="#l00134">agg_merge.cc:134</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator_html_a36e3ec08fd13de6186bdbf6fec39cc09"><div class="ttname"><a href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a36e3ec08fd13de6186bdbf6fec39cc09">ROCKSDB_NAMESPACE::AggMergeOperator::Accumulator::ignore_operands_</a></div><div class="ttdeci">bool ignore_operands_</div><div class="ttdef"><b>Definition</b> <a href="#l00163">agg_merge.cc:163</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator_html_a7f22addeb7e770343f79047ee2732408"><div class="ttname"><a href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#a7f22addeb7e770343f79047ee2732408">ROCKSDB_NAMESPACE::AggMergeOperator::Accumulator::Add</a></div><div class="ttdeci">bool Add(const Slice &amp;op, bool is_partial_aggregation)</div><div class="ttdef"><b>Definition</b> <a href="#l00079">agg_merge.cc:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator_html_ac4630fd22fe99cf809da961922bd30b9"><div class="ttname"><a href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ac4630fd22fe99cf809da961922bd30b9">ROCKSDB_NAMESPACE::AggMergeOperator::Accumulator::func_valid_</a></div><div class="ttdeci">bool func_valid_</div><div class="ttdef"><b>Definition</b> <a href="#l00164">agg_merge.cc:164</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator_html_acbdf5f02c2bc3485b0a0828bd34e16f6"><div class="ttname"><a href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#acbdf5f02c2bc3485b0a0828bd34e16f6">ROCKSDB_NAMESPACE::AggMergeOperator::Accumulator::func_</a></div><div class="ttdeci">Slice func_</div><div class="ttdef"><b>Definition</b> <a href="#l00159">agg_merge.cc:159</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator_html_ad723b59fd4eca117339ccdf3b2b20b17"><div class="ttname"><a href="../../df/d2e/classROCKSDB__NAMESPACE_1_1AggMergeOperator_1_1Accumulator.html#ad723b59fd4eca117339ccdf3b2b20b17">ROCKSDB_NAMESPACE::AggMergeOperator::Accumulator::scratch_</a></div><div class="ttdeci">std::string scratch_</div><div class="ttdef"><b>Definition</b> <a href="#l00162">agg_merge.cc:162</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_html_a35d2464a60255d3460c51285a5f3e541"><div class="ttname"><a href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a35d2464a60255d3460c51285a5f3e541">ROCKSDB_NAMESPACE::AggMergeOperator::FullMergeV2</a></div><div class="ttdeci">bool FullMergeV2(const MergeOperationInput &amp;merge_in, MergeOperationOutput *merge_out) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00190">agg_merge.cc:190</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_html_a81d531a8200e3ef042318653fec7b777"><div class="ttname"><a href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a81d531a8200e3ef042318653fec7b777">ROCKSDB_NAMESPACE::AggMergeOperator::PartialMergeMulti</a></div><div class="ttdeci">bool PartialMergeMulti(const Slice &amp;key, const std::deque&lt; Slice &gt; &amp;operand_list, std::string *new_value, Logger *logger) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00212">agg_merge.cc:212</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_html_a8ee12176afe17c83edbde000540203ae"><div class="ttname"><a href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a8ee12176afe17c83edbde000540203ae">ROCKSDB_NAMESPACE::AggMergeOperator::PackAllMergeOperands</a></div><div class="ttdeci">static void PackAllMergeOperands(const MergeOperationInput &amp;merge_in, MergeOperationOutput &amp;merge_out)</div><div class="ttdef"><b>Definition</b> <a href="#l00178">agg_merge.cc:178</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1AggMergeOperator_html_a9fc54f43a07cdb13b4898487142bbeb3"><div class="ttname"><a href="../../d7/d67/classROCKSDB__NAMESPACE_1_1AggMergeOperator.html#a9fc54f43a07cdb13b4898487142bbeb3">ROCKSDB_NAMESPACE::AggMergeOperator::GetTLSAccumulator</a></div><div class="ttdeci">static Accumulator &amp; GetTLSAccumulator()</div><div class="ttdef"><b>Definition</b> <a href="#l00172">agg_merge.cc:172</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Logger_html"><div class="ttname"><a href="../../dc/d56/classROCKSDB__NAMESPACE_1_1Logger.html">ROCKSDB_NAMESPACE::Logger</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l01218">env.h:1218</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a0a0abf5017eb159fd69edf2d40d4d7e1"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">ROCKSDB_NAMESPACE::Slice::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00063">slice.h:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a290b26395e5d5df4b78f0a164c7da733"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ROCKSDB_NAMESPACE::Slice::ToString</a></div><div class="ttdeci">std::string ToString(bool hex=false) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d5a/slice_8cc_source.html#l00292">slice.cc:292</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a5fdd2c6692215a7d1894f2052ffc5609"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fdd2c6692215a7d1894f2052ffc5609">ROCKSDB_NAMESPACE::Status::InvalidArgument</a></div><div class="ttdeci">static Status InvalidArgument(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00217">status.h:217</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="acoding_8h_html"><div class="ttname"><a href="../../dd/dc0/coding_8h.html">coding.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2merge__operator_8h_html"><div class="ttname"><a href="../../d4/dca/include_2rocksdb_2merge__operator_8h.html">merge_operator.h</a></div></div>
+<div class="ttc" id="alang_8h_html"><div class="ttname"><a href="../../db/dcd/lang_8h.html">lang.h</a></div></div>
+<div class="ttc" id="alang_8h_html_a82268742e2c686158aa38d42e1eedee8"><div class="ttname"><a href="../../db/dcd/lang_8h.html#a82268742e2c686158aa38d42e1eedee8">STATIC_AVOID_DESTRUCTION</a></div><div class="ttdeci">#define STATIC_AVOID_DESTRUCTION(Type, name)</div><div class="ttdef"><b>Definition</b> <a href="../../db/dcd/lang_8h_source.html#l00053">lang.h:53</a></div></div>
+<div class="ttc" id="alikely_8h_html"><div class="ttname"><a href="../../d6/dd6/likely_8h.html">likely.h</a></div></div>
+<div class="ttc" id="amerge__operators_8h_html"><div class="ttname"><a href="../../d4/daf/merge__operators_8h.html">merge_operators.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0a9b66d1bf3961a1b5ffffe82c58f808"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0a9b66d1bf3961a1b5ffffe82c58f808">ROCKSDB_NAMESPACE::kUnnamedFuncName</a></div><div class="ttdeci">const std::string kUnnamedFuncName</div><div class="ttdef"><b>Definition</b> <a href="#l00026">agg_merge.cc:26</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a16f9721dbcbf2166c9d8b83321738a25"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a16f9721dbcbf2166c9d8b83321738a25">ROCKSDB_NAMESPACE::AddAggregator</a></div><div class="ttdeci">Status AddAggregator(const std::string &amp;function_name, std::unique_ptr&lt; Aggregator &gt; &amp;&amp;agg)</div><div class="ttdef"><b>Definition</b> <a href="#l00029">agg_merge.cc:29</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a40303fbe16e1a012b260024841977046"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40303fbe16e1a012b260024841977046">ROCKSDB_NAMESPACE::PutLengthPrefixedSlice</a></div><div class="ttdeci">void PutLengthPrefixedSlice(std::string *dst, const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="../../dd/dc0/coding_8h_source.html#l00220">coding.h:220</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a767c084b7b202abf62abc10be3b3560f"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a767c084b7b202abf62abc10be3b3560f">ROCKSDB_NAMESPACE::EncodeAggFuncAndPayloadNoCheck</a></div><div class="ttdeci">std::string EncodeAggFuncAndPayloadNoCheck(const Slice &amp;function_name, const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00041">agg_merge.cc:41</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a780f295ea5a82c41279183dbb7862754"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a780f295ea5a82c41279183dbb7862754">ROCKSDB_NAMESPACE::kErrorFuncName</a></div><div class="ttdeci">const std::string kErrorFuncName</div><div class="ttdef"><b>Definition</b> <a href="#l00027">agg_merge.cc:27</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a92731852947d386cf3ae156723edbe37"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a92731852947d386cf3ae156723edbe37">ROCKSDB_NAMESPACE::ExtractAggFuncAndValue</a></div><div class="ttdeci">bool ExtractAggFuncAndValue(const Slice &amp;op, Slice &amp;func, Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00062">agg_merge.cc:62</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab8fdda8183c7c4e567a184d836fc94c4"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab8fdda8183c7c4e567a184d836fc94c4">ROCKSDB_NAMESPACE::EncodeAggFuncAndPayload</a></div><div class="ttdeci">Status EncodeAggFuncAndPayload(const Slice &amp;function_name, const Slice &amp;payload, std::string &amp;output)</div><div class="ttdef"><b>Definition</b> <a href="#l00049">agg_merge.cc:49</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_abd78a2e743487dfc612a2404156f4faf"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abd78a2e743487dfc612a2404156f4faf">ROCKSDB_NAMESPACE::GetLengthPrefixedSlice</a></div><div class="ttdeci">Slice GetLengthPrefixedSlice(const char *data)</div><div class="ttdef"><b>Definition</b> <a href="../../dd/dc0/coding_8h_source.html#l00330">coding.h:330</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ad83fdc75b09e522f1a890e8d1ba68828"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad83fdc75b09e522f1a890e8d1ba68828">ROCKSDB_NAMESPACE::ExtractList</a></div><div class="ttdeci">bool ExtractList(const Slice &amp;encoded_list, std::vector&lt; Slice &gt; &amp;decoded_list)</div><div class="ttdef"><b>Definition</b> <a href="#l00067">agg_merge.cc:67</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ad9bee73d8dee19b5c96bcde940b578fc"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad9bee73d8dee19b5c96bcde940b578fc">ROCKSDB_NAMESPACE::func_map</a></div><div class="ttdeci">static std::unordered_map&lt; std::string, std::unique_ptr&lt; Aggregator &gt; &gt; func_map</div><div class="ttdef"><b>Definition</b> <a href="#l00025">agg_merge.cc:25</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ae7031f48166df39be6d03fdfcbedf068"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae7031f48166df39be6d03fdfcbedf068">ROCKSDB_NAMESPACE::GetAggMergeOperator</a></div><div class="ttdeci">std::shared_ptr&lt; MergeOperator &gt; GetAggMergeOperator()</div><div class="ttdef"><b>Definition</b> <a href="#l00231">agg_merge.cc:231</a></div></div>
+<div class="ttc" id="anamespacestd_html_ae634fddc996b9fd1d88a852ef8a90ca3"><div class="ttname"><a href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a></div><div class="ttdeci">void swap(ROCKSDB_NAMESPACE::port::WindowsThread &amp;th1, ROCKSDB_NAMESPACE::port::WindowsThread &amp;th2)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00111">win_thread.h:111</a></div></div>
+<div class="ttc" id="aoptions__type_8h_html"><div class="ttname"><a href="../../d2/db1/options__type_8h.html">options_type.h</a></div></div>
+<div class="ttc" id="aslice_8h_html"><div class="ttname"><a href="../../d0/d48/slice_8h.html">slice.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00087">merge_operator.h:87</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html_a0cdff7031ad6dd4a7c277cb49d43e572"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a0cdff7031ad6dd4a7c277cb49d43e572">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput::operand_list</a></div><div class="ttdeci">const std::vector&lt; Slice &gt; &amp; operand_list</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00104">merge_operator.h:104</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput_html_a101d7be38d987960dbf587ed22dc77b5"><div class="ttname"><a href="../../d4/dd3/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationInput.html#a101d7be38d987960dbf587ed22dc77b5">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationInput::existing_value</a></div><div class="ttdeci">const Slice * existing_value</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00102">merge_operator.h:102</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput_html"><div class="ttname"><a href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutput</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00117">merge_operator.h:117</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput_html_a15377dc1ee93447a7bc1b58bbba70caf"><div class="ttname"><a href="../../d3/d6a/structROCKSDB__NAMESPACE_1_1MergeOperator_1_1MergeOperationOutput.html#a15377dc1ee93447a7bc1b58bbba70caf">ROCKSDB_NAMESPACE::MergeOperator::MergeOperationOutput::new_value</a></div><div class="ttdeci">std::string &amp; new_value</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dca/include_2rocksdb_2merge__operator_8h_source.html#l00123">merge_operator.h:123</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_e509029aceed7a12513a22dc9fa1e980.html">agg_merge</a></li><li class="navelem"><a class="el" href="../../db/d90/agg__merge_8cc.html">agg_merge.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

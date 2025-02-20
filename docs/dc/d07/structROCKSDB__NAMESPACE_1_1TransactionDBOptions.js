@@ -1,0 +1,26 @@
+var structROCKSDB__NAMESPACE_1_1TransactionDBOptions =
+[
+    [ "MySQLStyleTransactionTest", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#aeba60ea9952ab53399e1cfe62b50c8dc", null ],
+    [ "StressTest", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#aa4812c66b284739f2a5131e8d54ef07f", null ],
+    [ "TransactionTestBase", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#aa934097c61da4ea1ebea378a2f75606d", null ],
+    [ "WritePreparedTransactionTestBase", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#ad94c98dd1dc9dc2c1d6951e643a4ccf8", null ],
+    [ "WritePreparedTxnDB", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#addd7b47cc2fcf5092e3a20f3cef0e67b", null ],
+    [ "WriteUnpreparedTxn", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#ad439548bc6bd669bcbba06326159370e", null ],
+    [ "autogenerate_name", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a8bb867dc1d97c73f10eaa526e2c8e79d", null ],
+    [ "custom_mutex_factory", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a442cd06009af21c0fed5500ff881acd7", null ],
+    [ "default_lock_timeout", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#aed8f3e181116388871ad806e2cf1572e", null ],
+    [ "default_write_batch_flush_threshold", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#af5877155041ece1711cfebd0a86edd0c", null ],
+    [ "enable_udt_validation", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a9427b03b3b8d32aa74124997cbcb5ee9", null ],
+    [ "lock_mgr_handle", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a320e74940797857d8663ebc8725b8077", null ],
+    [ "max_num_deadlocks", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a9b295bff671cc36fd5e78154d228c319", null ],
+    [ "max_num_locks", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a8f7496fd7d1efe80bef4d535baa7fa1a", null ],
+    [ "num_stripes", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a9f2a35441d85080f677df03792291b9e", null ],
+    [ "rollback_deletion_type_callback", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a2fcb450ad85da836d0d42743d292a942", null ],
+    [ "rollback_merge_operands", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a5bb869cc2820e99c6f10d48041dd87ab", null ],
+    [ "secondary_indices", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#abb3d53f8ab0164c4c0ab309307ec3ecd", null ],
+    [ "skip_concurrency_control", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a6b95e8eae2a87858b809d3e85abb5731", null ],
+    [ "transaction_lock_timeout", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#afb2936babf7423ca8b946af8a9738254", null ],
+    [ "wp_commit_cache_bits", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a998790f71018ea997b525c3916876672", null ],
+    [ "wp_snapshot_cache_bits", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a9512043ea8b5fd007cebf9d70c81d657", null ],
+    [ "write_policy", "dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a217b49e8f56edf7a72d21f460c614827", null ]
+];

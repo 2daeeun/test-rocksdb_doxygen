@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/lock_manager.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('dd/ded/lock__manager_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">lock_manager.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../dd/ded/lock__manager_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d49/types_8h.html">rocksdb/types.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/db6/transaction_8h.html">rocksdb/utilities/transaction.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d95/transaction__db_8h.html">rocksdb/utilities/transaction_db.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/db8/lock__tracker_8h.html">utilities/transactions/lock/lock_tracker.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/dd5/pessimistic__transaction_8h.html">utilities/transactions/pessimistic_transaction.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">class </span>PessimisticTransactionDB;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html">LockManager</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#af7d2f92adc91cbcf5ae87a4dafcb87d1">   20</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#af7d2f92adc91cbcf5ae87a4dafcb87d1">~LockManager</a>() {}</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="comment">// Whether supports locking a specific key.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#af3eee2fa50638aa6b05416fb204bf116">   23</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#af3eee2fa50638aa6b05416fb204bf116">IsPointLockSupported</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="comment">// Whether supports locking a range of keys.</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a7acc24a4b172bea291cb26ff68ab6b85">   26</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a7acc24a4b172bea291cb26ff68ab6b85">IsRangeLockSupported</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// Locks acquired through this LockManager should be tracked by</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="comment">// the LockTrackers created through the returned factory.</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a6549850cd44c1e336021c51dfd59ef55">   30</a></span>  <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code hl_class" href="../../d8/d7d/classROCKSDB__NAMESPACE_1_1LockTrackerFactory.html">LockTrackerFactory</a>&amp; <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a6549850cd44c1e336021c51dfd59ef55">GetLockTrackerFactory</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// Enable locking for the specified column family.</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="comment">// Caller should guarantee that this column family is not already enabled.</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#adf50bbed27d5ca8e166f7d9898ebe8b5">   34</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#adf50bbed27d5ca8e166f7d9898ebe8b5">AddColumnFamily</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ColumnFamilyHandle</a>* cf) = 0;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="comment">// Disable locking for the specified column family.</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// Caller should guarantee that this column family is no longer used.</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a46748f1f2741cad67c6eedadbfc34f9f">   38</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a46748f1f2741cad67c6eedadbfc34f9f">RemoveColumnFamily</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ColumnFamilyHandle</a>* cf) = 0;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// Attempt to lock a key or a key range.  If OK status is returned, the caller</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="comment">// is responsible for calling UnLock() on this key.</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a016478864f14a575c295de787f2b6d74">   42</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a016478864f14a575c295de787f2b6d74">TryLock</a>(<a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>* txn,</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                         <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> column_family_id,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                         <span class="keyword">const</span> std::string&amp; key, <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env, <span class="keywordtype">bool</span> exclusive) = 0;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// The range [start, end] are inclusive at both sides.</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#ab812af415a48cd21bb02fde78fdb3f58">   46</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#ab812af415a48cd21bb02fde78fdb3f58">TryLock</a>(<a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>* txn,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                         <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> column_family_id, <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>&amp; start,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                         <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>&amp; end, <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env, <span class="keywordtype">bool</span> exclusive) = 0;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// Unlock a key or a range locked by TryLock().  txn must be the same</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// Transaction that locked this key.</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a8655fedb091588a04741f40f25bcb246">   52</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a8655fedb091588a04741f40f25bcb246">UnLock</a>(<a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>* txn, <span class="keyword">const</span> <a class="code hl_class" href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html">LockTracker</a>&amp; tracker,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                      <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env) = 0;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a6577976d48ccfa1570fa4145fa51719c">   54</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a6577976d48ccfa1570fa4145fa51719c">UnLock</a>(<a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>* txn,</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                      <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> column_family_id, <span class="keyword">const</span> std::string&amp; key,</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                      <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env) = 0;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a4275a064d68993b0a698221f54e25b55">   57</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a4275a064d68993b0a698221f54e25b55">UnLock</a>(<a class="code hl_class" href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">PessimisticTransaction</a>* txn,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                      <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> column_family_id, <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>&amp; start,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                      <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">Endpoint</a>&amp; end, <a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env) = 0;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a221bcde41f9f29bfa2dbf9de1390bc55">   61</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a221bcde41f9f29bfa2dbf9de1390bc55">PointLockStatus</a> = std::unordered_multimap&lt;ColumnFamilyId, KeyLockInfo&gt;;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a3b3ac6bdc0061730058bf9e13fd784e7">   62</a></span>  <span class="keyword">virtual</span> <a class="code hl_typedef" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a221bcde41f9f29bfa2dbf9de1390bc55">PointLockStatus</a> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a3b3ac6bdc0061730058bf9e13fd784e7">GetPointLockStatus</a>() = 0;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a5bd737991c128260e2e21ab6e91a488e">   64</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a5bd737991c128260e2e21ab6e91a488e">RangeLockStatus</a> =</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      std::unordered_multimap&lt;ColumnFamilyId, RangeLockInfo&gt;;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#af424dc7f9dafc8796fc572203874cc7c">   66</a></span>  <span class="keyword">virtual</span> <a class="code hl_typedef" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a5bd737991c128260e2e21ab6e91a488e">RangeLockStatus</a> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#af424dc7f9dafc8796fc572203874cc7c">GetRangeLockStatus</a>() = 0;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a2e42bfb37e4c333b01ced96df33aea96">   68</a></span>  <span class="keyword">virtual</span> std::vector&lt;DeadlockPath&gt; <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a2e42bfb37e4c333b01ced96df33aea96">GetDeadlockInfoBuffer</a>() = 0;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a7042b315491a88ef97f1faf0e73e0d66">   70</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a7042b315491a88ef97f1faf0e73e0d66">Resize</a>(uint32_t new_size) = 0;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>};</div>
+</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">// LockManager should always be constructed through this factory method,</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">// instead of constructing through concrete implementations&#39; constructor.</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">// Caller owns the returned pointer.</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>std::shared_ptr&lt;LockManager&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9cfcdfe9a93fa2db6a25fdc85bf41483">NewLockManager</a>(<a class="code hl_class" href="../../d2/d58/classROCKSDB__NAMESPACE_1_1PessimisticTransactionDB.html">PessimisticTransactionDB</a>* db,</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                                            <span class="keyword">const</span> <a class="code hl_struct" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html">TransactionDBOptions</a>&amp; opt);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ColumnFamilyHandle_html"><div class="ttname"><a href="../../da/d3d/classROCKSDB__NAMESPACE_1_1ColumnFamilyHandle.html">ROCKSDB_NAMESPACE::ColumnFamilyHandle</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d43/include_2rocksdb_2db_8h_source.html#l00081">db.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Endpoint_html"><div class="ttname"><a href="../../d3/d34/classROCKSDB__NAMESPACE_1_1Endpoint.html">ROCKSDB_NAMESPACE::Endpoint</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/db6/transaction_8h_source.html#l00085">transaction.h:85</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">ROCKSDB_NAMESPACE::Env</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00154">env.h:154</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html">ROCKSDB_NAMESPACE::LockManager</a></div><div class="ttdef"><b>Definition</b> <a href="#l00018">lock_manager.h:18</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a016478864f14a575c295de787f2b6d74"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a016478864f14a575c295de787f2b6d74">ROCKSDB_NAMESPACE::LockManager::TryLock</a></div><div class="ttdeci">virtual Status TryLock(PessimisticTransaction *txn, ColumnFamilyId column_family_id, const std::string &amp;key, Env *env, bool exclusive)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a221bcde41f9f29bfa2dbf9de1390bc55"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a221bcde41f9f29bfa2dbf9de1390bc55">ROCKSDB_NAMESPACE::LockManager::PointLockStatus</a></div><div class="ttdeci">std::unordered_multimap&lt; ColumnFamilyId, KeyLockInfo &gt; PointLockStatus</div><div class="ttdef"><b>Definition</b> <a href="#l00061">lock_manager.h:61</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a2e42bfb37e4c333b01ced96df33aea96"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a2e42bfb37e4c333b01ced96df33aea96">ROCKSDB_NAMESPACE::LockManager::GetDeadlockInfoBuffer</a></div><div class="ttdeci">virtual std::vector&lt; DeadlockPath &gt; GetDeadlockInfoBuffer()=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a3b3ac6bdc0061730058bf9e13fd784e7"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a3b3ac6bdc0061730058bf9e13fd784e7">ROCKSDB_NAMESPACE::LockManager::GetPointLockStatus</a></div><div class="ttdeci">virtual PointLockStatus GetPointLockStatus()=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a4275a064d68993b0a698221f54e25b55"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a4275a064d68993b0a698221f54e25b55">ROCKSDB_NAMESPACE::LockManager::UnLock</a></div><div class="ttdeci">virtual void UnLock(PessimisticTransaction *txn, ColumnFamilyId column_family_id, const Endpoint &amp;start, const Endpoint &amp;end, Env *env)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a46748f1f2741cad67c6eedadbfc34f9f"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a46748f1f2741cad67c6eedadbfc34f9f">ROCKSDB_NAMESPACE::LockManager::RemoveColumnFamily</a></div><div class="ttdeci">virtual void RemoveColumnFamily(const ColumnFamilyHandle *cf)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a5bd737991c128260e2e21ab6e91a488e"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a5bd737991c128260e2e21ab6e91a488e">ROCKSDB_NAMESPACE::LockManager::RangeLockStatus</a></div><div class="ttdeci">std::unordered_multimap&lt; ColumnFamilyId, RangeLockInfo &gt; RangeLockStatus</div><div class="ttdef"><b>Definition</b> <a href="#l00064">lock_manager.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a6549850cd44c1e336021c51dfd59ef55"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a6549850cd44c1e336021c51dfd59ef55">ROCKSDB_NAMESPACE::LockManager::GetLockTrackerFactory</a></div><div class="ttdeci">virtual const LockTrackerFactory &amp; GetLockTrackerFactory() const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a6577976d48ccfa1570fa4145fa51719c"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a6577976d48ccfa1570fa4145fa51719c">ROCKSDB_NAMESPACE::LockManager::UnLock</a></div><div class="ttdeci">virtual void UnLock(PessimisticTransaction *txn, ColumnFamilyId column_family_id, const std::string &amp;key, Env *env)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a7042b315491a88ef97f1faf0e73e0d66"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a7042b315491a88ef97f1faf0e73e0d66">ROCKSDB_NAMESPACE::LockManager::Resize</a></div><div class="ttdeci">virtual void Resize(uint32_t new_size)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a7acc24a4b172bea291cb26ff68ab6b85"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a7acc24a4b172bea291cb26ff68ab6b85">ROCKSDB_NAMESPACE::LockManager::IsRangeLockSupported</a></div><div class="ttdeci">virtual bool IsRangeLockSupported() const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_a8655fedb091588a04741f40f25bcb246"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#a8655fedb091588a04741f40f25bcb246">ROCKSDB_NAMESPACE::LockManager::UnLock</a></div><div class="ttdeci">virtual void UnLock(PessimisticTransaction *txn, const LockTracker &amp;tracker, Env *env)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_ab812af415a48cd21bb02fde78fdb3f58"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#ab812af415a48cd21bb02fde78fdb3f58">ROCKSDB_NAMESPACE::LockManager::TryLock</a></div><div class="ttdeci">virtual Status TryLock(PessimisticTransaction *txn, ColumnFamilyId column_family_id, const Endpoint &amp;start, const Endpoint &amp;end, Env *env, bool exclusive)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_adf50bbed27d5ca8e166f7d9898ebe8b5"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#adf50bbed27d5ca8e166f7d9898ebe8b5">ROCKSDB_NAMESPACE::LockManager::AddColumnFamily</a></div><div class="ttdeci">virtual void AddColumnFamily(const ColumnFamilyHandle *cf)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_af3eee2fa50638aa6b05416fb204bf116"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#af3eee2fa50638aa6b05416fb204bf116">ROCKSDB_NAMESPACE::LockManager::IsPointLockSupported</a></div><div class="ttdeci">virtual bool IsPointLockSupported() const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_af424dc7f9dafc8796fc572203874cc7c"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#af424dc7f9dafc8796fc572203874cc7c">ROCKSDB_NAMESPACE::LockManager::GetRangeLockStatus</a></div><div class="ttdeci">virtual RangeLockStatus GetRangeLockStatus()=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockManager_html_af7d2f92adc91cbcf5ae87a4dafcb87d1"><div class="ttname"><a href="../../d4/dec/classROCKSDB__NAMESPACE_1_1LockManager.html#af7d2f92adc91cbcf5ae87a4dafcb87d1">ROCKSDB_NAMESPACE::LockManager::~LockManager</a></div><div class="ttdeci">virtual ~LockManager()</div><div class="ttdef"><b>Definition</b> <a href="#l00020">lock_manager.h:20</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockTrackerFactory_html"><div class="ttname"><a href="../../d8/d7d/classROCKSDB__NAMESPACE_1_1LockTrackerFactory.html">ROCKSDB_NAMESPACE::LockTrackerFactory</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00200">lock_tracker.h:200</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockTracker_html"><div class="ttname"><a href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html">ROCKSDB_NAMESPACE::LockTracker</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00064">lock_tracker.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PessimisticTransactionDB_html"><div class="ttname"><a href="../../d2/d58/classROCKSDB__NAMESPACE_1_1PessimisticTransactionDB.html">ROCKSDB_NAMESPACE::PessimisticTransactionDB</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d4e/pessimistic__transaction__db_8h_source.html#l00029">pessimistic_transaction_db.h:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PessimisticTransaction_html"><div class="ttname"><a href="../../d8/daf/classROCKSDB__NAMESPACE_1_1PessimisticTransaction.html">ROCKSDB_NAMESPACE::PessimisticTransaction</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/dd5/pessimistic__transaction_8h_source.html#l00036">pessimistic_transaction.h:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="alock__tracker_8h_html"><div class="ttname"><a href="../../d4/db8/lock__tracker_8h.html">lock_tracker.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8a39a75cbd2dd36afa8c75d6fc169606"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ROCKSDB_NAMESPACE::ColumnFamilyId</a></div><div class="ttdeci">uint32_t ColumnFamilyId</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00019">types.h:19</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a9cfcdfe9a93fa2db6a25fdc85bf41483"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9cfcdfe9a93fa2db6a25fdc85bf41483">ROCKSDB_NAMESPACE::NewLockManager</a></div><div class="ttdeci">std::shared_ptr&lt; LockManager &gt; NewLockManager(PessimisticTransactionDB *db, const TransactionDBOptions &amp;opt)</div><div class="ttdef"><b>Definition</b> <a href="../../da/d12/lock__manager_8cc_source.html#l00013">lock_manager.cc:13</a></div></div>
+<div class="ttc" id="apessimistic__transaction_8h_html"><div class="ttname"><a href="../../db/dd5/pessimistic__transaction_8h.html">pessimistic_transaction.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionDBOptions_html"><div class="ttname"><a href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html">ROCKSDB_NAMESPACE::TransactionDBOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00150">transaction_db.h:150</a></div></div>
+<div class="ttc" id="atransaction_8h_html"><div class="ttname"><a href="../../d0/db6/transaction_8h.html">transaction.h</a></div></div>
+<div class="ttc" id="atransaction__db_8h_html"><div class="ttname"><a href="../../df/d95/transaction__db_8h.html">transaction_db.h</a></div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="../../d9/d49/types_8h.html">types.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../dd/ded/lock__manager_8h.html">lock_manager.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

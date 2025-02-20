@@ -1,0 +1,26 @@
+var classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener =
+[
+    [ "ErrorHandlerFSListener", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a384101b04c55606ee635ab92b62fb3c7", null ],
+    [ "~ErrorHandlerFSListener", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a6c24980730959bde0aa6cc191c0a1bb5", null ],
+    [ "EnableAutoRecovery", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#aa94aad19f659a9bcbee88fee9a0a7efd", null ],
+    [ "InjectFileCreationError", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#aa05895bd84ad45c7b3009b241bfd40d7", null ],
+    [ "new_bg_error", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#acaf92abd76039b1f875cdaf317f8e3c0", null ],
+    [ "OnBackgroundError", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a0c68a097220db88f452f335f2066c830", null ],
+    [ "OnErrorRecoveryBegin", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a6053b379f139147c94c5d778827184cf", null ],
+    [ "OnErrorRecoveryEnd", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a75ff989dd10f8804fc12dcedc6be18c4", null ],
+    [ "OnTableFileCreationStarted", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a1f66bb7fd9c4621e85ca2004bcdbc277", null ],
+    [ "OverrideBGError", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a9d931842063f2749122492d36380b5b8", null ],
+    [ "WaitForRecovery", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#ac852817cab26a0e8b7eb585bf0dde722", null ],
+    [ "WaitForTableFileCreationStarted", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#ac34dc94b633b3fe883b7a072f15f2152", null ],
+    [ "bg_error_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#ad9547d88ae70eb83795bcc056b426d3c", null ],
+    [ "cv_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#abb326c8988a6ecf23080c199b8344b10", null ],
+    [ "fault_fs_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#ab74993dae79d75c688d2e95d2075d534", null ],
+    [ "file_count_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a03ffefc76f7968eed6cb4cf3291ffa58", null ],
+    [ "file_creation_error_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a653a3afeca1c8293a0f6a54546ed42cb", null ],
+    [ "file_creation_started_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a2650ccffbcc0d18107d84447baa6176e", null ],
+    [ "mutex_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a1506d9ede28648ddb1e6a8876e3fae61", null ],
+    [ "new_bg_error_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#ace4aeff7c90ef485fc9089b141afd0e8", null ],
+    [ "no_auto_recovery_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a86fab053fa522a88fb9c578068cf6a98", null ],
+    [ "override_bg_error_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a928a8bfbe9d5a34e7702dc76157c04ad", null ],
+    [ "recovery_complete_", "db/d19/classROCKSDB__NAMESPACE_1_1ErrorHandlerFSListener.html#a7c391c1f04769520e233779bb1d72c42", null ]
+];

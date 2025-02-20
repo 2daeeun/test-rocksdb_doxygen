@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/lock_manager.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('da/d12/lock__manager_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">lock_manager.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../da/d12/lock__manager_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/ded/lock__manager_8h.html">utilities/transactions/lock/lock_manager.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/dd3/point__lock__manager_8h.html">utilities/transactions/lock/point/point_lock_manager.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9cfcdfe9a93fa2db6a25fdc85bf41483">   13</a></span>std::shared_ptr&lt;LockManager&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9cfcdfe9a93fa2db6a25fdc85bf41483">NewLockManager</a>(<a class="code hl_class" href="../../d2/d58/classROCKSDB__NAMESPACE_1_1PessimisticTransactionDB.html">PessimisticTransactionDB</a>* db,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                                            <span class="keyword">const</span> <a class="code hl_struct" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html">TransactionDBOptions</a>&amp; opt) {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  assert(db);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordflow">if</span> (opt.<a class="code hl_variable" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a320e74940797857d8663ebc8725b8077">lock_mgr_handle</a>) {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="comment">// A custom lock manager was provided in options</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">auto</span> mgr = opt.<a class="code hl_variable" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a320e74940797857d8663ebc8725b8077">lock_mgr_handle</a>-&gt;getLockManager();</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordflow">return</span> std::shared_ptr&lt;LockManager&gt;(opt.<a class="code hl_variable" href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a320e74940797857d8663ebc8725b8077">lock_mgr_handle</a>, mgr);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="comment">// Use a point lock manager by default</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordflow">return</span> std::shared_ptr&lt;LockManager&gt;(<span class="keyword">new</span> <a class="code hl_class" href="../../de/dd3/classROCKSDB__NAMESPACE_1_1PointLockManager.html">PointLockManager</a>(db, opt));</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  }</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>}</div>
+</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PessimisticTransactionDB_html"><div class="ttname"><a href="../../d2/d58/classROCKSDB__NAMESPACE_1_1PessimisticTransactionDB.html">ROCKSDB_NAMESPACE::PessimisticTransactionDB</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d4e/pessimistic__transaction__db_8h_source.html#l00029">pessimistic_transaction_db.h:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockManager_html"><div class="ttname"><a href="../../de/dd3/classROCKSDB__NAMESPACE_1_1PointLockManager.html">ROCKSDB_NAMESPACE::PointLockManager</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/dd3/point__lock__manager_8h_source.html#l00110">point_lock_manager.h:110</a></div></div>
+<div class="ttc" id="alock__manager_8h_html"><div class="ttname"><a href="../../dd/ded/lock__manager_8h.html">lock_manager.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a9cfcdfe9a93fa2db6a25fdc85bf41483"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9cfcdfe9a93fa2db6a25fdc85bf41483">ROCKSDB_NAMESPACE::NewLockManager</a></div><div class="ttdeci">std::shared_ptr&lt; LockManager &gt; NewLockManager(PessimisticTransactionDB *db, const TransactionDBOptions &amp;opt)</div><div class="ttdef"><b>Definition</b> <a href="#l00013">lock_manager.cc:13</a></div></div>
+<div class="ttc" id="apoint__lock__manager_8h_html"><div class="ttname"><a href="../../d3/dd3/point__lock__manager_8h.html">point_lock_manager.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionDBOptions_html"><div class="ttname"><a href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html">ROCKSDB_NAMESPACE::TransactionDBOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00150">transaction_db.h:150</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionDBOptions_html_a320e74940797857d8663ebc8725b8077"><div class="ttname"><a href="../../dc/d07/structROCKSDB__NAMESPACE_1_1TransactionDBOptions.html#a320e74940797857d8663ebc8725b8077">ROCKSDB_NAMESPACE::TransactionDBOptions::lock_mgr_handle</a></div><div class="ttdeci">std::shared_ptr&lt; LockManagerHandle &gt; lock_mgr_handle</div><div class="ttdef"><b>Definition</b> <a href="../../df/d95/transaction__db_8h_source.html#l00211">transaction_db.h:211</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../da/d12/lock__manager_8cc.html">lock_manager.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

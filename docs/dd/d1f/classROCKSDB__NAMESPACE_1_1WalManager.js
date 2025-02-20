@@ -1,0 +1,28 @@
+var classROCKSDB__NAMESPACE_1_1WalManager =
+[
+    [ "WalManager", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#ae0b8dba30379c568bc80f45f72b300c4", null ],
+    [ "ArchiveWALFile", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a7ea8f71db915c74ca6bf71cadbfcde2d", null ],
+    [ "DeleteFile", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#aac47289654a119d2c9bea715060bf28d", null ],
+    [ "GetLiveWalFile", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#ab56c9e6c288ab51874aac4167bb3694f", null ],
+    [ "GetSortedWalFiles", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a54e6e411f98ace6f3aa15e0650180ede", null ],
+    [ "GetSortedWalsOfType", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#aac8e640a149c81ee72ef0f7f55ff6521", null ],
+    [ "GetUpdatesSince", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a2e70b38f1ee02e88d79d3b7d4239843f", null ],
+    [ "PurgeObsoleteWALFiles", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a51969dbbc160f9c89bf23195d1653251", null ],
+    [ "ReadFirstLine", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#abfd5a4b469502e58af3cc7b369ac4802", null ],
+    [ "ReadFirstRecord", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a96a03794ebbdee5664081c6a50239bfd", null ],
+    [ "RetainProbableWalFiles", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#ada96a03a46beccb4ede21320dbb6925c", null ],
+    [ "TEST_ReadFirstLine", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a93116a2934c9d9c1f405f3a801d0e36f", null ],
+    [ "TEST_ReadFirstRecord", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a3cf4a76109777a82d5cb22af7e437911", null ],
+    [ "db_options_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#ac19e9abc80474e816ed93c27f2419238", null ],
+    [ "env_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#ac5554051eea355b4eb75d46ea6d61d0c", null ],
+    [ "file_options_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a343146a2124ba18d951724691f4f0d77", null ],
+    [ "fs_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a91b3fa940a7c28d9cd83457479c61bc5", null ],
+    [ "io_tracer_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a0114d345ed59ca242e999de21b40ab15", null ],
+    [ "kDefaultIntervalToDeleteObsoleteWAL", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a7da8b65de4a04cc12ec62aac0ab5e1cf", null ],
+    [ "purge_wal_files_last_run_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#ac01335eee62f19c89dc41bca9838500d", null ],
+    [ "read_first_record_cache_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a254c41916376454b8defac68f363ab16", null ],
+    [ "read_first_record_cache_mutex_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a6372f15c38e07815a77ef9cafd535177", null ],
+    [ "seq_per_batch_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#a3ff90d77172fef81d392fd4c4a0aa8d6", null ],
+    [ "wal_dir_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#abcdee498a644a1d55c76ead098f9979e", null ],
+    [ "wal_in_db_path_", "dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html#ae920feb7800df1043177a3c013108d4c", null ]
+];

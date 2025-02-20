@@ -1,0 +1,25 @@
+var classROCKSDB__NAMESPACE_1_1ShardedCacheBase =
+[
+    [ "ShardedCacheBase", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#ac754184b6d907635c777b8dc9eb21d4c", null ],
+    [ "~ShardedCacheBase", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a052382641c603380dc0805c09e02b98c", null ],
+    [ "AppendPrintableOptions", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a06de8349178551ceb52e86391281b373", null ],
+    [ "ComputePerShardCapacity", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a92abf744041f78a78233eb1fe27dd0a4", null ],
+    [ "GetCapacity", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#ae7900ab799fcd02f8e3dca04ccef0d3e", null ],
+    [ "GetHashSeed", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a874c70b60b33fbee1985843d04b53f24", null ],
+    [ "GetNumShardBits", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a7ad8e9df9c1830393337924dab7f5b24", null ],
+    [ "GetNumShards", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a0ed0f26d7a4164cc5420fc9366352328", null ],
+    [ "GetPerShardCapacity", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#afeb612f737e366a59bb694b3ef150bce", null ],
+    [ "GetPrintableOptions", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a775e92baf15706c64dff26648bb20c11", null ],
+    [ "GetSecondaryCacheCapacity", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a1a427a1a3b444cf5c611489607049a3c", null ],
+    [ "GetSecondaryCachePinnedUsage", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#ad8b3a5138d9d41dd02ab10915893ea0a", null ],
+    [ "GetUsage", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a1a5c27859c97afcabe92ce495aa7e958", null ],
+    [ "GetUsage", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a7026ba9e3cdb036f701902a5886afd86", null ],
+    [ "HasStrictCapacityLimit", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a9ad905aae7cdbbdae3148a85695a229d", null ],
+    [ "NewId", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a76218e2d503e08afcdac076f039bfbb5", null ],
+    [ "capacity_", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a43a3eeab6b7f714e7776ad4f575cb602", null ],
+    [ "config_mutex_", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a74938cc27403218c2cc30988098b4288", null ],
+    [ "hash_seed_", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a94c5a9ae0fc43bc6721a0bebfc8f6754", null ],
+    [ "last_id_", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a33ffc059c743f12dbe7b5b79e5ad2a4b", null ],
+    [ "shard_mask_", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a1272902a2def44b4987589b5cd611e3f", null ],
+    [ "strict_capacity_limit_", "d9/dc4/classROCKSDB__NAMESPACE_1_1ShardedCacheBase.html#a9ccef46651a01650c8fb3888acec9007", null ]
+];

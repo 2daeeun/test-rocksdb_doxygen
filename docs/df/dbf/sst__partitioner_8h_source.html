@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: include/rocksdb/sst_partitioner.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('df/dbf/sst__partitioner_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">sst_partitioner.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../df/dbf/sst__partitioner_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d21/customizable_8h.html">rocksdb/customizable.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/df5/rocksdb__namespace_8h.html">rocksdb/rocksdb_namespace.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d48/slice_8h.html">rocksdb/slice.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">class </span>Slice;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67fe">   20</a></span><span class="keyword">enum</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67fe">PartitionerResult</a> : <span class="keywordtype">char</span> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="comment">// Partitioner does not require to create new file</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67feadc0758e5300a8e428117d898f6be394a">   22</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67feadc0758e5300a8e428117d898f6be394a">kNotRequired</a> = 0x0,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="comment">// Partitioner is requesting forcefully to create new file</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67fea0f478ead6c8c0128e4ab33aa4b26a1ce">   24</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67fea0f478ead6c8c0128e4ab33aa4b26a1ce">kRequired</a> = 0x1</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="comment">// Additional constants can be added</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>};</div>
+</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html">   28</a></span><span class="keyword">struct </span><a class="code hl_function" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a4a7232f685e06325b85b24181dcac80b">PartitionerRequest</a> {</div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a4a7232f685e06325b85b24181dcac80b">   29</a></span>  <a class="code hl_function" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a4a7232f685e06325b85b24181dcac80b">PartitionerRequest</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; prev_user_key_,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                     <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; current_user_key_,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                     uint64_t current_output_file_size_)</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      : <a class="code hl_variable" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a98907c2c1a864ba9a9bb747c4fd05cc0">prev_user_key</a>(&amp;prev_user_key_),</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <a class="code hl_variable" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#acbe0e3fedf2a758957019de5a3810f6c">current_user_key</a>(&amp;current_user_key_),</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <a class="code hl_variable" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a6588b312588a03b2242b78b1f6ce0179">current_output_file_size</a>(current_output_file_size_) {}</div>
+</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a98907c2c1a864ba9a9bb747c4fd05cc0">   35</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* <a class="code hl_variable" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a98907c2c1a864ba9a9bb747c4fd05cc0">prev_user_key</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#acbe0e3fedf2a758957019de5a3810f6c">   36</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* <a class="code hl_variable" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#acbe0e3fedf2a758957019de5a3810f6c">current_user_key</a>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a6588b312588a03b2242b78b1f6ce0179">   37</a></span>  uint64_t <a class="code hl_variable" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a6588b312588a03b2242b78b1f6ce0179">current_output_file_size</a>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>};</div>
+</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"> * A SstPartitioner is a generic pluggable way of defining the partition</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"> * of SST files. Compaction job will split the SST files on partition boundary</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"> * to lower the write amplification during SST file promote to higher level.</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="};">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html">   45</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html">SstPartitioner</a> {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#aec627f25bc9d14741e70681b47165ac4">   47</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#aec627f25bc9d14741e70681b47165ac4">~SstPartitioner</a>() {}</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// Return the name of this partitioner.</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#a2b1446dea020486eeeb17daa6969bb11">   50</a></span>  <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#a2b1446dea020486eeeb17daa6969bb11">Name</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// It is called for all keys in compaction. When partitioner want to create</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// new SST file it needs to return true. It means compaction job will finish</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// current SST file where last key is &quot;prev_user_key&quot; parameter and start new</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="comment">// SST file where first key is &quot;current_user_key&quot;. Returns decision if</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="comment">// partition boundary was detected and compaction should create new file.</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#aa632e647b0cd54f4e0e72f5dc4f8ddd7">   57</a></span>  <span class="keyword">virtual</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67fe">PartitionerResult</a> <a class="code hl_function" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#aa632e647b0cd54f4e0e72f5dc4f8ddd7">ShouldPartition</a>(</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      <span class="keyword">const</span> <a class="code hl_struct" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html">PartitionerRequest</a>&amp; request) = 0;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="comment">// Called with smallest and largest keys in SST file when compaction try to do</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">// trivial move. Returns true is partitioner allows to do trivial move.</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#afa5c61917ba890719b83102476b98665">   62</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#afa5c61917ba890719b83102476b98665">CanDoTrivialMove</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; smallest_user_key,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                                <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; largest_user_key) = 0;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// Context information of a compaction run</span></div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="};">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html">   66</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html">Context</a> {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="comment">// Does this compaction run include all data files</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#a9941c86cd9dba8e48824d58db5fb44dc">   68</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#a9941c86cd9dba8e48824d58db5fb44dc">is_full_compaction</a>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="comment">// Is this compaction requested by the client (true),</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">// or is it occurring as an automatic compaction process</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#aa8d48051de995e0816dbaa51c065ca8a">   71</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#aa8d48051de995e0816dbaa51c065ca8a">is_manual_compaction</a>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">// Output level for this compaction</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#ad6fd28c65be774b5fc6d170233578391">   73</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#ad6fd28c65be774b5fc6d170233578391">output_level</a>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="comment">// Smallest key for compaction</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#a88d97ebe9b477a49d1b715845c073def">   75</a></span>    <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_variable" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#a88d97ebe9b477a49d1b715845c073def">smallest_user_key</a>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="comment">// Largest key for compaction</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#a54ee3f1805712076ee7de55175e462dd">   77</a></span>    <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_variable" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#a54ee3f1805712076ee7de55175e462dd">largest_user_key</a>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  };</div>
+</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
+</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">// Exceptions MUST NOT propagate out of overridden functions into RocksDB,</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">// because RocksDB is not exception-safe. This could cause undefined behavior</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">// including data loss, unreported corruption, deadlocks, and more.</span></div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="};">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html">   84</a></span><span class="keyword">class </span><a class="code hl_class" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html">SstPartitionerFactory</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d0/deb/classROCKSDB__NAMESPACE_1_1Customizable.html">Customizable</a> {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#ad85e40d46404a3f90a9917f100a0bd62">   86</a></span>  <a class="code hl_function" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#ad85e40d46404a3f90a9917f100a0bd62">~SstPartitionerFactory</a>()<span class="keyword"> override </span>{}</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#a93ed4a227d1f00fe345ecc0d7712b0fa">   87</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#a93ed4a227d1f00fe345ecc0d7712b0fa">Type</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;SstPartitionerFactory&quot;</span>; }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">static</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> CreateFromString(</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      <span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ConfigOptions</a>&amp; options, <span class="keyword">const</span> std::string&amp; value,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      std::shared_ptr&lt;SstPartitionerFactory&gt;* result);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#af48d20d14e8c39d4496b4ca28900c3ab">   92</a></span>  <span class="keyword">virtual</span> std::unique_ptr&lt;SstPartitioner&gt; <a class="code hl_function" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#af48d20d14e8c39d4496b4ca28900c3ab">CreatePartitioner</a>(</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      <span class="keyword">const</span> <a class="code hl_struct" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html">SstPartitioner::Context</a>&amp; context) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="comment">// Returns a name that identifies this partitioner factory.</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#a0089bd93c36dcd187a42cbefe0d5568a">   96</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#a0089bd93c36dcd187a42cbefe0d5568a">Name</a>() <span class="keyword">const override</span> = 0;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>};</div>
+</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment"> * Fixed key prefix partitioner. It splits the output SST files when prefix</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment"> * defined by size changes.</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00103" data-start="{" data-end="};">
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html">  103</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#a32bb43ab6e0e508ed952bacc56bdea40">SstPartitionerFixedPrefix</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html">SstPartitioner</a> {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#a32bb43ab6e0e508ed952bacc56bdea40">  105</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#a32bb43ab6e0e508ed952bacc56bdea40">SstPartitionerFixedPrefix</a>(<span class="keywordtype">size_t</span> len) : <a class="code hl_variable" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#aaa1397f8e6cced179c4d1d6aed200886">len_</a>(len) {}</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#a30b8d7e22d9f9ec5afe62423facf199e">  107</a></span>  <a class="code hl_function" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#a30b8d7e22d9f9ec5afe62423facf199e">~SstPartitionerFixedPrefix</a>()<span class="keyword"> override </span>{}</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#a7bf7369f7ee270f58b746d8796ec0646">  109</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#a7bf7369f7ee270f58b746d8796ec0646">Name</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;SstPartitionerFixedPrefix&quot;</span>; }</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67fe">PartitionerResult</a> ShouldPartition(<span class="keyword">const</span> <a class="code hl_struct" href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html">PartitionerRequest</a>&amp; request) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordtype">bool</span> CanDoTrivialMove(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; smallest_user_key,</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                        <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; largest_user_key) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#aaa1397f8e6cced179c4d1d6aed200886">  117</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#aaa1397f8e6cced179c4d1d6aed200886">len_</a>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>};</div>
+</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment"> * Factory for fixed prefix partitioner.</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00123" data-start="{" data-end="};">
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html">  123</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a44b00ec66aa55e8f830a718017ec56a3">SstPartitionerFixedPrefixFactory</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html">SstPartitionerFactory</a> {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a44b00ec66aa55e8f830a718017ec56a3">SstPartitionerFixedPrefixFactory</a>(<span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a425f91f911cd46459f8db61b5c9fb9b6">  127</a></span>  <a class="code hl_function" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a425f91f911cd46459f8db61b5c9fb9b6">~SstPartitionerFixedPrefixFactory</a>()<span class="keyword"> override </span>{}</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a9092307f12e39c2dc0e9de7495b61f0e">  129</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a9092307f12e39c2dc0e9de7495b61f0e">kClassName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;SstPartitionerFixedPrefixFactory&quot;</span>; }</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a54cdf56cb5633d160797bd3ef926cb82">  130</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a54cdf56cb5633d160797bd3ef926cb82">Name</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a9092307f12e39c2dc0e9de7495b61f0e">kClassName</a>(); }</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  std::unique_ptr&lt;SstPartitioner&gt; CreatePartitioner(</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>      <span class="keyword">const</span> <a class="code hl_struct" href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html">SstPartitioner::Context</a>&amp; <span class="comment">/* context */</span>) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a96e4ce37f4adeea8b1ccda83b315ad9b">  136</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a96e4ce37f4adeea8b1ccda83b315ad9b">len_</a>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>};</div>
+</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>std::shared_ptr&lt;SstPartitionerFactory&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a12ed2141fc6b1a3fd2b715d538cd8b56">NewSstPartitionerFixedPrefixFactory</a>(</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordtype">size_t</span> prefix_len);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Customizable_html"><div class="ttname"><a href="../../d0/deb/classROCKSDB__NAMESPACE_1_1Customizable.html">ROCKSDB_NAMESPACE::Customizable</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d21/customizable_8h_source.html#l00056">customizable.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFactory_html"><div class="ttname"><a href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html">ROCKSDB_NAMESPACE::SstPartitionerFactory</a></div><div class="ttdef"><b>Definition</b> <a href="#l00084">sst_partitioner.h:84</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFactory_html_a0089bd93c36dcd187a42cbefe0d5568a"><div class="ttname"><a href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#a0089bd93c36dcd187a42cbefe0d5568a">ROCKSDB_NAMESPACE::SstPartitionerFactory::Name</a></div><div class="ttdeci">const char * Name() const override=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFactory_html_a93ed4a227d1f00fe345ecc0d7712b0fa"><div class="ttname"><a href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#a93ed4a227d1f00fe345ecc0d7712b0fa">ROCKSDB_NAMESPACE::SstPartitionerFactory::Type</a></div><div class="ttdeci">static const char * Type()</div><div class="ttdef"><b>Definition</b> <a href="#l00087">sst_partitioner.h:87</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFactory_html_ad85e40d46404a3f90a9917f100a0bd62"><div class="ttname"><a href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#ad85e40d46404a3f90a9917f100a0bd62">ROCKSDB_NAMESPACE::SstPartitionerFactory::~SstPartitionerFactory</a></div><div class="ttdeci">~SstPartitionerFactory() override</div><div class="ttdef"><b>Definition</b> <a href="#l00086">sst_partitioner.h:86</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFactory_html_af48d20d14e8c39d4496b4ca28900c3ab"><div class="ttname"><a href="../../de/df7/classROCKSDB__NAMESPACE_1_1SstPartitionerFactory.html#af48d20d14e8c39d4496b4ca28900c3ab">ROCKSDB_NAMESPACE::SstPartitionerFactory::CreatePartitioner</a></div><div class="ttdeci">virtual std::unique_ptr&lt; SstPartitioner &gt; CreatePartitioner(const SstPartitioner::Context &amp;context) const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory_html_a425f91f911cd46459f8db61b5c9fb9b6"><div class="ttname"><a href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a425f91f911cd46459f8db61b5c9fb9b6">ROCKSDB_NAMESPACE::SstPartitionerFixedPrefixFactory::~SstPartitionerFixedPrefixFactory</a></div><div class="ttdeci">~SstPartitionerFixedPrefixFactory() override</div><div class="ttdef"><b>Definition</b> <a href="#l00127">sst_partitioner.h:127</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory_html_a44b00ec66aa55e8f830a718017ec56a3"><div class="ttname"><a href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a44b00ec66aa55e8f830a718017ec56a3">ROCKSDB_NAMESPACE::SstPartitionerFixedPrefixFactory::SstPartitionerFixedPrefixFactory</a></div><div class="ttdeci">SstPartitionerFixedPrefixFactory(size_t len)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d22/sst__partitioner_8cc_source.html#l00023">sst_partitioner.cc:23</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory_html_a54cdf56cb5633d160797bd3ef926cb82"><div class="ttname"><a href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a54cdf56cb5633d160797bd3ef926cb82">ROCKSDB_NAMESPACE::SstPartitionerFixedPrefixFactory::Name</a></div><div class="ttdeci">const char * Name() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00130">sst_partitioner.h:130</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory_html_a9092307f12e39c2dc0e9de7495b61f0e"><div class="ttname"><a href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a9092307f12e39c2dc0e9de7495b61f0e">ROCKSDB_NAMESPACE::SstPartitionerFixedPrefixFactory::kClassName</a></div><div class="ttdeci">static const char * kClassName()</div><div class="ttdef"><b>Definition</b> <a href="#l00129">sst_partitioner.h:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory_html_a96e4ce37f4adeea8b1ccda83b315ad9b"><div class="ttname"><a href="../../d7/d27/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefixFactory.html#a96e4ce37f4adeea8b1ccda83b315ad9b">ROCKSDB_NAMESPACE::SstPartitionerFixedPrefixFactory::len_</a></div><div class="ttdeci">size_t len_</div><div class="ttdef"><b>Definition</b> <a href="#l00136">sst_partitioner.h:136</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix_html_a30b8d7e22d9f9ec5afe62423facf199e"><div class="ttname"><a href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#a30b8d7e22d9f9ec5afe62423facf199e">ROCKSDB_NAMESPACE::SstPartitionerFixedPrefix::~SstPartitionerFixedPrefix</a></div><div class="ttdeci">~SstPartitionerFixedPrefix() override</div><div class="ttdef"><b>Definition</b> <a href="#l00107">sst_partitioner.h:107</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix_html_a32bb43ab6e0e508ed952bacc56bdea40"><div class="ttname"><a href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#a32bb43ab6e0e508ed952bacc56bdea40">ROCKSDB_NAMESPACE::SstPartitionerFixedPrefix::SstPartitionerFixedPrefix</a></div><div class="ttdeci">SstPartitionerFixedPrefix(size_t len)</div><div class="ttdef"><b>Definition</b> <a href="#l00105">sst_partitioner.h:105</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix_html_a7bf7369f7ee270f58b746d8796ec0646"><div class="ttname"><a href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#a7bf7369f7ee270f58b746d8796ec0646">ROCKSDB_NAMESPACE::SstPartitionerFixedPrefix::Name</a></div><div class="ttdeci">const char * Name() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00109">sst_partitioner.h:109</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix_html_aaa1397f8e6cced179c4d1d6aed200886"><div class="ttname"><a href="../../d8/d56/classROCKSDB__NAMESPACE_1_1SstPartitionerFixedPrefix.html#aaa1397f8e6cced179c4d1d6aed200886">ROCKSDB_NAMESPACE::SstPartitionerFixedPrefix::len_</a></div><div class="ttdeci">size_t len_</div><div class="ttdef"><b>Definition</b> <a href="#l00117">sst_partitioner.h:117</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitioner_html"><div class="ttname"><a href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html">ROCKSDB_NAMESPACE::SstPartitioner</a></div><div class="ttdef"><b>Definition</b> <a href="#l00045">sst_partitioner.h:45</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitioner_html_a2b1446dea020486eeeb17daa6969bb11"><div class="ttname"><a href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#a2b1446dea020486eeeb17daa6969bb11">ROCKSDB_NAMESPACE::SstPartitioner::Name</a></div><div class="ttdeci">virtual const char * Name() const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitioner_html_aa632e647b0cd54f4e0e72f5dc4f8ddd7"><div class="ttname"><a href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#aa632e647b0cd54f4e0e72f5dc4f8ddd7">ROCKSDB_NAMESPACE::SstPartitioner::ShouldPartition</a></div><div class="ttdeci">virtual PartitionerResult ShouldPartition(const PartitionerRequest &amp;request)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitioner_html_aec627f25bc9d14741e70681b47165ac4"><div class="ttname"><a href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#aec627f25bc9d14741e70681b47165ac4">ROCKSDB_NAMESPACE::SstPartitioner::~SstPartitioner</a></div><div class="ttdeci">virtual ~SstPartitioner()</div><div class="ttdef"><b>Definition</b> <a href="#l00047">sst_partitioner.h:47</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstPartitioner_html_afa5c61917ba890719b83102476b98665"><div class="ttname"><a href="../../d6/dde/classROCKSDB__NAMESPACE_1_1SstPartitioner.html#afa5c61917ba890719b83102476b98665">ROCKSDB_NAMESPACE::SstPartitioner::CanDoTrivialMove</a></div><div class="ttdeci">virtual bool CanDoTrivialMove(const Slice &amp;smallest_user_key, const Slice &amp;largest_user_key)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="acustomizable_8h_html"><div class="ttname"><a href="../../d0/d21/customizable_8h.html">customizable.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a12ed2141fc6b1a3fd2b715d538cd8b56"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a12ed2141fc6b1a3fd2b715d538cd8b56">ROCKSDB_NAMESPACE::NewSstPartitionerFixedPrefixFactory</a></div><div class="ttdeci">std::shared_ptr&lt; SstPartitionerFactory &gt; NewSstPartitionerFixedPrefixFactory(size_t prefix_len)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d22/sst__partitioner_8cc_source.html#l00054">sst_partitioner.cc:54</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a794c3b7c4e346ae6298afe40043a67fe"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67fe">ROCKSDB_NAMESPACE::PartitionerResult</a></div><div class="ttdeci">PartitionerResult</div><div class="ttdef"><b>Definition</b> <a href="#l00020">sst_partitioner.h:20</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a794c3b7c4e346ae6298afe40043a67fea0f478ead6c8c0128e4ab33aa4b26a1ce"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67fea0f478ead6c8c0128e4ab33aa4b26a1ce">ROCKSDB_NAMESPACE::kRequired</a></div><div class="ttdeci">@ kRequired</div><div class="ttdef"><b>Definition</b> <a href="#l00024">sst_partitioner.h:24</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a794c3b7c4e346ae6298afe40043a67feadc0758e5300a8e428117d898f6be394a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a794c3b7c4e346ae6298afe40043a67feadc0758e5300a8e428117d898f6be394a">ROCKSDB_NAMESPACE::kNotRequired</a></div><div class="ttdeci">@ kNotRequired</div><div class="ttdef"><b>Definition</b> <a href="#l00022">sst_partitioner.h:22</a></div></div>
+<div class="ttc" id="arocksdb__namespace_8h_html"><div class="ttname"><a href="../../da/df5/rocksdb__namespace_8h.html">rocksdb_namespace.h</a></div></div>
+<div class="ttc" id="aslice_8h_html"><div class="ttname"><a href="../../d0/d48/slice_8h.html">slice.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ConfigOptions_html"><div class="ttname"><a href="../../d4/dce/structROCKSDB__NAMESPACE_1_1ConfigOptions.html">ROCKSDB_NAMESPACE::ConfigOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/ddb/convenience_8h_source.html#l00034">convenience.h:34</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PartitionerRequest_html"><div class="ttname"><a href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html">ROCKSDB_NAMESPACE::PartitionerRequest</a></div><div class="ttdef"><b>Definition</b> <a href="#l00028">sst_partitioner.h:28</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PartitionerRequest_html_a4a7232f685e06325b85b24181dcac80b"><div class="ttname"><a href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a4a7232f685e06325b85b24181dcac80b">ROCKSDB_NAMESPACE::PartitionerRequest::PartitionerRequest</a></div><div class="ttdeci">PartitionerRequest(const Slice &amp;prev_user_key_, const Slice &amp;current_user_key_, uint64_t current_output_file_size_)</div><div class="ttdef"><b>Definition</b> <a href="#l00029">sst_partitioner.h:29</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PartitionerRequest_html_a6588b312588a03b2242b78b1f6ce0179"><div class="ttname"><a href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a6588b312588a03b2242b78b1f6ce0179">ROCKSDB_NAMESPACE::PartitionerRequest::current_output_file_size</a></div><div class="ttdeci">uint64_t current_output_file_size</div><div class="ttdef"><b>Definition</b> <a href="#l00037">sst_partitioner.h:37</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PartitionerRequest_html_a98907c2c1a864ba9a9bb747c4fd05cc0"><div class="ttname"><a href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#a98907c2c1a864ba9a9bb747c4fd05cc0">ROCKSDB_NAMESPACE::PartitionerRequest::prev_user_key</a></div><div class="ttdeci">const Slice * prev_user_key</div><div class="ttdef"><b>Definition</b> <a href="#l00035">sst_partitioner.h:35</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PartitionerRequest_html_acbe0e3fedf2a758957019de5a3810f6c"><div class="ttname"><a href="../../d8/de0/structROCKSDB__NAMESPACE_1_1PartitionerRequest.html#acbe0e3fedf2a758957019de5a3810f6c">ROCKSDB_NAMESPACE::PartitionerRequest::current_user_key</a></div><div class="ttdeci">const Slice * current_user_key</div><div class="ttdef"><b>Definition</b> <a href="#l00036">sst_partitioner.h:36</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context_html"><div class="ttname"><a href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html">ROCKSDB_NAMESPACE::SstPartitioner::Context</a></div><div class="ttdef"><b>Definition</b> <a href="#l00066">sst_partitioner.h:66</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context_html_a54ee3f1805712076ee7de55175e462dd"><div class="ttname"><a href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#a54ee3f1805712076ee7de55175e462dd">ROCKSDB_NAMESPACE::SstPartitioner::Context::largest_user_key</a></div><div class="ttdeci">Slice largest_user_key</div><div class="ttdef"><b>Definition</b> <a href="#l00077">sst_partitioner.h:77</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context_html_a88d97ebe9b477a49d1b715845c073def"><div class="ttname"><a href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#a88d97ebe9b477a49d1b715845c073def">ROCKSDB_NAMESPACE::SstPartitioner::Context::smallest_user_key</a></div><div class="ttdeci">Slice smallest_user_key</div><div class="ttdef"><b>Definition</b> <a href="#l00075">sst_partitioner.h:75</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context_html_a9941c86cd9dba8e48824d58db5fb44dc"><div class="ttname"><a href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#a9941c86cd9dba8e48824d58db5fb44dc">ROCKSDB_NAMESPACE::SstPartitioner::Context::is_full_compaction</a></div><div class="ttdeci">bool is_full_compaction</div><div class="ttdef"><b>Definition</b> <a href="#l00068">sst_partitioner.h:68</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context_html_aa8d48051de995e0816dbaa51c065ca8a"><div class="ttname"><a href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#aa8d48051de995e0816dbaa51c065ca8a">ROCKSDB_NAMESPACE::SstPartitioner::Context::is_manual_compaction</a></div><div class="ttdeci">bool is_manual_compaction</div><div class="ttdef"><b>Definition</b> <a href="#l00071">sst_partitioner.h:71</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context_html_ad6fd28c65be774b5fc6d170233578391"><div class="ttname"><a href="../../d8/d0a/structROCKSDB__NAMESPACE_1_1SstPartitioner_1_1Context.html#ad6fd28c65be774b5fc6d170233578391">ROCKSDB_NAMESPACE::SstPartitioner::Context::output_level</a></div><div class="ttdeci">int output_level</div><div class="ttdef"><b>Definition</b> <a href="#l00073">sst_partitioner.h:73</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_8784722d8c2e7f3978e4945ad578533f.html">rocksdb</a></li><li class="navelem"><a class="el" href="../../df/dbf/sst__partitioner_8h.html">sst_partitioner.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

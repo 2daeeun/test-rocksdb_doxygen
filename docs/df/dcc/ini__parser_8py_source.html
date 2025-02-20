@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: tools/advisor/advisor/ini_parser.py 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('df/dcc/ini__parser_8py_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">ini_parser.py</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../df/dcc/ini__parser_8py.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="../../d7/db6/namespaceadvisor_1_1ini__parser.html">    1</a></span><span class="comment"># Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">#  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">#  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">#  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">from</span> enum <span class="keyword">import</span> Enum</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="foldopen" id="foldopen00009" data-start="" data-end="">
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html">    9</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html">IniParser</a>:</div>
+<div class="foldopen" id="foldopen00010" data-start="" data-end="">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="../../d2/d6a/classadvisor_1_1ini__parser_1_1IniParser_1_1Element.html">   10</a></span>    <span class="keyword">class </span><a class="code hl_class" href="../../d2/d6a/classadvisor_1_1ini__parser_1_1IniParser_1_1Element.html">Element</a>(Enum):</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="../../d2/d6a/classadvisor_1_1ini__parser_1_1IniParser_1_1Element.html#a2cf0b76611eec73c8735f32c26940036">   11</a></span>        rule = 1</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="../../d2/d6a/classadvisor_1_1ini__parser_1_1IniParser_1_1Element.html#abf4a4f39e48a3d66e64fb62dbb68484c">   12</a></span>        cond = 2</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../d2/d6a/classadvisor_1_1ini__parser_1_1IniParser_1_1Element.html#a5c1447cb6a18a5c4a2c0d227ed936358">   13</a></span>        sugg = 3</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="../../d2/d6a/classadvisor_1_1ini__parser_1_1IniParser_1_1Element.html#a515872c30f6ca2a0f4092f2c2f4cb9e7">   14</a></span>        key_val = 4</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="../../d2/d6a/classadvisor_1_1ini__parser_1_1IniParser_1_1Element.html#aab54ffaad3637eb32ce9ca19f8432074">   15</a></span>        comment = 5</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="preprocessor">@staticmethod</span></div>
+<div class="foldopen" id="foldopen00018" data-start="" data-end="">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#ad3d0d4949947e68344ccf633945e33e4">   18</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#ad3d0d4949947e68344ccf633945e33e4">remove_trailing_comment</a>(line):</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        line = line.strip()</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        comment_start = line.find(<span class="stringliteral">&quot;#&quot;</span>)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keywordflow">if</span> comment_start &gt; -1:</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            <span class="keywordflow">return</span> line[:comment_start]</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordflow">return</span> line</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="preprocessor">@staticmethod</span></div>
+<div class="foldopen" id="foldopen00026" data-start="" data-end="">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#aaad5a3714c0d586f591bc8964529ca86">   26</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#aaad5a3714c0d586f591bc8964529ca86">is_section_header</a>(line):</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="comment"># A section header looks like: [Rule &quot;my-new-rule&quot;]. Essentially,</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="comment"># a line that is in square-brackets.</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        line = line.strip()</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keywordflow">if</span> line.startswith(<span class="stringliteral">&quot;[&quot;</span>) <span class="keywordflow">and</span> line.endswith(<span class="stringliteral">&quot;]&quot;</span>):</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            <span class="keywordflow">return</span> <span class="keyword">True</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="preprocessor">@staticmethod</span></div>
+<div class="foldopen" id="foldopen00035" data-start="" data-end="">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#a9abacd83436cf015dfe1ab89071aa0f5">   35</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#a9abacd83436cf015dfe1ab89071aa0f5">get_section_name</a>(line):</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="comment"># For a section header: [Rule &quot;my-new-rule&quot;], this method will return</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="comment"># &quot;my-new-rule&quot;.</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        token_list = line.strip()[1:-1].split(<span class="stringliteral">&#39;&quot;&#39;</span>)</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keywordflow">if</span> len(token_list) &lt; 3:</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            error = <span class="stringliteral">&#39;needed section header: [&lt;section_type&gt; &quot;&lt;section_name&gt;&quot;]&#39;</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;Parsing error: &quot;</span> + error + <span class="stringliteral">&quot;\n&quot;</span> + line)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">return</span> token_list[1]</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="preprocessor">@staticmethod</span></div>
+<div class="foldopen" id="foldopen00045" data-start="" data-end="">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#a2b64aad7d692690baef176a1c755fc64">   45</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#a2b64aad7d692690baef176a1c755fc64">get_element</a>(line):</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        line = IniParser.remove_trailing_comment(line)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> line:</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">return</span> IniParser.Element.comment</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">if</span> IniParser.is_section_header(line):</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            <span class="keywordflow">if</span> line.strip()[1:-1].startswith(<span class="stringliteral">&quot;Suggestion&quot;</span>):</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                <span class="keywordflow">return</span> IniParser.Element.sugg</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            <span class="keywordflow">if</span> line.strip()[1:-1].startswith(<span class="stringliteral">&quot;Rule&quot;</span>):</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                <span class="keywordflow">return</span> IniParser.Element.rule</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            <span class="keywordflow">if</span> line.strip()[1:-1].startswith(<span class="stringliteral">&quot;Condition&quot;</span>):</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                <span class="keywordflow">return</span> IniParser.Element.cond</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;=&quot;</span> <span class="keywordflow">in</span> line:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keywordflow">return</span> IniParser.Element.key_val</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        error = <span class="stringliteral">&quot;not a recognizable RulesSpec element&quot;</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;Parsing error: &quot;</span> + error + <span class="stringliteral">&quot;\n&quot;</span> + line)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="preprocessor">@staticmethod</span></div>
+<div class="foldopen" id="foldopen00062" data-start="" data-end="">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#ac828e912f6d622d2b8ac5f4568a4c029">   62</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#ac828e912f6d622d2b8ac5f4568a4c029">get_key_value_pair</a>(line):</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        line = line.strip()</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        key = line.split(<span class="stringliteral">&quot;=&quot;</span>)[0].strip()</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        value = <span class="stringliteral">&quot;=&quot;</span>.join(line.split(<span class="stringliteral">&quot;=&quot;</span>)[1:])</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">if</span> value == <span class="stringliteral">&quot;&quot;</span>:  <span class="comment"># if the option has no value</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            <span class="keywordflow">return</span> (key, <span class="keywordtype">None</span>)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        values = IniParser.get_list_from_value(value)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keywordflow">if</span> len(values) == 1:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            <span class="keywordflow">return</span> (key, value)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keywordflow">return</span> (key, values)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="preprocessor">@staticmethod</span></div>
+<div class="foldopen" id="foldopen00074" data-start="" data-end="">
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#ad679953aba495299cae47bf0fef2855f">   74</a></span>    <span class="keyword">def </span><a class="code hl_function" href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#ad679953aba495299cae47bf0fef2855f">get_list_from_value</a>(value):</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        values = value.strip().split(<span class="stringliteral">&quot;:&quot;</span>)</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keywordflow">return</span> values</div>
+</div>
+</div>
+<div class="ttc" id="aclassadvisor_1_1ini__parser_1_1IniParser_1_1Element_html"><div class="ttname"><a href="../../d2/d6a/classadvisor_1_1ini__parser_1_1IniParser_1_1Element.html">advisor.ini_parser.IniParser.Element</a></div><div class="ttdef"><b>Definition</b> <a href="#l00010">ini_parser.py:10</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1ini__parser_1_1IniParser_html"><div class="ttname"><a href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html">advisor.ini_parser.IniParser</a></div><div class="ttdef"><b>Definition</b> <a href="#l00009">ini_parser.py:9</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1ini__parser_1_1IniParser_html_a2b64aad7d692690baef176a1c755fc64"><div class="ttname"><a href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#a2b64aad7d692690baef176a1c755fc64">advisor.ini_parser.IniParser.get_element</a></div><div class="ttdeci">get_element(line)</div><div class="ttdef"><b>Definition</b> <a href="#l00045">ini_parser.py:45</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1ini__parser_1_1IniParser_html_a9abacd83436cf015dfe1ab89071aa0f5"><div class="ttname"><a href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#a9abacd83436cf015dfe1ab89071aa0f5">advisor.ini_parser.IniParser.get_section_name</a></div><div class="ttdeci">get_section_name(line)</div><div class="ttdef"><b>Definition</b> <a href="#l00035">ini_parser.py:35</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1ini__parser_1_1IniParser_html_aaad5a3714c0d586f591bc8964529ca86"><div class="ttname"><a href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#aaad5a3714c0d586f591bc8964529ca86">advisor.ini_parser.IniParser.is_section_header</a></div><div class="ttdeci">is_section_header(line)</div><div class="ttdef"><b>Definition</b> <a href="#l00026">ini_parser.py:26</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1ini__parser_1_1IniParser_html_ac828e912f6d622d2b8ac5f4568a4c029"><div class="ttname"><a href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#ac828e912f6d622d2b8ac5f4568a4c029">advisor.ini_parser.IniParser.get_key_value_pair</a></div><div class="ttdeci">get_key_value_pair(line)</div><div class="ttdef"><b>Definition</b> <a href="#l00062">ini_parser.py:62</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1ini__parser_1_1IniParser_html_ad3d0d4949947e68344ccf633945e33e4"><div class="ttname"><a href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#ad3d0d4949947e68344ccf633945e33e4">advisor.ini_parser.IniParser.remove_trailing_comment</a></div><div class="ttdeci">remove_trailing_comment(line)</div><div class="ttdef"><b>Definition</b> <a href="#l00018">ini_parser.py:18</a></div></div>
+<div class="ttc" id="aclassadvisor_1_1ini__parser_1_1IniParser_html_ad679953aba495299cae47bf0fef2855f"><div class="ttname"><a href="../../d6/d6d/classadvisor_1_1ini__parser_1_1IniParser.html#ad679953aba495299cae47bf0fef2855f">advisor.ini_parser.IniParser.get_list_from_value</a></div><div class="ttdeci">get_list_from_value(value)</div><div class="ttdef"><b>Definition</b> <a href="#l00074">ini_parser.py:74</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_4eeb864c4eec08c7d6b9d3b0352cfdde.html">tools</a></li><li class="navelem"><a class="el" href="../../dir_b2ea55d115167396574e66fe944d853b.html">advisor</a></li><li class="navelem"><a class="el" href="../../dir_8dcb2fdd79ebee23e50e5ad2f2c103ad.html">advisor</a></li><li class="navelem"><a class="el" href="../../df/dcc/ini__parser_8py.html">ini_parser.py</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/manifest_ops.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d8/d75/manifest__ops_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">manifest_ops.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d8/d75/manifest__ops_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d0e/manifest__ops_8h.html">db/manifest_ops.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/dd6/filename_8h.html">file/filename.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a03e0469cc62e60644a528ae8c951f784">   13</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a03e0469cc62e60644a528ae8c951f784">GetCurrentManifestPath</a>(<span class="keyword">const</span> std::string&amp; <a class="code hl_variable" href="../../d7/d62/c__test_8c.html#a75d845559336df6843f3b599960f89d2">dbname</a>, <a class="code hl_class" href="../../d3/d26/classROCKSDB__NAMESPACE_1_1FileSystem.html">FileSystem</a>* fs,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                              <span class="keywordtype">bool</span> is_retry, std::string* manifest_path,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                              uint64_t* manifest_file_number) {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  assert(fs != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  assert(manifest_path != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  assert(manifest_file_number != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a> opts;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  std::string fname;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordflow">if</span> (is_retry) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    opts.<a class="code hl_variable" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html#ae17a3e883b751eaedede4e89585ba715">verify_and_reconstruct_read</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  }</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0e3dd03e189296cca021bf57cafa99dc">ReadFileToString</a>(fs, <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6d1101286561a2c32c1fae3fc658f22f">CurrentFileName</a>(<a class="code hl_variable" href="../../d7/d62/c__test_8c.html#a75d845559336df6843f3b599960f89d2">dbname</a>), opts, &amp;fname);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordflow">if</span> (fname.empty() || fname.back() != <span class="charliteral">&#39;\n&#39;</span>) {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">Status::Corruption</a>(<span class="stringliteral">&quot;CURRENT file does not end with newline&quot;</span>);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// remove the trailing &#39;\n&#39;</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  fname.resize(fname.size() - 1);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ad">FileType</a> <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordtype">bool</span> parse_ok = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7d87aaca453b4f1ca5f4475ef9b0ff31">ParseFileName</a>(fname, manifest_file_number, &amp;<a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a>);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">if</span> (!parse_ok || <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> != <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ada91dced9a7ed0681b2edda7cb4b265ba1">kDescriptorFile</a>) {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">Status::Corruption</a>(<span class="stringliteral">&quot;CURRENT file corrupted&quot;</span>);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  *manifest_path = <a class="code hl_variable" href="../../d7/d62/c__test_8c.html#a75d845559336df6843f3b599960f89d2">dbname</a>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d7/d62/c__test_8c.html#a75d845559336df6843f3b599960f89d2">dbname</a>.back() != <span class="charliteral">&#39;/&#39;</span>) {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    manifest_path-&gt;push_back(<span class="charliteral">&#39;/&#39;</span>);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  manifest_path-&gt;append(fname);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="ac__test_8c_html_a75d845559336df6843f3b599960f89d2"><div class="ttname"><a href="../../d7/d62/c__test_8c.html#a75d845559336df6843f3b599960f89d2">dbname</a></div><div class="ttdeci">static char dbname[200]</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d62/c__test_8c_source.html#l00036">c_test.c:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystem_html"><div class="ttname"><a href="../../d3/d26/classROCKSDB__NAMESPACE_1_1FileSystem.html">ROCKSDB_NAMESPACE::FileSystem</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00292">file_system.h:292</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a41dc92b90c65fe4db6b69108cf52569e"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">ROCKSDB_NAMESPACE::Status::Corruption</a></div><div class="ttdeci">static Status Corruption(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00203">status.h:203</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="afilename_8h_html"><div class="ttname"><a href="../../dc/dd6/filename_8h.html">filename.h</a></div></div>
+<div class="ttc" id="amanifest__ops_8h_html"><div class="ttname"><a href="../../d8/d0e/manifest__ops_8h.html">manifest_ops.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a03e0469cc62e60644a528ae8c951f784"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a03e0469cc62e60644a528ae8c951f784">ROCKSDB_NAMESPACE::GetCurrentManifestPath</a></div><div class="ttdeci">Status GetCurrentManifestPath(const std::string &amp;dbname, FileSystem *fs, bool is_retry, std::string *manifest_path, uint64_t *manifest_file_number)</div><div class="ttdef"><b>Definition</b> <a href="#l00013">manifest_ops.cc:13</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0e3dd03e189296cca021bf57cafa99dc"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0e3dd03e189296cca021bf57cafa99dc">ROCKSDB_NAMESPACE::ReadFileToString</a></div><div class="ttdeci">Status ReadFileToString(Env *env, const std::string &amp;fname, std::string *data)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d7d/env_8cc_source.html#l01075">env.cc:1075</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a572c40b059615a4b9755748d810fc3ad"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ad">ROCKSDB_NAMESPACE::FileType</a></div><div class="ttdeci">FileType</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00045">types.h:45</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a572c40b059615a4b9755748d810fc3ada91dced9a7ed0681b2edda7cb4b265ba1"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ada91dced9a7ed0681b2edda7cb4b265ba1">ROCKSDB_NAMESPACE::kDescriptorFile</a></div><div class="ttdeci">@ kDescriptorFile</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00049">types.h:49</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6d1101286561a2c32c1fae3fc658f22f"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6d1101286561a2c32c1fae3fc658f22f">ROCKSDB_NAMESPACE::CurrentFileName</a></div><div class="ttdeci">std::string CurrentFileName(const std::string &amp;dbname)</div><div class="ttdef"><b>Definition</b> <a href="../../de/d86/filename_8cc_source.html#l00177">filename.cc:177</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a7d87aaca453b4f1ca5f4475ef9b0ff31"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7d87aaca453b4f1ca5f4475ef9b0ff31">ROCKSDB_NAMESPACE::ParseFileName</a></div><div class="ttdeci">bool ParseFileName(const std::string &amp;fname, uint64_t *number, FileType *type, WalFileType *log_type)</div><div class="ttdef"><b>Definition</b> <a href="../../de/d86/filename_8cc_source.html#l00268">filename.cc:268</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IOOptions_html"><div class="ttname"><a href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">ROCKSDB_NAMESPACE::IOOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00097">file_system.h:97</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IOOptions_html_ae17a3e883b751eaedede4e89585ba715"><div class="ttname"><a href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html#ae17a3e883b751eaedede4e89585ba715">ROCKSDB_NAMESPACE::IOOptions::verify_and_reconstruct_read</a></div><div class="ttdeci">bool verify_and_reconstruct_read</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00140">file_system.h:140</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1aligned__storage_html"><div class="ttname"><a href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">ROCKSDB_NAMESPACE::type</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../d8/d75/manifest__ops_8cc.html">manifest_ops.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

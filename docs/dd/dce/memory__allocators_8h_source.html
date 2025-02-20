@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/memory_allocators.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('dd/dce/memory__allocators_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">memory_allocators.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../dd/dce/memory__allocators_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d02/memory__allocator_8h.html">rocksdb/memory_allocator.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// A memory allocator using new/delete</span></div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="};">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html">   13</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html">DefaultMemoryAllocator</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d1/d8f/classROCKSDB__NAMESPACE_1_1MemoryAllocator.html">MemoryAllocator</a> {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#abc85768f1ffc40e75072046a1ad0d5b7">   15</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#abc85768f1ffc40e75072046a1ad0d5b7">kClassName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;DefaultMemoryAllocator&quot;</span>; }</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#a459dfb386a635b61b82bf0d8172e9f0a">   16</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#a459dfb386a635b61b82bf0d8172e9f0a">Name</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#abc85768f1ffc40e75072046a1ad0d5b7">kClassName</a>(); }</div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#aacb760d4899d58903895de3c79037561">   17</a></span>  <span class="keywordtype">void</span>* <a class="code hl_function" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#aacb760d4899d58903895de3c79037561">Allocate</a>(<span class="keywordtype">size_t</span> size)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(<span class="keyword">new</span> <span class="keywordtype">char</span>[size]);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  }</div>
+</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#a9cab8f98ff64416d24834c387e3c87bc">   21</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#a9cab8f98ff64416d24834c387e3c87bc">Deallocate</a>(<span class="keywordtype">void</span>* p)<span class="keyword"> override </span>{ <span class="keyword">delete</span>[] <span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(p); }</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>};</div>
+</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// Base class for a MemoryAllocator.  This implementation does nothing</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">// and implements the methods in failuse mode (assert if the methods are</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// invoked). Implementations can extend this class and override these methods</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// when they are enabled via compiler switches (e.g., the</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// JeMallocMemoryAllocator can define these methods if ROCKSDB_JEMALLOC is</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// defined at compile time.  If compiled in &quot;disabled&quot; mode, this class provides</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// default/failure implementations.  If compiled in &quot;enabled&quot; mode, the derived</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// class needs to provide the appopriate &quot;enabled&quot; methods for the &quot;real&quot;</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// implementation. Failure of the &quot;real&quot; implementation to implement ovreride</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// any of these methods will result in an assert failure.</span></div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html">   34</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html">BaseMemoryAllocator</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d1/d8f/classROCKSDB__NAMESPACE_1_1MemoryAllocator.html">MemoryAllocator</a> {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html#a17d989b18fa914b91b4fa84b82a08de7">   36</a></span>  <span class="keywordtype">void</span>* <a class="code hl_function" href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html#a17d989b18fa914b91b4fa84b82a08de7">Allocate</a>(<span class="keywordtype">size_t</span> <span class="comment">/*size*/</span>)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
+</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html#add20c75d8481c2e47730ce7782c44532">   41</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html#add20c75d8481c2e47730ce7782c44532">Deallocate</a>(<span class="keywordtype">void</span>* <span class="comment">/*p*/</span>)<span class="keyword"> override </span>{ assert(<span class="keyword">false</span>); }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>};</div>
+</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">// A Wrapped MemoryAllocator.  Delegates the memory allcator functions to the</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// wrapped one.</span></div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="};">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html">   46</a></span><span class="keyword">class </span><a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a4181ee495b913f9a985e8e00aef961eb">MemoryAllocatorWrapper</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d1/d8f/classROCKSDB__NAMESPACE_1_1MemoryAllocator.html">MemoryAllocator</a> {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// Initialize an MemoryAllocatorWrapper that delegates all calls to *t</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a4181ee495b913f9a985e8e00aef961eb">MemoryAllocatorWrapper</a>(<span class="keyword">const</span> std::shared_ptr&lt;MemoryAllocator&gt;&amp; t);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a9331cf26075cc92f0a0d37b0ea18ba90">   50</a></span>  <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a9331cf26075cc92f0a0d37b0ea18ba90">~MemoryAllocatorWrapper</a>()<span class="keyword"> override </span>{}</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// Return the target to which to forward all calls</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ab7fbcd778aa99540212c990a57323972">   53</a></span>  <a class="code hl_class" href="../../d1/d8f/classROCKSDB__NAMESPACE_1_1MemoryAllocator.html">MemoryAllocator</a>* <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ab7fbcd778aa99540212c990a57323972">target</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ae24d21117d3940d9d64e7f0a1c918307">target_</a>.get(); }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// Allocate a block of at least size. Has to be thread-safe.</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a1a4215395748fd09b93a52fc51af8841">   55</a></span>  <span class="keywordtype">void</span>* <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a1a4215395748fd09b93a52fc51af8841">Allocate</a>(<span class="keywordtype">size_t</span> size)<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ae24d21117d3940d9d64e7f0a1c918307">target_</a>-&gt;Allocate(size); }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// Deallocate previously allocated block. Has to be thread-safe.</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a87a3d041453145494ef82b8e2596287d">   58</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a87a3d041453145494ef82b8e2596287d">Deallocate</a>(<span class="keywordtype">void</span>* p)<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ae24d21117d3940d9d64e7f0a1c918307">target_</a>-&gt;Deallocate(p); }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="comment">// Returns the memory size of the block allocated at p. The default</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">// implementation that just returns the original allocation_size is fine.</span></div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a7e46e9334fda451cf2c63b2240c97bf1">   62</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a7e46e9334fda451cf2c63b2240c97bf1">UsableSize</a>(<span class="keywordtype">void</span>* p, <span class="keywordtype">size_t</span> allocation_size)<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ae24d21117d3940d9d64e7f0a1c918307">target_</a>-&gt;UsableSize(p, allocation_size);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  }</div>
+</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ada06b5b6c6257609f62657e30fbb6dca">   66</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d0/deb/classROCKSDB__NAMESPACE_1_1Customizable.html">Customizable</a>* <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ada06b5b6c6257609f62657e30fbb6dca">Inner</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ae24d21117d3940d9d64e7f0a1c918307">target_</a>.get(); }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ae24d21117d3940d9d64e7f0a1c918307">   69</a></span>  std::shared_ptr&lt;MemoryAllocator&gt; <a class="code hl_variable" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ae24d21117d3940d9d64e7f0a1c918307">target_</a>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>};</div>
+</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">// A memory allocator that counts the number of allocations and deallocations</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">// This class is useful if the number of memory allocations/dellocations is</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">// important.</span></div>
+<div class="foldopen" id="foldopen00075" data-start="{" data-end="};">
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html">   75</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a879d834f6e4e8d76fd18fb4c04024260">CountedMemoryAllocator</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a4181ee495b913f9a985e8e00aef961eb">MemoryAllocatorWrapper</a> {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a879d834f6e4e8d76fd18fb4c04024260">   77</a></span>  <a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a879d834f6e4e8d76fd18fb4c04024260">CountedMemoryAllocator</a>()</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      : <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a4181ee495b913f9a985e8e00aef961eb">MemoryAllocatorWrapper</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::make_shared&lt;<a class="code hl_class" href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html">DefaultMemoryAllocator</a>&gt;()),</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <a class="code hl_variable" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a3dc2492caca75a8f6106c3376a8848e0">allocations_</a>(0),</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <a class="code hl_variable" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#aed205fa68c6b002fe47cbd72ee405664">deallocations_</a>(0) {}</div>
+</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="foldopen" id="foldopen00082" data-start="{" data-end="}">
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a54e9bd929a372d94ce5c93b3c59a9d56">   82</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a54e9bd929a372d94ce5c93b3c59a9d56">CountedMemoryAllocator</a>(<span class="keyword">const</span> std::shared_ptr&lt;MemoryAllocator&gt;&amp; t)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      : <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a4181ee495b913f9a985e8e00aef961eb">MemoryAllocatorWrapper</a>(t), <a class="code hl_variable" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a3dc2492caca75a8f6106c3376a8848e0">allocations_</a>(0), <a class="code hl_variable" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#aed205fa68c6b002fe47cbd72ee405664">deallocations_</a>(0) {}</div>
+</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a2c957711938d1f57b6735213118ceaee">   84</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a2c957711938d1f57b6735213118ceaee">kClassName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;CountedMemoryAllocator&quot;</span>; }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a679e58ef723de230605dc66c6900795a">   85</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a679e58ef723de230605dc66c6900795a">Name</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a2c957711938d1f57b6735213118ceaee">kClassName</a>(); }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a4cb39a84e58c7f4fd88dedc4d931cb32">   86</a></span>  std::string <a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a4cb39a84e58c7f4fd88dedc4d931cb32">GetId</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> std::string(<a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a679e58ef723de230605dc66c6900795a">Name</a>()); }</div>
+<div class="foldopen" id="foldopen00087" data-start="{" data-end="}">
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a3f9f2596fa71dc77caaef14f6ab01695">   87</a></span>  <span class="keywordtype">void</span>* <a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a3f9f2596fa71dc77caaef14f6ab01695">Allocate</a>(<span class="keywordtype">size_t</span> size)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <a class="code hl_variable" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a3dc2492caca75a8f6106c3376a8848e0">allocations_</a>++;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a1a4215395748fd09b93a52fc51af8841">MemoryAllocatorWrapper::Allocate</a>(size);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  }</div>
+</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a5605be5de7c70c5788e2534d2a5de62c">   92</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a5605be5de7c70c5788e2534d2a5de62c">Deallocate</a>(<span class="keywordtype">void</span>* p)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <a class="code hl_variable" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#aed205fa68c6b002fe47cbd72ee405664">deallocations_</a>++;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <a class="code hl_function" href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a87a3d041453145494ef82b8e2596287d">MemoryAllocatorWrapper::Deallocate</a>(p);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#aa3b16a0c886ee7d3e8aabc905b1ea500">   96</a></span>  uint64_t <a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#aa3b16a0c886ee7d3e8aabc905b1ea500">GetNumAllocations</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a3dc2492caca75a8f6106c3376a8848e0">allocations_</a>; }</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a28993006fa95eea69400ba5f13d0e7f3">   97</a></span>  uint64_t <a class="code hl_function" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a28993006fa95eea69400ba5f13d0e7f3">GetNumDeallocations</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#aed205fa68c6b002fe47cbd72ee405664">deallocations_</a>; }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a3dc2492caca75a8f6106c3376a8848e0">  100</a></span>  std::atomic&lt;uint64_t&gt; <a class="code hl_variable" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a3dc2492caca75a8f6106c3376a8848e0">allocations_</a>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#aed205fa68c6b002fe47cbd72ee405664">  101</a></span>  std::atomic&lt;uint64_t&gt; <a class="code hl_variable" href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#aed205fa68c6b002fe47cbd72ee405664">deallocations_</a>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>};</div>
+</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BaseMemoryAllocator_html"><div class="ttname"><a href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html">ROCKSDB_NAMESPACE::BaseMemoryAllocator</a></div><div class="ttdef"><b>Definition</b> <a href="#l00034">memory_allocators.h:34</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BaseMemoryAllocator_html_a17d989b18fa914b91b4fa84b82a08de7"><div class="ttname"><a href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html#a17d989b18fa914b91b4fa84b82a08de7">ROCKSDB_NAMESPACE::BaseMemoryAllocator::Allocate</a></div><div class="ttdeci">void * Allocate(size_t) override</div><div class="ttdef"><b>Definition</b> <a href="#l00036">memory_allocators.h:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BaseMemoryAllocator_html_add20c75d8481c2e47730ce7782c44532"><div class="ttname"><a href="../../d0/ded/classROCKSDB__NAMESPACE_1_1BaseMemoryAllocator.html#add20c75d8481c2e47730ce7782c44532">ROCKSDB_NAMESPACE::BaseMemoryAllocator::Deallocate</a></div><div class="ttdeci">void Deallocate(void *) override</div><div class="ttdef"><b>Definition</b> <a href="#l00041">memory_allocators.h:41</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_a28993006fa95eea69400ba5f13d0e7f3"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a28993006fa95eea69400ba5f13d0e7f3">ROCKSDB_NAMESPACE::CountedMemoryAllocator::GetNumDeallocations</a></div><div class="ttdeci">uint64_t GetNumDeallocations() const</div><div class="ttdef"><b>Definition</b> <a href="#l00097">memory_allocators.h:97</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_a2c957711938d1f57b6735213118ceaee"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a2c957711938d1f57b6735213118ceaee">ROCKSDB_NAMESPACE::CountedMemoryAllocator::kClassName</a></div><div class="ttdeci">static const char * kClassName()</div><div class="ttdef"><b>Definition</b> <a href="#l00084">memory_allocators.h:84</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_a3dc2492caca75a8f6106c3376a8848e0"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a3dc2492caca75a8f6106c3376a8848e0">ROCKSDB_NAMESPACE::CountedMemoryAllocator::allocations_</a></div><div class="ttdeci">std::atomic&lt; uint64_t &gt; allocations_</div><div class="ttdef"><b>Definition</b> <a href="#l00100">memory_allocators.h:100</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_a3f9f2596fa71dc77caaef14f6ab01695"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a3f9f2596fa71dc77caaef14f6ab01695">ROCKSDB_NAMESPACE::CountedMemoryAllocator::Allocate</a></div><div class="ttdeci">void * Allocate(size_t size) override</div><div class="ttdef"><b>Definition</b> <a href="#l00087">memory_allocators.h:87</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_a4cb39a84e58c7f4fd88dedc4d931cb32"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a4cb39a84e58c7f4fd88dedc4d931cb32">ROCKSDB_NAMESPACE::CountedMemoryAllocator::GetId</a></div><div class="ttdeci">std::string GetId() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00086">memory_allocators.h:86</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_a54e9bd929a372d94ce5c93b3c59a9d56"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a54e9bd929a372d94ce5c93b3c59a9d56">ROCKSDB_NAMESPACE::CountedMemoryAllocator::CountedMemoryAllocator</a></div><div class="ttdeci">CountedMemoryAllocator(const std::shared_ptr&lt; MemoryAllocator &gt; &amp;t)</div><div class="ttdef"><b>Definition</b> <a href="#l00082">memory_allocators.h:82</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_a5605be5de7c70c5788e2534d2a5de62c"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a5605be5de7c70c5788e2534d2a5de62c">ROCKSDB_NAMESPACE::CountedMemoryAllocator::Deallocate</a></div><div class="ttdeci">void Deallocate(void *p) override</div><div class="ttdef"><b>Definition</b> <a href="#l00092">memory_allocators.h:92</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_a679e58ef723de230605dc66c6900795a"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a679e58ef723de230605dc66c6900795a">ROCKSDB_NAMESPACE::CountedMemoryAllocator::Name</a></div><div class="ttdeci">const char * Name() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00085">memory_allocators.h:85</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_a879d834f6e4e8d76fd18fb4c04024260"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#a879d834f6e4e8d76fd18fb4c04024260">ROCKSDB_NAMESPACE::CountedMemoryAllocator::CountedMemoryAllocator</a></div><div class="ttdeci">CountedMemoryAllocator()</div><div class="ttdef"><b>Definition</b> <a href="#l00077">memory_allocators.h:77</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_aa3b16a0c886ee7d3e8aabc905b1ea500"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#aa3b16a0c886ee7d3e8aabc905b1ea500">ROCKSDB_NAMESPACE::CountedMemoryAllocator::GetNumAllocations</a></div><div class="ttdeci">uint64_t GetNumAllocations() const</div><div class="ttdef"><b>Definition</b> <a href="#l00096">memory_allocators.h:96</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CountedMemoryAllocator_html_aed205fa68c6b002fe47cbd72ee405664"><div class="ttname"><a href="../../d7/d46/classROCKSDB__NAMESPACE_1_1CountedMemoryAllocator.html#aed205fa68c6b002fe47cbd72ee405664">ROCKSDB_NAMESPACE::CountedMemoryAllocator::deallocations_</a></div><div class="ttdeci">std::atomic&lt; uint64_t &gt; deallocations_</div><div class="ttdef"><b>Definition</b> <a href="#l00101">memory_allocators.h:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Customizable_html"><div class="ttname"><a href="../../d0/deb/classROCKSDB__NAMESPACE_1_1Customizable.html">ROCKSDB_NAMESPACE::Customizable</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d21/customizable_8h_source.html#l00056">customizable.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator_html"><div class="ttname"><a href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html">ROCKSDB_NAMESPACE::DefaultMemoryAllocator</a></div><div class="ttdef"><b>Definition</b> <a href="#l00013">memory_allocators.h:13</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator_html_a459dfb386a635b61b82bf0d8172e9f0a"><div class="ttname"><a href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#a459dfb386a635b61b82bf0d8172e9f0a">ROCKSDB_NAMESPACE::DefaultMemoryAllocator::Name</a></div><div class="ttdeci">const char * Name() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00016">memory_allocators.h:16</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator_html_a9cab8f98ff64416d24834c387e3c87bc"><div class="ttname"><a href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#a9cab8f98ff64416d24834c387e3c87bc">ROCKSDB_NAMESPACE::DefaultMemoryAllocator::Deallocate</a></div><div class="ttdeci">void Deallocate(void *p) override</div><div class="ttdef"><b>Definition</b> <a href="#l00021">memory_allocators.h:21</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator_html_aacb760d4899d58903895de3c79037561"><div class="ttname"><a href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#aacb760d4899d58903895de3c79037561">ROCKSDB_NAMESPACE::DefaultMemoryAllocator::Allocate</a></div><div class="ttdeci">void * Allocate(size_t size) override</div><div class="ttdef"><b>Definition</b> <a href="#l00017">memory_allocators.h:17</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator_html_abc85768f1ffc40e75072046a1ad0d5b7"><div class="ttname"><a href="../../d5/d0a/classROCKSDB__NAMESPACE_1_1DefaultMemoryAllocator.html#abc85768f1ffc40e75072046a1ad0d5b7">ROCKSDB_NAMESPACE::DefaultMemoryAllocator::kClassName</a></div><div class="ttdeci">static const char * kClassName()</div><div class="ttdef"><b>Definition</b> <a href="#l00015">memory_allocators.h:15</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper_html_a1a4215395748fd09b93a52fc51af8841"><div class="ttname"><a href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a1a4215395748fd09b93a52fc51af8841">ROCKSDB_NAMESPACE::MemoryAllocatorWrapper::Allocate</a></div><div class="ttdeci">void * Allocate(size_t size) override</div><div class="ttdef"><b>Definition</b> <a href="#l00055">memory_allocators.h:55</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper_html_a4181ee495b913f9a985e8e00aef961eb"><div class="ttname"><a href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a4181ee495b913f9a985e8e00aef961eb">ROCKSDB_NAMESPACE::MemoryAllocatorWrapper::MemoryAllocatorWrapper</a></div><div class="ttdeci">MemoryAllocatorWrapper(const std::shared_ptr&lt; MemoryAllocator &gt; &amp;t)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/db4/memory__allocator_8cc_source.html#l00063">memory_allocator.cc:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper_html_a7e46e9334fda451cf2c63b2240c97bf1"><div class="ttname"><a href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a7e46e9334fda451cf2c63b2240c97bf1">ROCKSDB_NAMESPACE::MemoryAllocatorWrapper::UsableSize</a></div><div class="ttdeci">size_t UsableSize(void *p, size_t allocation_size) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00062">memory_allocators.h:62</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper_html_a87a3d041453145494ef82b8e2596287d"><div class="ttname"><a href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a87a3d041453145494ef82b8e2596287d">ROCKSDB_NAMESPACE::MemoryAllocatorWrapper::Deallocate</a></div><div class="ttdeci">void Deallocate(void *p) override</div><div class="ttdef"><b>Definition</b> <a href="#l00058">memory_allocators.h:58</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper_html_a9331cf26075cc92f0a0d37b0ea18ba90"><div class="ttname"><a href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#a9331cf26075cc92f0a0d37b0ea18ba90">ROCKSDB_NAMESPACE::MemoryAllocatorWrapper::~MemoryAllocatorWrapper</a></div><div class="ttdeci">~MemoryAllocatorWrapper() override</div><div class="ttdef"><b>Definition</b> <a href="#l00050">memory_allocators.h:50</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper_html_ab7fbcd778aa99540212c990a57323972"><div class="ttname"><a href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ab7fbcd778aa99540212c990a57323972">ROCKSDB_NAMESPACE::MemoryAllocatorWrapper::target</a></div><div class="ttdeci">MemoryAllocator * target() const</div><div class="ttdef"><b>Definition</b> <a href="#l00053">memory_allocators.h:53</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper_html_ada06b5b6c6257609f62657e30fbb6dca"><div class="ttname"><a href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ada06b5b6c6257609f62657e30fbb6dca">ROCKSDB_NAMESPACE::MemoryAllocatorWrapper::Inner</a></div><div class="ttdeci">const Customizable * Inner() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00066">memory_allocators.h:66</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper_html_ae24d21117d3940d9d64e7f0a1c918307"><div class="ttname"><a href="../../db/dd3/classROCKSDB__NAMESPACE_1_1MemoryAllocatorWrapper.html#ae24d21117d3940d9d64e7f0a1c918307">ROCKSDB_NAMESPACE::MemoryAllocatorWrapper::target_</a></div><div class="ttdeci">std::shared_ptr&lt; MemoryAllocator &gt; target_</div><div class="ttdef"><b>Definition</b> <a href="#l00069">memory_allocators.h:69</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MemoryAllocator_html"><div class="ttname"><a href="../../d1/d8f/classROCKSDB__NAMESPACE_1_1MemoryAllocator.html">ROCKSDB_NAMESPACE::MemoryAllocator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d02/memory__allocator_8h_source.html#l00019">memory_allocator.h:19</a></div></div>
+<div class="ttc" id="amemory__allocator_8h_html"><div class="ttname"><a href="../../d7/d02/memory__allocator_8h.html">memory_allocator.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dd/dce/memory__allocators_8h.html">memory_allocators.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

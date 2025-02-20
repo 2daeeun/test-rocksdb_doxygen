@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: monitoring/statistics_impl.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('db/d44/statistics__impl_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">statistics_impl.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../db/d44/statistics__impl_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/dd1/histogram_8h.html">monitoring/histogram.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/dd6/likely_8h.html">port/likely.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d00/port_8h.html">port/port.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/dc5/statistics_8h.html">rocksdb/statistics.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/da6/core__local_8h.html">util/core_local.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d50/mutexlock_8h.html">util/mutexlock.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#ifdef __clang__</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#define ROCKSDB_FIELD_UNUSED __attribute__((__unused__))</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../db/d44/statistics__impl_8h.html#ad7b7cd699c2c953277da40e72f25baa4">   22</a></span><span class="preprocessor">#define ROCKSDB_FIELD_UNUSED</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif  </span><span class="comment">// __clang__</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#ifndef STRINGIFY</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../db/d44/statistics__impl_8h.html#a6df1d22fb5f09eccc23b9f399670cfd7">   26</a></span><span class="preprocessor">#define STRINGIFY(x) #x</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../db/d44/statistics__impl_8h.html#a9063e80f8777300c93afde6e6f4c9cea">   27</a></span><span class="preprocessor">#define TOSTRING(x) STRINGIFY(x)</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="};">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2d">   32</a></span><span class="keyword">enum</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2d">TickersInternal</a> : uint32_t {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2da5a1a6b2dcfcee8f4d84229d2a75ef3e3">   33</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2da5a1a6b2dcfcee8f4d84229d2a75ef3e3">INTERNAL_TICKER_ENUM_START</a> = <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a153247a8e045efa11bbb3134499dfc47af99057e04e1e78bfd683332429ef8e92">TICKER_ENUM_MAX</a>,</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2da48cdfe579bfed9d7b2118b172f5d9542">   34</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2da48cdfe579bfed9d7b2118b172f5d9542">INTERNAL_TICKER_ENUM_MAX</a></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
+</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="};">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348">   37</a></span><span class="keyword">enum</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348">HistogramsInternal</a> : uint32_t {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348a2465421bcf638cb6875144b4f39c4992">   38</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348a2465421bcf638cb6875144b4f39c4992">INTERNAL_HISTOGRAM_START</a> = <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a30b2e446a560b08882354e1cdb5f68f6a8d25e2d744495b0adfe9bbb9aa3b66e4">HISTOGRAM_ENUM_MAX</a>,</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348a0bcd9747e9c990803633ff8423c8bdc3">   39</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348a0bcd9747e9c990803633ff8423c8bdc3">INTERNAL_HISTOGRAM_ENUM_MAX</a></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>};</div>
+</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="};">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html">   42</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a823bdc44df446bbee60cc4c6a1e63f45">StatisticsImpl</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">Statistics</a> {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a823bdc44df446bbee60cc4c6a1e63f45">StatisticsImpl</a>(std::shared_ptr&lt;Statistics&gt; stats);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a55b82260f1403513fe134e847eb2901f">   45</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a55b82260f1403513fe134e847eb2901f">~StatisticsImpl</a>();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a79de5e1aa5c0a59506fc1cc09ab02f2b">   46</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a79de5e1aa5c0a59506fc1cc09ab02f2b">Name</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#ab69bb4f2115b64a4e666e8b9c3d01257">kClassName</a>(); }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#ab69bb4f2115b64a4e666e8b9c3d01257">   47</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#ab69bb4f2115b64a4e666e8b9c3d01257">kClassName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;BasicStatistics&quot;</span>; }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  uint64_t getTickerCount(uint32_t ticker_type) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> histogramData(uint32_t histogram_type,</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                     <a class="code hl_struct" href="../../d7/d7a/structROCKSDB__NAMESPACE_1_1HistogramData.html">HistogramData</a>* <span class="keyword">const</span> data) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  std::string getHistogramString(uint32_t histogram_type) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordtype">void</span> setTickerCount(uint32_t ticker_type, uint64_t count) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  uint64_t getAndResetTickerCount(uint32_t ticker_type) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordtype">void</span> recordTick(uint32_t ticker_type, uint64_t count) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// The function is implemented for now for backward compatibility reason.</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// In case a user explictly calls it, for example, they may have a wrapped</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">// Statistics object, passing the call to recordTick() into here, nothing</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="comment">// will break.</span></div>
+<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a5853daeff6799405de47d781bb0c779e">   61</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a5853daeff6799405de47d781bb0c779e">measureTime</a>(uint32_t histogramType, uint64_t time)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a69ca37cda9fb049d1f650f85127ad1cc">recordInHistogram</a>(histogramType, time);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
+</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordtype">void</span> recordInHistogram(uint32_t histogram_type, uint64_t value) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> Reset() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  std::string ToString() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordtype">bool</span> getTickerMap(std::map&lt;std::string, uint64_t&gt;*) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordtype">bool</span> HistEnabledForType(uint32_t <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a>) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a80a2fe32cd297a5a51f12640559ada73">   71</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d0/deb/classROCKSDB__NAMESPACE_1_1Customizable.html">Customizable</a>* <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a80a2fe32cd297a5a51f12640559ada73">Inner</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a16c2307cbcbe0ad7c3fef0be437e715a">stats_</a>.get(); }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// If non-nullptr, forwards updates to the object pointed to by `stats_`.</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a16c2307cbcbe0ad7c3fef0be437e715a">   75</a></span>  std::shared_ptr&lt;Statistics&gt; <a class="code hl_variable" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a16c2307cbcbe0ad7c3fef0be437e715a">stats_</a>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// Synchronizes anything that operates across other cores&#39; local data,</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">// such that operations like Reset() can be performed atomically.</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#abae641d74686af242b9861e51e9a77d2">   78</a></span>  <span class="keyword">mutable</span> <a class="code hl_class" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">port::Mutex</a> <a class="code hl_variable" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#abae641d74686af242b9861e51e9a77d2">aggregate_lock_</a>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// The ticker/histogram data are stored in this structure, which we will store</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">// per-core. It is cache-aligned, so tickers/histograms belonging to different</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">// cores can never share the same cache line.</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">// Alignment attributes expand to nothing depending on the platform</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">struct </span>ALIGN_AS(CACHE_LINE_SIZE) StatisticsData {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    std::atomic_uint_fast64_t tickers_[<a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2da48cdfe579bfed9d7b2118b172f5d9542">INTERNAL_TICKER_ENUM_MAX</a>] = {{0}};</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <a class="code hl_class" href="../../da/dc5/classROCKSDB__NAMESPACE_1_1HistogramImpl.html">HistogramImpl</a> histograms_[<a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348a0bcd9747e9c990803633ff8423c8bdc3">INTERNAL_HISTOGRAM_ENUM_MAX</a>];</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">#ifndef HAVE_ALIGNED_NEW</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordtype">char</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        padding[(<a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a> -</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                 (<a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2da48cdfe579bfed9d7b2118b172f5d9542">INTERNAL_TICKER_ENUM_MAX</a> * <span class="keyword">sizeof</span>(std::atomic_uint_fast64_t) +</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348a0bcd9747e9c990803633ff8423c8bdc3">INTERNAL_HISTOGRAM_ENUM_MAX</a> * <span class="keyword">sizeof</span>(<a class="code hl_class" href="../../da/dc5/classROCKSDB__NAMESPACE_1_1HistogramImpl.html">HistogramImpl</a>)) %</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                     <a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a>)] <a class="code hl_define" href="../../d8/dcc/concurrent__arena_8h.html#ad7b7cd699c2c953277da40e72f25baa4">ROCKSDB_FIELD_UNUSED</a>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>(<span class="keywordtype">size_t</span> s) { <span class="keywordflow">return</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a9c44a2096e719dfccd0246a2d311fab9">port::cacheline_aligned_alloc</a>(s); }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>[](<span class="keywordtype">size_t</span> s) { <span class="keywordflow">return</span> <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a9c44a2096e719dfccd0246a2d311fab9">port::cacheline_aligned_alloc</a>(s); }</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordtype">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>(<span class="keywordtype">void</span>* p) { <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#af00ee65368cdbe180143f5658a39e719">port::cacheline_aligned_free</a>(p); }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordtype">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>[](<span class="keywordtype">void</span>* p) { <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#af00ee65368cdbe180143f5658a39e719">port::cacheline_aligned_free</a>(p); }</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  };</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">#ifndef TEST_CACHE_LINE_SIZE</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(StatisticsData) % <a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a> == 0,</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                <span class="stringliteral">&quot;Expected &quot;</span> <a class="code hl_define" href="../../db/d44/statistics__impl_8h.html#a9063e80f8777300c93afde6e6f4c9cea">TOSTRING</a>(<a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a>) <span class="stringliteral">&quot;-byte aligned&quot;</span>);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a573d34e38e00a59f22cc6e7ddb8c8fbd">  106</a></span>  <a class="code hl_class" href="../../d7/de0/classROCKSDB__NAMESPACE_1_1CoreLocalArray.html">CoreLocalArray&lt;StatisticsData&gt;</a> <a class="code hl_variable" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a573d34e38e00a59f22cc6e7ddb8c8fbd">per_core_stats_</a>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  uint64_t <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#abe8957be615d3a585a866437f7fa3eaf">getTickerCountLocked</a>(uint32_t ticker_type) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  std::unique_ptr&lt;HistogramImpl&gt; <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a010bccb3be3c230b3b6868c1b731d9f6">getHistogramImplLocked</a>(</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      uint32_t histogram_type) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#affe62c0f37724d2df2e4ec96c5c230c8">setTickerCountLocked</a>(uint32_t ticker_type, uint64_t count);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>};</div>
+</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment">// Utility functions</span></div>
+<div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae6752b81d45058f62ab1d08077985be0">  115</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae6752b81d45058f62ab1d08077985be0">RecordInHistogram</a>(<a class="code hl_class" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">Statistics</a>* statistics, uint32_t histogram_type,</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                              uint64_t value) {</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keywordflow">if</span> (statistics) {</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    statistics-&gt;<a class="code hl_function" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html#ade12db972a09ae7c45a64a6851a503ec">recordInHistogram</a>(histogram_type, value);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  }</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>}</div>
+</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="foldopen" id="foldopen00122" data-start="{" data-end="}">
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a55d36728caf59692741227cbcfe4da7d">  122</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a55d36728caf59692741227cbcfe4da7d">RecordTimeToHistogram</a>(<a class="code hl_class" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">Statistics</a>* statistics,</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                                  uint32_t histogram_type, uint64_t value) {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keywordflow">if</span> (statistics) {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    statistics-&gt;<a class="code hl_function" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html#a146bf3cf07f6b6a34f0238ebd4a048f2">reportTimeToHistogram</a>(histogram_type, value);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  }</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>}</div>
+</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7cef279c0d29555aff2708f7e380049e">  129</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7cef279c0d29555aff2708f7e380049e">RecordTick</a>(<a class="code hl_class" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">Statistics</a>* statistics, uint32_t ticker_type,</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                       uint64_t count = 1) {</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keywordflow">if</span> (statistics) {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    statistics-&gt;<a class="code hl_function" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html#aa9281aca97e91825725cae6bfeeded91">recordTick</a>(ticker_type, count);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>}</div>
+</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="foldopen" id="foldopen00136" data-start="{" data-end="}">
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abe7f19f17da9e5fcdf03423bf0a5c1a0">  136</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abe7f19f17da9e5fcdf03423bf0a5c1a0">SetTickerCount</a>(<a class="code hl_class" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">Statistics</a>* statistics, uint32_t ticker_type,</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                           uint64_t count) {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keywordflow">if</span> (statistics) {</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    statistics-&gt;<a class="code hl_function" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html#a11981bbaf150a59df83d73da82da81f5">setTickerCount</a>(ticker_type, count);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  }</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
+</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CoreLocalArray_html"><div class="ttname"><a href="../../d7/de0/classROCKSDB__NAMESPACE_1_1CoreLocalArray.html">ROCKSDB_NAMESPACE::CoreLocalArray</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/da6/core__local_8h_source.html#l00024">core_local.h:24</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Customizable_html"><div class="ttname"><a href="../../d0/deb/classROCKSDB__NAMESPACE_1_1Customizable.html">ROCKSDB_NAMESPACE::Customizable</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d21/customizable_8h_source.html#l00056">customizable.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1HistogramImpl_html"><div class="ttname"><a href="../../da/dc5/classROCKSDB__NAMESPACE_1_1HistogramImpl.html">ROCKSDB_NAMESPACE::HistogramImpl</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/dd1/histogram_8h_source.html#l00110">histogram.h:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_a010bccb3be3c230b3b6868c1b731d9f6"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a010bccb3be3c230b3b6868c1b731d9f6">ROCKSDB_NAMESPACE::StatisticsImpl::getHistogramImplLocked</a></div><div class="ttdeci">std::unique_ptr&lt; HistogramImpl &gt; getHistogramImplLocked(uint32_t histogram_type) const</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/statistics_8cc_source.html#l00412">statistics.cc:412</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_a16c2307cbcbe0ad7c3fef0be437e715a"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a16c2307cbcbe0ad7c3fef0be437e715a">ROCKSDB_NAMESPACE::StatisticsImpl::stats_</a></div><div class="ttdeci">std::shared_ptr&lt; Statistics &gt; stats_</div><div class="ttdef"><b>Definition</b> <a href="#l00075">statistics_impl.h:75</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_a55b82260f1403513fe134e847eb2901f"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a55b82260f1403513fe134e847eb2901f">ROCKSDB_NAMESPACE::StatisticsImpl::~StatisticsImpl</a></div><div class="ttdeci">virtual ~StatisticsImpl()</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_a573d34e38e00a59f22cc6e7ddb8c8fbd"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a573d34e38e00a59f22cc6e7ddb8c8fbd">ROCKSDB_NAMESPACE::StatisticsImpl::per_core_stats_</a></div><div class="ttdeci">CoreLocalArray&lt; StatisticsData &gt; per_core_stats_</div><div class="ttdef"><b>Definition</b> <a href="#l00106">statistics_impl.h:106</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_a5853daeff6799405de47d781bb0c779e"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a5853daeff6799405de47d781bb0c779e">ROCKSDB_NAMESPACE::StatisticsImpl::measureTime</a></div><div class="ttdeci">void measureTime(uint32_t histogramType, uint64_t time) override</div><div class="ttdef"><b>Definition</b> <a href="#l00061">statistics_impl.h:61</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_a69ca37cda9fb049d1f650f85127ad1cc"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a69ca37cda9fb049d1f650f85127ad1cc">ROCKSDB_NAMESPACE::StatisticsImpl::recordInHistogram</a></div><div class="ttdeci">void recordInHistogram(uint32_t histogram_type, uint64_t value) override</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/statistics_8cc_source.html#l00481">statistics.cc:481</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_a79de5e1aa5c0a59506fc1cc09ab02f2b"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a79de5e1aa5c0a59506fc1cc09ab02f2b">ROCKSDB_NAMESPACE::StatisticsImpl::Name</a></div><div class="ttdeci">const char * Name() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00046">statistics_impl.h:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_a80a2fe32cd297a5a51f12640559ada73"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a80a2fe32cd297a5a51f12640559ada73">ROCKSDB_NAMESPACE::StatisticsImpl::Inner</a></div><div class="ttdeci">const Customizable * Inner() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00071">statistics_impl.h:71</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_a823bdc44df446bbee60cc4c6a1e63f45"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a823bdc44df446bbee60cc4c6a1e63f45">ROCKSDB_NAMESPACE::StatisticsImpl::StatisticsImpl</a></div><div class="ttdeci">StatisticsImpl(std::shared_ptr&lt; Statistics &gt; stats)</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/statistics_8cc_source.html#l00385">statistics.cc:385</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_ab69bb4f2115b64a4e666e8b9c3d01257"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#ab69bb4f2115b64a4e666e8b9c3d01257">ROCKSDB_NAMESPACE::StatisticsImpl::kClassName</a></div><div class="ttdeci">static const char * kClassName()</div><div class="ttdef"><b>Definition</b> <a href="#l00047">statistics_impl.h:47</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_abae641d74686af242b9861e51e9a77d2"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#abae641d74686af242b9861e51e9a77d2">ROCKSDB_NAMESPACE::StatisticsImpl::aggregate_lock_</a></div><div class="ttdeci">port::Mutex aggregate_lock_</div><div class="ttdef"><b>Definition</b> <a href="#l00078">statistics_impl.h:78</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_abe8957be615d3a585a866437f7fa3eaf"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#abe8957be615d3a585a866437f7fa3eaf">ROCKSDB_NAMESPACE::StatisticsImpl::getTickerCountLocked</a></div><div class="ttdeci">uint64_t getTickerCountLocked(uint32_t ticker_type) const</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/statistics_8cc_source.html#l00397">statistics.cc:397</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StatisticsImpl_html_affe62c0f37724d2df2e4ec96c5c230c8"><div class="ttname"><a href="../../dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#affe62c0f37724d2df2e4ec96c5c230c8">ROCKSDB_NAMESPACE::StatisticsImpl::setTickerCountLocked</a></div><div class="ttdeci">void setTickerCountLocked(uint32_t ticker_type, uint64_t count)</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/statistics_8cc_source.html#l00438">statistics.cc:438</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Statistics_html"><div class="ttname"><a href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">ROCKSDB_NAMESPACE::Statistics</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00727">statistics.h:727</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Statistics_html_a11981bbaf150a59df83d73da82da81f5"><div class="ttname"><a href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html#a11981bbaf150a59df83d73da82da81f5">ROCKSDB_NAMESPACE::Statistics::setTickerCount</a></div><div class="ttdeci">virtual void setTickerCount(uint32_t tickerType, uint64_t count)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Statistics_html_a146bf3cf07f6b6a34f0238ebd4a048f2"><div class="ttname"><a href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html#a146bf3cf07f6b6a34f0238ebd4a048f2">ROCKSDB_NAMESPACE::Statistics::reportTimeToHistogram</a></div><div class="ttdeci">virtual void reportTimeToHistogram(uint32_t histogramType, uint64_t time)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00745">statistics.h:745</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Statistics_html_aa9281aca97e91825725cae6bfeeded91"><div class="ttname"><a href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html#aa9281aca97e91825725cae6bfeeded91">ROCKSDB_NAMESPACE::Statistics::recordTick</a></div><div class="ttdeci">virtual void recordTick(uint32_t tickerType, uint64_t count=1)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Statistics_html_ade12db972a09ae7c45a64a6851a503ec"><div class="ttname"><a href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html#ade12db972a09ae7c45a64a6851a503ec">ROCKSDB_NAMESPACE::Statistics::recordInHistogram</a></div><div class="ttdeci">virtual void recordInHistogram(uint32_t histogramType, uint64_t time)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00758">statistics.h:758</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">ROCKSDB_NAMESPACE::port::Mutex</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d4a/port__example_8h_source.html#l00030">port_example.h:30</a></div></div>
+<div class="ttc" id="aconcurrent__arena_8h_html_ad7b7cd699c2c953277da40e72f25baa4"><div class="ttname"><a href="../../d8/dcc/concurrent__arena_8h.html#ad7b7cd699c2c953277da40e72f25baa4">ROCKSDB_FIELD_UNUSED</a></div><div class="ttdeci">#define ROCKSDB_FIELD_UNUSED</div><div class="ttdef"><b>Definition</b> <a href="../../d8/dcc/concurrent__arena_8h_source.html#l00028">concurrent_arena.h:28</a></div></div>
+<div class="ttc" id="acore__local_8h_html"><div class="ttname"><a href="../../d5/da6/core__local_8h.html">core_local.h</a></div></div>
+<div class="ttc" id="ahistogram_8h_html"><div class="ttname"><a href="../../dd/dd1/histogram_8h.html">histogram.h</a></div></div>
+<div class="ttc" id="alikely_8h_html"><div class="ttname"><a href="../../d6/dd6/likely_8h.html">likely.h</a></div></div>
+<div class="ttc" id="amutexlock_8h_html"><div class="ttname"><a href="../../d9/d50/mutexlock_8h.html">mutexlock.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a9c44a2096e719dfccd0246a2d311fab9"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a9c44a2096e719dfccd0246a2d311fab9">ROCKSDB_NAMESPACE::port::cacheline_aligned_alloc</a></div><div class="ttdeci">void * cacheline_aligned_alloc(size_t size)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/dd4/port__posix_8cc_source.html#l00227">port_posix.cc:227</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_af00ee65368cdbe180143f5658a39e719"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#af00ee65368cdbe180143f5658a39e719">ROCKSDB_NAMESPACE::port::cacheline_aligned_free</a></div><div class="ttdeci">void cacheline_aligned_free(void *memblock)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/dd4/port__posix_8cc_source.html#l00239">port_posix.cc:239</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a153247a8e045efa11bbb3134499dfc47af99057e04e1e78bfd683332429ef8e92"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a153247a8e045efa11bbb3134499dfc47af99057e04e1e78bfd683332429ef8e92">ROCKSDB_NAMESPACE::TICKER_ENUM_MAX</a></div><div class="ttdeci">@ TICKER_ENUM_MAX</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00537">statistics.h:537</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a30b2e446a560b08882354e1cdb5f68f6a8d25e2d744495b0adfe9bbb9aa3b66e4"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a30b2e446a560b08882354e1cdb5f68f6a8d25e2d744495b0adfe9bbb9aa3b66e4">ROCKSDB_NAMESPACE::HISTOGRAM_ENUM_MAX</a></div><div class="ttdeci">@ HISTOGRAM_ENUM_MAX</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00670">statistics.h:670</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a55d36728caf59692741227cbcfe4da7d"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a55d36728caf59692741227cbcfe4da7d">ROCKSDB_NAMESPACE::RecordTimeToHistogram</a></div><div class="ttdeci">void RecordTimeToHistogram(Statistics *statistics, uint32_t histogram_type, uint64_t value)</div><div class="ttdef"><b>Definition</b> <a href="#l00122">statistics_impl.h:122</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a7cef279c0d29555aff2708f7e380049e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7cef279c0d29555aff2708f7e380049e">ROCKSDB_NAMESPACE::RecordTick</a></div><div class="ttdeci">void RecordTick(Statistics *statistics, uint32_t ticker_type, uint64_t count=1)</div><div class="ttdef"><b>Definition</b> <a href="#l00129">statistics_impl.h:129</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_abe7f19f17da9e5fcdf03423bf0a5c1a0"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abe7f19f17da9e5fcdf03423bf0a5c1a0">ROCKSDB_NAMESPACE::SetTickerCount</a></div><div class="ttdeci">void SetTickerCount(Statistics *statistics, uint32_t ticker_type, uint64_t count)</div><div class="ttdef"><b>Definition</b> <a href="#l00136">statistics_impl.h:136</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ad867dbc9c650610214455af37cd64348"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348">ROCKSDB_NAMESPACE::HistogramsInternal</a></div><div class="ttdeci">HistogramsInternal</div><div class="ttdef"><b>Definition</b> <a href="#l00037">statistics_impl.h:37</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ad867dbc9c650610214455af37cd64348a0bcd9747e9c990803633ff8423c8bdc3"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348a0bcd9747e9c990803633ff8423c8bdc3">ROCKSDB_NAMESPACE::INTERNAL_HISTOGRAM_ENUM_MAX</a></div><div class="ttdeci">@ INTERNAL_HISTOGRAM_ENUM_MAX</div><div class="ttdef"><b>Definition</b> <a href="#l00039">statistics_impl.h:39</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ad867dbc9c650610214455af37cd64348a2465421bcf638cb6875144b4f39c4992"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ad867dbc9c650610214455af37cd64348a2465421bcf638cb6875144b4f39c4992">ROCKSDB_NAMESPACE::INTERNAL_HISTOGRAM_START</a></div><div class="ttdeci">@ INTERNAL_HISTOGRAM_START</div><div class="ttdef"><b>Definition</b> <a href="#l00038">statistics_impl.h:38</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ae6752b81d45058f62ab1d08077985be0"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae6752b81d45058f62ab1d08077985be0">ROCKSDB_NAMESPACE::RecordInHistogram</a></div><div class="ttdeci">void RecordInHistogram(Statistics *statistics, uint32_t histogram_type, uint64_t value)</div><div class="ttdef"><b>Definition</b> <a href="#l00115">statistics_impl.h:115</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_affee04f725cfcc8d6008bec7c7c06c2d"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2d">ROCKSDB_NAMESPACE::TickersInternal</a></div><div class="ttdeci">TickersInternal</div><div class="ttdef"><b>Definition</b> <a href="#l00032">statistics_impl.h:32</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_affee04f725cfcc8d6008bec7c7c06c2da48cdfe579bfed9d7b2118b172f5d9542"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2da48cdfe579bfed9d7b2118b172f5d9542">ROCKSDB_NAMESPACE::INTERNAL_TICKER_ENUM_MAX</a></div><div class="ttdeci">@ INTERNAL_TICKER_ENUM_MAX</div><div class="ttdef"><b>Definition</b> <a href="#l00034">statistics_impl.h:34</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_affee04f725cfcc8d6008bec7c7c06c2da5a1a6b2dcfcee8f4d84229d2a75ef3e3"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#affee04f725cfcc8d6008bec7c7c06c2da5a1a6b2dcfcee8f4d84229d2a75ef3e3">ROCKSDB_NAMESPACE::INTERNAL_TICKER_ENUM_START</a></div><div class="ttdeci">@ INTERNAL_TICKER_ENUM_START</div><div class="ttdef"><b>Definition</b> <a href="#l00033">statistics_impl.h:33</a></div></div>
+<div class="ttc" id="aport_8h_html"><div class="ttname"><a href="../../da/d00/port_8h.html">port.h</a></div></div>
+<div class="ttc" id="aport__posix_8h_html_af89f60b07247176687889ade776c8e10"><div class="ttname"><a href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a></div><div class="ttdeci">#define CACHE_LINE_SIZE</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00205">port_posix.h:205</a></div></div>
+<div class="ttc" id="astatistics_8h_html"><div class="ttname"><a href="../../d7/dc5/statistics_8h.html">statistics.h</a></div></div>
+<div class="ttc" id="astatistics__impl_8h_html_a9063e80f8777300c93afde6e6f4c9cea"><div class="ttname"><a href="../../db/d44/statistics__impl_8h.html#a9063e80f8777300c93afde6e6f4c9cea">TOSTRING</a></div><div class="ttdeci">#define TOSTRING(x)</div><div class="ttdef"><b>Definition</b> <a href="#l00027">statistics_impl.h:27</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1HistogramData_html"><div class="ttname"><a href="../../d7/d7a/structROCKSDB__NAMESPACE_1_1HistogramData.html">ROCKSDB_NAMESPACE::HistogramData</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00675">statistics.h:675</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1aligned__storage_html"><div class="ttname"><a href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">ROCKSDB_NAMESPACE::type</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_62029a7095150ca557d10310a8fae4d0.html">monitoring</a></li><li class="navelem"><a class="el" href="../../db/d44/statistics__impl_8h.html">statistics_impl.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

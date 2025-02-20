@@ -1,0 +1,26 @@
+var classROCKSDB__NAMESPACE_1_1PosixWritableFile =
+[
+    [ "PosixWritableFile", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#aff520f30dacd86678f183bd8aac2c0e6", null ],
+    [ "~PosixWritableFile", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a392100b95a3d236c925d80ffd8b1f18f", null ],
+    [ "Append", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#ae8657f7129bcd2f4f506916621c09cd5", null ],
+    [ "Append", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#af8f007eda3af9c38467e1a257fb82873", null ],
+    [ "Close", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a66e445c07237d48b1834338ef7e33ab5", null ],
+    [ "Flush", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a78c1525135bffa812b99ca667dab806a", null ],
+    [ "Fsync", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#af17e5439a98a10dfdd7b786f5e0c5944", null ],
+    [ "GetFileSize", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a5cf7be92a4c7ded8d1b45cd14f681e62", null ],
+    [ "GetRequiredBufferAlignment", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#af6cad9345d758fdcb65bd128b35e4d2a", null ],
+    [ "InvalidateCache", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a0a1d69e78c028ecc6f23a603dcb0979a", null ],
+    [ "IsSyncThreadSafe", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#acf922d1302abfeb8e4fbfb6b0e92756e", null ],
+    [ "PositionedAppend", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a2a486c36699bdf40c7837401cdef5444", null ],
+    [ "PositionedAppend", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a249283bdacd139c8b87082646501f422", null ],
+    [ "RangeSync", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a790b4e5756f78ad9265bd8c62be2ed9f", null ],
+    [ "SetWriteLifeTimeHint", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#ac83bfee52b282d73b5c024a251877fda", null ],
+    [ "Sync", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#aae632c8af6586b8847d812de5f4f5a1f", null ],
+    [ "Truncate", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#ab34e15c900a465a957f8eb0e1c78d64c", null ],
+    [ "use_direct_io", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a7bf3a27ef76bf0ab2b16c60534f19361", null ],
+    [ "fd_", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a34b8ca4840f199913de05bb77299e4ec", null ],
+    [ "filename_", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#aec3003b3b958d1d67e8dbc4ca38cb363", null ],
+    [ "filesize_", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a84e9d977a942d81a457038120129edeb", null ],
+    [ "logical_sector_size_", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#a9cf75e4c2c19ba63f564ce2a91391acf", null ],
+    [ "use_direct_io_", "db/db8/classROCKSDB__NAMESPACE_1_1PosixWritableFile.html#aa94410e807155b40f23bf33fe3748d18", null ]
+];

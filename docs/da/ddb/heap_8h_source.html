@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: util/heap.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('da/ddb/heap_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">heap.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../da/ddb/heap_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d00/port_8h.html">port/port.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/dfc/autovector_8h.html">util/autovector.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// Binary heap implementation optimized for use in multi-way merge sort.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// Comparison to std::priority_queue:</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// - In libstdc++, std::priority_queue::pop() usually performs just over logN</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">//   comparisons but never fewer.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// - std::priority_queue does not have a replace-top operation, requiring a</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">//   pop+push.  If the replacement element is the new top, this requires</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">//   around 2logN comparisons.</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// - This heap&#39;s pop() uses a &quot;schoolbook&quot; downheap which requires up to ~2logN</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">//   comparisons.</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// - This heap provides a replace_top() operation which requires [1, 2logN]</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">//   comparisons.  When the replacement element is also the new top, this</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">//   takes just 1 or 2 comparisons.</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">//</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// The last property can yield an order-of-magnitude performance improvement</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// when merge-sorting real-world non-random data.  If the merge operation is</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// likely to take chunks of elements from the same input stream, only 1</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// comparison per element is needed.  In RocksDB-land, this happens when</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// compacting a database where keys are not randomly distributed across L0</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">// files but nearby keys are likely to be in the same L0 file.</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">//</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">// The container uses the same counterintuitive ordering as</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// std::priority_queue: the comparison operator is expected to provide the</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">// less-than relation, but top() will return the maximum.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Compare = std::less&lt;T&gt;&gt;</div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="};">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html">   42</a></span><span class="keyword">class </span><a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a23b395e3a25f1fb55da1c04235b1413d">BinaryHeap</a> {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a23b395e3a25f1fb55da1c04235b1413d">   44</a></span>  <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a23b395e3a25f1fb55da1c04235b1413d">BinaryHeap</a>() {}</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae32e7d24411f942103347e29daae910b">   45</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae32e7d24411f942103347e29daae910b">BinaryHeap</a>(Compare cmp) : <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#afcc253c6115ff567096099038c505062">cmp_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(cmp)) {}</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a5a12cbc1a5842acf3459b6ce3be75963">   47</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a5a12cbc1a5842acf3459b6ce3be75963">push</a>(<span class="keyword">const</span> T&amp; value) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.push_back(value);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a7690efec2fe7544ef7e668cc8c3b03f5">upheap</a>(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.size() - 1);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
+</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ab4160823cb68d92f294f04070246a119">   52</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ab4160823cb68d92f294f04070246a119">push</a>(T&amp;&amp; value) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.push_back(std::move(value));</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a7690efec2fe7544ef7e668cc8c3b03f5">upheap</a>(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.size() - 1);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  }</div>
+</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a09ae12744ed6c785cacf467c02401e5a">   57</a></span>  <span class="keyword">const</span> T&amp; <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a09ae12744ed6c785cacf467c02401e5a">top</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    assert(!<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">empty</a>());</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.front();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
+</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a19536cf38b1cb9986e87ba183aaf8b95">   62</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a19536cf38b1cb9986e87ba183aaf8b95">replace_top</a>(<span class="keyword">const</span> T&amp; value) {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    assert(!<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">empty</a>());</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.front() = value;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a887c35ea77fde8508bc7548669ce89fc">downheap</a>(<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a9a9b20d3690fa77560ad18ebbc3a58e7">get_root</a>());</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
+</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac0f226f9f066c8baf5101c866272eb62">   68</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac0f226f9f066c8baf5101c866272eb62">replace_top</a>(T&amp;&amp; value) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    assert(!<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">empty</a>());</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.front() = std::move(value);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a887c35ea77fde8508bc7548669ce89fc">downheap</a>(<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a9a9b20d3690fa77560ad18ebbc3a58e7">get_root</a>());</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  }</div>
+</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="foldopen" id="foldopen00074" data-start="{" data-end="}">
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a62960ce36f9e8a611af84feb347eee9d">   74</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a62960ce36f9e8a611af84feb347eee9d">pop</a>() {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    assert(!<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">empty</a>());</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.size() &gt; 1) {</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>      <span class="comment">// Avoid self-move-assign, because it could cause problems with</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      <span class="comment">// classes which are not prepared for this and it trips up the</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>      <span class="comment">// STL debugger when activated.</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.front() = std::move(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.back());</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.pop_back();</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">empty</a>()) {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a887c35ea77fde8508bc7548669ce89fc">downheap</a>(<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a9a9b20d3690fa77560ad18ebbc3a58e7">get_root</a>());</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a665692d2480218cbb77790de32f4e0fc">reset_root_cmp_cache</a>();</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  }</div>
+</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="foldopen" id="foldopen00090" data-start="{" data-end="}">
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#adc24b43a04085fb4b75732cd68d6a597">   90</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#adc24b43a04085fb4b75732cd68d6a597">swap</a>(<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a23b395e3a25f1fb55da1c04235b1413d">BinaryHeap</a>&amp; other) {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <a class="code hl_function" href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a>(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#afcc253c6115ff567096099038c505062">cmp_</a>, other.<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#afcc253c6115ff567096099038c505062">cmp_</a>);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.swap(other.<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <a class="code hl_function" href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a>(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac3ea6d81d12ae89fd7eed897ebbd0238">root_cmp_cache_</a>, other.<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac3ea6d81d12ae89fd7eed897ebbd0238">root_cmp_cache_</a>);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  }</div>
+</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="foldopen" id="foldopen00096" data-start="{" data-end="}">
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac4ae0cf4bf4e45ee669e878db0459924">   96</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac4ae0cf4bf4e45ee669e878db0459924">clear</a>() {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.clear();</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a665692d2480218cbb77790de32f4e0fc">reset_root_cmp_cache</a>();</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
+</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">  101</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">empty</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.empty(); }</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a78b6e9ccfaeb66b7d7e310b579aef4de">  103</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a78b6e9ccfaeb66b7d7e310b579aef4de">size</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.size(); }</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a665692d2480218cbb77790de32f4e0fc">  105</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a665692d2480218cbb77790de32f4e0fc">reset_root_cmp_cache</a>() {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac3ea6d81d12ae89fd7eed897ebbd0238">root_cmp_cache_</a> = std::numeric_limits&lt;size_t&gt;::max();</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  }</div>
+</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a9a9b20d3690fa77560ad18ebbc3a58e7">  110</a></span>  <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a9a9b20d3690fa77560ad18ebbc3a58e7">get_root</a>() { <span class="keywordflow">return</span> 0; }</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a6b525768b264b83b04c70dcc08fe6508">  111</a></span>  <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a6b525768b264b83b04c70dcc08fe6508">get_parent</a>(<span class="keywordtype">size_t</span> index) { <span class="keywordflow">return</span> (index - 1) / 2; }</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a3508dbc350dd46fd0f956bad5db0e63b">  112</a></span>  <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a3508dbc350dd46fd0f956bad5db0e63b">get_left</a>(<span class="keywordtype">size_t</span> index) { <span class="keywordflow">return</span> 2 * index + 1; }</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a470a596f8038e39caa105c05f82d3755">  113</a></span>  <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a470a596f8038e39caa105c05f82d3755">get_right</a>(<span class="keywordtype">size_t</span> index) { <span class="keywordflow">return</span> 2 * index + 2; }</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a7690efec2fe7544ef7e668cc8c3b03f5">  115</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a7690efec2fe7544ef7e668cc8c3b03f5">upheap</a>(<span class="keywordtype">size_t</span> index) {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    T v = std::move(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[index]);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">while</span> (index &gt; <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a9a9b20d3690fa77560ad18ebbc3a58e7">get_root</a>()) {</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      <span class="keyword">const</span> <span class="keywordtype">size_t</span> parent = <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a6b525768b264b83b04c70dcc08fe6508">get_parent</a>(index);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#afcc253c6115ff567096099038c505062">cmp_</a>(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[parent], v)) {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      }</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[index] = std::move(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[parent]);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      index = parent;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    }</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[index] = std::move(v);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a665692d2480218cbb77790de32f4e0fc">reset_root_cmp_cache</a>();</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  }</div>
+</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a887c35ea77fde8508bc7548669ce89fc">  129</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a887c35ea77fde8508bc7548669ce89fc">downheap</a>(<span class="keywordtype">size_t</span> index) {</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    T v = std::move(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[index]);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordtype">size_t</span> picked_child = std::numeric_limits&lt;size_t&gt;::max();</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">while</span> (1) {</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      <span class="keyword">const</span> <span class="keywordtype">size_t</span> left_child = <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a3508dbc350dd46fd0f956bad5db0e63b">get_left</a>(index);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a3508dbc350dd46fd0f956bad5db0e63b">get_left</a>(index) &gt;= <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.size()) {</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      <span class="keyword">const</span> <span class="keywordtype">size_t</span> right_child = left_child + 1;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>      assert(right_child == <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a470a596f8038e39caa105c05f82d3755">get_right</a>(index));</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      picked_child = left_child;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>      <span class="keywordflow">if</span> (index == 0 &amp;&amp; <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac3ea6d81d12ae89fd7eed897ebbd0238">root_cmp_cache_</a> &lt; <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.size()) {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        picked_child = <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac3ea6d81d12ae89fd7eed897ebbd0238">root_cmp_cache_</a>;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (right_child &lt; <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>.size() &amp;&amp;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                 <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#afcc253c6115ff567096099038c505062">cmp_</a>(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[left_child], <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[right_child])) {</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        picked_child = right_child;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>      <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#afcc253c6115ff567096099038c505062">cmp_</a>(v, <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[picked_child])) {</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      }</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[index] = std::move(<a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[picked_child]);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>      index = picked_child;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    }</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keywordflow">if</span> (index == 0) {</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      <span class="comment">// We did not change anything in the tree except for the value</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      <span class="comment">// of the root node, left and right child did not change, we can</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>      <span class="comment">// cache that `picked_child` is the smallest child</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>      <span class="comment">// so next time we compare againist it directly</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac3ea6d81d12ae89fd7eed897ebbd0238">root_cmp_cache_</a> = picked_child;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>      <span class="comment">// the tree changed, reset cache</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      <a class="code hl_function" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a665692d2480218cbb77790de32f4e0fc">reset_root_cmp_cache</a>();</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    }</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>[index] = std::move(v);</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  }</div>
+</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#afcc253c6115ff567096099038c505062">  168</a></span>  Compare <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#afcc253c6115ff567096099038c505062">cmp_</a>;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">  169</a></span>  <a class="code hl_class" href="../../d4/d5f/classROCKSDB__NAMESPACE_1_1autovector.html">autovector&lt;T&gt;</a> <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">data_</a>;</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="comment">// Used to reduce number of cmp_ calls in downheap()</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac3ea6d81d12ae89fd7eed897ebbd0238">  171</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac3ea6d81d12ae89fd7eed897ebbd0238">root_cmp_cache_</a> = std::numeric_limits&lt;size_t&gt;::max();</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>};</div>
+</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aautovector_8h_html"><div class="ttname"><a href="../../de/dfc/autovector_8h.html">autovector.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a09ae12744ed6c785cacf467c02401e5a"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a09ae12744ed6c785cacf467c02401e5a">ROCKSDB_NAMESPACE::BinaryHeap::top</a></div><div class="ttdeci">const T &amp; top() const</div><div class="ttdef"><b>Definition</b> <a href="#l00057">heap.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a19536cf38b1cb9986e87ba183aaf8b95"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a19536cf38b1cb9986e87ba183aaf8b95">ROCKSDB_NAMESPACE::BinaryHeap::replace_top</a></div><div class="ttdeci">void replace_top(const T &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00062">heap.h:62</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a1d5cabededf957927119784ce60b7570"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a1d5cabededf957927119784ce60b7570">ROCKSDB_NAMESPACE::BinaryHeap&lt; WideColumnWithOrder, WideColumnWithOrderComparator &gt;::data_</a></div><div class="ttdeci">autovector&lt; WideColumnWithOrder &gt; data_</div><div class="ttdef"><b>Definition</b> <a href="#l00169">heap.h:169</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a23b395e3a25f1fb55da1c04235b1413d"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a23b395e3a25f1fb55da1c04235b1413d">ROCKSDB_NAMESPACE::BinaryHeap::BinaryHeap</a></div><div class="ttdeci">BinaryHeap()</div><div class="ttdef"><b>Definition</b> <a href="#l00044">heap.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a3508dbc350dd46fd0f956bad5db0e63b"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a3508dbc350dd46fd0f956bad5db0e63b">ROCKSDB_NAMESPACE::BinaryHeap::get_left</a></div><div class="ttdeci">static size_t get_left(size_t index)</div><div class="ttdef"><b>Definition</b> <a href="#l00112">heap.h:112</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a470a596f8038e39caa105c05f82d3755"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a470a596f8038e39caa105c05f82d3755">ROCKSDB_NAMESPACE::BinaryHeap::get_right</a></div><div class="ttdeci">static size_t get_right(size_t index)</div><div class="ttdef"><b>Definition</b> <a href="#l00113">heap.h:113</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a5a12cbc1a5842acf3459b6ce3be75963"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a5a12cbc1a5842acf3459b6ce3be75963">ROCKSDB_NAMESPACE::BinaryHeap::push</a></div><div class="ttdeci">void push(const T &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00047">heap.h:47</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a62960ce36f9e8a611af84feb347eee9d"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a62960ce36f9e8a611af84feb347eee9d">ROCKSDB_NAMESPACE::BinaryHeap::pop</a></div><div class="ttdeci">void pop()</div><div class="ttdef"><b>Definition</b> <a href="#l00074">heap.h:74</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a665692d2480218cbb77790de32f4e0fc"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a665692d2480218cbb77790de32f4e0fc">ROCKSDB_NAMESPACE::BinaryHeap&lt; WideColumnWithOrder, WideColumnWithOrderComparator &gt;::reset_root_cmp_cache</a></div><div class="ttdeci">void reset_root_cmp_cache()</div><div class="ttdef"><b>Definition</b> <a href="#l00105">heap.h:105</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a6b525768b264b83b04c70dcc08fe6508"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a6b525768b264b83b04c70dcc08fe6508">ROCKSDB_NAMESPACE::BinaryHeap::get_parent</a></div><div class="ttdeci">static size_t get_parent(size_t index)</div><div class="ttdef"><b>Definition</b> <a href="#l00111">heap.h:111</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a7690efec2fe7544ef7e668cc8c3b03f5"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a7690efec2fe7544ef7e668cc8c3b03f5">ROCKSDB_NAMESPACE::BinaryHeap&lt; WideColumnWithOrder, WideColumnWithOrderComparator &gt;::upheap</a></div><div class="ttdeci">void upheap(size_t index)</div><div class="ttdef"><b>Definition</b> <a href="#l00115">heap.h:115</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a78b6e9ccfaeb66b7d7e310b579aef4de"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a78b6e9ccfaeb66b7d7e310b579aef4de">ROCKSDB_NAMESPACE::BinaryHeap::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="#l00103">heap.h:103</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a887c35ea77fde8508bc7548669ce89fc"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a887c35ea77fde8508bc7548669ce89fc">ROCKSDB_NAMESPACE::BinaryHeap&lt; WideColumnWithOrder, WideColumnWithOrderComparator &gt;::downheap</a></div><div class="ttdeci">void downheap(size_t index)</div><div class="ttdef"><b>Definition</b> <a href="#l00129">heap.h:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_a9a9b20d3690fa77560ad18ebbc3a58e7"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#a9a9b20d3690fa77560ad18ebbc3a58e7">ROCKSDB_NAMESPACE::BinaryHeap&lt; WideColumnWithOrder, WideColumnWithOrderComparator &gt;::get_root</a></div><div class="ttdeci">static size_t get_root()</div><div class="ttdef"><b>Definition</b> <a href="#l00110">heap.h:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_ab4160823cb68d92f294f04070246a119"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ab4160823cb68d92f294f04070246a119">ROCKSDB_NAMESPACE::BinaryHeap::push</a></div><div class="ttdeci">void push(T &amp;&amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00052">heap.h:52</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_ac0f226f9f066c8baf5101c866272eb62"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac0f226f9f066c8baf5101c866272eb62">ROCKSDB_NAMESPACE::BinaryHeap::replace_top</a></div><div class="ttdeci">void replace_top(T &amp;&amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00068">heap.h:68</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_ac3ea6d81d12ae89fd7eed897ebbd0238"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac3ea6d81d12ae89fd7eed897ebbd0238">ROCKSDB_NAMESPACE::BinaryHeap&lt; WideColumnWithOrder, WideColumnWithOrderComparator &gt;::root_cmp_cache_</a></div><div class="ttdeci">size_t root_cmp_cache_</div><div class="ttdef"><b>Definition</b> <a href="#l00171">heap.h:171</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_ac4ae0cf4bf4e45ee669e878db0459924"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ac4ae0cf4bf4e45ee669e878db0459924">ROCKSDB_NAMESPACE::BinaryHeap::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdef"><b>Definition</b> <a href="#l00096">heap.h:96</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_adc24b43a04085fb4b75732cd68d6a597"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#adc24b43a04085fb4b75732cd68d6a597">ROCKSDB_NAMESPACE::BinaryHeap::swap</a></div><div class="ttdeci">void swap(BinaryHeap &amp;other)</div><div class="ttdef"><b>Definition</b> <a href="#l00090">heap.h:90</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_ae0a26624a9466df908fa930f14bddb5d"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae0a26624a9466df908fa930f14bddb5d">ROCKSDB_NAMESPACE::BinaryHeap&lt; WideColumnWithOrder, WideColumnWithOrderComparator &gt;::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdef"><b>Definition</b> <a href="#l00101">heap.h:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_ae32e7d24411f942103347e29daae910b"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#ae32e7d24411f942103347e29daae910b">ROCKSDB_NAMESPACE::BinaryHeap::BinaryHeap</a></div><div class="ttdeci">BinaryHeap(Compare cmp)</div><div class="ttdef"><b>Definition</b> <a href="#l00045">heap.h:45</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BinaryHeap_html_afcc253c6115ff567096099038c505062"><div class="ttname"><a href="../../db/d31/classROCKSDB__NAMESPACE_1_1BinaryHeap.html#afcc253c6115ff567096099038c505062">ROCKSDB_NAMESPACE::BinaryHeap&lt; WideColumnWithOrder, WideColumnWithOrderComparator &gt;::cmp_</a></div><div class="ttdeci">WideColumnWithOrderComparator cmp_</div><div class="ttdef"><b>Definition</b> <a href="#l00168">heap.h:168</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1autovector_html"><div class="ttname"><a href="../../d4/d5f/classROCKSDB__NAMESPACE_1_1autovector.html">ROCKSDB_NAMESPACE::autovector</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/dfc/autovector_8h_source.html#l00040">autovector.h:40</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="anamespacestd_html_ae634fddc996b9fd1d88a852ef8a90ca3"><div class="ttname"><a href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a></div><div class="ttdeci">void swap(ROCKSDB_NAMESPACE::port::WindowsThread &amp;th1, ROCKSDB_NAMESPACE::port::WindowsThread &amp;th2)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00111">win_thread.h:111</a></div></div>
+<div class="ttc" id="aport_8h_html"><div class="ttname"><a href="../../da/d00/port_8h.html">port.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_23ec12649285f9fabf3a6b7380226c28.html">util</a></li><li class="navelem"><a class="el" href="../../da/ddb/heap_8h.html">heap.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/seqno_to_time_mapping.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d8/d1f/seqno__to__time__mapping_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">seqno_to_time_mapping.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d8/d1f/seqno__to__time__mapping_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;cinttypes&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;deque&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;iterator&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d73/dbformat_8h.html">db/dbformat.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dd0/include_2rocksdb_2status_8h.html">rocksdb/status.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d49/types_8h.html">rocksdb/types.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a287396f0016373befe39acdf6fea04ee">   23</a></span><span class="keyword">constexpr</span> uint64_t <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a287396f0016373befe39acdf6fea04ee">kUnknownTimeBeforeAll</a> = 0;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a10724ce8eaa286850bfc88013a0080c6">   24</a></span><span class="keyword">constexpr</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a10724ce8eaa286850bfc88013a0080c6">kUnknownSeqnoBeforeAll</a> = 0;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// Maximum number of entries can be encoded into SST. The data is delta encode</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// so the maximum data usage for each SST is &lt; 0.3K</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40c2e709bf8f6362cfc517cc5a3032a3">   28</a></span><span class="keyword">constexpr</span> uint64_t <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40c2e709bf8f6362cfc517cc5a3032a3">kMaxSeqnoTimePairsPerSST</a> = 100;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// Maximum number of entries per CF. If there&#39;s only CF with this feature on,</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// the max span divided by this number, so for example, if</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// preclude_last_level_data_seconds = 100000 (~1day), then it will sample the</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// seqno -&gt; time every 1000 seconds (~17minutes). Then the maximum entry it</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// needs is 100.</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">// When there are multiple CFs having this feature on, the sampling cadence is</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">// determined by the smallest setting, the capacity is determined the largest</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">// setting, also it&#39;s caped by kMaxSeqnoTimePairsPerCF * 10.</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6d2e2245e6d59ac893cadff47351d121">   38</a></span><span class="keyword">constexpr</span> uint64_t <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6d2e2245e6d59ac893cadff47351d121">kMaxSeqnoTimePairsPerCF</a> = 100;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18c0afbf912caecaddb11e9e7499ec5a">   40</a></span><span class="keyword">constexpr</span> uint64_t <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18c0afbf912caecaddb11e9e7499ec5a">kMaxSeqnoToTimeEntries</a> = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6d2e2245e6d59ac893cadff47351d121">kMaxSeqnoTimePairsPerCF</a> * 10;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">// SeqnoToTimeMapping stores a sampled mapping from sequence numbers to</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">// unix times (seconds since epoch). This information provides rough bounds</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">// between sequence numbers and their write times, but is primarily designed</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// for getting a best lower bound on the sequence number of data written no</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">// later than a specified time.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">//</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">// For ease of sampling, it is assumed that the recorded time in each pair</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">// comes at or after the sequence number and before the next sequence number,</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">// so this example:</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">//</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">// Seqno: 10,       11, ... 20,       21, ... 30,       31, ...</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">// Time:  ...  500      ...      600      ...      700      ...</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">//</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">// would be represented as</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">//   10 -&gt; 500</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">//   20 -&gt; 600</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">//   30 -&gt; 700</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">//</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">// In typical operation, the list is in &quot;enforced&quot; operation to maintain</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">// invariants on sortedness, capacity, and time span of entries. However, some</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">// operations will put the object into &quot;unenforced&quot; mode where those invariants</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">// are relaxed until explicitly or implicitly re-enforced (which will sort and</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">// filter the data).</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">//</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">// NOT thread safe - requires external synchronization, except a const</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// object allows concurrent reads.</span></div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="};">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html">   68</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a092c6ec8a03400ba18ae88a5cee02963">SeqnoToTimeMapping</a> {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// A simple struct for sequence number to time pair</span></div>
+<div class="foldopen" id="foldopen00071" data-start="{" data-end="};">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html">   71</a></span>  <span class="keyword">struct </span><a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a> {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">   72</a></span>    <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a> = 0;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">   73</a></span>    uint64_t <a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a> = 0;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">   75</a></span>    <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a>() = <span class="keywordflow">default</span>;</div>
+<div class="foldopen" id="foldopen00076" data-start="{" data-end="}">
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a0f07c27d1aa69574d9d3f014d16adc45">   76</a></span>    <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a0f07c27d1aa69574d9d3f014d16adc45">SeqnoTimePair</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> _seqno, uint64_t _time)</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        : <a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a>(_seqno), <a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a>(_time) {}</div>
+</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="comment">// Encode to dest string</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab15f77593e6c20b6f5b856071fbbc7c0">Encode</a>(std::string&amp; dest) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="comment">// Decode the value from input Slice and remove it from the input</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8861cf4dafa8c922b2cc84cf30d442bc">Decode</a>(<a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; input);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="comment">// For delta encoding</span></div>
+<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a7f6032438e6a93a994ec5776a492660b">   86</a></span>    <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a7f6032438e6a93a994ec5776a492660b">ComputeDelta</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a>&amp; base)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      <span class="keywordflow">return</span> {<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a> - base.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a>, <a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a> - base.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a>};</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    }</div>
+</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="comment">// For delta decoding</span></div>
+<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a8961caf1a08b80a533c1108555693d14">   91</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a8961caf1a08b80a533c1108555693d14">ApplyDelta</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a>&amp; delta_or_base) {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      <a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a> += delta_or_base.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      <a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a> += delta_or_base.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    }</div>
+</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment">// If another pair can be combined into this one (for optimizing</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment">// normal SeqnoToTimeMapping behavior), then this mapping is modified</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="comment">// and true is returned, indicating the other mapping can be discarded.</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="comment">// Otherwise false is returned and nothing is changed.</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordtype">bool</span> Merge(<span class="keyword">const</span> <a class="code hl_struct" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html">SeqnoTimePair</a>&amp; other);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="comment">// Ordering used for Sort()</span></div>
+<div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a043a99b092ca56a6cf52d65109e9eb1e">  103</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a043a99b092ca56a6cf52d65109e9eb1e">operator&lt;</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a>&amp; other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      <span class="keywordflow">return</span> std::tie(<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a>, <a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a>) &lt; std::tie(other.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a>, other.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a>);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
+</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a5a1ded6a8df12d0a94102a26d1291d89">  107</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a5a1ded6a8df12d0a94102a26d1291d89">operator==</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a>&amp; other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="keywordflow">return</span> std::tie(<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a>, <a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a>) == std::tie(other.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a>, other.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a>);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    }</div>
+</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#afebb20fb2d4fe48361e3670f50572e54">  111</a></span>    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#afebb20fb2d4fe48361e3670f50572e54">SeqnoLess</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a>&amp; a, <span class="keyword">const</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a>&amp; b) {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <span class="keywordflow">return</span> a.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a> &lt; b.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">seqno</a>;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    }</div>
+</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a706cead34c5e898d7f0dbfa9c383d37e">  115</a></span>    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a706cead34c5e898d7f0dbfa9c383d37e">TimeLess</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a>&amp; a, <span class="keyword">const</span> <a class="code hl_function" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">SeqnoTimePair</a>&amp; b) {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      <span class="keywordflow">return</span> a.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a> &lt; b.<a class="code hl_variable" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">time</a>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    }</div>
+</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  };</div>
+</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="comment">// Construct an empty SeqnoToTimeMapping with no limits.</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a092c6ec8a03400ba18ae88a5cee02963">  121</a></span>  <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a092c6ec8a03400ba18ae88a5cee02963">SeqnoToTimeMapping</a>() {}</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="comment">// ==== Configuration for enforced state ==== //</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="comment">// Set a time span beyond which old entries can be deleted. Specifically,</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="comment">// under enforcement mode, the structure will maintian only one entry older</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="comment">// than the newest entry time minus max_time_span, so that</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="comment">// GetProximalSeqnoBeforeTime queries back to that time return a good result.</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="comment">// UINT64_MAX == unlimited. 0 == retain just one latest entry. Returns *this.</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <a class="code hl_class" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html">SeqnoToTimeMapping</a>&amp; SetMaxTimeSpan(uint64_t max_time_span);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="comment">// Set the nominal capacity under enforcement mode. The structure is allowed</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="comment">// to grow some reasonable fraction larger but will automatically compact</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="comment">// down to this size. UINT64_MAX == unlimited. 0 == retain nothing.</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="comment">// Returns *this.</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <a class="code hl_class" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html">SeqnoToTimeMapping</a>&amp; SetCapacity(uint64_t capacity);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="comment">// ==== Modifiers, enforced ==== //</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="comment">// Adds a series of mappings interpolating from from_seqno-&gt;from_time to</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="comment">// to_seqno-&gt;to_time. This can only be called on an empty object and both</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="comment">// seqno range and time range are inclusive.</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="keywordtype">bool</span> PrePopulate(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> from_seqno, <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> to_seqno,</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                   uint64_t from_time, uint64_t to_time);</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="comment">// Append a new entry to the list. The `seqno` should be &gt;= all previous</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="comment">// entries. This operation maintains enforced mode invariants, and will</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="comment">// automatically (re-)enter enforced mode if not already in that state.</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  <span class="comment">// Returns false if the entry was merged into the most recent entry</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">// rather than creating a new entry.</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="keywordtype">bool</span> Append(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seqno, uint64_t time);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="comment">// Clear all entries and (re-)enter enforced mode if not already in that</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="comment">// state. Enforced limits are unchanged.</span></div>
+<div class="foldopen" id="foldopen00153" data-start="{" data-end="}">
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a2b72f3dd83e031c99225052d2a045d0b">  153</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a2b72f3dd83e031c99225052d2a045d0b">Clear</a>() {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#af31f50748bce8d9f538d0c39e5ff7a9a">pairs_</a>.clear();</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ab927140a9cba3427748311da9e7e26da">enforced_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  }</div>
+</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="comment">// Enters the &quot;enforced&quot; state if not already in that state, which is</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="comment">// useful before copying or querying. This will</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="comment">//  * Sort the entries</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="comment">//  * Discard any obsolete entries, which is aided if the caller specifies</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="comment">// the `now` time so that entries older than now minus the max time span can</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="comment">// be discarded.</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="comment">//  * Compact the entries to the configured capacity.</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="comment">// Returns *this.</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <a class="code hl_class" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html">SeqnoToTimeMapping</a>&amp; Enforce(uint64_t now = 0);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="comment">// ==== Modifiers, unenforced ==== //</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="comment">// Add a new random entry and enter &quot;unenforced&quot; state. Unlike Append(), it</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="comment">// can be any historical data.</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="keywordtype">void</span> AddUnenforced(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seqno, uint64_t time);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="comment">// Decode and add the entries to this mapping object. Unless starting from</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  <span class="comment">// an empty mapping with no configured enforcement limits, this operation</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <span class="comment">// enters the unenforced state.</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> DecodeFrom(<span class="keyword">const</span> std::string&amp; pairs_str);</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="comment">// Copies entries from the src mapping object to this one, limited to entries</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="comment">// needed to answer GetProximalTimeBeforeSeqno() queries for the given</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="comment">// *inclusive* seqno range. The source structure must be in enforced</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <span class="comment">// state as a precondition. Unless starting with this object as empty mapping</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="comment">// with no configured enforcement limits, this object enters the unenforced</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <span class="comment">// state.</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <span class="keywordtype">void</span> CopyFromSeqnoRange(<span class="keyword">const</span> <a class="code hl_class" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html">SeqnoToTimeMapping</a>&amp; src,</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                          <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> from_seqno,</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                          <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> to_seqno = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">kMaxSequenceNumber</a>);</div>
+<div class="foldopen" id="foldopen00187" data-start="{" data-end="}">
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ac6cb4312b88cbc25f80a9bba06a29642">  187</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ac6cb4312b88cbc25f80a9bba06a29642">CopyFrom</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a092c6ec8a03400ba18ae88a5cee02963">SeqnoToTimeMapping</a>&amp; src) {</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a29f5752d9d6f0e67f62d588bfd807fdf">CopyFromSeqnoRange</a>(src, <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a10724ce8eaa286850bfc88013a0080c6">kUnknownSeqnoBeforeAll</a>, <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">kMaxSequenceNumber</a>);</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  }</div>
+</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  <span class="comment">// ==== Accessors ==== //</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  <span class="comment">// Given a sequence number, return the best (largest / newest) known time</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="comment">// that is no later than the write time of that given sequence number.</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="comment">// If no such specific time is known, returns kUnknownTimeBeforeAll.</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="comment">// Using the example in the class comment above,</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="comment">//  GetProximalTimeBeforeSeqno(10) -&gt; kUnknownTimeBeforeAll</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="comment">//  GetProximalTimeBeforeSeqno(11) -&gt; 500</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="comment">//  GetProximalTimeBeforeSeqno(20) -&gt; 500</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="comment">//  GetProximalTimeBeforeSeqno(21) -&gt; 600</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="comment">// Because this is a const operation depending on sortedness, the structure</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="comment">// must be in enforced state as a precondition.</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  uint64_t GetProximalTimeBeforeSeqno(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seqno) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  <span class="comment">// Given a time, return the best (largest) sequence number whose write time</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="comment">// is no later than that given time. If no such specific sequence number is</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="comment">// known, returns kUnknownSeqnoBeforeAll. Using the example in the class</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <span class="comment">// comment above,</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  <span class="comment">//  GetProximalSeqnoBeforeTime(499) -&gt; kUnknownSeqnoBeforeAll</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="comment">//  GetProximalSeqnoBeforeTime(500) -&gt; 10</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <span class="comment">//  GetProximalSeqnoBeforeTime(599) -&gt; 10</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  <span class="comment">//  GetProximalSeqnoBeforeTime(600) -&gt; 20</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  <span class="comment">// Because this is a const operation depending on sortedness, the structure</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  <span class="comment">// must be in enforced state as a precondition.</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> GetProximalSeqnoBeforeTime(uint64_t time) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <span class="comment">// Given current time, the configured `preserve_internal_time_seconds`, and</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  <span class="comment">// `preclude_last_level_data_seconds`, find the relevant cutoff sequence</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  <span class="comment">// numbers for tiering.</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <span class="keywordtype">void</span> GetCurrentTieringCutoffSeqnos(</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>      uint64_t current_time, uint64_t preserve_internal_time_seconds,</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>      uint64_t preclude_last_level_data_seconds,</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>      <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a>* preserve_time_min_seqno,</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>      <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a>* preclude_last_level_min_seqno) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  <span class="comment">// Encode to a binary string by appending to `dest`.</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <span class="comment">// Because this is a const operation depending on sortedness, the structure</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="comment">// must be in enforced state as a precondition.</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <span class="keywordtype">void</span> EncodeTo(std::string&amp; dest) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <span class="comment">// Return the number of entries</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a5a05c8aa57a686b7439db2cee8a1bdd4">  231</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a5a05c8aa57a686b7439db2cee8a1bdd4">Size</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#af31f50748bce8d9f538d0c39e5ff7a9a">pairs_</a>.size(); }</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a29c042a270224c2b2c9435e5e0af0fd7">  233</a></span>  uint64_t <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a29c042a270224c2b2c9435e5e0af0fd7">GetCapacity</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a379bbd3360642ecd750165ddcb84fa37">capacity_</a>; }</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="comment">// If the internal list is empty</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a34c8075f6c5de54e3819b779e3564409">  236</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a34c8075f6c5de54e3819b779e3564409">Empty</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#af31f50748bce8d9f538d0c39e5ff7a9a">pairs_</a>.empty(); }</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <span class="comment">// return the string for user message</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="comment">// Note: Not efficient, okay for print</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  std::string ToHumanString() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a8537eb12c1b004ce1ee749daf9e49ceb">  243</a></span>  <span class="keyword">const</span> <a class="code hl_struct" href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html">SeqnoTimePair</a>&amp; <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a8537eb12c1b004ce1ee749daf9e49ceb">TEST_GetLastEntry</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#af31f50748bce8d9f538d0c39e5ff7a9a">pairs_</a>.back(); }</div>
+<div class="foldopen" id="foldopen00244" data-start="{" data-end="}">
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ab5bec8401e46a4cb11982982fbb2911e">  244</a></span>  <span class="keyword">const</span> std::deque&lt;SeqnoTimePair&gt;&amp; <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ab5bec8401e46a4cb11982982fbb2911e">TEST_GetInternalMapping</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#af31f50748bce8d9f538d0c39e5ff7a9a">pairs_</a>;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  }</div>
+</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ae2cf3dbaa9431332c763be1511ac9973">  247</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ae2cf3dbaa9431332c763be1511ac9973">TEST_IsEnforced</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ab927140a9cba3427748311da9e7e26da">enforced_</a>; }</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a5af5aa39b7acd50ea90db7669502aa4c">  251</a></span>  uint64_t <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a5af5aa39b7acd50ea90db7669502aa4c">max_time_span_</a> = UINT64_MAX;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a379bbd3360642ecd750165ddcb84fa37">  252</a></span>  uint64_t <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a379bbd3360642ecd750165ddcb84fa37">capacity_</a> = UINT64_MAX;</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#af31f50748bce8d9f538d0c39e5ff7a9a">  254</a></span>  std::deque&lt;SeqnoTimePair&gt; <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#af31f50748bce8d9f538d0c39e5ff7a9a">pairs_</a>;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="comment">// Whether this object is in the &quot;enforced&quot; state. Between calls to public</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <span class="comment">// functions, enforced_==true means that</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <span class="comment">// * `pairs_` is sorted</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="comment">// * The capacity limit (non-strict) is met</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <span class="comment">// * The time span limit is met</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <span class="comment">// However, some places within the implementation (Append()) will temporarily</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <span class="comment">// violate those last two conditions while enforced_==true. See also the</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="comment">// Enforce*() and Sort*() private functions below.</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ab927140a9cba3427748311da9e7e26da">  264</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ab927140a9cba3427748311da9e7e26da">enforced_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a18d7000a11fe82805d4fb08aacd04b62">EnforceMaxTimeSpan</a>(uint64_t now = 0);</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#abe30738620174d803d8fc904382d7a38">EnforceCapacity</a>(<span class="keywordtype">bool</span> strict);</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ad1da740dc45d10414a49f0b90c80dc10">SortAndMerge</a>();</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno"><a class="line" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a38ed3608231d8ecadaa5915894d92a63">  270</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a38ed3608231d8ecadaa5915894d92a63">pair_const_iterator</a> =</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>      std::deque&lt;SeqnoToTimeMapping::SeqnoTimePair&gt;::const_iterator;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  <a class="code hl_typedef" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a38ed3608231d8ecadaa5915894d92a63">pair_const_iterator</a> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a37d27471eb15b63bca99ddc5c4ddeb07">FindGreaterTime</a>(uint64_t time) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  <a class="code hl_typedef" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a38ed3608231d8ecadaa5915894d92a63">pair_const_iterator</a> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ad05273140408214ffdac67f6a6e2fe3f">FindGreaterSeqno</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seqno) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  <a class="code hl_typedef" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a38ed3608231d8ecadaa5915894d92a63">pair_const_iterator</a> <a class="code hl_function" href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a94708c43482a0c686615eed6ea2c6b42">FindGreaterEqSeqno</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seqno) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>};</div>
+</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment">// === Utility methods used for TimedPut === //</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment">// Pack a value Slice and a unix write time into buffer `buf` and return a Slice</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment">// for the packed value backed by `buf`.</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afec818bc98fc23fc4bfba05d5a80bb98">PackValueAndWriteTime</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value, uint64_t unix_write_time,</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                            std::string* buf);</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment">// Pack a value Slice and a sequence number into buffer `buf` and return a Slice</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment">// for the packed value backed by `buf`.</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3894a8155af42e9aee21fe7002e9831c">PackValueAndSeqno</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value, <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seqno,</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                        std::string* buf);</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="comment">// Parse a packed value to get the write time.</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>uint64_t <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a911dae4d86fd7154864926b1530a7c04">ParsePackedValueForWriteTime</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value);</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="comment">// Parse a packed value to get the value and the write time. The unpacked value</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="comment">// Slice is backed up by the same memory backing up `value`.</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>std::tuple&lt;Slice, uint64_t&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa60ddd6b5c64955d2b83dca054114bf4">ParsePackedValueWithWriteTime</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value);</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="comment">// Parse a packed value to get the sequence number.</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a701593aca12ef59cd23b227d0f247024">ParsePackedValueForSeqno</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value);</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment">// Parse a packed value to get the value and the sequence number. The unpacked</span></div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="comment">// value Slice is backed up by the same memory backing up `value`.</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>std::tuple&lt;Slice, SequenceNumber&gt; <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3ad99519b26d88398ae700bd1b4ddef4">ParsePackedValueWithSeqno</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value);</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="comment">// Parse a packed value to get the value. The unpacked value Slice is backed up</span></div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment">// by the same memory backing up `value`.</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a76535a355952591b73b43e80abb77c1f">ParsePackedValueForValue</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value);</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html">ROCKSDB_NAMESPACE::SeqnoToTimeMapping</a></div><div class="ttdef"><b>Definition</b> <a href="#l00068">seqno_to_time_mapping.h:68</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a092c6ec8a03400ba18ae88a5cee02963"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a092c6ec8a03400ba18ae88a5cee02963">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoToTimeMapping</a></div><div class="ttdeci">SeqnoToTimeMapping()</div><div class="ttdef"><b>Definition</b> <a href="#l00121">seqno_to_time_mapping.h:121</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a18d7000a11fe82805d4fb08aacd04b62"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a18d7000a11fe82805d4fb08aacd04b62">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::EnforceMaxTimeSpan</a></div><div class="ttdeci">void EnforceMaxTimeSpan(uint64_t now=0)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00102">seqno_to_time_mapping.cc:102</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a29c042a270224c2b2c9435e5e0af0fd7"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a29c042a270224c2b2c9435e5e0af0fd7">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::GetCapacity</a></div><div class="ttdeci">uint64_t GetCapacity() const</div><div class="ttdef"><b>Definition</b> <a href="#l00233">seqno_to_time_mapping.h:233</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a29f5752d9d6f0e67f62d588bfd807fdf"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a29f5752d9d6f0e67f62d588bfd807fdf">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::CopyFromSeqnoRange</a></div><div class="ttdeci">void CopyFromSeqnoRange(const SeqnoToTimeMapping &amp;src, SequenceNumber from_seqno, SequenceNumber to_seqno=kMaxSequenceNumber)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00423">seqno_to_time_mapping.cc:423</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a2b72f3dd83e031c99225052d2a045d0b"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a2b72f3dd83e031c99225052d2a045d0b">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::Clear</a></div><div class="ttdeci">void Clear()</div><div class="ttdef"><b>Definition</b> <a href="#l00153">seqno_to_time_mapping.h:153</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a34c8075f6c5de54e3819b779e3564409"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a34c8075f6c5de54e3819b779e3564409">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::Empty</a></div><div class="ttdeci">bool Empty() const</div><div class="ttdef"><b>Definition</b> <a href="#l00236">seqno_to_time_mapping.h:236</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a379bbd3360642ecd750165ddcb84fa37"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a379bbd3360642ecd750165ddcb84fa37">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::capacity_</a></div><div class="ttdeci">uint64_t capacity_</div><div class="ttdef"><b>Definition</b> <a href="#l00252">seqno_to_time_mapping.h:252</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a37d27471eb15b63bca99ddc5c4ddeb07"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a37d27471eb15b63bca99ddc5c4ddeb07">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::FindGreaterTime</a></div><div class="ttdeci">pair_const_iterator FindGreaterTime(uint64_t time) const</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00022">seqno_to_time_mapping.cc:22</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a38ed3608231d8ecadaa5915894d92a63"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a38ed3608231d8ecadaa5915894d92a63">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::pair_const_iterator</a></div><div class="ttdeci">std::deque&lt; SeqnoToTimeMapping::SeqnoTimePair &gt;::const_iterator pair_const_iterator</div><div class="ttdef"><b>Definition</b> <a href="#l00270">seqno_to_time_mapping.h:270</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a5a05c8aa57a686b7439db2cee8a1bdd4"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a5a05c8aa57a686b7439db2cee8a1bdd4">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::Size</a></div><div class="ttdeci">size_t Size() const</div><div class="ttdef"><b>Definition</b> <a href="#l00231">seqno_to_time_mapping.h:231</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a5af5aa39b7acd50ea90db7669502aa4c"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a5af5aa39b7acd50ea90db7669502aa4c">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::max_time_span_</a></div><div class="ttdeci">uint64_t max_time_span_</div><div class="ttdef"><b>Definition</b> <a href="#l00251">seqno_to_time_mapping.h:251</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a8537eb12c1b004ce1ee749daf9e49ceb"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a8537eb12c1b004ce1ee749daf9e49ceb">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::TEST_GetLastEntry</a></div><div class="ttdeci">const SeqnoTimePair &amp; TEST_GetLastEntry() const</div><div class="ttdef"><b>Definition</b> <a href="#l00243">seqno_to_time_mapping.h:243</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_a94708c43482a0c686615eed6ea2c6b42"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#a94708c43482a0c686615eed6ea2c6b42">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::FindGreaterEqSeqno</a></div><div class="ttdeci">pair_const_iterator FindGreaterEqSeqno(SequenceNumber seqno) const</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00029">seqno_to_time_mapping.cc:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_ab5bec8401e46a4cb11982982fbb2911e"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ab5bec8401e46a4cb11982982fbb2911e">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::TEST_GetInternalMapping</a></div><div class="ttdeci">const std::deque&lt; SeqnoTimePair &gt; &amp; TEST_GetInternalMapping() const</div><div class="ttdef"><b>Definition</b> <a href="#l00244">seqno_to_time_mapping.h:244</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_ab927140a9cba3427748311da9e7e26da"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ab927140a9cba3427748311da9e7e26da">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::enforced_</a></div><div class="ttdeci">bool enforced_</div><div class="ttdef"><b>Definition</b> <a href="#l00264">seqno_to_time_mapping.h:264</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_abe30738620174d803d8fc904382d7a38"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#abe30738620174d803d8fc904382d7a38">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::EnforceCapacity</a></div><div class="ttdeci">void EnforceCapacity(bool strict)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00129">seqno_to_time_mapping.cc:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_ac6cb4312b88cbc25f80a9bba06a29642"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ac6cb4312b88cbc25f80a9bba06a29642">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::CopyFrom</a></div><div class="ttdeci">void CopyFrom(const SeqnoToTimeMapping &amp;src)</div><div class="ttdef"><b>Definition</b> <a href="#l00187">seqno_to_time_mapping.h:187</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_ad05273140408214ffdac67f6a6e2fe3f"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ad05273140408214ffdac67f6a6e2fe3f">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::FindGreaterSeqno</a></div><div class="ttdeci">pair_const_iterator FindGreaterSeqno(SequenceNumber seqno) const</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00036">seqno_to_time_mapping.cc:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_ad1da740dc45d10414a49f0b90c80dc10"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ad1da740dc45d10414a49f0b90c80dc10">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SortAndMerge</a></div><div class="ttdeci">void SortAndMerge()</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00280">seqno_to_time_mapping.cc:280</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_ae2cf3dbaa9431332c763be1511ac9973"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#ae2cf3dbaa9431332c763be1511ac9973">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::TEST_IsEnforced</a></div><div class="ttdeci">bool TEST_IsEnforced() const</div><div class="ttdef"><b>Definition</b> <a href="#l00247">seqno_to_time_mapping.h:247</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_html_af31f50748bce8d9f538d0c39e5ff7a9a"><div class="ttname"><a href="../../dc/df5/classROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping.html#af31f50748bce8d9f538d0c39e5ff7a9a">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::pairs_</a></div><div class="ttdeci">std::deque&lt; SeqnoTimePair &gt; pairs_</div><div class="ttdef"><b>Definition</b> <a href="#l00254">seqno_to_time_mapping.h:254</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="adbformat_8h_html"><div class="ttname"><a href="../../d1/d73/dbformat_8h.html">dbformat.h</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2status_8h_html"><div class="ttname"><a href="../../d9/dd0/include_2rocksdb_2status_8h.html">status.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a10724ce8eaa286850bfc88013a0080c6"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a10724ce8eaa286850bfc88013a0080c6">ROCKSDB_NAMESPACE::kUnknownSeqnoBeforeAll</a></div><div class="ttdeci">constexpr SequenceNumber kUnknownSeqnoBeforeAll</div><div class="ttdef"><b>Definition</b> <a href="#l00024">seqno_to_time_mapping.h:24</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a14421ad5fea786298ec0edd0f34bd96a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">ROCKSDB_NAMESPACE::SequenceNumber</a></div><div class="ttdeci">uint64_t SequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00022">types.h:22</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a18c0afbf912caecaddb11e9e7499ec5a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18c0afbf912caecaddb11e9e7499ec5a">ROCKSDB_NAMESPACE::kMaxSeqnoToTimeEntries</a></div><div class="ttdeci">constexpr uint64_t kMaxSeqnoToTimeEntries</div><div class="ttdef"><b>Definition</b> <a href="#l00040">seqno_to_time_mapping.h:40</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a287396f0016373befe39acdf6fea04ee"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a287396f0016373befe39acdf6fea04ee">ROCKSDB_NAMESPACE::kUnknownTimeBeforeAll</a></div><div class="ttdeci">constexpr uint64_t kUnknownTimeBeforeAll</div><div class="ttdef"><b>Definition</b> <a href="#l00023">seqno_to_time_mapping.h:23</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a3894a8155af42e9aee21fe7002e9831c"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3894a8155af42e9aee21fe7002e9831c">ROCKSDB_NAMESPACE::PackValueAndSeqno</a></div><div class="ttdeci">Slice PackValueAndSeqno(const Slice &amp;value, SequenceNumber seqno, std::string *buf)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00530">seqno_to_time_mapping.cc:530</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a3ad99519b26d88398ae700bd1b4ddef4"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a3ad99519b26d88398ae700bd1b4ddef4">ROCKSDB_NAMESPACE::ParsePackedValueWithSeqno</a></div><div class="ttdeci">std::tuple&lt; Slice, SequenceNumber &gt; ParsePackedValueWithSeqno(const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00562">seqno_to_time_mapping.cc:562</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a40c2e709bf8f6362cfc517cc5a3032a3"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a40c2e709bf8f6362cfc517cc5a3032a3">ROCKSDB_NAMESPACE::kMaxSeqnoTimePairsPerSST</a></div><div class="ttdeci">constexpr uint64_t kMaxSeqnoTimePairsPerSST</div><div class="ttdef"><b>Definition</b> <a href="#l00028">seqno_to_time_mapping.h:28</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6d2e2245e6d59ac893cadff47351d121"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6d2e2245e6d59ac893cadff47351d121">ROCKSDB_NAMESPACE::kMaxSeqnoTimePairsPerCF</a></div><div class="ttdeci">constexpr uint64_t kMaxSeqnoTimePairsPerCF</div><div class="ttdef"><b>Definition</b> <a href="#l00038">seqno_to_time_mapping.h:38</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a701593aca12ef59cd23b227d0f247024"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a701593aca12ef59cd23b227d0f247024">ROCKSDB_NAMESPACE::ParsePackedValueForSeqno</a></div><div class="ttdeci">SequenceNumber ParsePackedValueForSeqno(const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00552">seqno_to_time_mapping.cc:552</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a76535a355952591b73b43e80abb77c1f"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a76535a355952591b73b43e80abb77c1f">ROCKSDB_NAMESPACE::ParsePackedValueForValue</a></div><div class="ttdeci">Slice ParsePackedValueForValue(const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00569">seqno_to_time_mapping.cc:569</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8861cf4dafa8c922b2cc84cf30d442bc"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8861cf4dafa8c922b2cc84cf30d442bc">ROCKSDB_NAMESPACE::Decode</a></div><div class="ttdeci">static Key Decode(const char *key)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d68/inlineskiplist__test_8cc_source.html#l00030">inlineskiplist_test.cc:30</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a911dae4d86fd7154864926b1530a7c04"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a911dae4d86fd7154864926b1530a7c04">ROCKSDB_NAMESPACE::ParsePackedValueForWriteTime</a></div><div class="ttdeci">uint64_t ParsePackedValueForWriteTime(const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00537">seqno_to_time_mapping.cc:537</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa60ddd6b5c64955d2b83dca054114bf4"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa60ddd6b5c64955d2b83dca054114bf4">ROCKSDB_NAMESPACE::ParsePackedValueWithWriteTime</a></div><div class="ttdeci">std::tuple&lt; Slice, uint64_t &gt; ParsePackedValueWithWriteTime(const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00547">seqno_to_time_mapping.cc:547</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab15f77593e6c20b6f5b856071fbbc7c0"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab15f77593e6c20b6f5b856071fbbc7c0">ROCKSDB_NAMESPACE::Encode</a></div><div class="ttdeci">static const char * Encode(const uint64_t *key)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d68/inlineskiplist__test_8cc_source.html#l00026">inlineskiplist_test.cc:26</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aec4ce90d41846978a4702e7e924468eb"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">ROCKSDB_NAMESPACE::kMaxSequenceNumber</a></div><div class="ttdeci">static const SequenceNumber kMaxSequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00128">dbformat.h:128</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_afec818bc98fc23fc4bfba05d5a80bb98"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afec818bc98fc23fc4bfba05d5a80bb98">ROCKSDB_NAMESPACE::PackValueAndWriteTime</a></div><div class="ttdeci">Slice PackValueAndWriteTime(const Slice &amp;value, uint64_t unix_write_time, std::string *buf)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d5a/seqno__to__time__mapping_8cc_source.html#l00523">seqno_to_time_mapping.cc:523</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair</a></div><div class="ttdef"><b>Definition</b> <a href="#l00071">seqno_to_time_mapping.h:71</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html_a043a99b092ca56a6cf52d65109e9eb1e"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a043a99b092ca56a6cf52d65109e9eb1e">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair::operator&lt;</a></div><div class="ttdeci">bool operator&lt;(const SeqnoTimePair &amp;other) const</div><div class="ttdef"><b>Definition</b> <a href="#l00103">seqno_to_time_mapping.h:103</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html_a0f07c27d1aa69574d9d3f014d16adc45"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a0f07c27d1aa69574d9d3f014d16adc45">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair::SeqnoTimePair</a></div><div class="ttdeci">SeqnoTimePair(SequenceNumber _seqno, uint64_t _time)</div><div class="ttdef"><b>Definition</b> <a href="#l00076">seqno_to_time_mapping.h:76</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html_a4af8abe6be859d346e996262ad1ceb4a"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a4af8abe6be859d346e996262ad1ceb4a">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair::seqno</a></div><div class="ttdeci">SequenceNumber seqno</div><div class="ttdef"><b>Definition</b> <a href="#l00072">seqno_to_time_mapping.h:72</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html_a5a1ded6a8df12d0a94102a26d1291d89"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a5a1ded6a8df12d0a94102a26d1291d89">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair::operator==</a></div><div class="ttdeci">bool operator==(const SeqnoTimePair &amp;other) const</div><div class="ttdef"><b>Definition</b> <a href="#l00107">seqno_to_time_mapping.h:107</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html_a706cead34c5e898d7f0dbfa9c383d37e"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a706cead34c5e898d7f0dbfa9c383d37e">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair::TimeLess</a></div><div class="ttdeci">static bool TimeLess(const SeqnoTimePair &amp;a, const SeqnoTimePair &amp;b)</div><div class="ttdef"><b>Definition</b> <a href="#l00115">seqno_to_time_mapping.h:115</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html_a7f6032438e6a93a994ec5776a492660b"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a7f6032438e6a93a994ec5776a492660b">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair::ComputeDelta</a></div><div class="ttdeci">SeqnoTimePair ComputeDelta(const SeqnoTimePair &amp;base) const</div><div class="ttdef"><b>Definition</b> <a href="#l00086">seqno_to_time_mapping.h:86</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html_a8961caf1a08b80a533c1108555693d14"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#a8961caf1a08b80a533c1108555693d14">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair::ApplyDelta</a></div><div class="ttdeci">void ApplyDelta(const SeqnoTimePair &amp;delta_or_base)</div><div class="ttdef"><b>Definition</b> <a href="#l00091">seqno_to_time_mapping.h:91</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html_ac8432823f3b92c811a43c8b5af17ae00"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#ac8432823f3b92c811a43c8b5af17ae00">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair::SeqnoTimePair</a></div><div class="ttdeci">SeqnoTimePair()=default</div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html_af224282f13c6bc4a072bc6f1c6ed13be"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#af224282f13c6bc4a072bc6f1c6ed13be">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair::time</a></div><div class="ttdeci">uint64_t time</div><div class="ttdef"><b>Definition</b> <a href="#l00073">seqno_to_time_mapping.h:73</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair_html_afebb20fb2d4fe48361e3670f50572e54"><div class="ttname"><a href="../../de/d05/structROCKSDB__NAMESPACE_1_1SeqnoToTimeMapping_1_1SeqnoTimePair.html#afebb20fb2d4fe48361e3670f50572e54">ROCKSDB_NAMESPACE::SeqnoToTimeMapping::SeqnoTimePair::SeqnoLess</a></div><div class="ttdeci">static bool SeqnoLess(const SeqnoTimePair &amp;a, const SeqnoTimePair &amp;b)</div><div class="ttdef"><b>Definition</b> <a href="#l00111">seqno_to_time_mapping.h:111</a></div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="../../d9/d49/types_8h.html">types.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../d8/d1f/seqno__to__time__mapping_8h.html">seqno_to_time_mapping.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

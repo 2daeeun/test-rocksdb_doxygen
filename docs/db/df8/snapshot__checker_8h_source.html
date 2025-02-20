@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/snapshot_checker.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('db/df8/snapshot__checker_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">snapshot_checker.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../db/df8/snapshot__checker_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d49/types_8h.html">rocksdb/types.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="};">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1b">   11</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1b">SnapshotCheckerResult</a> : <span class="keywordtype">int</span> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1ba41543477cb784132e838989054bbc7c9">   12</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1ba41543477cb784132e838989054bbc7c9">kInSnapshot</a> = 0,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1ba04cbcb5df38ce5bd66ea3e51b03c3c86">   13</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1ba04cbcb5df38ce5bd66ea3e51b03c3c86">kNotInSnapshot</a> = 1,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="comment">// In case snapshot is released and the checker has no clue whether</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="comment">// the given sequence is visible to the snapshot.</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1bafb6e1dfe2c4af46725b46cb2f00258d8">   16</a></span>  <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1bafb6e1dfe2c4af46725b46cb2f00258d8">kSnapshotReleased</a> = 2,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>};</div>
+</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// Callback class that control GC of duplicate keys in flush/compaction.</span></div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html">   20</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html">SnapshotChecker</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html#abdf734dc9572501b235b1d9622aa0f4a">   22</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html#abdf734dc9572501b235b1d9622aa0f4a">~SnapshotChecker</a>() {}</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html#ac8b98c76f91709a1568c9fb0b1e00040">   23</a></span>  <span class="keyword">virtual</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1b">SnapshotCheckerResult</a> <a class="code hl_function" href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html#ac8b98c76f91709a1568c9fb0b1e00040">CheckInSnapshot</a>(</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> sequence, <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> snapshot_sequence) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>};</div>
+</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html">   27</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html#afe9c00b80ad58bbd47a9de2d476d493b">DisableGCSnapshotChecker</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html">SnapshotChecker</a> {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html#a72c35c543750d6784c7a8cea7f172470">   29</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html#a72c35c543750d6784c7a8cea7f172470">~DisableGCSnapshotChecker</a>() {}</div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html#abb5fe97f78d7e3f2893350e72e34c69b">   30</a></span>  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1b">SnapshotCheckerResult</a> <a class="code hl_function" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html#abb5fe97f78d7e3f2893350e72e34c69b">CheckInSnapshot</a>(</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <span class="comment">/*sequence*/</span>,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> <span class="comment">/*snapshot_sequence*/</span>)<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="comment">// By returning kNotInSnapshot, we prevent all the values from being GCed</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1ba04cbcb5df38ce5bd66ea3e51b03c3c86">SnapshotCheckerResult::kNotInSnapshot</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
+</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">static</span> <a class="code hl_class" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html">DisableGCSnapshotChecker</a>* Instance();</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html#afe9c00b80ad58bbd47a9de2d476d493b">   39</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html#afe9c00b80ad58bbd47a9de2d476d493b">DisableGCSnapshotChecker</a>() {}</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>};</div>
+</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">class </span>WritePreparedTxnDB;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">// Callback class created by WritePreparedTxnDB to check if a key</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// is visible by a snapshot.</span></div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="};">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../de/daa/classROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker.html">   46</a></span><span class="keyword">class </span><a class="code hl_function" href="../../de/daa/classROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker.html#a76f741e7a416a7aa8bf8f0bea1194fd9">WritePreparedSnapshotChecker</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html">SnapshotChecker</a> {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../de/daa/classROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker.html#a76f741e7a416a7aa8bf8f0bea1194fd9">WritePreparedSnapshotChecker</a>(<a class="code hl_class" href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html">WritePreparedTxnDB</a>* txn_db);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../de/daa/classROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker.html#a434debafe083c7718f83c6c6068177a9">   49</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../de/daa/classROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker.html#a434debafe083c7718f83c6c6068177a9">~WritePreparedSnapshotChecker</a>() {}</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1b">SnapshotCheckerResult</a> CheckInSnapshot(</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> sequence, <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> snapshot_sequence) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../de/daa/classROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker.html#a1ee20b6c2ed46b6484a703aa00906754">   55</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html">WritePreparedTxnDB</a>* <span class="keyword">const</span> <a class="code hl_variable" href="../../de/daa/classROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker.html#a1ee20b6c2ed46b6484a703aa00906754">txn_db_</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>};</div>
+</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1d539d6eaaeab872cdc6aa8cdc346be6">DataIsDefinitelyInSnapshot</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seqno, <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> snapshot,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                                <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html">SnapshotChecker</a>* snapshot_checker);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18341baf845dfb3a716689f4cc6911cd">DataIsDefinitelyNotInSnapshot</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seqno,</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                                   <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> snapshot,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                                   <span class="keyword">const</span> <a class="code hl_class" href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html">SnapshotChecker</a>* snapshot_checker);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker_html"><div class="ttname"><a href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html">ROCKSDB_NAMESPACE::DisableGCSnapshotChecker</a></div><div class="ttdef"><b>Definition</b> <a href="#l00027">snapshot_checker.h:27</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker_html_a72c35c543750d6784c7a8cea7f172470"><div class="ttname"><a href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html#a72c35c543750d6784c7a8cea7f172470">ROCKSDB_NAMESPACE::DisableGCSnapshotChecker::~DisableGCSnapshotChecker</a></div><div class="ttdeci">virtual ~DisableGCSnapshotChecker()</div><div class="ttdef"><b>Definition</b> <a href="#l00029">snapshot_checker.h:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker_html_abb5fe97f78d7e3f2893350e72e34c69b"><div class="ttname"><a href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html#abb5fe97f78d7e3f2893350e72e34c69b">ROCKSDB_NAMESPACE::DisableGCSnapshotChecker::CheckInSnapshot</a></div><div class="ttdeci">SnapshotCheckerResult CheckInSnapshot(SequenceNumber, SequenceNumber) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00030">snapshot_checker.h:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker_html_afe9c00b80ad58bbd47a9de2d476d493b"><div class="ttname"><a href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1DisableGCSnapshotChecker.html#afe9c00b80ad58bbd47a9de2d476d493b">ROCKSDB_NAMESPACE::DisableGCSnapshotChecker::DisableGCSnapshotChecker</a></div><div class="ttdeci">DisableGCSnapshotChecker()</div><div class="ttdef"><b>Definition</b> <a href="#l00039">snapshot_checker.h:39</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotChecker_html"><div class="ttname"><a href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html">ROCKSDB_NAMESPACE::SnapshotChecker</a></div><div class="ttdef"><b>Definition</b> <a href="#l00020">snapshot_checker.h:20</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotChecker_html_abdf734dc9572501b235b1d9622aa0f4a"><div class="ttname"><a href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html#abdf734dc9572501b235b1d9622aa0f4a">ROCKSDB_NAMESPACE::SnapshotChecker::~SnapshotChecker</a></div><div class="ttdeci">virtual ~SnapshotChecker()</div><div class="ttdef"><b>Definition</b> <a href="#l00022">snapshot_checker.h:22</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SnapshotChecker_html_ac8b98c76f91709a1568c9fb0b1e00040"><div class="ttname"><a href="../../d3/d4e/classROCKSDB__NAMESPACE_1_1SnapshotChecker.html#ac8b98c76f91709a1568c9fb0b1e00040">ROCKSDB_NAMESPACE::SnapshotChecker::CheckInSnapshot</a></div><div class="ttdeci">virtual SnapshotCheckerResult CheckInSnapshot(SequenceNumber sequence, SequenceNumber snapshot_sequence) const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker_html_a1ee20b6c2ed46b6484a703aa00906754"><div class="ttname"><a href="../../de/daa/classROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker.html#a1ee20b6c2ed46b6484a703aa00906754">ROCKSDB_NAMESPACE::WritePreparedSnapshotChecker::txn_db_</a></div><div class="ttdeci">const WritePreparedTxnDB *const txn_db_</div><div class="ttdef"><b>Definition</b> <a href="#l00055">snapshot_checker.h:55</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker_html_a434debafe083c7718f83c6c6068177a9"><div class="ttname"><a href="../../de/daa/classROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker.html#a434debafe083c7718f83c6c6068177a9">ROCKSDB_NAMESPACE::WritePreparedSnapshotChecker::~WritePreparedSnapshotChecker</a></div><div class="ttdeci">virtual ~WritePreparedSnapshotChecker()</div><div class="ttdef"><b>Definition</b> <a href="#l00049">snapshot_checker.h:49</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker_html_a76f741e7a416a7aa8bf8f0bea1194fd9"><div class="ttname"><a href="../../de/daa/classROCKSDB__NAMESPACE_1_1WritePreparedSnapshotChecker.html#a76f741e7a416a7aa8bf8f0bea1194fd9">ROCKSDB_NAMESPACE::WritePreparedSnapshotChecker::WritePreparedSnapshotChecker</a></div><div class="ttdeci">WritePreparedSnapshotChecker(WritePreparedTxnDB *txn_db)</div><div class="ttdef"><b>Definition</b> <a href="../../db/d24/snapshot__checker_8cc_source.html#l00015">snapshot_checker.cc:15</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritePreparedTxnDB_html"><div class="ttname"><a href="../../d1/dca/classROCKSDB__NAMESPACE_1_1WritePreparedTxnDB.html">ROCKSDB_NAMESPACE::WritePreparedTxnDB</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/df3/write__prepared__txn__db_8h_source.html#l00038">write_prepared_txn_db.h:38</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0f924f0aa11f785f797e95813de98c1b"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1b">ROCKSDB_NAMESPACE::SnapshotCheckerResult</a></div><div class="ttdeci">SnapshotCheckerResult</div><div class="ttdef"><b>Definition</b> <a href="#l00011">snapshot_checker.h:11</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0f924f0aa11f785f797e95813de98c1ba04cbcb5df38ce5bd66ea3e51b03c3c86"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1ba04cbcb5df38ce5bd66ea3e51b03c3c86">ROCKSDB_NAMESPACE::SnapshotCheckerResult::kNotInSnapshot</a></div><div class="ttdeci">@ kNotInSnapshot</div><div class="ttdef"><b>Definition</b> <a href="#l00013">snapshot_checker.h:13</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0f924f0aa11f785f797e95813de98c1ba41543477cb784132e838989054bbc7c9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1ba41543477cb784132e838989054bbc7c9">ROCKSDB_NAMESPACE::SnapshotCheckerResult::kInSnapshot</a></div><div class="ttdeci">@ kInSnapshot</div><div class="ttdef"><b>Definition</b> <a href="#l00012">snapshot_checker.h:12</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0f924f0aa11f785f797e95813de98c1bafb6e1dfe2c4af46725b46cb2f00258d8"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0f924f0aa11f785f797e95813de98c1bafb6e1dfe2c4af46725b46cb2f00258d8">ROCKSDB_NAMESPACE::SnapshotCheckerResult::kSnapshotReleased</a></div><div class="ttdeci">@ kSnapshotReleased</div><div class="ttdef"><b>Definition</b> <a href="#l00016">snapshot_checker.h:16</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a14421ad5fea786298ec0edd0f34bd96a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">ROCKSDB_NAMESPACE::SequenceNumber</a></div><div class="ttdeci">uint64_t SequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00022">types.h:22</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a18341baf845dfb3a716689f4cc6911cd"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18341baf845dfb3a716689f4cc6911cd">ROCKSDB_NAMESPACE::DataIsDefinitelyNotInSnapshot</a></div><div class="ttdeci">bool DataIsDefinitelyNotInSnapshot(SequenceNumber seqno, SequenceNumber snapshot, const SnapshotChecker *snapshot_checker)</div><div class="ttdef"><b>Definition</b> <a href="../../db/d24/snapshot__checker_8cc_source.html#l00046">snapshot_checker.cc:46</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a1d539d6eaaeab872cdc6aa8cdc346be6"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a1d539d6eaaeab872cdc6aa8cdc346be6">ROCKSDB_NAMESPACE::DataIsDefinitelyInSnapshot</a></div><div class="ttdeci">bool DataIsDefinitelyInSnapshot(SequenceNumber seqno, SequenceNumber snapshot, const SnapshotChecker *snapshot_checker)</div><div class="ttdef"><b>Definition</b> <a href="../../db/d24/snapshot__checker_8cc_source.html#l00038">snapshot_checker.cc:38</a></div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="../../d9/d49/types_8h.html">types.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../db/df8/snapshot__checker_8h.html">snapshot_checker.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

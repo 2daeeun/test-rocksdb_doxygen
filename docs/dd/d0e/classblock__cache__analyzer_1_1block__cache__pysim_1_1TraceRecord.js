@@ -1,0 +1,26 @@
+var classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord =
+[
+    [ "__init__", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a290c8498fd9962e5684ce4d6ba97c587", null ],
+    [ "access_time", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a5d63998e55665a00d1a5a0eb8c304e86", null ],
+    [ "block_id", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#aead7b074c7148d521f8888bb6882cea5", null ],
+    [ "block_key_size", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a60cd7b5da688de18c05bd18db0bd9841", null ],
+    [ "block_offset_in_file", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#ab75ea32080d2dcd250cf3819177ccc0d", null ],
+    [ "block_size", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#addc915af3bbded392f178dc76cb9fa0b", null ],
+    [ "block_type", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a4c89b081e9dfdfb2ef240a886bbf8730", null ],
+    [ "caller", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#ac56fcaca6350084c11f09ee15f93c183", null ],
+    [ "cf_id", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a18d920a7c548c7eba192664abe8369e9", null ],
+    [ "cf_name", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a0af68b67484a22cfc7a8822fd68f213e", null ],
+    [ "fd", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#ad43ceae0ba92abda1a256183e0fd9f6d", null ],
+    [ "get_id", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a370c52dcb2462ffccf43157f800e110c", null ],
+    [ "is_hit", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#aea96bc82a0f3b12137c8e3f313e1904a", null ],
+    [ "key_id", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a9aa97243bcb9d3227219ed0da19836f7", null ],
+    [ "key_size", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a8f8a98671f1f1a7ea86483e38e1839c8", null ],
+    [ "kv_size", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#adda34a6460e9856ba427ad6d0c1621d2", null ],
+    [ "level", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a8da7dec63fceee2c9917e7d45d775293", null ],
+    [ "next_access_seq_no", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a059c23516cd00a0421b7d2970fd19b65", null ],
+    [ "no_insert", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#ac60667ce0b9df8dc385a4798813b109b", null ],
+    [ "num_keys_in_block", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#a49c99891b36700a3e4507238078e6564", null ],
+    [ "referenced_key_exist_in_block", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#ac9ddf7bf0e774d23c08ebc4df38304b1", null ],
+    [ "seq_number", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#abdb39d15a2ca0518e8832f7f42296dd4", null ],
+    [ "table_id", "dd/d0e/classblock__cache__analyzer_1_1block__cache__pysim_1_1TraceRecord.html#adeb72002783d0ccff2c2a599d8a9a7f8", null ]
+];

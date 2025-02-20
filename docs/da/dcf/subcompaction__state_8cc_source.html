@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/compaction/subcompaction_state.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('da/dcf/subcompaction__state_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">subcompaction_state.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../da/dcf/subcompaction__state_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">//</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/d2d/subcompaction__state_8h.html">db/compaction/subcompaction_state.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/dbf/sst__partitioner_8h.html">rocksdb/sst_partitioner.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a2a12273bce57cea1bcda9db0452f055d">   16</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a2a12273bce57cea1bcda9db0452f055d">SubcompactionState::AggregateCompactionOutputStats</a>(</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_struct" href="../../de/dc7/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull.html">InternalStats::CompactionStatsFull</a>&amp; compaction_stats)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  compaction_stats.<a class="code hl_variable" href="../../de/dc7/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull.html#a704ac55830ee15e5576f53c963fa9b6c">stats</a>.<a class="code hl_function" href="../../dc/dc6/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStats.html#aa9259161ad5f763fae5c7db2420982a7">Add</a>(<a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ac205e425ab51805536f4d951470e31bc">compaction_outputs_</a>.stats_);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ad6bfa9583b9f03b335340c4578c84190">HasPenultimateLevelOutputs</a>()) {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    compaction_stats.<a class="code hl_variable" href="../../de/dc7/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull.html#ae3ea3bd18680ff611705c33f06928b06">has_penultimate_level_output</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    compaction_stats.<a class="code hl_variable" href="../../de/dc7/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull.html#aa36b5d798f1a1393bfb6efc2b7694f87">penultimate_level_stats</a>.<a class="code hl_function" href="../../dc/dc6/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStats.html#aa9259161ad5f763fae5c7db2420982a7">Add</a>(</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ae179f05a86cc995c545b4421c385bb2a">penultimate_level_outputs_</a>.stats_);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  }</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>}</div>
+</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ad79b2160a0ae696b5590e6a70e22c6e5">   26</a></span><a class="code hl_struct" href="../../d7/d32/structROCKSDB__NAMESPACE_1_1OutputIterator.html">OutputIterator</a> <a class="code hl_function" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ad79b2160a0ae696b5590e6a70e22c6e5">SubcompactionState::GetOutputs</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d7/d32/structROCKSDB__NAMESPACE_1_1OutputIterator.html">OutputIterator</a>(<a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ae179f05a86cc995c545b4421c385bb2a">penultimate_level_outputs_</a>.outputs_,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                        <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ac205e425ab51805536f4d951470e31bc">compaction_outputs_</a>.outputs_);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a0d0e877b359ac7780498733bf14d0ba2">   31</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a0d0e877b359ac7780498733bf14d0ba2">SubcompactionState::Cleanup</a>(<a class="code hl_class" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html">Cache</a>* cache) {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ae179f05a86cc995c545b4421c385bb2a">penultimate_level_outputs_</a>.Cleanup();</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ac205e425ab51805536f4d951470e31bc">compaction_outputs_</a>.Cleanup();</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ad636da51fbe0d26f333acbe689139d8f">status</a>.ok()) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; out : <a class="code hl_function" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ad79b2160a0ae696b5590e6a70e22c6e5">GetOutputs</a>()) {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="comment">// If this file was inserted into the table cache then remove it here</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      <span class="comment">// because this compaction was not committed. This is not strictly</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      <span class="comment">// required because of a backstop TableCache::Evict() in</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      <span class="comment">// PurgeObsoleteFiles() but is our opportunity to apply</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      <span class="comment">// uncache_aggressiveness. TODO: instead, put these files into the</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="comment">// VersionSet::obsolete_files_ pipeline so that they don&#39;t have to</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      <span class="comment">// be picked up by scanning the DB directory.</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      <a class="code hl_function" href="../../dd/df3/classROCKSDB__NAMESPACE_1_1TableCache.html#a3422b342d8dce5670d2ca8f0995929d9">TableCache::ReleaseObsolete</a>(</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>          cache, out.meta.fd.GetNumber(), <span class="keyword">nullptr</span> <span class="comment">/*handle*/</span>,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>          <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a02fdd22733bbe56039df85d8172e1784">compaction</a>-&gt;mutable_cf_options()-&gt;uncache_aggressiveness);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// TODO: sub_compact.io_status is not checked like status. Not sure if thats</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// intentional. So ignoring the io_status as of now.</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#aba0946c69b4b0369d732b9c307991919">io_status</a>.PermitUncheckedError();</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
+</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a3d31cd528f28345dd23b6e2d2728bd6c">   54</a></span><a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a3d31cd528f28345dd23b6e2d2728bd6c">SubcompactionState::SmallestUserKey</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a1b6b52f2f37ae5dd2823c7cce95cf24d">has_penultimate_level_outputs_</a>) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> a = <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ac205e425ab51805536f4d951470e31bc">compaction_outputs_</a>.SmallestUserKey();</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> b = <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ae179f05a86cc995c545b4421c385bb2a">penultimate_level_outputs_</a>.SmallestUserKey();</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">if</span> (a.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">empty</a>()) {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keywordflow">return</span> b;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">if</span> (b.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">empty</a>()) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <span class="keywordflow">return</span> a;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    }</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keyword">const</span> <a class="code hl_class" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1Comparator.html">Comparator</a>* user_cmp =</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a02fdd22733bbe56039df85d8172e1784">compaction</a>-&gt;column_family_data()-&gt;user_comparator();</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">if</span> (user_cmp-&gt;<a class="code hl_function" href="../../df/df1/classROCKSDB__NAMESPACE_1_1CompareInterface.html#a3ade320bd39c9af6327110e65df81000">Compare</a>(a, b) &gt; 0) {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      <span class="keywordflow">return</span> b;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      <span class="keywordflow">return</span> a;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ac205e425ab51805536f4d951470e31bc">compaction_outputs_</a>.SmallestUserKey();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
+</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="foldopen" id="foldopen00076" data-start="{" data-end="}">
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#aa41c3f40e0c11a88b2cfc7df1a7d4294">   76</a></span><a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#aa41c3f40e0c11a88b2cfc7df1a7d4294">SubcompactionState::LargestUserKey</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a1b6b52f2f37ae5dd2823c7cce95cf24d">has_penultimate_level_outputs_</a>) {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> a = <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ac205e425ab51805536f4d951470e31bc">compaction_outputs_</a>.LargestUserKey();</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> b = <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ae179f05a86cc995c545b4421c385bb2a">penultimate_level_outputs_</a>.LargestUserKey();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">if</span> (a.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">empty</a>()) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      <span class="keywordflow">return</span> b;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">if</span> (b.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">empty</a>()) {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      <span class="keywordflow">return</span> a;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keyword">const</span> <a class="code hl_class" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1Comparator.html">Comparator</a>* user_cmp =</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a02fdd22733bbe56039df85d8172e1784">compaction</a>-&gt;column_family_data()-&gt;user_comparator();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">if</span> (user_cmp-&gt;<a class="code hl_function" href="../../df/df1/classROCKSDB__NAMESPACE_1_1CompareInterface.html#a3ade320bd39c9af6327110e65df81000">Compare</a>(a, b) &lt; 0) {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      <span class="keywordflow">return</span> b;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      <span class="keywordflow">return</span> a;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ac205e425ab51805536f4d951470e31bc">compaction_outputs_</a>.LargestUserKey();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
+</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a12936661b57bd1eb0f417593c5ee1691">   98</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a12936661b57bd1eb0f417593c5ee1691">SubcompactionState::AddToOutput</a>(</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keyword">const</span> <a class="code hl_class" href="../../dc/df1/classROCKSDB__NAMESPACE_1_1CompactionIterator.html">CompactionIterator</a>&amp; iter,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec66fdc6f0dd12fba35bcfe52e736afb">CompactionFileOpenFunc</a>&amp; open_file_func,</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a068c01c185ec96639bd17cd0b4a3bcca">CompactionFileCloseFunc</a>&amp; close_file_func) {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="comment">// update target output first</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#acbfdf0b1d0f33f0bff172ac895e9d1d3">is_current_penultimate_level_</a> = iter.<a class="code hl_function" href="../../dc/df1/classROCKSDB__NAMESPACE_1_1CompactionIterator.html#af316c8eeaad657972afbaaea36c6216c">output_to_penultimate_level</a>();</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a15c629a842fe54dfce29a462d2b4488d">current_outputs_</a> = <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#acbfdf0b1d0f33f0bff172ac895e9d1d3">is_current_penultimate_level_</a> ? &amp;<a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ae179f05a86cc995c545b4421c385bb2a">penultimate_level_outputs_</a></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                                                   : &amp;<a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ac205e425ab51805536f4d951470e31bc">compaction_outputs_</a>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#acbfdf0b1d0f33f0bff172ac895e9d1d3">is_current_penultimate_level_</a>) {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <a class="code hl_variable" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a1b6b52f2f37ae5dd2823c7cce95cf24d">has_penultimate_level_outputs_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a851ee766a1b5d60b1d71c17d499f3920">Current</a>().AddToOutput(iter, open_file_func, close_file_func);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
+</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Cache_html"><div class="ttname"><a href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html">ROCKSDB_NAMESPACE::Cache</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00044">advanced_cache.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionIterator_html"><div class="ttname"><a href="../../dc/df1/classROCKSDB__NAMESPACE_1_1CompactionIterator.html">ROCKSDB_NAMESPACE::CompactionIterator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d23/compaction__iterator_8h_source.html#l00083">compaction_iterator.h:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompactionIterator_html_af316c8eeaad657972afbaaea36c6216c"><div class="ttname"><a href="../../dc/df1/classROCKSDB__NAMESPACE_1_1CompactionIterator.html#af316c8eeaad657972afbaaea36c6216c">ROCKSDB_NAMESPACE::CompactionIterator::output_to_penultimate_level</a></div><div class="ttdeci">bool output_to_penultimate_level() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d23/compaction__iterator_8h_source.html#l00274">compaction_iterator.h:274</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Comparator_html"><div class="ttname"><a href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1Comparator.html">ROCKSDB_NAMESPACE::Comparator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/df8/include_2rocksdb_2comparator_8h_source.html#l00044">comparator.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompareInterface_html_a3ade320bd39c9af6327110e65df81000"><div class="ttname"><a href="../../df/df1/classROCKSDB__NAMESPACE_1_1CompareInterface.html#a3ade320bd39c9af6327110e65df81000">ROCKSDB_NAMESPACE::CompareInterface::Compare</a></div><div class="ttdeci">virtual int Compare(const Slice &amp;a, const Slice &amp;b) const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a0a0abf5017eb159fd69edf2d40d4d7e1"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a0a0abf5017eb159fd69edf2d40d4d7e1">ROCKSDB_NAMESPACE::Slice::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00063">slice.h:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_a02fdd22733bbe56039df85d8172e1784"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a02fdd22733bbe56039df85d8172e1784">ROCKSDB_NAMESPACE::SubcompactionState::compaction</a></div><div class="ttdeci">const Compaction * compaction</div><div class="ttdef"><b>Definition</b> <a href="../../de/d2d/subcompaction__state_8h_source.html#l00052">subcompaction_state.h:52</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_a0d0e877b359ac7780498733bf14d0ba2"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a0d0e877b359ac7780498733bf14d0ba2">ROCKSDB_NAMESPACE::SubcompactionState::Cleanup</a></div><div class="ttdeci">void Cleanup(Cache *cache)</div><div class="ttdef"><b>Definition</b> <a href="#l00031">subcompaction_state.cc:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_a12936661b57bd1eb0f417593c5ee1691"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a12936661b57bd1eb0f417593c5ee1691">ROCKSDB_NAMESPACE::SubcompactionState::AddToOutput</a></div><div class="ttdeci">Status AddToOutput(const CompactionIterator &amp;iter, const CompactionFileOpenFunc &amp;open_file_func, const CompactionFileCloseFunc &amp;close_file_func)</div><div class="ttdef"><b>Definition</b> <a href="#l00098">subcompaction_state.cc:98</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_a15c629a842fe54dfce29a462d2b4488d"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a15c629a842fe54dfce29a462d2b4488d">ROCKSDB_NAMESPACE::SubcompactionState::current_outputs_</a></div><div class="ttdeci">CompactionOutputs * current_outputs_</div><div class="ttdef"><b>Definition</b> <a href="../../de/d2d/subcompaction__state_8h_source.html#l00215">subcompaction_state.h:215</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_a1b6b52f2f37ae5dd2823c7cce95cf24d"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a1b6b52f2f37ae5dd2823c7cce95cf24d">ROCKSDB_NAMESPACE::SubcompactionState::has_penultimate_level_outputs_</a></div><div class="ttdeci">bool has_penultimate_level_outputs_</div><div class="ttdef"><b>Definition</b> <a href="../../de/d2d/subcompaction__state_8h_source.html#l00217">subcompaction_state.h:217</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_a2a12273bce57cea1bcda9db0452f055d"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a2a12273bce57cea1bcda9db0452f055d">ROCKSDB_NAMESPACE::SubcompactionState::AggregateCompactionOutputStats</a></div><div class="ttdeci">void AggregateCompactionOutputStats(InternalStats::CompactionStatsFull &amp;compaction_stats) const</div><div class="ttdef"><b>Definition</b> <a href="#l00016">subcompaction_state.cc:16</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_a3d31cd528f28345dd23b6e2d2728bd6c"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a3d31cd528f28345dd23b6e2d2728bd6c">ROCKSDB_NAMESPACE::SubcompactionState::SmallestUserKey</a></div><div class="ttdeci">Slice SmallestUserKey() const</div><div class="ttdef"><b>Definition</b> <a href="#l00054">subcompaction_state.cc:54</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_a851ee766a1b5d60b1d71c17d499f3920"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#a851ee766a1b5d60b1d71c17d499f3920">ROCKSDB_NAMESPACE::SubcompactionState::Current</a></div><div class="ttdeci">CompactionOutputs &amp; Current() const</div><div class="ttdef"><b>Definition</b> <a href="../../de/d2d/subcompaction__state_8h_source.html#l00185">subcompaction_state.h:185</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_aa41c3f40e0c11a88b2cfc7df1a7d4294"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#aa41c3f40e0c11a88b2cfc7df1a7d4294">ROCKSDB_NAMESPACE::SubcompactionState::LargestUserKey</a></div><div class="ttdeci">Slice LargestUserKey() const</div><div class="ttdef"><b>Definition</b> <a href="#l00076">subcompaction_state.cc:76</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_aba0946c69b4b0369d732b9c307991919"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#aba0946c69b4b0369d732b9c307991919">ROCKSDB_NAMESPACE::SubcompactionState::io_status</a></div><div class="ttdeci">IOStatus io_status</div><div class="ttdef"><b>Definition</b> <a href="../../de/d2d/subcompaction__state_8h_source.html#l00063">subcompaction_state.h:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_ac205e425ab51805536f4d951470e31bc"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ac205e425ab51805536f4d951470e31bc">ROCKSDB_NAMESPACE::SubcompactionState::compaction_outputs_</a></div><div class="ttdeci">CompactionOutputs compaction_outputs_</div><div class="ttdef"><b>Definition</b> <a href="../../de/d2d/subcompaction__state_8h_source.html#l00213">subcompaction_state.h:213</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_acbfdf0b1d0f33f0bff172ac895e9d1d3"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#acbfdf0b1d0f33f0bff172ac895e9d1d3">ROCKSDB_NAMESPACE::SubcompactionState::is_current_penultimate_level_</a></div><div class="ttdeci">bool is_current_penultimate_level_</div><div class="ttdef"><b>Definition</b> <a href="../../de/d2d/subcompaction__state_8h_source.html#l00216">subcompaction_state.h:216</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_ad636da51fbe0d26f333acbe689139d8f"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ad636da51fbe0d26f333acbe689139d8f">ROCKSDB_NAMESPACE::SubcompactionState::status</a></div><div class="ttdeci">Status status</div><div class="ttdef"><b>Definition</b> <a href="../../de/d2d/subcompaction__state_8h_source.html#l00060">subcompaction_state.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_ad6bfa9583b9f03b335340c4578c84190"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ad6bfa9583b9f03b335340c4578c84190">ROCKSDB_NAMESPACE::SubcompactionState::HasPenultimateLevelOutputs</a></div><div class="ttdeci">bool HasPenultimateLevelOutputs() const</div><div class="ttdef"><b>Definition</b> <a href="../../de/d2d/subcompaction__state_8h_source.html#l00161">subcompaction_state.h:161</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_ad79b2160a0ae696b5590e6a70e22c6e5"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ad79b2160a0ae696b5590e6a70e22c6e5">ROCKSDB_NAMESPACE::SubcompactionState::GetOutputs</a></div><div class="ttdeci">OutputIterator GetOutputs() const</div><div class="ttdef"><b>Definition</b> <a href="#l00026">subcompaction_state.cc:26</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SubcompactionState_html_ae179f05a86cc995c545b4421c385bb2a"><div class="ttname"><a href="../../dc/d3c/classROCKSDB__NAMESPACE_1_1SubcompactionState.html#ae179f05a86cc995c545b4421c385bb2a">ROCKSDB_NAMESPACE::SubcompactionState::penultimate_level_outputs_</a></div><div class="ttdeci">CompactionOutputs penultimate_level_outputs_</div><div class="ttdef"><b>Definition</b> <a href="../../de/d2d/subcompaction__state_8h_source.html#l00214">subcompaction_state.h:214</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableCache_html_a3422b342d8dce5670d2ca8f0995929d9"><div class="ttname"><a href="../../dd/df3/classROCKSDB__NAMESPACE_1_1TableCache.html#a3422b342d8dce5670d2ca8f0995929d9">ROCKSDB_NAMESPACE::TableCache::ReleaseObsolete</a></div><div class="ttdeci">static void ReleaseObsolete(Cache *cache, uint64_t file_number, Cache::Handle *handle, uint32_t uncache_aggressiveness)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/table__cache_8cc_source.html#l00729">table_cache.cc:729</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a068c01c185ec96639bd17cd0b4a3bcca"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a068c01c185ec96639bd17cd0b4a3bcca">ROCKSDB_NAMESPACE::CompactionFileCloseFunc</a></div><div class="ttdeci">std::function&lt; Status(CompactionOutputs &amp;, const Status &amp;, const Slice &amp;)&gt; CompactionFileCloseFunc</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dec/compaction__outputs_8h_source.html#l00023">compaction_outputs.h:23</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aec66fdc6f0dd12fba35bcfe52e736afb"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec66fdc6f0dd12fba35bcfe52e736afb">ROCKSDB_NAMESPACE::CompactionFileOpenFunc</a></div><div class="ttdeci">std::function&lt; Status(CompactionOutputs &amp;)&gt; CompactionFileOpenFunc</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dec/compaction__outputs_8h_source.html#l00022">compaction_outputs.h:22</a></div></div>
+<div class="ttc" id="asst__partitioner_8h_html"><div class="ttname"><a href="../../df/dbf/sst__partitioner_8h.html">sst_partitioner.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull_html"><div class="ttname"><a href="../../de/dc7/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull.html">ROCKSDB_NAMESPACE::InternalStats::CompactionStatsFull</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d5f/internal__stats_8h_source.html#l00478">internal_stats.h:478</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull_html_a704ac55830ee15e5576f53c963fa9b6c"><div class="ttname"><a href="../../de/dc7/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull.html#a704ac55830ee15e5576f53c963fa9b6c">ROCKSDB_NAMESPACE::InternalStats::CompactionStatsFull::stats</a></div><div class="ttdeci">CompactionStats stats</div><div class="ttdef"><b>Definition</b> <a href="../../db/d5f/internal__stats_8h_source.html#l00480">internal_stats.h:480</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull_html_aa36b5d798f1a1393bfb6efc2b7694f87"><div class="ttname"><a href="../../de/dc7/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull.html#aa36b5d798f1a1393bfb6efc2b7694f87">ROCKSDB_NAMESPACE::InternalStats::CompactionStatsFull::penultimate_level_stats</a></div><div class="ttdeci">CompactionStats penultimate_level_stats</div><div class="ttdef"><b>Definition</b> <a href="../../db/d5f/internal__stats_8h_source.html#l00484">internal_stats.h:484</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull_html_ae3ea3bd18680ff611705c33f06928b06"><div class="ttname"><a href="../../de/dc7/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStatsFull.html#ae3ea3bd18680ff611705c33f06928b06">ROCKSDB_NAMESPACE::InternalStats::CompactionStatsFull::has_penultimate_level_output</a></div><div class="ttdeci">bool has_penultimate_level_output</div><div class="ttdef"><b>Definition</b> <a href="../../db/d5f/internal__stats_8h_source.html#l00483">internal_stats.h:483</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStats_html_aa9259161ad5f763fae5c7db2420982a7"><div class="ttname"><a href="../../dc/dc6/structROCKSDB__NAMESPACE_1_1InternalStats_1_1CompactionStats.html#aa9259161ad5f763fae5c7db2420982a7">ROCKSDB_NAMESPACE::InternalStats::CompactionStats::Add</a></div><div class="ttdeci">void Add(const CompactionStats &amp;c)</div><div class="ttdef"><b>Definition</b> <a href="../../db/d5f/internal__stats_8h_source.html#l00391">internal_stats.h:391</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1OutputIterator_html"><div class="ttname"><a href="../../d7/d32/structROCKSDB__NAMESPACE_1_1OutputIterator.html">ROCKSDB_NAMESPACE::OutputIterator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dec/compaction__outputs_8h_source.html#l00378">compaction_outputs.h:378</a></div></div>
+<div class="ttc" id="asubcompaction__state_8h_html"><div class="ttname"><a href="../../de/d2d/subcompaction__state_8h.html">subcompaction_state.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../dir_c0b14e19e9b5621af917c79b97fe6ede.html">compaction</a></li><li class="navelem"><a class="el" href="../../da/dcf/subcompaction__state_8cc.html">subcompaction_state.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

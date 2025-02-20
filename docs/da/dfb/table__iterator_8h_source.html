@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: table/table_iterator.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('da/dfb/table__iterator_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">table_iterator.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../da/dfb/table__iterator_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d22/iterator_8h.html">rocksdb/iterator.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d33/internal__iterator_8h.html">table/internal_iterator.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">// An iterator wrapper class used to wrap an `InternalIterator` created by API</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// `TableReader::NewIterator`. The `InternalIterator` should be allocated with</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// the default allocator, not on an arena.</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// NOTE: Callers should ensure the wrapped `InternalIterator*` is a valid</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// pointer before constructing a `TableIterator` with it.</span></div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html">   18</a></span><span class="keyword">class </span><a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a89d6a43672f13ea7748335d706e2f542">TableIterator</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#acd6d057afdc44037440004e6bc4916d1">Iterator</a> {</div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#afa54aa7f47a6e39ea6bf7d3517274d66">   19</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#afa54aa7f47a6e39ea6bf7d3517274d66">reset</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">InternalIterator</a>* iter) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a> != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      <span class="keyword">delete</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    }</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a> = iter;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  }</div>
+</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a89d6a43672f13ea7748335d706e2f542">   27</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a89d6a43672f13ea7748335d706e2f542">TableIterator</a>(<a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">InternalIterator</a>* iter) : <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>(iter) {}</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a3cfe4d274624c0150b15e0901341bee8">   29</a></span>  <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a3cfe4d274624c0150b15e0901341bee8">TableIterator</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a89d6a43672f13ea7748335d706e2f542">TableIterator</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ab098afdab922bcdcb32eb91fea8de553">   30</a></span>  <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a89d6a43672f13ea7748335d706e2f542">TableIterator</a>&amp; <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ab098afdab922bcdcb32eb91fea8de553">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a89d6a43672f13ea7748335d706e2f542">TableIterator</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a2db81b7b5673c9dab4c7e9541dc71c62">   32</a></span>  <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a2db81b7b5673c9dab4c7e9541dc71c62">TableIterator</a>(<a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a89d6a43672f13ea7748335d706e2f542">TableIterator</a>&amp;&amp; o) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a> = o.iter_;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    o.iter_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
+</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#acf49346105518730cef5a2dbb433c0cf">   37</a></span>  <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a89d6a43672f13ea7748335d706e2f542">TableIterator</a>&amp; <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#acf49346105518730cef5a2dbb433c0cf">operator=</a>(<a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a89d6a43672f13ea7748335d706e2f542">TableIterator</a>&amp;&amp; o) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#afa54aa7f47a6e39ea6bf7d3517274d66">reset</a>(o.iter_);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    o.iter_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  }</div>
+</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a3a13d65deb93ea54c7e6dc41edecd657">   43</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">InternalIterator</a>* <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a3a13d65deb93ea54c7e6dc41edecd657">operator-&gt;</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>; }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a267a8b0f2499567be96ddf410714ba22">   44</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">InternalIterator</a>* <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a267a8b0f2499567be96ddf410714ba22">get</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>; }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a23584899c9d63d25d4b62feb52c69a08">   46</a></span>  <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a23584899c9d63d25d4b62feb52c69a08">~TableIterator</a>()<span class="keyword"> override </span>{ <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#afa54aa7f47a6e39ea6bf7d3517274d66">reset</a>(<span class="keyword">nullptr</span>); }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a6fddb100c2352537230e36715bb2903c">   48</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a6fddb100c2352537230e36715bb2903c">Valid</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>-&gt;Valid(); }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a53775493a181732d49616657029b3712">   49</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a53775493a181732d49616657029b3712">SeekToFirst</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>-&gt;SeekToFirst(); }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a1ae0eb9b66228764c5e4a8f15dfcaf70">   50</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a1ae0eb9b66228764c5e4a8f15dfcaf70">SeekToLast</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>-&gt;SeekToLast(); }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a229ae8e9b253f6f6f2eb984f98fb5d1a">   51</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a229ae8e9b253f6f6f2eb984f98fb5d1a">Seek</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; target)<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>-&gt;Seek(target); }</div>
+<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ab2247016cab94f536c670bf074461421">   52</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ab2247016cab94f536c670bf074461421">SeekForPrev</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; target)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>-&gt;SeekForPrev(target);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
+</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#afd3256216dbd489e17fda09f8d002f9a">   55</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#afd3256216dbd489e17fda09f8d002f9a">Next</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>-&gt;Next(); }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ae20f9ca1e425e28ba015e781554b87a9">   56</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ae20f9ca1e425e28ba015e781554b87a9">Prev</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>-&gt;Prev(); }</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a8f117a82d936290fa0bd7e788d3ec250">   57</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a8f117a82d936290fa0bd7e788d3ec250">key</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>-&gt;key(); }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a24387d7e24937ad8235f14a42f547b6d">   58</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a24387d7e24937ad8235f14a42f547b6d">value</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>-&gt;value(); }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ad70e248fbe05b5dededb5c4d3e1ade9a">   59</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ad70e248fbe05b5dededb5c4d3e1ade9a">status</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>-&gt;status(); }</div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#af71da8c92d0079312bea0d83efab958b">   60</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#af71da8c92d0079312bea0d83efab958b">GetProperty</a>(std::string <span class="comment">/*prop_name*/</span>,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                     std::string* <span class="comment">/*prop*/</span>)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a80198f888172bfab4d714628b7bfaec5">Status::NotSupported</a>(<span class="stringliteral">&quot;TableIterator does not support GetProperty.&quot;</span>);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  }</div>
+</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">   67</a></span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">InternalIterator</a>* <a class="code hl_variable" href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">iter_</a>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>};</div>
+</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Iterator_html_acd6d057afdc44037440004e6bc4916d1"><div class="ttname"><a href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#acd6d057afdc44037440004e6bc4916d1">ROCKSDB_NAMESPACE::Iterator::Iterator</a></div><div class="ttdeci">Iterator()</div><div class="ttdef"><b>Definition</b> <a href="../../df/d22/iterator_8h_source.html#l00030">iterator.h:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a80198f888172bfab4d714628b7bfaec5"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a80198f888172bfab4d714628b7bfaec5">ROCKSDB_NAMESPACE::Status::NotSupported</a></div><div class="ttdeci">static Status NotSupported(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00210">status.h:210</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a1ae0eb9b66228764c5e4a8f15dfcaf70"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a1ae0eb9b66228764c5e4a8f15dfcaf70">ROCKSDB_NAMESPACE::TableIterator::SeekToLast</a></div><div class="ttdeci">void SeekToLast() override</div><div class="ttdef"><b>Definition</b> <a href="#l00050">table_iterator.h:50</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a229ae8e9b253f6f6f2eb984f98fb5d1a"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a229ae8e9b253f6f6f2eb984f98fb5d1a">ROCKSDB_NAMESPACE::TableIterator::Seek</a></div><div class="ttdeci">void Seek(const Slice &amp;target) override</div><div class="ttdef"><b>Definition</b> <a href="#l00051">table_iterator.h:51</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a23584899c9d63d25d4b62feb52c69a08"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a23584899c9d63d25d4b62feb52c69a08">ROCKSDB_NAMESPACE::TableIterator::~TableIterator</a></div><div class="ttdeci">~TableIterator() override</div><div class="ttdef"><b>Definition</b> <a href="#l00046">table_iterator.h:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a24387d7e24937ad8235f14a42f547b6d"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a24387d7e24937ad8235f14a42f547b6d">ROCKSDB_NAMESPACE::TableIterator::value</a></div><div class="ttdeci">Slice value() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00058">table_iterator.h:58</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a267a8b0f2499567be96ddf410714ba22"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a267a8b0f2499567be96ddf410714ba22">ROCKSDB_NAMESPACE::TableIterator::get</a></div><div class="ttdeci">InternalIterator * get()</div><div class="ttdef"><b>Definition</b> <a href="#l00044">table_iterator.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a2db81b7b5673c9dab4c7e9541dc71c62"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a2db81b7b5673c9dab4c7e9541dc71c62">ROCKSDB_NAMESPACE::TableIterator::TableIterator</a></div><div class="ttdeci">TableIterator(TableIterator &amp;&amp;o) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00032">table_iterator.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a3a13d65deb93ea54c7e6dc41edecd657"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a3a13d65deb93ea54c7e6dc41edecd657">ROCKSDB_NAMESPACE::TableIterator::operator-&gt;</a></div><div class="ttdeci">InternalIterator * operator-&gt;()</div><div class="ttdef"><b>Definition</b> <a href="#l00043">table_iterator.h:43</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a3cfe4d274624c0150b15e0901341bee8"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a3cfe4d274624c0150b15e0901341bee8">ROCKSDB_NAMESPACE::TableIterator::TableIterator</a></div><div class="ttdeci">TableIterator(const TableIterator &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a53775493a181732d49616657029b3712"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a53775493a181732d49616657029b3712">ROCKSDB_NAMESPACE::TableIterator::SeekToFirst</a></div><div class="ttdeci">void SeekToFirst() override</div><div class="ttdef"><b>Definition</b> <a href="#l00049">table_iterator.h:49</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a5b4ff360bb106514452fd0c2ebf9fe84"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a5b4ff360bb106514452fd0c2ebf9fe84">ROCKSDB_NAMESPACE::TableIterator::iter_</a></div><div class="ttdeci">InternalIterator * iter_</div><div class="ttdef"><b>Definition</b> <a href="#l00067">table_iterator.h:67</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a6fddb100c2352537230e36715bb2903c"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a6fddb100c2352537230e36715bb2903c">ROCKSDB_NAMESPACE::TableIterator::Valid</a></div><div class="ttdeci">bool Valid() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00048">table_iterator.h:48</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a89d6a43672f13ea7748335d706e2f542"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a89d6a43672f13ea7748335d706e2f542">ROCKSDB_NAMESPACE::TableIterator::TableIterator</a></div><div class="ttdeci">TableIterator(InternalIterator *iter)</div><div class="ttdef"><b>Definition</b> <a href="#l00027">table_iterator.h:27</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_a8f117a82d936290fa0bd7e788d3ec250"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#a8f117a82d936290fa0bd7e788d3ec250">ROCKSDB_NAMESPACE::TableIterator::key</a></div><div class="ttdeci">Slice key() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00057">table_iterator.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_ab098afdab922bcdcb32eb91fea8de553"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ab098afdab922bcdcb32eb91fea8de553">ROCKSDB_NAMESPACE::TableIterator::operator=</a></div><div class="ttdeci">TableIterator &amp; operator=(const TableIterator &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_ab2247016cab94f536c670bf074461421"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ab2247016cab94f536c670bf074461421">ROCKSDB_NAMESPACE::TableIterator::SeekForPrev</a></div><div class="ttdeci">void SeekForPrev(const Slice &amp;target) override</div><div class="ttdef"><b>Definition</b> <a href="#l00052">table_iterator.h:52</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_acf49346105518730cef5a2dbb433c0cf"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#acf49346105518730cef5a2dbb433c0cf">ROCKSDB_NAMESPACE::TableIterator::operator=</a></div><div class="ttdeci">TableIterator &amp; operator=(TableIterator &amp;&amp;o) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00037">table_iterator.h:37</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_ad70e248fbe05b5dededb5c4d3e1ade9a"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ad70e248fbe05b5dededb5c4d3e1ade9a">ROCKSDB_NAMESPACE::TableIterator::status</a></div><div class="ttdeci">Status status() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00059">table_iterator.h:59</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_ae20f9ca1e425e28ba015e781554b87a9"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#ae20f9ca1e425e28ba015e781554b87a9">ROCKSDB_NAMESPACE::TableIterator::Prev</a></div><div class="ttdeci">void Prev() override</div><div class="ttdef"><b>Definition</b> <a href="#l00056">table_iterator.h:56</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_af71da8c92d0079312bea0d83efab958b"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#af71da8c92d0079312bea0d83efab958b">ROCKSDB_NAMESPACE::TableIterator::GetProperty</a></div><div class="ttdeci">Status GetProperty(std::string, std::string *) override</div><div class="ttdef"><b>Definition</b> <a href="#l00060">table_iterator.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_afa54aa7f47a6e39ea6bf7d3517274d66"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#afa54aa7f47a6e39ea6bf7d3517274d66">ROCKSDB_NAMESPACE::TableIterator::reset</a></div><div class="ttdeci">void reset(InternalIterator *iter) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00019">table_iterator.h:19</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableIterator_html_afd3256216dbd489e17fda09f8d002f9a"><div class="ttname"><a href="../../db/d5b/classROCKSDB__NAMESPACE_1_1TableIterator.html#afd3256216dbd489e17fda09f8d002f9a">ROCKSDB_NAMESPACE::TableIterator::Next</a></div><div class="ttdeci">void Next() override</div><div class="ttdef"><b>Definition</b> <a href="#l00055">table_iterator.h:55</a></div></div>
+<div class="ttc" id="ainternal__iterator_8h_html"><div class="ttname"><a href="../../d7/d33/internal__iterator_8h.html">internal_iterator.h</a></div></div>
+<div class="ttc" id="aiterator_8h_html"><div class="ttname"><a href="../../df/d22/iterator_8h.html">iterator.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab914b3e98761b03dc768578c4353c57a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">ROCKSDB_NAMESPACE::InternalIterator</a></div><div class="ttdeci">InternalIteratorBase&lt; Slice &gt; InternalIterator</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d33/internal__iterator_8h_source.html#l00227">internal_iterator.h:227</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_7cea70ad8000b4ba25606f1df9c7574a.html">table</a></li><li class="navelem"><a class="el" href="../../da/dfb/table__iterator_8h.html">table_iterator.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

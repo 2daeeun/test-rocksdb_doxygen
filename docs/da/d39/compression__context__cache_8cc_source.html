@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: util/compression_context_cache.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('da/d39/compression__context__cache_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">compression_context_cache.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../da/d39/compression__context__cache_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">//</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d97/compression__context__cache_8h.html">util/compression_context_cache.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/daf/compression_8h.html">util/compression.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/da6/core__local_8h.html">util/core_local.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../df/d49/namespaceROCKSDB__NAMESPACE_1_1compression__cache.html">   18</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../df/d49/namespaceROCKSDB__NAMESPACE_1_1compression__cache.html">compression_cache</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../df/d49/namespaceROCKSDB__NAMESPACE_1_1compression__cache.html#a805a2396bfe4a3c62cd6bc0130ba5442">   20</a></span><span class="keywordtype">void</span>* <span class="keyword">const</span> <a class="code hl_variable" href="../../df/d49/namespaceROCKSDB__NAMESPACE_1_1compression__cache.html#a805a2396bfe4a3c62cd6bc0130ba5442">SentinelValue</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// Cache ZSTD uncompression contexts for reads</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// if needed we can add ZSTD compression context caching</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// which is currently is not done since BlockBasedTableBuilder</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// simply creates one compression context per new SST file.</span></div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html">   25</a></span><span class="keyword">struct </span><a class="code hl_function" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a7a67786a94999c402ca5a1e17795e2d1">ZSTDCachedData</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// We choose to cache the below structure instead of a ptr</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="comment">// because we want to avoid a) native types leak b) make</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// cache use transparent for the user</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a507c2a0ba852083c2f020f88ca5c2614">   29</a></span>  <a class="code hl_class" href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html">ZSTDUncompressCachedData</a> <a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a507c2a0ba852083c2f020f88ca5c2614">uncomp_cached_data_</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a413beb37d1cc880b2886d8c5c08656ef">   30</a></span>  std::atomic&lt;void*&gt; <a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a413beb37d1cc880b2886d8c5c08656ef">zstd_uncomp_sentinel_</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">char</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a3c17eb186bb58ad238c754c680286177">   33</a></span>      <a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a3c17eb186bb58ad238c754c680286177">padding</a>[(<a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a> -</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>               (<span class="keyword">sizeof</span>(<a class="code hl_class" href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html">ZSTDUncompressCachedData</a>) + <span class="keyword">sizeof</span>(std::atomic&lt;void*&gt;)) %</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                   <a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a>)];  <span class="comment">// unused padding field</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a7a67786a94999c402ca5a1e17795e2d1">   37</a></span>  <a class="code hl_function" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a7a67786a94999c402ca5a1e17795e2d1">ZSTDCachedData</a>() : <a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a413beb37d1cc880b2886d8c5c08656ef">zstd_uncomp_sentinel_</a>(&amp;<a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a507c2a0ba852083c2f020f88ca5c2614">uncomp_cached_data_</a>) {}</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a2901c82c7b515e088b0297c12e47a344">   38</a></span>  <a class="code hl_function" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a2901c82c7b515e088b0297c12e47a344">ZSTDCachedData</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a7a67786a94999c402ca5a1e17795e2d1">ZSTDCachedData</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a51fa643467e77a61beb408dd3c838b4e">   39</a></span>  <a class="code hl_function" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a7a67786a94999c402ca5a1e17795e2d1">ZSTDCachedData</a>&amp; <a class="code hl_function" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a51fa643467e77a61beb408dd3c838b4e">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a7a67786a94999c402ca5a1e17795e2d1">ZSTDCachedData</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a00a83fb191516e18bd5f698d437b9794">   41</a></span>  <a class="code hl_class" href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html">ZSTDUncompressCachedData</a> <a class="code hl_function" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a00a83fb191516e18bd5f698d437b9794">GetUncompressData</a>(int64_t idx) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_class" href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html">ZSTDUncompressCachedData</a> result;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">void</span>* expected = &amp;<a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a507c2a0ba852083c2f020f88ca5c2614">uncomp_cached_data_</a>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a413beb37d1cc880b2886d8c5c08656ef">zstd_uncomp_sentinel_</a>.compare_exchange_strong(expected,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                                                      <a class="code hl_variable" href="../../df/d49/namespaceROCKSDB__NAMESPACE_1_1compression__cache.html#a805a2396bfe4a3c62cd6bc0130ba5442">SentinelValue</a>)) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a507c2a0ba852083c2f020f88ca5c2614">uncomp_cached_data_</a>.CreateIfNeeded();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      result.<a class="code hl_function" href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html#ae872262f7f1a63b985101fe0b1489ca6">InitFromCache</a>(<a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a507c2a0ba852083c2f020f88ca5c2614">uncomp_cached_data_</a>, idx);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <span class="comment">// Creates one time use data</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      result.<a class="code hl_function" href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html#aaee7c9f3fa02cd3b79aa3dd040b393c2">CreateIfNeeded</a>();</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
+</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// Return the entry back into circulation</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="comment">// This is executed only when we successfully obtained</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="comment">// in the first place</span></div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a1d178d39b0737b9da1a1210f6e2de19b">   57</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a1d178d39b0737b9da1a1210f6e2de19b">ReturnUncompressData</a>() {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a413beb37d1cc880b2886d8c5c08656ef">zstd_uncomp_sentinel_</a>.exchange(&amp;<a class="code hl_variable" href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a507c2a0ba852083c2f020f88ca5c2614">uncomp_cached_data_</a>) != <a class="code hl_variable" href="../../df/d49/namespaceROCKSDB__NAMESPACE_1_1compression__cache.html#a805a2396bfe4a3c62cd6bc0130ba5442">SentinelValue</a>) {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="comment">// Means we are returning while not having it acquired.</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
+</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>};</div>
+</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(ZSTDCachedData) % <a class="code hl_define" href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a> == 0,</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>              <span class="stringliteral">&quot;Expected CACHE_LINE_SIZE alignment&quot;</span>);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}  <span class="comment">// namespace compression_cache</span></div>
+</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="};">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html">   68</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html">CompressionContextCache::Rep</a> {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a734d570d04cb0cf9e29cf1779cbbf5c2">   70</a></span>  <a class="code hl_function" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a734d570d04cb0cf9e29cf1779cbbf5c2">Rep</a>() = <span class="keywordflow">default</span>;</div>
+<div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a81e8735095804ce6c49117406542b5a4">   71</a></span>  <a class="code hl_class" href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html">ZSTDUncompressCachedData</a> <a class="code hl_function" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a81e8735095804ce6c49117406542b5a4">GetZSTDUncompressData</a>() {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keyword">auto</span> p = <a class="code hl_variable" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a51e63c2462a665bcbbdc78ecb71c644d">per_core_uncompr_</a>.AccessElementAndIndex();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    int64_t idx = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(p.second);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">return</span> p.first-&gt;GetUncompressData(idx);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00076" data-start="{" data-end="}">
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#ad4d5c898e2077c5877b9f10ababe5bbe">   76</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#ad4d5c898e2077c5877b9f10ababe5bbe">ReturnZSTDUncompressData</a>(int64_t idx) {</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    assert(idx &gt;= 0);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keyword">auto</span>* cn = <a class="code hl_variable" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a51e63c2462a665bcbbdc78ecb71c644d">per_core_uncompr_</a>.AccessAtCore(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(idx));</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    cn-&gt;ReturnUncompressData();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  }</div>
+</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a51e63c2462a665bcbbdc78ecb71c644d">   83</a></span>  <a class="code hl_class" href="../../d7/de0/classROCKSDB__NAMESPACE_1_1CoreLocalArray.html">CoreLocalArray&lt;compression_cache::ZSTDCachedData&gt;</a> <a class="code hl_variable" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a51e63c2462a665bcbbdc78ecb71c644d">per_core_uncompr_</a>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>};</div>
+</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a7adddcb2efc38478d2c82bc5e03bd43f">   86</a></span><a class="code hl_function" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a21346dea75268f5369ea5a58cf0bdfe8">CompressionContextCache::CompressionContextCache</a>() : <a class="code hl_variable" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ab0d000ac86697e19453c467668f1ae78">rep_</a>(new <a class="code hl_class" href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html">Rep</a>()) {}</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a184b5c0ec80b25aff64fb30064afc8e8">   88</a></span><a class="code hl_function" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a21346dea75268f5369ea5a58cf0bdfe8">CompressionContextCache</a>* <a class="code hl_function" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a184b5c0ec80b25aff64fb30064afc8e8">CompressionContextCache::Instance</a>() {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">static</span> <a class="code hl_function" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a21346dea75268f5369ea5a58cf0bdfe8">CompressionContextCache</a> instance;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keywordflow">return</span> &amp;instance;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>}</div>
+</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ab007e9786d861c32a6fbaadc5e63a85d">   93</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ab007e9786d861c32a6fbaadc5e63a85d">CompressionContextCache::InitSingleton</a>() { <a class="code hl_function" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a184b5c0ec80b25aff64fb30064afc8e8">Instance</a>(); }</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><a class="code hl_class" href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html">ZSTDUncompressCachedData</a></div>
+<div class="foldopen" id="foldopen00096" data-start="{" data-end="}">
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a2667af5f2ffa43eb015dbdd1b9715eb6">   96</a></span><a class="code hl_function" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a2667af5f2ffa43eb015dbdd1b9715eb6">CompressionContextCache::GetCachedZSTDUncompressData</a>() {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ab0d000ac86697e19453c467668f1ae78">rep_</a>-&gt;GetZSTDUncompressData();</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
+</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="foldopen" id="foldopen00100" data-start="{" data-end="}">
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ae4e268df564a391d94a58abd96e42e0f">  100</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ae4e268df564a391d94a58abd96e42e0f">CompressionContextCache::ReturnCachedZSTDUncompressData</a>(int64_t idx) {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <a class="code hl_variable" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ab0d000ac86697e19453c467668f1ae78">rep_</a>-&gt;ReturnZSTDUncompressData(idx);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>}</div>
+</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a58e1d6c8234459a42404cb2cf86becba">  104</a></span><a class="code hl_function" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a58e1d6c8234459a42404cb2cf86becba">CompressionContextCache::~CompressionContextCache</a>() { <span class="keyword">delete</span> <a class="code hl_variable" href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ab0d000ac86697e19453c467668f1ae78">rep_</a>; }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep_html"><div class="ttname"><a href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html">ROCKSDB_NAMESPACE::CompressionContextCache::Rep</a></div><div class="ttdef"><b>Definition</b> <a href="#l00068">compression_context_cache.cc:68</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep_html_a51e63c2462a665bcbbdc78ecb71c644d"><div class="ttname"><a href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a51e63c2462a665bcbbdc78ecb71c644d">ROCKSDB_NAMESPACE::CompressionContextCache::Rep::per_core_uncompr_</a></div><div class="ttdeci">CoreLocalArray&lt; compression_cache::ZSTDCachedData &gt; per_core_uncompr_</div><div class="ttdef"><b>Definition</b> <a href="#l00083">compression_context_cache.cc:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep_html_a734d570d04cb0cf9e29cf1779cbbf5c2"><div class="ttname"><a href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a734d570d04cb0cf9e29cf1779cbbf5c2">ROCKSDB_NAMESPACE::CompressionContextCache::Rep::Rep</a></div><div class="ttdeci">Rep()=default</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep_html_a81e8735095804ce6c49117406542b5a4"><div class="ttname"><a href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#a81e8735095804ce6c49117406542b5a4">ROCKSDB_NAMESPACE::CompressionContextCache::Rep::GetZSTDUncompressData</a></div><div class="ttdeci">ZSTDUncompressCachedData GetZSTDUncompressData()</div><div class="ttdef"><b>Definition</b> <a href="#l00071">compression_context_cache.cc:71</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep_html_ad4d5c898e2077c5877b9f10ababe5bbe"><div class="ttname"><a href="../../d6/d08/classROCKSDB__NAMESPACE_1_1CompressionContextCache_1_1Rep.html#ad4d5c898e2077c5877b9f10ababe5bbe">ROCKSDB_NAMESPACE::CompressionContextCache::Rep::ReturnZSTDUncompressData</a></div><div class="ttdeci">void ReturnZSTDUncompressData(int64_t idx)</div><div class="ttdef"><b>Definition</b> <a href="#l00076">compression_context_cache.cc:76</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_html_a184b5c0ec80b25aff64fb30064afc8e8"><div class="ttname"><a href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a184b5c0ec80b25aff64fb30064afc8e8">ROCKSDB_NAMESPACE::CompressionContextCache::Instance</a></div><div class="ttdeci">static CompressionContextCache * Instance()</div><div class="ttdef"><b>Definition</b> <a href="#l00088">compression_context_cache.cc:88</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_html_a21346dea75268f5369ea5a58cf0bdfe8"><div class="ttname"><a href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a21346dea75268f5369ea5a58cf0bdfe8">ROCKSDB_NAMESPACE::CompressionContextCache::CompressionContextCache</a></div><div class="ttdeci">CompressionContextCache(const CompressionContextCache &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_html_a2667af5f2ffa43eb015dbdd1b9715eb6"><div class="ttname"><a href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a2667af5f2ffa43eb015dbdd1b9715eb6">ROCKSDB_NAMESPACE::CompressionContextCache::GetCachedZSTDUncompressData</a></div><div class="ttdeci">ZSTDUncompressCachedData GetCachedZSTDUncompressData()</div><div class="ttdef"><b>Definition</b> <a href="#l00096">compression_context_cache.cc:96</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_html_a58e1d6c8234459a42404cb2cf86becba"><div class="ttname"><a href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#a58e1d6c8234459a42404cb2cf86becba">ROCKSDB_NAMESPACE::CompressionContextCache::~CompressionContextCache</a></div><div class="ttdeci">~CompressionContextCache()</div><div class="ttdef"><b>Definition</b> <a href="#l00104">compression_context_cache.cc:104</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_html_ab007e9786d861c32a6fbaadc5e63a85d"><div class="ttname"><a href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ab007e9786d861c32a6fbaadc5e63a85d">ROCKSDB_NAMESPACE::CompressionContextCache::InitSingleton</a></div><div class="ttdeci">static void InitSingleton()</div><div class="ttdef"><b>Definition</b> <a href="#l00093">compression_context_cache.cc:93</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_html_ab0d000ac86697e19453c467668f1ae78"><div class="ttname"><a href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ab0d000ac86697e19453c467668f1ae78">ROCKSDB_NAMESPACE::CompressionContextCache::rep_</a></div><div class="ttdeci">Rep * rep_</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d97/compression__context__cache_8h_source.html#l00044">compression_context_cache.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompressionContextCache_html_ae4e268df564a391d94a58abd96e42e0f"><div class="ttname"><a href="../../db/dcf/classROCKSDB__NAMESPACE_1_1CompressionContextCache.html#ae4e268df564a391d94a58abd96e42e0f">ROCKSDB_NAMESPACE::CompressionContextCache::ReturnCachedZSTDUncompressData</a></div><div class="ttdeci">void ReturnCachedZSTDUncompressData(int64_t idx)</div><div class="ttdef"><b>Definition</b> <a href="#l00100">compression_context_cache.cc:100</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CoreLocalArray_html"><div class="ttname"><a href="../../d7/de0/classROCKSDB__NAMESPACE_1_1CoreLocalArray.html">ROCKSDB_NAMESPACE::CoreLocalArray</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/da6/core__local_8h_source.html#l00024">core_local.h:24</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData_html"><div class="ttname"><a href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html">ROCKSDB_NAMESPACE::ZSTDUncompressCachedData</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/daf/compression_8h_source.html#l00138">compression.h:138</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData_html_aaee7c9f3fa02cd3b79aa3dd040b393c2"><div class="ttname"><a href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html#aaee7c9f3fa02cd3b79aa3dd040b393c2">ROCKSDB_NAMESPACE::ZSTDUncompressCachedData::CreateIfNeeded</a></div><div class="ttdeci">void CreateIfNeeded()</div><div class="ttdef"><b>Definition</b> <a href="../../d1/daf/compression_8h_source.html#l00150">compression.h:150</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData_html_ae872262f7f1a63b985101fe0b1489ca6"><div class="ttname"><a href="../../df/ddd/classROCKSDB__NAMESPACE_1_1ZSTDUncompressCachedData.html#ae872262f7f1a63b985101fe0b1489ca6">ROCKSDB_NAMESPACE::ZSTDUncompressCachedData::InitFromCache</a></div><div class="ttdeci">void InitFromCache(const ZSTDUncompressCachedData &amp;, int64_t)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/daf/compression_8h_source.html#l00151">compression.h:151</a></div></div>
+<div class="ttc" id="acompression_8h_html"><div class="ttname"><a href="../../d1/daf/compression_8h.html">compression.h</a></div></div>
+<div class="ttc" id="acompression__context__cache_8h_html"><div class="ttname"><a href="../../d6/d97/compression__context__cache_8h.html">compression_context_cache.h</a></div></div>
+<div class="ttc" id="acore__local_8h_html"><div class="ttname"><a href="../../d5/da6/core__local_8h.html">core_local.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1compression__cache_html"><div class="ttname"><a href="../../df/d49/namespaceROCKSDB__NAMESPACE_1_1compression__cache.html">ROCKSDB_NAMESPACE::compression_cache</a></div><div class="ttdef"><b>Definition</b> <a href="#l00018">compression_context_cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1compression__cache_html_a805a2396bfe4a3c62cd6bc0130ba5442"><div class="ttname"><a href="../../df/d49/namespaceROCKSDB__NAMESPACE_1_1compression__cache.html#a805a2396bfe4a3c62cd6bc0130ba5442">ROCKSDB_NAMESPACE::compression_cache::SentinelValue</a></div><div class="ttdeci">void *const SentinelValue</div><div class="ttdef"><b>Definition</b> <a href="#l00020">compression_context_cache.cc:20</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="aport__posix_8h_html_af89f60b07247176687889ade776c8e10"><div class="ttname"><a href="../../dc/d7c/port__posix_8h.html#af89f60b07247176687889ade776c8e10">CACHE_LINE_SIZE</a></div><div class="ttdeci">#define CACHE_LINE_SIZE</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00205">port_posix.h:205</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData_html_a00a83fb191516e18bd5f698d437b9794"><div class="ttname"><a href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a00a83fb191516e18bd5f698d437b9794">ROCKSDB_NAMESPACE::compression_cache::ZSTDCachedData::GetUncompressData</a></div><div class="ttdeci">ZSTDUncompressCachedData GetUncompressData(int64_t idx)</div><div class="ttdef"><b>Definition</b> <a href="#l00041">compression_context_cache.cc:41</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData_html_a1d178d39b0737b9da1a1210f6e2de19b"><div class="ttname"><a href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a1d178d39b0737b9da1a1210f6e2de19b">ROCKSDB_NAMESPACE::compression_cache::ZSTDCachedData::ReturnUncompressData</a></div><div class="ttdeci">void ReturnUncompressData()</div><div class="ttdef"><b>Definition</b> <a href="#l00057">compression_context_cache.cc:57</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData_html_a2901c82c7b515e088b0297c12e47a344"><div class="ttname"><a href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a2901c82c7b515e088b0297c12e47a344">ROCKSDB_NAMESPACE::compression_cache::ZSTDCachedData::ZSTDCachedData</a></div><div class="ttdeci">ZSTDCachedData(const ZSTDCachedData &amp;)=delete</div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData_html_a3c17eb186bb58ad238c754c680286177"><div class="ttname"><a href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a3c17eb186bb58ad238c754c680286177">ROCKSDB_NAMESPACE::compression_cache::ZSTDCachedData::padding</a></div><div class="ttdeci">char padding[(CACHE_LINE_SIZE -(sizeof(ZSTDUncompressCachedData)+sizeof(std::atomic&lt; void * &gt;)) % CACHE_LINE_SIZE)]</div><div class="ttdef"><b>Definition</b> <a href="#l00033">compression_context_cache.cc:35</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData_html_a413beb37d1cc880b2886d8c5c08656ef"><div class="ttname"><a href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a413beb37d1cc880b2886d8c5c08656ef">ROCKSDB_NAMESPACE::compression_cache::ZSTDCachedData::zstd_uncomp_sentinel_</a></div><div class="ttdeci">std::atomic&lt; void * &gt; zstd_uncomp_sentinel_</div><div class="ttdef"><b>Definition</b> <a href="#l00030">compression_context_cache.cc:30</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData_html_a507c2a0ba852083c2f020f88ca5c2614"><div class="ttname"><a href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a507c2a0ba852083c2f020f88ca5c2614">ROCKSDB_NAMESPACE::compression_cache::ZSTDCachedData::uncomp_cached_data_</a></div><div class="ttdeci">ZSTDUncompressCachedData uncomp_cached_data_</div><div class="ttdef"><b>Definition</b> <a href="#l00029">compression_context_cache.cc:29</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData_html_a51fa643467e77a61beb408dd3c838b4e"><div class="ttname"><a href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a51fa643467e77a61beb408dd3c838b4e">ROCKSDB_NAMESPACE::compression_cache::ZSTDCachedData::operator=</a></div><div class="ttdeci">ZSTDCachedData &amp; operator=(const ZSTDCachedData &amp;)=delete</div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData_html_a7a67786a94999c402ca5a1e17795e2d1"><div class="ttname"><a href="../../d4/de3/structROCKSDB__NAMESPACE_1_1compression__cache_1_1ZSTDCachedData.html#a7a67786a94999c402ca5a1e17795e2d1">ROCKSDB_NAMESPACE::compression_cache::ZSTDCachedData::ZSTDCachedData</a></div><div class="ttdeci">ZSTDCachedData()</div><div class="ttdef"><b>Definition</b> <a href="#l00037">compression_context_cache.cc:37</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_23ec12649285f9fabf3a6b7380226c28.html">util</a></li><li class="navelem"><a class="el" href="../../da/d39/compression__context__cache_8cc.html">compression_context_cache.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

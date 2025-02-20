@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: table/block_based/partitioned_index_iterator.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d9/d00/partitioned__index__iterator_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">partitioned_index_iterator.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d9/d00/partitioned__index__iterator_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/da7/block__based__table__reader_8h.html">table/block_based/block_based_table_reader.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/dc6/block__based__table__reader__impl_8h.html">table/block_based/block_based_table_reader_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/d96/block__prefetcher_8h.html">table/block_based/block_prefetcher.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/da7/reader__common_8h.html">table/block_based/reader_common.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// Iterator that iterates over partitioned index.</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// Some upper and lower bound tricks played in block based table iterators</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// could be played here, but it&#39;s too complicated to reason about index</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// keys with upper or lower bound, so we skip it for simplicity.</span></div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html">   20</a></span><span class="keyword">class </span><a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a88cbbc5d7bb2d0cb8be30ffca37d1d14">PartitionedIndexIterator</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a20678d3430e2f44f07066ed8c2d7303e">InternalIteratorBase</a>&lt;IndexValue&gt; {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="comment">// compaction_readahead_size: its value will only be used if for_compaction =</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="comment">// true</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a88cbbc5d7bb2d0cb8be30ffca37d1d14">   24</a></span>  <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a88cbbc5d7bb2d0cb8be30ffca37d1d14">PartitionedIndexIterator</a>(</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      <span class="keyword">const</span> <a class="code hl_class" href="../../da/d45/classROCKSDB__NAMESPACE_1_1BlockBasedTable.html">BlockBasedTable</a>* table, <span class="keyword">const</span> <a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a>&amp; read_options,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      <span class="keyword">const</span> <a class="code hl_class" href="../../df/df2/classROCKSDB__NAMESPACE_1_1InternalKeyComparator.html">InternalKeyComparator</a>&amp; icomp,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>      std::unique_ptr&lt;<a class="code hl_function" href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a20678d3430e2f44f07066ed8c2d7303e">InternalIteratorBase&lt;IndexValue&gt;</a>&gt;&amp;&amp; index_iter,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07352f7dacd1a517cd84f38fd10c1010">TableReaderCaller</a> caller, <span class="keywordtype">size_t</span> compaction_readahead_size = 0)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      : <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a83b7ca80ee9d03e594683ce6a97b8d94">index_iter_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(index_iter)),</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a3023fb4455d07d0ad6c8d071acf7c13e">table_</a>(table),</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aad200be6912ccde6fa3120fd04b3e13a">read_options_</a>(read_options),</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>#ifndef NDEBUG</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2264b68b879cc94401b9a0db2b962627">icomp_</a>(icomp),</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>#endif</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2976b9e49b72d542adbfe1347332cdfb">user_comparator_</a>(icomp.user_comparator()),</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#abc208634157c64eb693cb90b8bb63ba8">block_iter_points_to_real_block_</a>(false),</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab63ad575468dfabc715a28c764f7c653">lookup_context_</a>(caller),</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#adaa61b13868f13ba37616e8ccaba483b">block_prefetcher_</a>(</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            compaction_readahead_size,</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a3023fb4455d07d0ad6c8d071acf7c13e">table_</a>-&gt;get_rep()-&gt;table_options.initial_auto_readahead_size) {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  }</div>
+</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa54a8c3ca0778007274f678391950b85">   43</a></span>  <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa54a8c3ca0778007274f678391950b85">~PartitionedIndexIterator</a>()<span class="keyword"> override </span>{}</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">void</span> Seek(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; target) <span class="keyword">override</span>;</div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a4173879048b49af5c716b5d32dfff0d0">   46</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a4173879048b49af5c716b5d32dfff0d0">SeekForPrev</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp;)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">// Shouldn&#39;t be called.</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> SeekToFirst() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordtype">void</span> SeekToLast() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordtype">void</span> Next() final override;</div>
+<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a6cff40ff4bf02b6f70a65de12ff02b15">   53</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a6cff40ff4bf02b6f70a65de12ff02b15">NextAndGetResult</a>(<a class="code hl_struct" href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html">IterateResult</a>*)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
+</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">void</span> Prev() <span class="keyword">override</span>;</div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2ff96b3c6e0cd4a8036843eb4dc835f5">   58</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2ff96b3c6e0cd4a8036843eb4dc835f5">Valid</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#abc208634157c64eb693cb90b8bb63ba8">block_iter_points_to_real_block_</a> &amp;&amp; <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa1931f249e99c9959f819cd5f174ff35">block_iter_</a>.Valid();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a95694122ba0e511f663b7df5d15e031f">   61</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a95694122ba0e511f663b7df5d15e031f">key</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    assert(<a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2ff96b3c6e0cd4a8036843eb4dc835f5">Valid</a>());</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa1931f249e99c9959f819cd5f174ff35">block_iter_</a>.key();</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a8aa4cd4d277a66a2955ef316ef68c7d2">   65</a></span>  <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a8aa4cd4d277a66a2955ef316ef68c7d2">user_key</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    assert(<a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2ff96b3c6e0cd4a8036843eb4dc835f5">Valid</a>());</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa1931f249e99c9959f819cd5f174ff35">block_iter_</a>.user_key();</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00069" data-start="{" data-end="}">
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ae1e94891cd4692d1b6c45e91b1387f72">   69</a></span>  <a class="code hl_struct" href="../../d7/de8/structROCKSDB__NAMESPACE_1_1IndexValue.html">IndexValue</a> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ae1e94891cd4692d1b6c45e91b1387f72">value</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    assert(<a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2ff96b3c6e0cd4a8036843eb4dc835f5">Valid</a>());</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa1931f249e99c9959f819cd5f174ff35">block_iter_</a>.value();</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ac3a36c751ec90f3140942c8fdbc0e696">   73</a></span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ac3a36c751ec90f3140942c8fdbc0e696">status</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="comment">// Prefix index set status to NotFound when the prefix does not exist</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a83b7ca80ee9d03e594683ce6a97b8d94">index_iter_</a>-&gt;status().ok() &amp;&amp; !<a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a83b7ca80ee9d03e594683ce6a97b8d94">index_iter_</a>-&gt;status().IsNotFound()) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a83b7ca80ee9d03e594683ce6a97b8d94">index_iter_</a>-&gt;status();</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#abc208634157c64eb693cb90b8bb63ba8">block_iter_points_to_real_block_</a>) {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa1931f249e99c9959f819cd5f174ff35">block_iter_</a>.status();</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ad8712d264f1b3b58f5442d5bff1aad57">   83</a></span>  <span class="keyword">inline</span> <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624">IterBoundCheck</a> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ad8712d264f1b3b58f5442d5bff1aad57">UpperBoundCheckResult</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="comment">// Shouldn&#39;t be called.</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624a25c2dc47991b3df171ed5192bcf70390">IterBoundCheck::kUnknown</a>;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#afb93e7102bd76d98cdc9fa85cc537422">   88</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#afb93e7102bd76d98cdc9fa85cc537422">SetPinnedItersMgr</a>(<a class="code hl_class" href="../../d0/d49/classROCKSDB__NAMESPACE_1_1PinnedIteratorsManager.html">PinnedIteratorsManager</a>*)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="comment">// Shouldn&#39;t be called.</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a1c23227d0644aa0db40d4c9c0b8539ac">   92</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a1c23227d0644aa0db40d4c9c0b8539ac">IsKeyPinned</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="comment">// Shouldn&#39;t be called.</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  }</div>
+</div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2cbfa89aeb4471834805d395c1224e7d">   97</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2cbfa89aeb4471834805d395c1224e7d">IsValuePinned</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="comment">// Shouldn&#39;t be called.</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  }</div>
+</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab9c370f56502cb8b2d9ce377e40b0668">  103</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab9c370f56502cb8b2d9ce377e40b0668">ResetPartitionedIndexIter</a>() {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#abc208634157c64eb693cb90b8bb63ba8">block_iter_points_to_real_block_</a>) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa1931f249e99c9959f819cd5f174ff35">block_iter_</a>.Invalidate(<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>());</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#abc208634157c64eb693cb90b8bb63ba8">block_iter_points_to_real_block_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  }</div>
+</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#adb35c8b649eb6aa43b437c2dd5a38941">  110</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#adb35c8b649eb6aa43b437c2dd5a38941">SavePrevIndexValue</a>() {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#abc208634157c64eb693cb90b8bb63ba8">block_iter_points_to_real_block_</a>) {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <span class="comment">// Reseek. If they end up with the same data block, we shouldn&#39;t re-fetch</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      <span class="comment">// the same data block.</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a9eed28a20454cb5d9c1f02de55a70d3a">prev_block_offset_</a> = <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a83b7ca80ee9d03e594683ce6a97b8d94">index_iter_</a>-&gt;value().handle.offset();</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  }</div>
+</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a844bf186042ed38c4dafce34e79782e4">  118</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a844bf186042ed38c4dafce34e79782e4">GetReadaheadState</a>(<a class="code hl_struct" href="../../dd/d35/structROCKSDB__NAMESPACE_1_1ReadaheadFileInfo.html">ReadaheadFileInfo</a>* readahead_file_info)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#adaa61b13868f13ba37616e8ccaba483b">block_prefetcher_</a>.prefetch_buffer() != <span class="keyword">nullptr</span> &amp;&amp;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aad200be6912ccde6fa3120fd04b3e13a">read_options_</a>.adaptive_readahead) {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#adaa61b13868f13ba37616e8ccaba483b">block_prefetcher_</a>.prefetch_buffer()-&gt;GetReadaheadState(</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>          &amp;(readahead_file_info-&gt;<a class="code hl_variable" href="../../dd/d35/structROCKSDB__NAMESPACE_1_1ReadaheadFileInfo.html#a199dcb743783852037a793f06cd60839">index_block_readahead_info</a>));</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    }</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  }</div>
+</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="foldopen" id="foldopen00126" data-start="{" data-end="}">
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab7196c2c9884414fb30120a878065c8a">  126</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab7196c2c9884414fb30120a878065c8a">SetReadaheadState</a>(<a class="code hl_struct" href="../../dd/d35/structROCKSDB__NAMESPACE_1_1ReadaheadFileInfo.html">ReadaheadFileInfo</a>* readahead_file_info)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aad200be6912ccde6fa3120fd04b3e13a">read_options_</a>.adaptive_readahead) {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#adaa61b13868f13ba37616e8ccaba483b">block_prefetcher_</a>.SetReadaheadState(</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>          &amp;(readahead_file_info-&gt;<a class="code hl_variable" href="../../dd/d35/structROCKSDB__NAMESPACE_1_1ReadaheadFileInfo.html#a199dcb743783852037a793f06cd60839">index_block_readahead_info</a>));</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    }</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  }</div>
+</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a83b7ca80ee9d03e594683ce6a97b8d94">  133</a></span>  std::unique_ptr&lt;InternalIteratorBase&lt;IndexValue&gt;&gt; <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a83b7ca80ee9d03e594683ce6a97b8d94">index_iter_</a>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a0765e843f2816f3530bcdd8b63fde939">  136</a></span>  <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_friend" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a0765e843f2816f3530bcdd8b63fde939">BlockBasedTableReaderTestVerifyChecksum_ChecksumMismatch_Test</a>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a3023fb4455d07d0ad6c8d071acf7c13e">  137</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../da/d45/classROCKSDB__NAMESPACE_1_1BlockBasedTable.html">BlockBasedTable</a>* <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a3023fb4455d07d0ad6c8d071acf7c13e">table_</a>;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aad200be6912ccde6fa3120fd04b3e13a">  138</a></span>  <span class="keyword">const</span> <a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aad200be6912ccde6fa3120fd04b3e13a">read_options_</a>;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2264b68b879cc94401b9a0db2b962627">  140</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="../../df/df2/classROCKSDB__NAMESPACE_1_1InternalKeyComparator.html">InternalKeyComparator</a>&amp; <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2264b68b879cc94401b9a0db2b962627">icomp_</a>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2976b9e49b72d542adbfe1347332cdfb">  142</a></span>  <a class="code hl_class" href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html">UserComparatorWrapper</a> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2976b9e49b72d542adbfe1347332cdfb">user_comparator_</a>;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa1931f249e99c9959f819cd5f174ff35">  143</a></span>  <a class="code hl_class" href="../../d7/db8/classROCKSDB__NAMESPACE_1_1IndexBlockIter.html">IndexBlockIter</a> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa1931f249e99c9959f819cd5f174ff35">block_iter_</a>;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="comment">// True if block_iter_ is initialized and points to the same block</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="comment">// as index iterator.</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#abc208634157c64eb693cb90b8bb63ba8">  147</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#abc208634157c64eb693cb90b8bb63ba8">block_iter_points_to_real_block_</a>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a9eed28a20454cb5d9c1f02de55a70d3a">  148</a></span>  uint64_t <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a9eed28a20454cb5d9c1f02de55a70d3a">prev_block_offset_</a> = std::numeric_limits&lt;uint64_t&gt;::max();</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab63ad575468dfabc715a28c764f7c653">  149</a></span>  <a class="code hl_struct" href="../../da/dfd/structROCKSDB__NAMESPACE_1_1BlockCacheLookupContext.html">BlockCacheLookupContext</a> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab63ad575468dfabc715a28c764f7c653">lookup_context_</a>;</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#adaa61b13868f13ba37616e8ccaba483b">  150</a></span>  <a class="code hl_class" href="../../d7/d6f/classROCKSDB__NAMESPACE_1_1BlockPrefetcher.html">BlockPrefetcher</a> <a class="code hl_variable" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#adaa61b13868f13ba37616e8ccaba483b">block_prefetcher_</a>;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="comment">// If `target` is null, seek to first.</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a32038d15937cab44192ab4d2f3e96089">SeekImpl</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* target);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ad3bf8b8837522b37db1e760467c6cd69">InitPartitionedIndexBlock</a>();</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2385b1d8406e221ad33d5775c4771781">FindKeyForward</a>();</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ad13a6daaa00ab779ce9edb1c34e95731">FindBlockForward</a>();</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab0620f722fb82e3b3b6c0211e7ae3ce2">FindKeyBackward</a>();</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>};</div>
+</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="ablock__based__table__reader_8h_html"><div class="ttname"><a href="../../df/da7/block__based__table__reader_8h.html">block_based_table_reader.h</a></div></div>
+<div class="ttc" id="ablock__based__table__reader__impl_8h_html"><div class="ttname"><a href="../../da/dc6/block__based__table__reader__impl_8h.html">block_based_table_reader_impl.h</a></div></div>
+<div class="ttc" id="ablock__prefetcher_8h_html"><div class="ttname"><a href="../../de/d96/block__prefetcher_8h.html">block_prefetcher.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlockBasedTable_html"><div class="ttname"><a href="../../da/d45/classROCKSDB__NAMESPACE_1_1BlockBasedTable.html">ROCKSDB_NAMESPACE::BlockBasedTable</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/da7/block__based__table__reader_8h_source.html#l00070">block_based_table_reader.h:70</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlockPrefetcher_html"><div class="ttname"><a href="../../d7/d6f/classROCKSDB__NAMESPACE_1_1BlockPrefetcher.html">ROCKSDB_NAMESPACE::BlockPrefetcher</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/d96/block__prefetcher_8h_source.html#l00013">block_prefetcher.h:13</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IndexBlockIter_html"><div class="ttname"><a href="../../d7/db8/classROCKSDB__NAMESPACE_1_1IndexBlockIter.html">ROCKSDB_NAMESPACE::IndexBlockIter</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/d40/block_8h_source.html#l00826">block.h:826</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalIteratorBase_html_a20678d3430e2f44f07066ed8c2d7303e"><div class="ttname"><a href="../../df/dfd/classROCKSDB__NAMESPACE_1_1InternalIteratorBase.html#a20678d3430e2f44f07066ed8c2d7303e">ROCKSDB_NAMESPACE::InternalIteratorBase&lt; IndexValue &gt;::InternalIteratorBase</a></div><div class="ttdeci">InternalIteratorBase()</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d33/internal__iterator_8h_source.html#l00038">internal_iterator.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1InternalKeyComparator_html"><div class="ttname"><a href="../../df/df2/classROCKSDB__NAMESPACE_1_1InternalKeyComparator.html">ROCKSDB_NAMESPACE::InternalKeyComparator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00380">dbformat.h:384</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a0765e843f2816f3530bcdd8b63fde939"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a0765e843f2816f3530bcdd8b63fde939">ROCKSDB_NAMESPACE::PartitionedIndexIterator::BlockBasedTableReaderTestVerifyChecksum_ChecksumMismatch_Test</a></div><div class="ttdeci">friend class BlockBasedTableReaderTestVerifyChecksum_ChecksumMismatch_Test</div><div class="ttdef"><b>Definition</b> <a href="#l00136">partitioned_index_iterator.h:136</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a1c23227d0644aa0db40d4c9c0b8539ac"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a1c23227d0644aa0db40d4c9c0b8539ac">ROCKSDB_NAMESPACE::PartitionedIndexIterator::IsKeyPinned</a></div><div class="ttdeci">bool IsKeyPinned() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00092">partitioned_index_iterator.h:92</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a2264b68b879cc94401b9a0db2b962627"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2264b68b879cc94401b9a0db2b962627">ROCKSDB_NAMESPACE::PartitionedIndexIterator::icomp_</a></div><div class="ttdeci">const InternalKeyComparator &amp; icomp_</div><div class="ttdef"><b>Definition</b> <a href="#l00140">partitioned_index_iterator.h:140</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a2385b1d8406e221ad33d5775c4771781"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2385b1d8406e221ad33d5775c4771781">ROCKSDB_NAMESPACE::PartitionedIndexIterator::FindKeyForward</a></div><div class="ttdeci">void FindKeyForward()</div><div class="ttdef"><b>Definition</b> <a href="../../dd/db4/partitioned__index__iterator_8cc_source.html#l00112">partitioned_index_iterator.cc:112</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a2976b9e49b72d542adbfe1347332cdfb"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2976b9e49b72d542adbfe1347332cdfb">ROCKSDB_NAMESPACE::PartitionedIndexIterator::user_comparator_</a></div><div class="ttdeci">UserComparatorWrapper user_comparator_</div><div class="ttdef"><b>Definition</b> <a href="#l00142">partitioned_index_iterator.h:142</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a2cbfa89aeb4471834805d395c1224e7d"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2cbfa89aeb4471834805d395c1224e7d">ROCKSDB_NAMESPACE::PartitionedIndexIterator::IsValuePinned</a></div><div class="ttdeci">bool IsValuePinned() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00097">partitioned_index_iterator.h:97</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a2ff96b3c6e0cd4a8036843eb4dc835f5"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a2ff96b3c6e0cd4a8036843eb4dc835f5">ROCKSDB_NAMESPACE::PartitionedIndexIterator::Valid</a></div><div class="ttdeci">bool Valid() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00058">partitioned_index_iterator.h:58</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a3023fb4455d07d0ad6c8d071acf7c13e"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a3023fb4455d07d0ad6c8d071acf7c13e">ROCKSDB_NAMESPACE::PartitionedIndexIterator::table_</a></div><div class="ttdeci">const BlockBasedTable * table_</div><div class="ttdef"><b>Definition</b> <a href="#l00137">partitioned_index_iterator.h:137</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a32038d15937cab44192ab4d2f3e96089"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a32038d15937cab44192ab4d2f3e96089">ROCKSDB_NAMESPACE::PartitionedIndexIterator::SeekImpl</a></div><div class="ttdeci">void SeekImpl(const Slice *target)</div><div class="ttdef"><b>Definition</b> <a href="../../dd/db4/partitioned__index__iterator_8cc_source.html#l00016">partitioned_index_iterator.cc:16</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a4173879048b49af5c716b5d32dfff0d0"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a4173879048b49af5c716b5d32dfff0d0">ROCKSDB_NAMESPACE::PartitionedIndexIterator::SeekForPrev</a></div><div class="ttdeci">void SeekForPrev(const Slice &amp;) override</div><div class="ttdef"><b>Definition</b> <a href="#l00046">partitioned_index_iterator.h:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a6cff40ff4bf02b6f70a65de12ff02b15"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a6cff40ff4bf02b6f70a65de12ff02b15">ROCKSDB_NAMESPACE::PartitionedIndexIterator::NextAndGetResult</a></div><div class="ttdeci">bool NextAndGetResult(IterateResult *) override</div><div class="ttdef"><b>Definition</b> <a href="#l00053">partitioned_index_iterator.h:53</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a83b7ca80ee9d03e594683ce6a97b8d94"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a83b7ca80ee9d03e594683ce6a97b8d94">ROCKSDB_NAMESPACE::PartitionedIndexIterator::index_iter_</a></div><div class="ttdeci">std::unique_ptr&lt; InternalIteratorBase&lt; IndexValue &gt; &gt; index_iter_</div><div class="ttdef"><b>Definition</b> <a href="#l00133">partitioned_index_iterator.h:133</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a844bf186042ed38c4dafce34e79782e4"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a844bf186042ed38c4dafce34e79782e4">ROCKSDB_NAMESPACE::PartitionedIndexIterator::GetReadaheadState</a></div><div class="ttdeci">void GetReadaheadState(ReadaheadFileInfo *readahead_file_info) override</div><div class="ttdef"><b>Definition</b> <a href="#l00118">partitioned_index_iterator.h:118</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a88cbbc5d7bb2d0cb8be30ffca37d1d14"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a88cbbc5d7bb2d0cb8be30ffca37d1d14">ROCKSDB_NAMESPACE::PartitionedIndexIterator::PartitionedIndexIterator</a></div><div class="ttdeci">PartitionedIndexIterator(const BlockBasedTable *table, const ReadOptions &amp;read_options, const InternalKeyComparator &amp;icomp, std::unique_ptr&lt; InternalIteratorBase&lt; IndexValue &gt; &gt; &amp;&amp;index_iter, TableReaderCaller caller, size_t compaction_readahead_size=0)</div><div class="ttdef"><b>Definition</b> <a href="#l00024">partitioned_index_iterator.h:24</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a8aa4cd4d277a66a2955ef316ef68c7d2"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a8aa4cd4d277a66a2955ef316ef68c7d2">ROCKSDB_NAMESPACE::PartitionedIndexIterator::user_key</a></div><div class="ttdeci">Slice user_key() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00065">partitioned_index_iterator.h:65</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a95694122ba0e511f663b7df5d15e031f"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a95694122ba0e511f663b7df5d15e031f">ROCKSDB_NAMESPACE::PartitionedIndexIterator::key</a></div><div class="ttdeci">Slice key() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00061">partitioned_index_iterator.h:61</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_a9eed28a20454cb5d9c1f02de55a70d3a"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#a9eed28a20454cb5d9c1f02de55a70d3a">ROCKSDB_NAMESPACE::PartitionedIndexIterator::prev_block_offset_</a></div><div class="ttdeci">uint64_t prev_block_offset_</div><div class="ttdef"><b>Definition</b> <a href="#l00148">partitioned_index_iterator.h:148</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_aa1931f249e99c9959f819cd5f174ff35"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa1931f249e99c9959f819cd5f174ff35">ROCKSDB_NAMESPACE::PartitionedIndexIterator::block_iter_</a></div><div class="ttdeci">IndexBlockIter block_iter_</div><div class="ttdef"><b>Definition</b> <a href="#l00143">partitioned_index_iterator.h:143</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_aa54a8c3ca0778007274f678391950b85"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aa54a8c3ca0778007274f678391950b85">ROCKSDB_NAMESPACE::PartitionedIndexIterator::~PartitionedIndexIterator</a></div><div class="ttdeci">~PartitionedIndexIterator() override</div><div class="ttdef"><b>Definition</b> <a href="#l00043">partitioned_index_iterator.h:43</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_aad200be6912ccde6fa3120fd04b3e13a"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#aad200be6912ccde6fa3120fd04b3e13a">ROCKSDB_NAMESPACE::PartitionedIndexIterator::read_options_</a></div><div class="ttdeci">const ReadOptions read_options_</div><div class="ttdef"><b>Definition</b> <a href="#l00138">partitioned_index_iterator.h:138</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_ab0620f722fb82e3b3b6c0211e7ae3ce2"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab0620f722fb82e3b3b6c0211e7ae3ce2">ROCKSDB_NAMESPACE::PartitionedIndexIterator::FindKeyBackward</a></div><div class="ttdeci">void FindKeyBackward()</div><div class="ttdef"><b>Definition</b> <a href="../../dd/db4/partitioned__index__iterator_8cc_source.html#l00147">partitioned_index_iterator.cc:147</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_ab63ad575468dfabc715a28c764f7c653"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab63ad575468dfabc715a28c764f7c653">ROCKSDB_NAMESPACE::PartitionedIndexIterator::lookup_context_</a></div><div class="ttdeci">BlockCacheLookupContext lookup_context_</div><div class="ttdef"><b>Definition</b> <a href="#l00149">partitioned_index_iterator.h:149</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_ab7196c2c9884414fb30120a878065c8a"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab7196c2c9884414fb30120a878065c8a">ROCKSDB_NAMESPACE::PartitionedIndexIterator::SetReadaheadState</a></div><div class="ttdeci">void SetReadaheadState(ReadaheadFileInfo *readahead_file_info) override</div><div class="ttdef"><b>Definition</b> <a href="#l00126">partitioned_index_iterator.h:126</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_ab9c370f56502cb8b2d9ce377e40b0668"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ab9c370f56502cb8b2d9ce377e40b0668">ROCKSDB_NAMESPACE::PartitionedIndexIterator::ResetPartitionedIndexIter</a></div><div class="ttdeci">void ResetPartitionedIndexIter()</div><div class="ttdef"><b>Definition</b> <a href="#l00103">partitioned_index_iterator.h:103</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_abc208634157c64eb693cb90b8bb63ba8"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#abc208634157c64eb693cb90b8bb63ba8">ROCKSDB_NAMESPACE::PartitionedIndexIterator::block_iter_points_to_real_block_</a></div><div class="ttdeci">bool block_iter_points_to_real_block_</div><div class="ttdef"><b>Definition</b> <a href="#l00147">partitioned_index_iterator.h:147</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_ac3a36c751ec90f3140942c8fdbc0e696"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ac3a36c751ec90f3140942c8fdbc0e696">ROCKSDB_NAMESPACE::PartitionedIndexIterator::status</a></div><div class="ttdeci">Status status() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00073">partitioned_index_iterator.h:73</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_ad13a6daaa00ab779ce9edb1c34e95731"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ad13a6daaa00ab779ce9edb1c34e95731">ROCKSDB_NAMESPACE::PartitionedIndexIterator::FindBlockForward</a></div><div class="ttdeci">void FindBlockForward()</div><div class="ttdef"><b>Definition</b> <a href="../../dd/db4/partitioned__index__iterator_8cc_source.html#l00128">partitioned_index_iterator.cc:128</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_ad3bf8b8837522b37db1e760467c6cd69"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ad3bf8b8837522b37db1e760467c6cd69">ROCKSDB_NAMESPACE::PartitionedIndexIterator::InitPartitionedIndexBlock</a></div><div class="ttdeci">void InitPartitionedIndexBlock()</div><div class="ttdef"><b>Definition</b> <a href="../../dd/db4/partitioned__index__iterator_8cc_source.html#l00075">partitioned_index_iterator.cc:75</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_ad8712d264f1b3b58f5442d5bff1aad57"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ad8712d264f1b3b58f5442d5bff1aad57">ROCKSDB_NAMESPACE::PartitionedIndexIterator::UpperBoundCheckResult</a></div><div class="ttdeci">IterBoundCheck UpperBoundCheckResult() override</div><div class="ttdef"><b>Definition</b> <a href="#l00083">partitioned_index_iterator.h:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_adaa61b13868f13ba37616e8ccaba483b"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#adaa61b13868f13ba37616e8ccaba483b">ROCKSDB_NAMESPACE::PartitionedIndexIterator::block_prefetcher_</a></div><div class="ttdeci">BlockPrefetcher block_prefetcher_</div><div class="ttdef"><b>Definition</b> <a href="#l00150">partitioned_index_iterator.h:150</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_adb35c8b649eb6aa43b437c2dd5a38941"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#adb35c8b649eb6aa43b437c2dd5a38941">ROCKSDB_NAMESPACE::PartitionedIndexIterator::SavePrevIndexValue</a></div><div class="ttdeci">void SavePrevIndexValue()</div><div class="ttdef"><b>Definition</b> <a href="#l00110">partitioned_index_iterator.h:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_ae1e94891cd4692d1b6c45e91b1387f72"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#ae1e94891cd4692d1b6c45e91b1387f72">ROCKSDB_NAMESPACE::PartitionedIndexIterator::value</a></div><div class="ttdeci">IndexValue value() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00069">partitioned_index_iterator.h:69</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PartitionedIndexIterator_html_afb93e7102bd76d98cdc9fa85cc537422"><div class="ttname"><a href="../../de/da4/classROCKSDB__NAMESPACE_1_1PartitionedIndexIterator.html#afb93e7102bd76d98cdc9fa85cc537422">ROCKSDB_NAMESPACE::PartitionedIndexIterator::SetPinnedItersMgr</a></div><div class="ttdeci">void SetPinnedItersMgr(PinnedIteratorsManager *) override</div><div class="ttdef"><b>Definition</b> <a href="#l00088">partitioned_index_iterator.h:88</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PinnedIteratorsManager_html"><div class="ttname"><a href="../../d0/d49/classROCKSDB__NAMESPACE_1_1PinnedIteratorsManager.html">ROCKSDB_NAMESPACE::PinnedIteratorsManager</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d4b/pinned__iterators__manager_8h_source.html#l00019">pinned_iterators_manager.h:19</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1UserComparatorWrapper_html"><div class="ttname"><a href="../../dc/d83/classROCKSDB__NAMESPACE_1_1UserComparatorWrapper.html">ROCKSDB_NAMESPACE::UserComparatorWrapper</a></div><div class="ttdef"><b>Definition</b> <a href="../../d2/d12/user__comparator__wrapper_8h_source.html#l00018">user_comparator_wrapper.h:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a07352f7dacd1a517cd84f38fd10c1010"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07352f7dacd1a517cd84f38fd10c1010">ROCKSDB_NAMESPACE::TableReaderCaller</a></div><div class="ttdeci">TableReaderCaller</div><div class="ttdef"><b>Definition</b> <a href="../../de/dc0/table__reader__caller_8h_source.html#l00016">table_reader_caller.h:16</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_afda2ab7047e4882fae7f89d2521dd624"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624">ROCKSDB_NAMESPACE::IterBoundCheck</a></div><div class="ttdeci">IterBoundCheck</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d33/internal__iterator_8h_source.html#l00022">internal_iterator.h:22</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_afda2ab7047e4882fae7f89d2521dd624a25c2dc47991b3df171ed5192bcf70390"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afda2ab7047e4882fae7f89d2521dd624a25c2dc47991b3df171ed5192bcf70390">ROCKSDB_NAMESPACE::IterBoundCheck::kUnknown</a></div><div class="ttdeci">@ kUnknown</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d33/internal__iterator_8h_source.html#l00023">internal_iterator.h:23</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="areader__common_8h_html"><div class="ttname"><a href="../../d9/da7/reader__common_8h.html">reader_common.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCacheLookupContext_html"><div class="ttname"><a href="../../da/dfd/structROCKSDB__NAMESPACE_1_1BlockCacheLookupContext.html">ROCKSDB_NAMESPACE::BlockCacheLookupContext</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/dcd/block__cache__tracer_8h_source.html#l00069">block_cache_tracer.h:69</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IndexValue_html"><div class="ttname"><a href="../../d7/de8/structROCKSDB__NAMESPACE_1_1IndexValue.html">ROCKSDB_NAMESPACE::IndexValue</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d01/table_2format_8h_source.html#l00100">format.h:100</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IterateResult_html"><div class="ttname"><a href="../../d3/dd2/structROCKSDB__NAMESPACE_1_1IterateResult.html">ROCKSDB_NAMESPACE::IterateResult</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d33/internal__iterator_8h_source.html#l00028">internal_iterator.h:28</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ReadOptions_html"><div class="ttname"><a href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ROCKSDB_NAMESPACE::ReadOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01680">options.h:1680</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ReadaheadFileInfo_html"><div class="ttname"><a href="../../dd/d35/structROCKSDB__NAMESPACE_1_1ReadaheadFileInfo.html">ROCKSDB_NAMESPACE::ReadaheadFileInfo</a></div><div class="ttdef"><b>Definition</b> <a href="../../d2/d80/readahead__file__info_8h_source.html#l00020">readahead_file_info.h:20</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ReadaheadFileInfo_html_a199dcb743783852037a793f06cd60839"><div class="ttname"><a href="../../dd/d35/structROCKSDB__NAMESPACE_1_1ReadaheadFileInfo.html#a199dcb743783852037a793f06cd60839">ROCKSDB_NAMESPACE::ReadaheadFileInfo::index_block_readahead_info</a></div><div class="ttdeci">ReadaheadInfo index_block_readahead_info</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d80/readahead__file__info_8h_source.html#l00030">readahead_file_info.h:30</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_7cea70ad8000b4ba25606f1df9c7574a.html">table</a></li><li class="navelem"><a class="el" href="../../dir_baa4495771c56dece086ba46f2450cec.html">block_based</a></li><li class="navelem"><a class="el" href="../../d9/d00/partitioned__index__iterator_8h.html">partitioned_index_iterator.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

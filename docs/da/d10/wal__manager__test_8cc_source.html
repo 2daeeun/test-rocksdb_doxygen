@@ -1,0 +1,560 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/wal_manager_test.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('da/d10/wal__manager__test_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">wal_manager_test.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../da/d10/wal__manager__test_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d72/wal__manager_8h.html">db/wal_manager.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/dcd/column__family_8h.html">db/column_family.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/d93/db__impl_8h.html">db/db_impl/db_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d10/log__writer_8h.html">db/log_writer.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/dd5/version__set_8h.html">db/version_set.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d00/mock__env_8h.html">env/mock_env.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d97/writable__file__writer_8h.html">file/writable_file_writer.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/d26/cache_8h.html">rocksdb/cache.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d8d/file__system_8h.html">rocksdb/file_system.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d98/write__batch_8h.html">rocksdb/write_batch.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/dd9/write__buffer__manager_8h.html">rocksdb/write_buffer_manager.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/de2/mock__table_8h.html">table/mock_table.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d42/testharness_8h.html">test_util/testharness.h</a>&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/de4/testutil_8h.html">test_util/testutil.h</a>&quot;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/d70/string__util_8h.html">util/string_util.h</a>&quot;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// TODO(icanadi) mock out VersionSet</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// TODO(icanadi) move other WalManager-specific tests from db_test here</span></div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html">   31</a></span><span class="keyword">class </span><a class="code hl_function" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a9e4cca165eb83313944c3fa1b800d60b">WalManagerTest</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../db/d9f/classtesting_1_1Test.html">testing::Test</a> {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a9e4cca165eb83313944c3fa1b800d60b">   33</a></span>  <a class="code hl_function" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a9e4cca165eb83313944c3fa1b800d60b">WalManagerTest</a>()</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      : <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">dbname_</a>(<a class="code hl_namespace" href="../../df/d04/namespacetest.html">test</a>::PerThreadDBPath(<span class="stringliteral">&quot;wal_manager_test&quot;</span>)),</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>(),</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#af7c7394538cbb01760cf4f9dc7e33d4a">table_cache_</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0651dc6465bf0488362027235f8fff8a">NewLRUCache</a>(50000, 16)),</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a70b29bde524264daced445cf576e6f0c">write_buffer_manager_</a>(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>.db_write_buffer_size),</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a49dcae2e3c93c3d6d02af8f436d5eaa1">current_log_number_</a>(0) {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4fb92ac0e85a785cd2d1385b3d1719a2">env_</a>.reset(<a class="code hl_function" href="../../d1/dae/classROCKSDB__NAMESPACE_1_1MockEnv.html#a1646524be76620cb4c6118c41d87095b">MockEnv::Create</a>(<a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">Env::Default</a>()));</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18634f1aa447e30554266ec43f3a50f9">DestroyDB</a>(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">dbname_</a>, <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a>()));</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  }</div>
+</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a50f1e616ed1bc7697be7ca19d0f7bbc6">   43</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a50f1e616ed1bc7697be7ca19d0f7bbc6">Init</a>() {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4fb92ac0e85a785cd2d1385b3d1719a2">env_</a>-&gt;CreateDirIfMissing(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">dbname_</a>));</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4fb92ac0e85a785cd2d1385b3d1719a2">env_</a>-&gt;CreateDirIfMissing(<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#adcb80fad2891ef2f98764b1d8c643f36">ArchivalDirectory</a>(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">dbname_</a>)));</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>.db_paths.emplace_back(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">dbname_</a>,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                                      std::numeric_limits&lt;uint64_t&gt;::max());</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>.wal_dir = <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">dbname_</a>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>.env = <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4fb92ac0e85a785cd2d1385b3d1719a2">env_</a>.get();</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>.fs = <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4fb92ac0e85a785cd2d1385b3d1719a2">env_</a>-&gt;GetFileSystem();</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>.clock = <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4fb92ac0e85a785cd2d1385b3d1719a2">env_</a>-&gt;GetSystemClock().get();</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3503a4cdac1a4f2f8ab4a097c1739cb3">versions_</a>.reset(<span class="keyword">new</span> <a class="code hl_class" href="../../d3/d11/classROCKSDB__NAMESPACE_1_1VersionSet.html">VersionSet</a>(</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">dbname_</a>, &amp;<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>, <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae8699d4bc693222d629ae38b150c78fd">env_options_</a>, <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#af7c7394538cbb01760cf4f9dc7e33d4a">table_cache_</a>.get(),</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        &amp;<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a70b29bde524264daced445cf576e6f0c">write_buffer_manager_</a>, &amp;<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a86be780e4b94d036c3cac5ec392ba7f2">write_controller_</a>,</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="comment">/*block_cache_tracer=*/</span><span class="keyword">nullptr</span>, <span class="comment">/*io_tracer=*/</span><span class="keyword">nullptr</span>,</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="comment">/*db_id=*/</span><span class="stringliteral">&quot;&quot;</span>, <span class="comment">/*db_session_id=*/</span><span class="stringliteral">&quot;&quot;</span>, <span class="comment">/*daily_offpeak_time_utc=*/</span><span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="comment">/*error_handler=*/</span><span class="keyword">nullptr</span>, <span class="comment">/*read_only=*/</span><span class="keyword">false</span>));</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3e2095c3b9d943998f5ed94851b3d004">wal_manager_</a>.reset(</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keyword">new</span> <a class="code hl_class" href="../../dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html">WalManager</a>(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>, <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae8699d4bc693222d629ae38b150c78fd">env_options_</a>, <span class="keyword">nullptr</span> <span class="comment">/*IOTracer*/</span>));</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
+</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a26460302e179c840bd4d8284097aeada">   64</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a26460302e179c840bd4d8284097aeada">Reopen</a>() {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3e2095c3b9d943998f5ed94851b3d004">wal_manager_</a>.reset(</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keyword">new</span> <a class="code hl_class" href="../../dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html">WalManager</a>(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>, <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae8699d4bc693222d629ae38b150c78fd">env_options_</a>, <span class="keyword">nullptr</span> <span class="comment">/*IOTracer*/</span>));</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  }</div>
+</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">// NOT thread safe</span></div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#acb275266f8b0b54e4bff03b3b3c74e13">   70</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#acb275266f8b0b54e4bff03b3b3c74e13">Put</a>(<span class="keyword">const</span> std::string&amp; key, <span class="keyword">const</span> std::string&amp; value) {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    assert(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4c3f224d4c3788f5c1569311e4235dc5">current_log_writer_</a>.get() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    uint64_t seq = <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3503a4cdac1a4f2f8ab4a097c1739cb3">versions_</a>-&gt;LastSequence() + 1;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_class" href="../../d6/d09/classROCKSDB__NAMESPACE_1_1WriteBatch.html">WriteBatch</a> batch;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(batch.<a class="code hl_function" href="../../d6/d09/classROCKSDB__NAMESPACE_1_1WriteBatch.html#a7864890bb9efdad04ba84996ec856850">Put</a>(key, value));</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <a class="code hl_function" href="../../dc/dd2/classROCKSDB__NAMESPACE_1_1WriteBatchInternal.html#af1cb3b1768b336e8c474df79bdb43183">WriteBatchInternal::SetSequence</a>(&amp;batch, seq);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4c3f224d4c3788f5c1569311e4235dc5">current_log_writer_</a>-&gt;AddRecord(</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>(), <a class="code hl_function" href="../../dc/dd2/classROCKSDB__NAMESPACE_1_1WriteBatchInternal.html#a3c82c13dc89d3d24e8360d919e10fd70">WriteBatchInternal::Contents</a>(&amp;batch)));</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3503a4cdac1a4f2f8ab4a097c1739cb3">versions_</a>-&gt;SetLastAllocatedSequence(seq);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3503a4cdac1a4f2f8ab4a097c1739cb3">versions_</a>-&gt;SetLastPublishedSequence(seq);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3503a4cdac1a4f2f8ab4a097c1739cb3">versions_</a>-&gt;SetLastSequence(seq);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  }</div>
+</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">// NOT thread safe</span></div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a757581a5c19d4f291ede4794070bb501">   84</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a757581a5c19d4f291ede4794070bb501">RollTheLog</a>(<span class="keywordtype">bool</span> <span class="comment">/*archived*/</span>) {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a49dcae2e3c93c3d6d02af8f436d5eaa1">current_log_number_</a>++;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    std::string fname = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac2a5c53d13fb48d0d350e6a00b42d879">ArchivedLogFileName</a>(<a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">dbname_</a>, <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a49dcae2e3c93c3d6d02af8f436d5eaa1">current_log_number_</a>);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; fs = <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4fb92ac0e85a785cd2d1385b3d1719a2">env_</a>-&gt;GetFileSystem();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    std::unique_ptr&lt;WritableFileWriter&gt; file_writer;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(<a class="code hl_function" href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html#ae12ff6392cd07af039d067add067dfb8">WritableFileWriter::Create</a>(fs, fname, <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae8699d4bc693222d629ae38b150c78fd">env_options_</a>, &amp;file_writer,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                                         <span class="keyword">nullptr</span>));</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4c3f224d4c3788f5c1569311e4235dc5">current_log_writer_</a>.reset(</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keyword">new</span> <a class="code hl_class" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html">log::Writer</a>(std::move(file_writer), 0, <span class="keyword">false</span>));</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  }</div>
+</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a7a222ce513d43fae81f6823faf16b896">   95</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a7a222ce513d43fae81f6823faf16b896">CreateArchiveLogs</a>(<span class="keywordtype">int</span> num_logs, <span class="keywordtype">int</span> entries_per_log) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt;= num_logs; ++i) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      <a class="code hl_function" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a757581a5c19d4f291ede4794070bb501">RollTheLog</a>(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; entries_per_log; ++k) {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <a class="code hl_function" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#acb275266f8b0b54e4bff03b3b3c74e13">Put</a>(std::to_string(k), std::string(1024, <span class="charliteral">&#39;a&#39;</span>));</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      }</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    }</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  }</div>
+</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ac90dac9e9d2a36a5e28c137aadde4421">  104</a></span>  std::unique_ptr&lt;TransactionLogIterator&gt; <a class="code hl_function" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ac90dac9e9d2a36a5e28c137aadde4421">OpenTransactionLogIter</a>(</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> seq) {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    std::unique_ptr&lt;TransactionLogIterator&gt; iter;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> status = <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3e2095c3b9d943998f5ed94851b3d004">wal_manager_</a>-&gt;GetUpdatesSince(</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        seq, &amp;iter, <a class="code hl_struct" href="../../d3/d39/structROCKSDB__NAMESPACE_1_1TransactionLogIterator_1_1ReadOptions.html">TransactionLogIterator::ReadOptions</a>(), <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3503a4cdac1a4f2f8ab4a097c1739cb3">versions_</a>.get());</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(status);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordflow">return</span> iter;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  }</div>
+</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4fb92ac0e85a785cd2d1385b3d1719a2">  113</a></span>  std::unique_ptr&lt;MockEnv&gt; <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4fb92ac0e85a785cd2d1385b3d1719a2">env_</a>;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">  114</a></span>  std::string <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">dbname_</a>;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">  115</a></span>  <a class="code hl_struct" href="../../d5/d2e/structROCKSDB__NAMESPACE_1_1ImmutableDBOptions.html">ImmutableDBOptions</a> <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">db_options_</a>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a86be780e4b94d036c3cac5ec392ba7f2">  116</a></span>  <a class="code hl_class" href="../../dd/d87/classROCKSDB__NAMESPACE_1_1WriteController.html">WriteController</a> <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a86be780e4b94d036c3cac5ec392ba7f2">write_controller_</a>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae8699d4bc693222d629ae38b150c78fd">  117</a></span>  <a class="code hl_struct" href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">EnvOptions</a> <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae8699d4bc693222d629ae38b150c78fd">env_options_</a>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#af7c7394538cbb01760cf4f9dc7e33d4a">  118</a></span>  std::shared_ptr&lt;Cache&gt; <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#af7c7394538cbb01760cf4f9dc7e33d4a">table_cache_</a>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a70b29bde524264daced445cf576e6f0c">  119</a></span>  <a class="code hl_class" href="../../d9/d4d/classROCKSDB__NAMESPACE_1_1WriteBufferManager.html">WriteBufferManager</a> <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a70b29bde524264daced445cf576e6f0c">write_buffer_manager_</a>;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3503a4cdac1a4f2f8ab4a097c1739cb3">  120</a></span>  std::unique_ptr&lt;VersionSet&gt; <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3503a4cdac1a4f2f8ab4a097c1739cb3">versions_</a>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3e2095c3b9d943998f5ed94851b3d004">  121</a></span>  std::unique_ptr&lt;WalManager&gt; <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3e2095c3b9d943998f5ed94851b3d004">wal_manager_</a>;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4c3f224d4c3788f5c1569311e4235dc5">  123</a></span>  std::unique_ptr&lt;log::Writer&gt; <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4c3f224d4c3788f5c1569311e4235dc5">current_log_writer_</a>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a49dcae2e3c93c3d6d02af8f436d5eaa1">  124</a></span>  uint64_t <a class="code hl_variable" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a49dcae2e3c93c3d6d02af8f436d5eaa1">current_log_number_</a>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>};</div>
+</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="foldopen" id="foldopen00127" data-start="{" data-end="}">
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afe5ab7b08057453ccda90b72867c3a63">  127</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html">WalManagerTest</a>, ReadFirstRecordCache) {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  Init();</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  std::string path = dbname_ + <span class="stringliteral">&quot;/000001.log&quot;</span>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  std::unique_ptr&lt;FSWritableFile&gt; <a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">file</a>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(env_-&gt;GetFileSystem()-&gt;NewWritableFile(path, <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>(), &amp;<a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">file</a>,</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                                                   <span class="keyword">nullptr</span>));</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> s;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(wal_manager_-&gt;TEST_ReadFirstLine(path, 1 <span class="comment">/* number */</span>, &amp;s));</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(s, 0U);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>      wal_manager_-&gt;TEST_ReadFirstRecord(<a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a20d8cc4b2f58b0e6669bfce3b8d8ceaeaf5fb7f1cf791c965281a66f2fc25f86b">kAliveLogFile</a>, 1 <span class="comment">/* number */</span>, &amp;s));</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(s, 0U);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  std::unique_ptr&lt;WritableFileWriter&gt; file_writer(</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>      <span class="keyword">new</span> <a class="code hl_class" href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html">WritableFileWriter</a>(std::move(<a class="code hl_enumvalue" href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">file</a>), path, <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>()));</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <a class="code hl_class" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html">log::Writer</a> writer(std::move(file_writer), 1,</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>                     db_options_.recycle_log_file_num &gt; 0);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <a class="code hl_class" href="../../d6/d09/classROCKSDB__NAMESPACE_1_1WriteBatch.html">WriteBatch</a> batch;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(batch.<a class="code hl_function" href="../../d6/d09/classROCKSDB__NAMESPACE_1_1WriteBatch.html#a7864890bb9efdad04ba84996ec856850">Put</a>(<span class="stringliteral">&quot;foo&quot;</span>, <span class="stringliteral">&quot;bar&quot;</span>));</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <a class="code hl_function" href="../../dc/dd2/classROCKSDB__NAMESPACE_1_1WriteBatchInternal.html#af1cb3b1768b336e8c474df79bdb43183">WriteBatchInternal::SetSequence</a>(&amp;batch, 10);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      writer.<a class="code hl_function" href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ab1853e77a57e05327b4c9224d405c873">AddRecord</a>(<a class="code hl_struct" href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">WriteOptions</a>(), <a class="code hl_function" href="../../dc/dd2/classROCKSDB__NAMESPACE_1_1WriteBatchInternal.html#a3c82c13dc89d3d24e8360d919e10fd70">WriteBatchInternal::Contents</a>(&amp;batch)));</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="comment">// TODO(icanadi) move SpecialEnv outside of db_test, so we can reuse it here.</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="comment">// Waiting for lei to finish with db_test</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="comment">// env_-&gt;count_sequential_reads_ = true;</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="comment">// sequential_read_counter_ sanity test</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="comment">// ASSERT_EQ(env_-&gt;sequential_read_counter_.Read(), 0);</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(wal_manager_-&gt;TEST_ReadFirstRecord(<a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a20d8cc4b2f58b0e6669bfce3b8d8ceaeaf5fb7f1cf791c965281a66f2fc25f86b">kAliveLogFile</a>, 1, &amp;s));</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(s, 10U);</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="comment">// did a read</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="comment">// TODO(icanadi) move SpecialEnv outside of db_test, so we can reuse it here</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="comment">// ASSERT_EQ(env_-&gt;sequential_read_counter_.Read(), 1);</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a>(wal_manager_-&gt;TEST_ReadFirstRecord(<a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a20d8cc4b2f58b0e6669bfce3b8d8ceaeaf5fb7f1cf791c965281a66f2fc25f86b">kAliveLogFile</a>, 1, &amp;s));</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(s, 10U);</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="comment">// no new reads since the value is cached</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="comment">// TODO(icanadi) move SpecialEnv outside of db_test, so we can reuse it here</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="comment">// ASSERT_EQ(env_-&gt;sequential_read_counter_.Read(), 1);</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>}</div>
+</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="keyword">namespace </span>{</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>uint64_t GetLogDirSize(std::string dir_path, Env* env) {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  uint64_t dir_size = 0;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  std::vector&lt;std::string&gt; files;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(env-&gt;GetChildren(dir_path, &amp;files));</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; f : files) {</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    uint64_t number;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    FileType type;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="keywordflow">if</span> (ParseFileName(f, &amp;number, &amp;type) &amp;&amp; type == kWalFile) {</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>      std::string <span class="keyword">const</span> file_path = dir_path + <span class="stringliteral">&quot;/&quot;</span> + f;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>      uint64_t file_size;</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>      <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(env-&gt;GetFileSize(file_path, &amp;file_size));</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>      dir_size += file_size;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    }</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  }</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="keywordflow">return</span> dir_size;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>}</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>std::vector&lt;std::uint64_t&gt; ListSpecificFiles(</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    Env* env, <span class="keyword">const</span> std::string&amp; path, <span class="keyword">const</span> FileType expected_file_type) {</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  std::vector&lt;std::string&gt; files;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  std::vector&lt;uint64_t&gt; file_numbers;</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  uint64_t number;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ad">FileType</a> <a class="code hl_variable" href="../../d7/de8/namespaceadvisor_1_1config__optimizer__example.html#af6e0d4caf2e04f0e18ae85aaaab5c6ae">type</a>;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(env-&gt;GetChildren(path, &amp;files));</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; files.size(); ++i) {</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7d87aaca453b4f1ca5f4475ef9b0ff31">ParseFileName</a>(files[i], &amp;number, &amp;type)) {</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>      <span class="keywordflow">if</span> (type == expected_file_type) {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        file_numbers.push_back(number);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>      }</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    }</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  }</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="keywordflow">return</span> file_numbers;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>}</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="keywordtype">int</span> CountRecords(TransactionLogIterator* iter) {</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="keywordtype">int</span> count = 0;</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">SequenceNumber</a> lastSequence = 0;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  BatchResult res;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="keywordflow">while</span> (iter-&gt;Valid()) {</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    res = iter-&gt;GetBatch();</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ac33e7cdfb5d44a7a0f0ab552eb5c3c6a">EXPECT_TRUE</a>(res.sequence &gt; lastSequence);</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    ++count;</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    lastSequence = res.sequence;</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(iter-&gt;status());</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    iter-&gt;Next();</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  }</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  <a class="code hl_define" href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a>(iter-&gt;status());</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  <span class="keywordflow">return</span> count;</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>}</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>}  <span class="comment">// anonymous namespace</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="foldopen" id="foldopen00222" data-start="{" data-end="}">
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a252ae6dc0920835a1c5ca359d49ec932">  222</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html">WalManagerTest</a>, WALArchivalSizeLimit) {</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  db_options_.WAL_ttl_seconds = 0;</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  db_options_.WAL_size_limit_MB = 1000;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  Init();</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="comment">// TEST : Create WalManager with huge size limit and no ttl.</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <span class="comment">// Create some archived files and call PurgeObsoleteWALFiles().</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  <span class="comment">// Count the archived log files that survived.</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <span class="comment">// Assert that all of them did.</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <span class="comment">// Change size limit. Re-open WalManager.</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <span class="comment">// Assert that archive is not greater than WAL_size_limit_MB after</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <span class="comment">// PurgeObsoleteWALFiles()</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  <span class="comment">// Set ttl and time_to_check_ to small values. Re-open db.</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="comment">// Assert that there are no archived logs left.</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  std::string archive_dir = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#adcb80fad2891ef2f98764b1d8c643f36">ArchivalDirectory</a>(dbname_);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  CreateArchiveLogs(20, 5000);</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  std::vector&lt;std::uint64_t&gt; log_files =</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>      ListSpecificFiles(env_.get(), archive_dir, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ada30ae8e8602718db3120f510188ae8d65">kWalFile</a>);</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(log_files.size(), 20U);</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  db_options_.WAL_size_limit_MB = 8;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  Reopen();</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  wal_manager_-&gt;PurgeObsoleteWALFiles();</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  uint64_t archive_size = GetLogDirSize(archive_dir, env_.get());</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(archive_size &lt;= db_options_.WAL_size_limit_MB * 1024 * 1024);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  db_options_.WAL_ttl_seconds = 1;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  env_-&gt;SleepForMicroseconds(2 * 1000 * 1000);</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  Reopen();</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  wal_manager_-&gt;PurgeObsoleteWALFiles();</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  log_files = ListSpecificFiles(env_.get(), archive_dir, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ada30ae8e8602718db3120f510188ae8d65">kWalFile</a>);</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(log_files.empty());</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>}</div>
+</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
+<div class="foldopen" id="foldopen00260" data-start="{" data-end="}">
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a779a9216bcac84386e104cca18c4a9d6">  260</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html">WalManagerTest</a>, WALArchivalTtl) {</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  db_options_.WAL_ttl_seconds = 1000;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  Init();</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="comment">// TEST : Create WalManager with a ttl and no size limit.</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="comment">// Create some archived log files and call PurgeObsoleteWALFiles().</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <span class="comment">// Assert that files are not deleted</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <span class="comment">// Reopen db with small ttl.</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <span class="comment">// Assert that all archived logs was removed.</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  std::string archive_dir = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#adcb80fad2891ef2f98764b1d8c643f36">ArchivalDirectory</a>(dbname_);</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  CreateArchiveLogs(20, 5000);</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  std::vector&lt;uint64_t&gt; log_files =</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>      ListSpecificFiles(env_.get(), archive_dir, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ada30ae8e8602718db3120f510188ae8d65">kWalFile</a>);</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a16a882d4eafc9f8643867aea40879140">ASSERT_GT</a>(log_files.size(), 0U);</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  db_options_.WAL_ttl_seconds = 1;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  env_-&gt;SleepForMicroseconds(3 * 1000 * 1000);</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  Reopen();</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  wal_manager_-&gt;PurgeObsoleteWALFiles();</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  log_files = ListSpecificFiles(env_.get(), archive_dir, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ada30ae8e8602718db3120f510188ae8d65">kWalFile</a>);</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(log_files.empty());</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>}</div>
+</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
+<div class="foldopen" id="foldopen00286" data-start="{" data-end="}">
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab0b167551b9f6d0f6d100631208ea515">  286</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html">WalManagerTest</a>, TransactionLogIteratorMoveOverZeroFiles) {</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  Init();</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  RollTheLog(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  Put(<span class="stringliteral">&quot;key1&quot;</span>, std::string(1024, <span class="charliteral">&#39;a&#39;</span>));</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  <span class="comment">// Create a zero record WAL file.</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  RollTheLog(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  RollTheLog(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  Put(<span class="stringliteral">&quot;key2&quot;</span>, std::string(1024, <span class="charliteral">&#39;a&#39;</span>));</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <span class="keyword">auto</span> iter = OpenTransactionLogIter(0);</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(2, CountRecords(iter.get()));</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>}</div>
+</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="foldopen" id="foldopen00300" data-start="{" data-end="}">
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af4327788839c465ee73f5a3a63aa2d01">  300</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html">WalManagerTest</a>, TransactionLogIteratorJustEmptyFile) {</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>  Init();</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  RollTheLog(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <span class="keyword">auto</span> iter = OpenTransactionLogIter(0);</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="comment">// Check that an empty iterator is returned</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(!iter-&gt;Valid());</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>}</div>
+</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
+<div class="foldopen" id="foldopen00308" data-start="{" data-end="}">
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5f6f77ca285bfb5619f0a6376f4e03e0">  308</a></span><a class="code hl_define" href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a>(<a class="code hl_class" href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html">WalManagerTest</a>, TransactionLogIteratorNewFileWhileScanning) {</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  Init();</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  CreateArchiveLogs(2, 100);</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keyword">auto</span> iter = OpenTransactionLogIter(0);</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  CreateArchiveLogs(1, 100);</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  <span class="keywordflow">for</span> (; iter-&gt;Valid(); iter-&gt;Next()) {</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    i++;</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  }</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(i, 200);</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  <span class="comment">// A new log file was added after the iterator was created.</span></div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  <span class="comment">// TryAgain indicates a new iterator is needed to fetch the new data</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(iter-&gt;status().IsTryAgain());</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  iter = OpenTransactionLogIter(0);</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  i = 0;</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  <span class="keywordflow">for</span> (; iter-&gt;Valid(); iter-&gt;Next()) {</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    i++;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  }</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a>(i, 300);</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  <a class="code hl_define" href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a>(iter-&gt;status().ok());</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>}</div>
+</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
+<div class="foldopen" id="foldopen00333" data-start="{" data-end="}">
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="../../da/d10/wal__manager__test_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627">  333</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  ROCKSDB_NAMESPACE::port::InstallStackTraceHandler();</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>  <a class="code hl_function" href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">::testing::InitGoogleTest</a>(&amp;argc, argv);</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a>();</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>}</div>
+</div>
+<div class="ttc" id="acache_8h_html"><div class="ttname"><a href="../../d3/d26/cache_8h.html">cache.h</a></div></div>
+<div class="ttc" id="acache__bench_8cc_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="../../d0/db4/cache__bench_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/db4/cache__bench_8cc_source.html#l00011">cache_bench.cc:11</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a6ab2e37815691608582aa44201663888"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">ROCKSDB_NAMESPACE::Env::Default</a></div><div class="ttdeci">static Env * Default()</div><div class="ttdef"><b>Definition</b> <a href="../../de/d24/env__posix_8cc_source.html#l00498">env_posix.cc:498</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MockEnv_html_a1646524be76620cb4c6118c41d87095b"><div class="ttname"><a href="../../d1/dae/classROCKSDB__NAMESPACE_1_1MockEnv.html#a1646524be76620cb4c6118c41d87095b">ROCKSDB_NAMESPACE::MockEnv::Create</a></div><div class="ttdeci">static MockEnv * Create(Env *base)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/mock__env_8cc_source.html#l01038">mock_env.cc:1038</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VersionSet_html"><div class="ttname"><a href="../../d3/d11/classROCKSDB__NAMESPACE_1_1VersionSet.html">ROCKSDB_NAMESPACE::VersionSet</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/dd5/version__set_8h_source.html#l01185">version_set.h:1185</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html">ROCKSDB_NAMESPACE::WalManagerTest</a></div><div class="ttdef"><b>Definition</b> <a href="#l00031">wal_manager_test.cc:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a26460302e179c840bd4d8284097aeada"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a26460302e179c840bd4d8284097aeada">ROCKSDB_NAMESPACE::WalManagerTest::Reopen</a></div><div class="ttdeci">void Reopen()</div><div class="ttdef"><b>Definition</b> <a href="#l00064">wal_manager_test.cc:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a3503a4cdac1a4f2f8ab4a097c1739cb3"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3503a4cdac1a4f2f8ab4a097c1739cb3">ROCKSDB_NAMESPACE::WalManagerTest::versions_</a></div><div class="ttdeci">std::unique_ptr&lt; VersionSet &gt; versions_</div><div class="ttdef"><b>Definition</b> <a href="#l00120">wal_manager_test.cc:120</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a3e2095c3b9d943998f5ed94851b3d004"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a3e2095c3b9d943998f5ed94851b3d004">ROCKSDB_NAMESPACE::WalManagerTest::wal_manager_</a></div><div class="ttdeci">std::unique_ptr&lt; WalManager &gt; wal_manager_</div><div class="ttdef"><b>Definition</b> <a href="#l00121">wal_manager_test.cc:121</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a49dcae2e3c93c3d6d02af8f436d5eaa1"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a49dcae2e3c93c3d6d02af8f436d5eaa1">ROCKSDB_NAMESPACE::WalManagerTest::current_log_number_</a></div><div class="ttdeci">uint64_t current_log_number_</div><div class="ttdef"><b>Definition</b> <a href="#l00124">wal_manager_test.cc:124</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a4c3f224d4c3788f5c1569311e4235dc5"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4c3f224d4c3788f5c1569311e4235dc5">ROCKSDB_NAMESPACE::WalManagerTest::current_log_writer_</a></div><div class="ttdeci">std::unique_ptr&lt; log::Writer &gt; current_log_writer_</div><div class="ttdef"><b>Definition</b> <a href="#l00123">wal_manager_test.cc:123</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a4fb92ac0e85a785cd2d1385b3d1719a2"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a4fb92ac0e85a785cd2d1385b3d1719a2">ROCKSDB_NAMESPACE::WalManagerTest::env_</a></div><div class="ttdeci">std::unique_ptr&lt; MockEnv &gt; env_</div><div class="ttdef"><b>Definition</b> <a href="#l00113">wal_manager_test.cc:113</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a50f1e616ed1bc7697be7ca19d0f7bbc6"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a50f1e616ed1bc7697be7ca19d0f7bbc6">ROCKSDB_NAMESPACE::WalManagerTest::Init</a></div><div class="ttdeci">void Init()</div><div class="ttdef"><b>Definition</b> <a href="#l00043">wal_manager_test.cc:43</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a70b29bde524264daced445cf576e6f0c"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a70b29bde524264daced445cf576e6f0c">ROCKSDB_NAMESPACE::WalManagerTest::write_buffer_manager_</a></div><div class="ttdeci">WriteBufferManager write_buffer_manager_</div><div class="ttdef"><b>Definition</b> <a href="#l00119">wal_manager_test.cc:119</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a757581a5c19d4f291ede4794070bb501"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a757581a5c19d4f291ede4794070bb501">ROCKSDB_NAMESPACE::WalManagerTest::RollTheLog</a></div><div class="ttdeci">void RollTheLog(bool)</div><div class="ttdef"><b>Definition</b> <a href="#l00084">wal_manager_test.cc:84</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a7a222ce513d43fae81f6823faf16b896"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a7a222ce513d43fae81f6823faf16b896">ROCKSDB_NAMESPACE::WalManagerTest::CreateArchiveLogs</a></div><div class="ttdeci">void CreateArchiveLogs(int num_logs, int entries_per_log)</div><div class="ttdef"><b>Definition</b> <a href="#l00095">wal_manager_test.cc:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a86be780e4b94d036c3cac5ec392ba7f2"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a86be780e4b94d036c3cac5ec392ba7f2">ROCKSDB_NAMESPACE::WalManagerTest::write_controller_</a></div><div class="ttdeci">WriteController write_controller_</div><div class="ttdef"><b>Definition</b> <a href="#l00116">wal_manager_test.cc:116</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_a9e4cca165eb83313944c3fa1b800d60b"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#a9e4cca165eb83313944c3fa1b800d60b">ROCKSDB_NAMESPACE::WalManagerTest::WalManagerTest</a></div><div class="ttdeci">WalManagerTest()</div><div class="ttdef"><b>Definition</b> <a href="#l00033">wal_manager_test.cc:33</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_ac90dac9e9d2a36a5e28c137aadde4421"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ac90dac9e9d2a36a5e28c137aadde4421">ROCKSDB_NAMESPACE::WalManagerTest::OpenTransactionLogIter</a></div><div class="ttdeci">std::unique_ptr&lt; TransactionLogIterator &gt; OpenTransactionLogIter(const SequenceNumber seq)</div><div class="ttdef"><b>Definition</b> <a href="#l00104">wal_manager_test.cc:104</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_acb275266f8b0b54e4bff03b3b3c74e13"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#acb275266f8b0b54e4bff03b3b3c74e13">ROCKSDB_NAMESPACE::WalManagerTest::Put</a></div><div class="ttdeci">void Put(const std::string &amp;key, const std::string &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00070">wal_manager_test.cc:70</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_add93e5f75e1c902875877651d0b61279"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#add93e5f75e1c902875877651d0b61279">ROCKSDB_NAMESPACE::WalManagerTest::dbname_</a></div><div class="ttdeci">std::string dbname_</div><div class="ttdef"><b>Definition</b> <a href="#l00114">wal_manager_test.cc:114</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_ae6016bf2c3b2ab6f8355edfeb391c2aa"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae6016bf2c3b2ab6f8355edfeb391c2aa">ROCKSDB_NAMESPACE::WalManagerTest::db_options_</a></div><div class="ttdeci">ImmutableDBOptions db_options_</div><div class="ttdef"><b>Definition</b> <a href="#l00115">wal_manager_test.cc:115</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_ae8699d4bc693222d629ae38b150c78fd"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#ae8699d4bc693222d629ae38b150c78fd">ROCKSDB_NAMESPACE::WalManagerTest::env_options_</a></div><div class="ttdeci">EnvOptions env_options_</div><div class="ttdef"><b>Definition</b> <a href="#l00117">wal_manager_test.cc:117</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManagerTest_html_af7c7394538cbb01760cf4f9dc7e33d4a"><div class="ttname"><a href="../../de/dcd/classROCKSDB__NAMESPACE_1_1WalManagerTest.html#af7c7394538cbb01760cf4f9dc7e33d4a">ROCKSDB_NAMESPACE::WalManagerTest::table_cache_</a></div><div class="ttdeci">std::shared_ptr&lt; Cache &gt; table_cache_</div><div class="ttdef"><b>Definition</b> <a href="#l00118">wal_manager_test.cc:118</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WalManager_html"><div class="ttname"><a href="../../dd/d1f/classROCKSDB__NAMESPACE_1_1WalManager.html">ROCKSDB_NAMESPACE::WalManager</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d72/wal__manager_8h_source.html#l00036">wal_manager.h:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritableFileWriter_html"><div class="ttname"><a href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html">ROCKSDB_NAMESPACE::WritableFileWriter</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d97/writable__file__writer_8h_source.html#l00040">writable_file_writer.h:40</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritableFileWriter_html_ae12ff6392cd07af039d067add067dfb8"><div class="ttname"><a href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html#ae12ff6392cd07af039d067add067dfb8">ROCKSDB_NAMESPACE::WritableFileWriter::Create</a></div><div class="ttdeci">static IOStatus Create(const std::shared_ptr&lt; FileSystem &gt; &amp;fs, const std::string &amp;fname, const FileOptions &amp;file_opts, std::unique_ptr&lt; WritableFileWriter &gt; *writer, IODebugContext *dbg)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d2d/writable__file__writer_8cc_source.html#l00046">writable_file_writer.cc:46</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteBatchInternal_html_a3c82c13dc89d3d24e8360d919e10fd70"><div class="ttname"><a href="../../dc/dd2/classROCKSDB__NAMESPACE_1_1WriteBatchInternal.html#a3c82c13dc89d3d24e8360d919e10fd70">ROCKSDB_NAMESPACE::WriteBatchInternal::Contents</a></div><div class="ttdeci">static Slice Contents(const WriteBatch *batch)</div><div class="ttdef"><b>Definition</b> <a href="../../de/df3/write__batch__internal_8h_source.html#l00164">write_batch_internal.h:164</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteBatchInternal_html_af1cb3b1768b336e8c474df79bdb43183"><div class="ttname"><a href="../../dc/dd2/classROCKSDB__NAMESPACE_1_1WriteBatchInternal.html#af1cb3b1768b336e8c474df79bdb43183">ROCKSDB_NAMESPACE::WriteBatchInternal::SetSequence</a></div><div class="ttdeci">static void SetSequence(WriteBatch *batch, SequenceNumber seq)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d61/write__batch_8cc_source.html#l00791">write_batch.cc:791</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteBatch_html"><div class="ttname"><a href="../../d6/d09/classROCKSDB__NAMESPACE_1_1WriteBatch.html">ROCKSDB_NAMESPACE::WriteBatch</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d98/write__batch_8h_source.html#l00064">write_batch.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteBatch_html_a7864890bb9efdad04ba84996ec856850"><div class="ttname"><a href="../../d6/d09/classROCKSDB__NAMESPACE_1_1WriteBatch.html#a7864890bb9efdad04ba84996ec856850">ROCKSDB_NAMESPACE::WriteBatch::Put</a></div><div class="ttdeci">Status Put(ColumnFamilyHandle *column_family, const Slice &amp;key, const Slice &amp;value) override</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d61/write__batch_8cc_source.html#l00921">write_batch.cc:921</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteBufferManager_html"><div class="ttname"><a href="../../d9/d4d/classROCKSDB__NAMESPACE_1_1WriteBufferManager.html">ROCKSDB_NAMESPACE::WriteBufferManager</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/dd9/write__buffer__manager_8h_source.html#l00037">write_buffer_manager.h:37</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteController_html"><div class="ttname"><a href="../../dd/d87/classROCKSDB__NAMESPACE_1_1WriteController.html">ROCKSDB_NAMESPACE::WriteController</a></div><div class="ttdef"><b>Definition</b> <a href="../../dc/dfc/write__controller_8h_source.html#l00024">write_controller.h:24</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html">ROCKSDB_NAMESPACE::log::Writer</a></div><div class="ttdef"><b>Definition</b> <a href="../../dc/d10/log__writer_8h_source.html#l00074">log_writer.h:74</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1log_1_1Writer_html_ab1853e77a57e05327b4c9224d405c873"><div class="ttname"><a href="../../d5/d00/classROCKSDB__NAMESPACE_1_1log_1_1Writer.html#ab1853e77a57e05327b4c9224d405c873">ROCKSDB_NAMESPACE::log::Writer::AddRecord</a></div><div class="ttdeci">IOStatus AddRecord(const WriteOptions &amp;write_options, const Slice &amp;slice)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/da4/log__writer_8cc_source.html#l00094">log_writer.cc:94</a></div></div>
+<div class="ttc" id="aclasstesting_1_1Test_html"><div class="ttname"><a href="../../db/d9f/classtesting_1_1Test.html">testing::Test</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l20178">gtest.h:20178</a></div></div>
+<div class="ttc" id="acolumn__family_8h_html"><div class="ttname"><a href="../../de/dcd/column__family_8h.html">column_family.h</a></div></div>
+<div class="ttc" id="adb__impl_8h_html"><div class="ttname"><a href="../../dd/d93/db__impl_8h.html">db_impl.h</a></div></div>
+<div class="ttc" id="afile__system_8h_html"><div class="ttname"><a href="../../d6/d8d/file__system_8h.html">file_system.h</a></div></div>
+<div class="ttc" id="agtest_8h_html_a0ee66d464d1a06c20c1929cae09d8758"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a0ee66d464d1a06c20c1929cae09d8758">TEST_F</a></div><div class="ttdeci">#define TEST_F(test_fixture, test_name)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22085">gtest.h:22085</a></div></div>
+<div class="ttc" id="agtest_8h_html_a16a882d4eafc9f8643867aea40879140"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a16a882d4eafc9f8643867aea40879140">ASSERT_GT</a></div><div class="ttdeci">#define ASSERT_GT(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21789">gtest.h:21789</a></div></div>
+<div class="ttc" id="agtest_8h_html_a1a6db8b1338ee7040329322b77779086"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a1a6db8b1338ee7040329322b77779086">ASSERT_EQ</a></div><div class="ttdeci">#define ASSERT_EQ(val1, val2)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21769">gtest.h:21769</a></div></div>
+<div class="ttc" id="agtest_8h_html_a853a3792807489591d3d4a2f2ff9359f"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#a853a3792807489591d3d4a2f2ff9359f">RUN_ALL_TESTS</a></div><div class="ttdeci">int RUN_ALL_TESTS() GTEST_MUST_USE_RESULT_</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l22109">gtest.h:22109</a></div></div>
+<div class="ttc" id="agtest_8h_html_ac33e7cdfb5d44a7a0f0ab552eb5c3c6a"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ac33e7cdfb5d44a7a0f0ab552eb5c3c6a">EXPECT_TRUE</a></div><div class="ttdeci">#define EXPECT_TRUE(condition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21676">gtest.h:21676</a></div></div>
+<div class="ttc" id="agtest_8h_html_ae9244bfbda562e8b798789b001993fa5"><div class="ttname"><a href="../../d8/d73/gtest_8h.html#ae9244bfbda562e8b798789b001993fa5">ASSERT_TRUE</a></div><div class="ttdeci">#define ASSERT_TRUE(condition)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d73/gtest_8h_source.html#l21682">gtest.h:21682</a></div></div>
+<div class="ttc" id="alog__writer_8h_html"><div class="ttname"><a href="../../dc/d10/log__writer_8h.html">log_writer.h</a></div></div>
+<div class="ttc" id="amock__env_8h_html"><div class="ttname"><a href="../../d8/d00/mock__env_8h.html">mock_env.h</a></div></div>
+<div class="ttc" id="amock__table_8h_html"><div class="ttname"><a href="../../d5/de2/mock__table_8h.html">mock_table.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0651dc6465bf0488362027235f8fff8a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0651dc6465bf0488362027235f8fff8a">ROCKSDB_NAMESPACE::NewLRUCache</a></div><div class="ttdeci">std::shared_ptr&lt; Cache &gt; NewLRUCache(size_t capacity, int num_shard_bits=-1, bool strict_capacity_limit=false, double high_pri_pool_ratio=0.5, std::shared_ptr&lt; MemoryAllocator &gt; memory_allocator=nullptr, bool use_adaptive_mutex=kDefaultToAdaptiveMutex, CacheMetadataChargePolicy metadata_charge_policy=kDefaultCacheMetadataChargePolicy, double low_pri_pool_ratio=0.0)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d26/cache_8h_source.html#l00270">cache.h:270</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a14421ad5fea786298ec0edd0f34bd96a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a14421ad5fea786298ec0edd0f34bd96a">ROCKSDB_NAMESPACE::SequenceNumber</a></div><div class="ttdeci">uint64_t SequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00022">types.h:22</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a18634f1aa447e30554266ec43f3a50f9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a18634f1aa447e30554266ec43f3a50f9">ROCKSDB_NAMESPACE::DestroyDB</a></div><div class="ttdeci">Status DestroyDB(const std::string &amp;dbname, const Options &amp;options, const std::vector&lt; ColumnFamilyDescriptor &gt; &amp;column_families)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/db__impl_8cc_source.html#l05348">db_impl.cc:5348</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a20d8cc4b2f58b0e6669bfce3b8d8ceaeaf5fb7f1cf791c965281a66f2fc25f86b"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a20d8cc4b2f58b0e6669bfce3b8d8ceaeaf5fb7f1cf791c965281a66f2fc25f86b">ROCKSDB_NAMESPACE::kAliveLogFile</a></div><div class="ttdeci">@ kAliveLogFile</div><div class="ttdef"><b>Definition</b> <a href="../../da/d65/transaction__log_8h_source.html#l00032">transaction_log.h:32</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a572c40b059615a4b9755748d810fc3ad"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ad">ROCKSDB_NAMESPACE::FileType</a></div><div class="ttdeci">FileType</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00045">types.h:45</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a572c40b059615a4b9755748d810fc3ada30ae8e8602718db3120f510188ae8d65"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a572c40b059615a4b9755748d810fc3ada30ae8e8602718db3120f510188ae8d65">ROCKSDB_NAMESPACE::kWalFile</a></div><div class="ttdeci">@ kWalFile</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00046">types.h:46</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a7d87aaca453b4f1ca5f4475ef9b0ff31"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7d87aaca453b4f1ca5f4475ef9b0ff31">ROCKSDB_NAMESPACE::ParseFileName</a></div><div class="ttdeci">bool ParseFileName(const std::string &amp;fname, uint64_t *number, FileType *type, WalFileType *log_type)</div><div class="ttdef"><b>Definition</b> <a href="../../de/d86/filename_8cc_source.html#l00268">filename.cc:268</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ac2a5c53d13fb48d0d350e6a00b42d879"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac2a5c53d13fb48d0d350e6a00b42d879">ROCKSDB_NAMESPACE::ArchivedLogFileName</a></div><div class="ttdeci">std::string ArchivedLogFileName(const std::string &amp;name, uint64_t number)</div><div class="ttdef"><b>Definition</b> <a href="../../de/d86/filename_8cc_source.html#l00107">filename.cc:107</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_adcb80fad2891ef2f98764b1d8c643f36"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#adcb80fad2891ef2f98764b1d8c643f36">ROCKSDB_NAMESPACE::ArchivalDirectory</a></div><div class="ttdeci">std::string ArchivalDirectory(const std::string &amp;dir)</div><div class="ttdef"><b>Definition</b> <a href="../../de/d86/filename_8cc_source.html#l00104">filename.cc:104</a></div></div>
+<div class="ttc" id="anamespaceadvisor_1_1config__optimizer__example_html_af6e0d4caf2e04f0e18ae85aaaab5c6ae"><div class="ttname"><a href="../../d7/de8/namespaceadvisor_1_1config__optimizer__example.html#af6e0d4caf2e04f0e18ae85aaaab5c6ae">advisor.config_optimizer_example.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d22/config__optimizer__example_8py_source.html#l00072">config_optimizer_example.py:72</a></div></div>
+<div class="ttc" id="anamespacetest_html"><div class="ttname"><a href="../../df/d04/namespacetest.html">test</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d2c/advisor_2test_2____init_____8py_source.html#l00001">__init__.py:1</a></div></div>
+<div class="ttc" id="anamespacetesting_html_aee3f6f99df893f576f705f66c0559482"><div class="ttname"><a href="../../d0/d75/namespacetesting.html#aee3f6f99df893f576f705f66c0559482">testing::InitGoogleTest</a></div><div class="ttdeci">void InitGoogleTest(int *argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d8c/gtest-all_8cc_source.html#l07404">gtest-all.cc:7404</a></div></div>
+<div class="ttc" id="astring__util_8h_html"><div class="ttname"><a href="../../dd/d70/string__util_8h.html">string_util.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1EnvOptions_html"><div class="ttname"><a href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">ROCKSDB_NAMESPACE::EnvOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00076">env.h:76</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOptions_html"><div class="ttname"><a href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">ROCKSDB_NAMESPACE::FileOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00179">file_system.h:179</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ImmutableDBOptions_html"><div class="ttname"><a href="../../d5/d2e/structROCKSDB__NAMESPACE_1_1ImmutableDBOptions.html">ROCKSDB_NAMESPACE::ImmutableDBOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d9a/db__options_8h_source.html#l00016">db_options.h:16</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Options_html"><div class="ttname"><a href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">ROCKSDB_NAMESPACE::Options</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01620">options.h:1620</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TransactionLogIterator_1_1ReadOptions_html"><div class="ttname"><a href="../../d3/d39/structROCKSDB__NAMESPACE_1_1TransactionLogIterator_1_1ReadOptions.html">ROCKSDB_NAMESPACE::TransactionLogIterator::ReadOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d65/transaction__log_8h_source.html#l00116">transaction_log.h:116</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1WriteOptions_html"><div class="ttname"><a href="../../da/d09/structROCKSDB__NAMESPACE_1_1WriteOptions.html">ROCKSDB_NAMESPACE::WriteOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01958">options.h:1958</a></div></div>
+<div class="ttc" id="atestharness_8h_html"><div class="ttname"><a href="../../dc/d42/testharness_8h.html">testharness.h</a></div></div>
+<div class="ttc" id="atestharness_8h_html_a6892e90ee417adfb0c66aa7a49769895"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#a6892e90ee417adfb0c66aa7a49769895">ASSERT_OK</a></div><div class="ttdeci">#define ASSERT_OK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00082">testharness.h:82</a></div></div>
+<div class="ttc" id="atestharness_8h_html_a72818a1b73e08f703b93b673513ca08a"><div class="ttname"><a href="../../dc/d42/testharness_8h.html#a72818a1b73e08f703b93b673513ca08a">EXPECT_OK</a></div><div class="ttdeci">#define EXPECT_OK(s)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d42/testharness_8h_source.html#l00085">testharness.h:85</a></div></div>
+<div class="ttc" id="atestutil_8h_html"><div class="ttname"><a href="../../da/de4/testutil_8h.html">testutil.h</a></div></div>
+<div class="ttc" id="atoku__instrumentation_8h_html_a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac"><div class="ttname"><a href="../../d2/d8a/toku__instrumentation_8h.html#a76ce6633f10239d82f3a280e1924cd82a8c7dd922ad47494fc02c388e12c00eac">toku_instr_object_type::file</a></div><div class="ttdeci">@ file</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d8a/toku__instrumentation_8h_source.html#l00054">toku_instrumentation.h:54</a></div></div>
+<div class="ttc" id="aversion__set_8h_html"><div class="ttname"><a href="../../d3/dd5/version__set_8h.html">version_set.h</a></div></div>
+<div class="ttc" id="awal__manager_8h_html"><div class="ttname"><a href="../../d8/d72/wal__manager_8h.html">wal_manager.h</a></div></div>
+<div class="ttc" id="awritable__file__writer_8h_html"><div class="ttname"><a href="../../da/d97/writable__file__writer_8h.html">writable_file_writer.h</a></div></div>
+<div class="ttc" id="awrite__batch_8h_html"><div class="ttname"><a href="../../d9/d98/write__batch_8h.html">write_batch.h</a></div></div>
+<div class="ttc" id="awrite__buffer__manager_8h_html"><div class="ttname"><a href="../../d1/dd9/write__buffer__manager_8h.html">write_buffer_manager.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../da/d10/wal__manager__test_8cc.html">wal_manager_test.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

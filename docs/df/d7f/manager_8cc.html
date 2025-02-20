@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/range/range_tree/lib/locktree/manager.cc 파일 참조</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('df/d7f/manager_8cc.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">클래스</a> &#124;
+<a href="#namespaces">네임스페이스</a>  </div>
+  <div class="headertitle"><div class="title">manager.cc 파일 참조</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="../../de/d76/toku__pthread_8h_source.html">../portability/toku_pthread.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d5/db7/utilities_2transactions_2lock_2range_2range__tree_2lib_2util_2status_8h_source.html">../util/status.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../df/d77/lock__request_8h_source.html">lock_request.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dc/d36/locktree_8h_source.html">locktree.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+manager.cc에 대한 include 의존 그래프</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d9/dbf/manager_8cc__incl.png" border="0" usemap="#autilities_2transactions_2lock_2range_2range__tree_2lib_2locktree_2manager_8cc" alt=""/></div>
+<map name="autilities_2transactions_2lock_2range_2range__tree_2lib_2locktree_2manager_8cc" id="autilities_2transactions_2lock_2range_2range__tree_2lib_2locktree_2manager_8cc">
+<area shape="rect" title=" " alt="" coords="727,5,905,67"/>
+<area shape="rect" title=" " alt="" coords="228,771,297,799"/>
+<area shape="poly" title=" " alt="" coords="727,40,525,46,406,54,287,69,179,90,131,103,89,118,55,136,30,156,14,178,8,203,8,609,14,644,29,673,53,698,82,720,115,738,150,752,214,771,212,776,148,757,113,742,80,724,49,702,25,676,9,645,3,610,3,203,9,176,26,152,52,132,87,113,129,98,177,84,286,63,405,49,525,41,726,34"/>
+<area shape="rect" title=" " alt="" coords="372,687,442,715"/>
+<area shape="poly" title=" " alt="" coords="726,41,537,49,426,59,316,74,216,95,134,123,102,140,78,159,64,180,59,203,59,525,64,561,78,586,101,607,133,628,164,645,191,655,242,661,295,663,326,667,361,676,367,678,366,683,359,681,325,672,295,668,241,666,190,660,162,650,131,633,98,611,74,590,59,563,53,526,53,203,59,178,75,155,99,136,131,118,214,90,315,69,425,54,536,44,726,36"/>
+<area shape="rect" href="../../de/d76/toku__pthread_8h.html" title=" " alt="" coords="1408,586,1541,631"/>
+<area shape="poly" title=" " alt="" coords="906,35,1098,43,1211,53,1324,68,1426,89,1511,117,1544,135,1569,155,1585,178,1591,203,1591,442,1583,482,1565,519,1541,551,1515,577,1511,574,1537,548,1561,516,1578,480,1585,441,1585,203,1580,180,1565,158,1541,139,1509,122,1425,94,1323,73,1211,58,1098,49,906,41"/>
+<area shape="rect" href="../../d5/db7/utilities_2transactions_2lock_2range_2range__tree_2lib_2util_2status_8h.html" title=" " alt="" coords="1365,342,1475,370"/>
+<area shape="poly" title=" " alt="" coords="906,49,1028,71,1167,103,1233,122,1292,142,1340,165,1374,189,1397,221,1412,258,1419,295,1422,326,1417,327,1414,296,1406,260,1392,223,1370,193,1337,169,1290,147,1231,127,1166,108,1027,76,905,54"/>
+<area shape="rect" href="../../df/d77/lock__request_8h.html" title=" " alt="" coords="710,115,826,143"/>
+<area shape="poly" title=" " alt="" coords="802,69,784,102,780,100,798,66"/>
+<area shape="rect" href="../../dc/d36/locktree_8h.html" title=" " alt="" coords="897,191,983,218"/>
+<area shape="poly" title=" " alt="" coords="841,66,923,177,919,180,836,69"/>
+<area shape="rect" title=" " alt="" coords="1341,923,1424,950"/>
+<area shape="poly" title=" " alt="" coords="1448,633,1427,654,1410,680,1391,740,1382,804,1380,862,1382,907,1377,907,1375,862,1376,803,1385,739,1406,678,1423,651,1444,629"/>
+<area shape="rect" title=" " alt="" coords="1196,923,1266,950"/>
+<area shape="poly" title=" " alt="" coords="1443,633,1415,655,1389,680,1350,731,1326,774,1304,820,1273,876,1250,911,1246,908,1268,873,1300,817,1321,772,1346,728,1385,677,1412,651,1440,629"/>
+<area shape="rect" title=" " alt="" coords="1420,687,1484,715"/>
+<area shape="poly" title=" " alt="" coords="1472,632,1462,673,1456,671,1467,630"/>
+<area shape="rect" href="../../d7/d98/toku__portability_8h.html" title=" " alt="" coords="544,771,678,799"/>
+<area shape="poly" title=" " alt="" coords="1408,633,1248,679,1054,726,860,758,693,778,693,773,860,753,1053,721,1246,674,1407,628"/>
+<area shape="poly" title=" " alt="" coords="633,797,706,842,761,872,817,889,876,903,992,921,1098,930,1180,933,1180,938,1098,935,992,926,875,908,816,894,759,877,703,846,630,802"/>
+<area shape="rect" title=" " alt="" coords="892,847,978,875"/>
+<area shape="poly" title=" " alt="" coords="670,797,877,844,876,849,669,802"/>
+<area shape="rect" title=" " alt="" coords="578,923,643,950"/>
+<area shape="poly" title=" " alt="" coords="576,802,549,815,525,832,512,852,511,862,514,873,536,898,565,916,562,921,533,903,510,876,505,863,507,850,521,828,546,811,574,797"/>
+<area shape="rect" title=" " alt="" coords="267,847,352,875"/>
+<area shape="poly" title=" " alt="" coords="557,802,367,848,366,843,556,797"/>
+<area shape="rect" title=" " alt="" coords="1103,847,1193,875"/>
+<area shape="poly" title=" " alt="" coords="679,793,1088,849,1088,854,678,798"/>
+<area shape="rect" title=" " alt="" coords="772,847,868,875"/>
+<area shape="poly" title=" " alt="" coords="649,797,769,839,768,844,647,802"/>
+<area shape="rect" title=" " alt="" coords="375,847,449,875"/>
+<area shape="poly" title=" " alt="" coords="576,802,463,844,461,839,574,797"/>
+<area shape="rect" href="../../d1/dfb/toku__atomic_8h.html" title=" " alt="" coords="128,847,242,875"/>
+<area shape="poly" title=" " alt="" coords="543,800,258,849,257,844,543,795"/>
+<area shape="rect" href="../../d2/d8a/toku__instrumentation_8h.html" title=" " alt="" coords="524,847,697,875"/>
+<area shape="poly" title=" " alt="" coords="613,800,613,831,608,831,608,800"/>
+<area shape="poly" title=" " alt="" coords="243,870,255,872,528,899,795,916,1180,931,1180,937,795,922,527,904,254,877,243,876"/>
+<area shape="rect" title=" " alt="" coords="285,923,366,950"/>
+<area shape="poly" title=" " alt="" coords="212,873,288,913,286,918,209,878"/>
+<area shape="rect" title=" " alt="" coords="13,923,86,950"/>
+<area shape="poly" title=" " alt="" coords="162,878,88,917,86,913,160,873"/>
+<area shape="rect" href="../../d1/dc9/toku__assert__subst_8h.html" title=" " alt="" coords="110,923,261,950"/>
+<area shape="poly" title=" " alt="" coords="188,875,188,907,183,907,183,875"/>
+<area shape="poly" title=" " alt="" coords="698,867,1278,920,1326,925,1325,931,1277,925,697,872"/>
+<area shape="poly" title=" " alt="" coords="613,875,613,907,608,907,608,875"/>
+<area shape="rect" href="../../dd/d4f/partitioned__counter_8h.html" title=" " alt="" coords="1340,426,1500,454"/>
+<area shape="poly" title=" " alt="" coords="1423,370,1423,411,1417,411,1417,370"/>
+<area shape="poly" title=" " alt="" coords="827,129,915,138,1024,159,1082,177,1138,200,1191,229,1239,264,1262,288,1277,311,1292,358,1303,407,1314,433,1330,461,1383,523,1438,574,1434,578,1380,527,1326,464,1309,435,1298,408,1286,359,1272,314,1258,291,1236,268,1188,233,1135,205,1080,182,1023,165,915,143,826,134"/>
+<area shape="rect" href="../../d6/d71/utilities_2transactions_2lock_2range_2range__tree_2lib_2db_8h.html" title=" " alt="" coords="815,687,876,715"/>
+<area shape="poly" title=" " alt="" coords="772,143,823,510,844,671,839,672,817,511,767,144"/>
+<area shape="rect" href="../../df/dc2/utilities_2transactions_2lock_2range_2range__tree_2lib_2ft_2comparator_8h.html" title=" " alt="" coords="674,510,808,538"/>
+<area shape="poly" title=" " alt="" coords="766,144,752,191,742,277,739,363,742,495,737,495,734,363,737,277,747,190,760,142"/>
+<area shape="poly" title=" " alt="" coords="800,141,896,182,894,187,798,146"/>
+<area shape="rect" href="../../d9/d9e/txnid__set_8h.html" title=" " alt="" coords="583,342,676,370"/>
+<area shape="poly" title=" " alt="" coords="719,146,681,164,664,177,650,192,634,225,627,261,626,296,628,326,622,327,620,296,622,260,629,223,646,189,660,173,678,159,717,141"/>
+<area shape="rect" href="../../de/da6/wfg_8h.html" title=" " alt="" coords="521,266,578,294"/>
+<area shape="poly" title=" " alt="" coords="710,142,653,161,625,175,599,193,576,222,560,253,556,251,571,219,596,189,622,170,651,156,708,137"/>
+<area shape="poly" title=" " alt="" coords="863,713,958,785,1024,830,1093,872,1182,914,1180,919,1091,877,1021,835,955,789,860,717"/>
+<area shape="poly" title=" " alt="" coords="846,716,827,832,822,831,841,715"/>
+<area shape="poly" title=" " alt="" coords="713,541,613,588,444,681,441,677,611,584,711,536"/>
+<area shape="poly" title=" " alt="" coords="751,537,832,673,828,676,747,540"/>
+<area shape="rect" href="../../dc/d18/memory_8h.html" title=" " alt="" coords="178,687,347,715"/>
+<area shape="poly" title=" " alt="" coords="674,539,663,541,613,546,569,547,494,544,459,545,423,552,384,565,341,588,319,606,301,629,276,674,271,672,297,626,316,603,339,584,382,560,421,547,458,540,494,539,569,541,613,541,662,535,673,534"/>
+<area shape="rect" href="../../d0/d4b/dbt_8h.html" title=" " alt="" coords="933,594,1024,622"/>
+<area shape="poly" title=" " alt="" coords="780,536,927,587,925,592,779,541"/>
+<area shape="poly" title=" " alt="" coords="265,715,265,756,260,756,260,715"/>
+<area shape="poly" title=" " alt="" coords="319,713,541,765,540,770,318,718"/>
+<area shape="poly" title=" " alt="" coords="961,625,879,680,876,676,958,620"/>
+<area shape="poly" title=" " alt="" coords="984,208,1101,225,1252,253,1327,271,1395,291,1450,314,1488,340,1508,365,1519,394,1524,426,1523,458,1511,521,1493,573,1488,571,1506,519,1518,457,1518,426,1514,396,1503,368,1485,344,1448,319,1393,296,1325,276,1251,258,1101,230,983,214"/>
+<area shape="poly" title=" " alt="" coords="956,217,973,238,988,265,990,280,988,295,962,408,926,516,889,609,860,674,855,672,884,607,921,515,956,406,983,293,985,280,983,267,969,241,952,220"/>
+<area shape="poly" title=" " alt="" coords="932,220,897,268,868,319,840,371,760,499,756,496,835,368,863,316,892,265,927,217"/>
+<area shape="rect" title=" " alt="" coords="907,266,973,294"/>
+<area shape="poly" title=" " alt="" coords="943,219,943,251,937,251,937,219"/>
+<area shape="rect" href="../../d9/d43/toku__external__pthread_8h.html" title=" " alt="" coords="1566,586,1717,631"/>
+<area shape="poly" title=" " alt="" coords="983,205,1057,210,1153,220,1260,237,1366,264,1448,291,1481,309,1518,340,1542,367,1563,396,1596,459,1620,520,1635,570,1630,572,1615,521,1592,461,1558,399,1538,370,1514,344,1478,313,1446,295,1365,269,1259,242,1152,225,1057,215,983,210"/>
+<area shape="rect" href="../../d1/d39/toku__time_8h.html" title=" " alt="" coords="1251,586,1384,631"/>
+<area shape="poly" title=" " alt="" coords="984,204,1062,213,1107,222,1151,236,1191,255,1224,281,1246,313,1253,333,1255,354,1255,441,1259,477,1269,512,1298,572,1293,574,1264,514,1253,478,1249,441,1249,355,1247,334,1242,316,1220,284,1188,260,1149,241,1105,228,1061,218,983,210"/>
+<area shape="rect" href="../../d6/dc8/ft-status_8h.html" title=" " alt="" coords="1048,266,1162,294"/>
+<area shape="poly" title=" " alt="" coords="971,216,1063,257,1061,262,968,221"/>
+<area shape="rect" href="../../d9/d5e/omt_8h.html" title=" " alt="" coords="437,510,534,538"/>
+<area shape="poly" title=" " alt="" coords="925,221,827,290,760,333,689,372,653,386,623,393,595,401,563,420,544,437,527,458,501,498,496,495,522,455,540,434,560,416,593,396,622,388,652,381,687,367,757,328,824,285,922,217"/>
+<area shape="rect" href="../../df/d2a/range__buffer_8h.html" title=" " alt="" coords="1098,510,1214,538"/>
+<area shape="poly" title=" " alt="" coords="984,208,1094,228,1145,244,1164,253,1177,265,1193,293,1202,323,1204,356,1202,388,1188,449,1171,497,1166,495,1183,448,1197,388,1199,356,1196,324,1188,295,1173,268,1161,258,1143,249,1093,233,983,213"/>
+<area shape="poly" title=" " alt="" coords="909,221,801,269,668,337,665,332,799,264,907,216"/>
+<area shape="poly" title=" " alt="" coords="897,217,594,273,593,268,896,211"/>
+<area shape="poly" title=" " alt="" coords="1718,616,1748,624,1777,636,1804,654,1826,677,1834,701,1826,725,1791,774,1747,815,1696,849,1642,876,1586,897,1532,913,1440,931,1439,926,1530,908,1584,892,1639,871,1694,844,1744,811,1787,771,1822,722,1829,701,1822,680,1801,658,1775,641,1746,629,1717,621"/>
+<area shape="poly" title=" " alt="" coords="1627,633,1591,677,1544,725,1471,785,1395,839,1268,917,1266,912,1392,834,1468,780,1541,721,1587,674,1623,630"/>
+<area shape="poly" title=" " alt="" coords="1597,634,1494,683,1492,678,1595,629"/>
+<area shape="poly" title=" " alt="" coords="1615,633,1497,726,1428,745,1336,759,1228,770,1111,777,878,785,693,787,693,782,878,780,1111,772,1228,764,1336,754,1427,739,1495,721,1612,629"/>
+<area shape="rect" href="../../df/d95/transaction__db_8h.html" title=" " alt="" coords="1892,687,2129,715"/>
+<area shape="poly" title=" " alt="" coords="1718,626,1943,680,1941,686,1717,631"/>
+<area shape="rect" href="../../da/dc9/transaction__db__mutex_8h.html" title=" " alt="" coords="1610,679,1812,723"/>
+<area shape="poly" title=" " alt="" coords="1660,629,1687,665,1683,668,1656,633"/>
+<area shape="rect" title=" " alt="" coords="2028,923,2086,950"/>
+<area shape="poly" title=" " alt="" coords="2001,717,1977,753,1971,776,1972,798,1984,830,2001,860,2037,909,2033,912,1997,863,1980,832,1967,800,1965,775,1973,751,1997,714"/>
+<area shape="rect" title=" " alt="" coords="1981,771,2040,799"/>
+<area shape="poly" title=" " alt="" coords="2013,715,2013,756,2008,756,2008,715"/>
+<area shape="rect" title=" " alt="" coords="2336,923,2398,950"/>
+<area shape="poly" title=" " alt="" coords="2130,700,2234,704,2342,715,2391,724,2435,736,2470,751,2494,770,2505,790,2506,810,2498,831,2484,851,2446,888,2404,917,2401,912,2442,884,2480,848,2493,829,2501,810,2500,791,2490,773,2467,756,2433,741,2390,730,2341,721,2233,709,2130,705"/>
+<area shape="rect" href="../../d3/df8/include_2rocksdb_2comparator_8h.html" title=" " alt="" coords="2317,771,2480,799"/>
+<area shape="poly" title=" " alt="" coords="2074,713,2322,765,2321,770,2072,718"/>
+<area shape="rect" href="../../d5/d43/include_2rocksdb_2db_8h.html" title=" " alt="" coords="1860,847,1964,875"/>
+<area shape="poly" title=" " alt="" coords="1988,717,1955,740,1940,756,1928,773,1917,802,1914,832,1908,831,1912,801,1923,770,1936,752,1952,736,1985,713"/>
+<area shape="rect" href="../../d5/d2d/stackable__db_8h.html" title=" " alt="" coords="2065,771,2292,799"/>
+<area shape="poly" title=" " alt="" coords="2039,713,2139,762,2137,767,2036,718"/>
+<area shape="poly" title=" " alt="" coords="2370,802,2102,919,2100,914,2368,797"/>
+<area shape="poly" title=" " alt="" coords="1860,870,1330,925,1281,931,1281,926,1329,920,1859,865"/>
+<area shape="poly" title=" " alt="" coords="1860,868,659,935,659,930,1859,862"/>
+<area shape="poly" title=" " alt="" coords="1939,873,2019,913,2017,918,1937,878"/>
+<area shape="poly" title=" " alt="" coords="1965,868,2321,925,2320,930,1964,873"/>
+<area shape="poly" title=" " alt="" coords="2170,801,2080,912,2076,909,2166,797"/>
+<area shape="poly" title=" " alt="" coords="2132,802,1975,845,1973,840,2130,797"/>
+<area shape="poly" title=" " alt="" coords="1315,632,1252,875,1242,908,1237,907,1247,874,1310,630"/>
+<area shape="poly" title=" " alt="" coords="1351,629,1422,676,1419,681,1348,633"/>
+<area shape="poly" title=" " alt="" coords="1302,633,1265,680,1209,764,1166,835,1161,832,1204,761,1260,677,1297,629"/>
+<area shape="poly" title=" " alt="" coords="1163,292,1350,336,1349,341,1161,297"/>
+<area shape="poly" title=" " alt="" coords="1107,295,1101,364,1089,465,1068,565,1054,605,1038,632,1021,649,1004,659,969,667,932,670,889,681,885,683,883,678,887,676,931,665,968,662,1002,654,1017,644,1034,629,1050,603,1063,564,1083,464,1096,363,1102,294"/>
+<area shape="rect" href="../../dd/db4/toku__race__tools_8h.html" title=" " alt="" coords="624,586,757,631"/>
+<area shape="poly" title=" " alt="" coords="1093,296,949,429,822,540,752,581,749,577,818,536,945,425,1090,292"/>
+<area shape="poly" title=" " alt="" coords="501,536,549,579,613,628,827,752,1042,872,1114,899,1181,920,1180,925,1113,904,1040,877,824,757,611,633,546,583,497,540"/>
+<area shape="poly" title=" " alt="" coords="494,538,600,756,595,758,489,540"/>
+<area shape="poly" title=" " alt="" coords="437,529,358,533,266,543,184,560,154,573,134,588,128,598,126,607,134,629,147,645,162,659,199,679,196,684,159,663,143,649,130,632,121,608,123,596,130,584,151,568,183,555,265,538,357,528,437,524"/>
+<area shape="poly" title=" " alt="" coords="519,536,623,577,621,582,517,541"/>
+<area shape="rect" href="../../dc/d2c/growable__array_8h.html" title=" " alt="" coords="144,594,277,622"/>
+<area shape="poly" title=" " alt="" coords="442,541,270,592,268,587,440,536"/>
+<area shape="rect" href="../../d3/d6f/omt__impl_8h.html" title=" " alt="" coords="352,594,448,622"/>
+<area shape="poly" title=" " alt="" coords="473,541,426,586,422,582,470,537"/>
+<area shape="poly" title=" " alt="" coords="220,621,250,673,246,675,216,624"/>
+<area shape="poly" title=" " alt="" coords="404,622,407,672,402,672,398,623"/>
+<area shape="poly" title=" " alt="" coords="449,617,800,688,799,693,448,622"/>
+<area shape="poly" title=" " alt="" coords="382,625,297,680,294,676,379,620"/>
+<area shape="poly" title=" " alt="" coords="1161,538,1228,907,1223,908,1156,539"/>
+<area shape="poly" title=" " alt="" coords="1155,539,1141,581,1120,632,1082,694,1039,751,961,837,957,834,1035,748,1078,691,1115,629,1136,579,1150,538"/>
+<area shape="poly" title=" " alt="" coords="1129,541,1022,590,1020,585,1126,536"/>
+<area shape="rect" href="../../dc/dca/memarena_8h.html" title=" " alt="" coords="900,687,1041,715"/>
+<area shape="poly" title=" " alt="" coords="1151,540,1124,583,1082,633,1047,660,1012,682,1009,677,1044,656,1078,629,1119,580,1147,537"/>
+<area shape="poly" title=" " alt="" coords="925,718,888,726,724,750,561,767,313,784,313,779,561,762,723,745,888,721,924,713"/>
+<area shape="poly" title=" " alt="" coords="590,373,552,391,519,419,508,437,500,457,491,495,485,494,495,455,503,435,515,416,549,387,587,368"/>
+<area shape="rect" href="../../d3/d15/txn__subst_8h.html" title=" " alt="" coords="573,418,699,462"/>
+<area shape="poly" title=" " alt="" coords="633,370,636,402,630,402,628,370"/>
+<area shape="poly" title=" " alt="" coords="597,465,524,505,521,500,595,461"/>
+<area shape="rect" title=" " alt="" coords="609,510,650,538"/>
+<area shape="poly" title=" " alt="" coords="637,463,634,495,629,495,632,463"/>
+<area shape="poly" title=" " alt="" coords="522,295,489,314,475,328,464,343,456,362,452,382,454,424,463,463,475,495,470,497,458,464,449,424,447,382,451,361,459,341,471,324,486,310,519,290"/>
+<area shape="poly" title=" " alt="" coords="565,293,606,329,602,333,562,297"/>
+<area shape="rect" title=" " alt="" coords="473,342,559,370"/>
+<area shape="poly" title=" " alt="" coords="546,296,531,329,526,327,541,293"/>
+</map>
+</div>
+</div>
+<p><a href="../../df/d7f/manager_8cc_source.html">이 파일의 소스 코드 페이지로 가기</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+클래스</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d4a/structtoku_1_1escalate__args.html">toku::escalate_args</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+네임스페이스</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/de6/namespacetoku.html">toku</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../dir_3eff4fc1b9bdc927695daa6eaf220609.html">range</a></li><li class="navelem"><a class="el" href="../../dir_1fdd669514be316dc6b9821c4ef31e1a.html">range_tree</a></li><li class="navelem"><a class="el" href="../../dir_103d03b151a8543e8b0cd5714558840a.html">lib</a></li><li class="navelem"><a class="el" href="../../dir_079592faaa8b29223a1a2df5e326e84a.html">locktree</a></li><li class="navelem"><a class="el" href="../../df/d7f/manager_8cc.html">manager.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

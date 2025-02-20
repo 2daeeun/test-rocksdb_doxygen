@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: table/block_based/block_based_table_reader.cc 파일 참조</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('db/df2/block__based__table__reader_8cc.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">네임스페이스</a> &#124;
+<a href="#define-members">매크로</a> &#124;
+<a href="#func-members">함수</a>  </div>
+  <div class="headertitle"><div class="title">block_based_table_reader.cc 파일 참조</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="../../df/da7/block__based__table__reader_8h_source.html">table/block_based/block_based_table_reader.h</a>&quot;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;array&gt;</code><br />
+<code>#include &lt;atomic&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;limits&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;unordered_set&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="../../d3/db7/block__cache_8h_source.html">block_cache.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../de/d0c/cache__entry__roles_8h_source.html">cache/cache_entry_roles.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d0/d42/cache__key_8h_source.html">cache/cache_key.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d5/d36/compaction__picker_8h_source.html">db/compaction/compaction_picker.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d1/d73/dbformat_8h_source.html">db/dbformat.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d4/d4b/pinned__iterators__manager_8h_source.html">db/pinned_iterators_manager.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d1/d2d/file__prefetch__buffer_8h_source.html">file/file_prefetch_buffer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d0/dae/file__util_8h_source.html">file/file_util.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../db/d4e/random__access__file__reader_8h_source.html">file/random_access_file_reader.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d5/d77/logging_8h_source.html">logging/logging.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d7/d93/perf__context__imp_8h_source.html">monitoring/perf_context_imp.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d3/deb/parsed__full__filter__block_8h_source.html">parsed_full_filter_block.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../db/dcd/lang_8h_source.html">port/lang.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d3/d26/cache_8h_source.html">rocksdb/cache.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d3/df8/include_2rocksdb_2comparator_8h_source.html">rocksdb/comparator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d3/ddb/convenience_8h_source.html">rocksdb/convenience.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d5/d81/env_8h_source.html">rocksdb/env.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d6/d8d/file__system_8h_source.html">rocksdb/file_system.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d4/d4a/filter__policy_8h_source.html">rocksdb/filter_policy.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../df/d22/iterator_8h_source.html">rocksdb/iterator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d7/d5b/options_8h_source.html">rocksdb/options.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d4/dc8/snapshot_8h_source.html">rocksdb/snapshot.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d7/dc5/statistics_8h_source.html">rocksdb/statistics.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../df/d2f/system__clock_8h_source.html">rocksdb/system_clock.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dd/d98/table_8h_source.html">rocksdb/table.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d5/d15/table__properties_8h_source.html">rocksdb/table_properties.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d5/d42/trace__record_8h_source.html">rocksdb/trace_record.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d7/d83/binary__search__index__reader_8h_source.html">table/block_based/binary_search_index_reader.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../de/d40/block_8h_source.html">table/block_based/block.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d9/d96/block__based__table__factory_8h_source.html">table/block_based/block_based_table_factory.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d7/dfe/block__based__table__iterator_8h_source.html">table/block_based/block_based_table_iterator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d2/d82/block__prefix__index_8h_source.html">table/block_based/block_prefix_index.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d6/d45/block__type_8h_source.html">table/block_based/block_type.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d9/d73/filter__block_8h_source.html">table/block_based/filter_block.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d2/ded/filter__policy__internal_8h_source.html">table/block_based/filter_policy_internal.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../de/d1f/full__filter__block_8h_source.html">table/block_based/full_filter_block.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d8/d64/hash__index__reader_8h_source.html">table/block_based/hash_index_reader.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d1/d35/partitioned__filter__block_8h_source.html">table/block_based/partitioned_filter_block.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dc/d59/partitioned__index__reader_8h_source.html">table/block_based/partitioned_index_reader.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../de/dbd/block__fetcher_8h_source.html">table/block_fetcher.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d8/d01/table_2format_8h_source.html">table/format.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d0/d09/get__context_8h_source.html">table/get_context.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d7/d33/internal__iterator_8h_source.html">table/internal_iterator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dc/d44/meta__blocks_8h_source.html">table/meta_blocks.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d0/dc9/multiget__context_8h_source.html">table/multiget_context.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../df/d18/persistent__cache__helper_8h_source.html">table/persistent_cache_helper.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../da/d41/persistent__cache__options_8h_source.html">table/persistent_cache_options.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d8/d0a/sst__file__writer__collectors_8h_source.html">table/sst_file_writer_collectors.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dc/df7/two__level__iterator_8h_source.html">table/two_level_iterator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d4/d8e/sync__point_8h_source.html">test_util/sync_point.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dd/dc0/coding_8h_source.html">util/coding.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d6/d96/crc32c_8h_source.html">util/crc32c.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dd/d93/stop__watch_8h_source.html">util/stop_watch.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dd/d70/string__util_8h_source.html">util/string_util.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d1/dbd/block__based__table__reader__sync__and__async_8h_source.html">table/block_based/block_based_table_reader_sync_and_async.h</a>&quot;</code><br />
+</div>
+<p><a href="../../db/df2/block__based__table__reader_8cc_source.html">이 파일의 소스 코드 페이지로 가기</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+네임스페이스</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+매크로</h2></td></tr>
+<tr class="memitem:af88bc7b5defa114b3715abc18baeae4b" id="r_af88bc7b5defa114b3715abc18baeae4b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af88bc7b5defa114b3715abc18baeae4b">INSTANTIATE_BLOCKLIKE_TEMPLATES</a>(T)</td></tr>
+<tr class="separator:af88bc7b5defa114b3715abc18baeae4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad592976435bb0ba8aa8ae47873105f2" id="r_aad592976435bb0ba8aa8ae47873105f2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad592976435bb0ba8aa8ae47873105f2">WITHOUT_COROUTINES</a></td></tr>
+<tr class="separator:aad592976435bb0ba8aa8ae47873105f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afadfc441f2fbc9ea4311b2c2906ac2b8" id="r_afadfc441f2fbc9ea4311b2c2906ac2b8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afadfc441f2fbc9ea4311b2c2906ac2b8">WITH_COROUTINES</a></td></tr>
+<tr class="separator:afadfc441f2fbc9ea4311b2c2906ac2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+함수</h2></td></tr>
+<tr class="memitem:aeef36ab98f15358f44dc08491bffbca9" id="r_aeef36ab98f15358f44dc08491bffbca9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aeef36ab98f15358f44dc08491bffbca9">ROCKSDB_NAMESPACE::INSTANTIATE_BLOCKLIKE_TEMPLATES</a> (<a class="el" href="../../d0/d4b/classROCKSDB__NAMESPACE_1_1ParsedFullFilterBlock.html">ParsedFullFilterBlock</a>)</td></tr>
+<tr class="separator:aeef36ab98f15358f44dc08491bffbca9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a859f03a15b6f81332edf87656dc8c003" id="r_a859f03a15b6f81332edf87656dc8c003"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a859f03a15b6f81332edf87656dc8c003">ROCKSDB_NAMESPACE::INSTANTIATE_BLOCKLIKE_TEMPLATES</a> (<a class="el" href="../../db/daa/structROCKSDB__NAMESPACE_1_1UncompressionDict.html">UncompressionDict</a>)</td></tr>
+<tr class="separator:a859f03a15b6f81332edf87656dc8c003"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f46e66f8a8a8795b2239c31421f085d" id="r_a4f46e66f8a8a8795b2239c31421f085d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a4f46e66f8a8a8795b2239c31421f085d">ROCKSDB_NAMESPACE::INSTANTIATE_BLOCKLIKE_TEMPLATES</a> (<a class="el" href="../../dd/d1c/classROCKSDB__NAMESPACE_1_1Block__kData.html">Block_kData</a>)</td></tr>
+<tr class="separator:a4f46e66f8a8a8795b2239c31421f085d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af721323efcbb2c41017a04d72809f6b8" id="r_af721323efcbb2c41017a04d72809f6b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af721323efcbb2c41017a04d72809f6b8">ROCKSDB_NAMESPACE::INSTANTIATE_BLOCKLIKE_TEMPLATES</a> (<a class="el" href="../../d5/d46/classROCKSDB__NAMESPACE_1_1Block__kIndex.html">Block_kIndex</a>)</td></tr>
+<tr class="separator:af721323efcbb2c41017a04d72809f6b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d803bde98d76982a69dca2c4771bb62" id="r_a5d803bde98d76982a69dca2c4771bb62"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5d803bde98d76982a69dca2c4771bb62">ROCKSDB_NAMESPACE::INSTANTIATE_BLOCKLIKE_TEMPLATES</a> (<a class="el" href="../../db/d5d/classROCKSDB__NAMESPACE_1_1Block__kFilterPartitionIndex.html">Block_kFilterPartitionIndex</a>)</td></tr>
+<tr class="separator:a5d803bde98d76982a69dca2c4771bb62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae911cf570dc9338ab836404d4c559fb2" id="r_ae911cf570dc9338ab836404d4c559fb2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ae911cf570dc9338ab836404d4c559fb2">ROCKSDB_NAMESPACE::INSTANTIATE_BLOCKLIKE_TEMPLATES</a> (<a class="el" href="../../d7/d8c/classROCKSDB__NAMESPACE_1_1Block__kRangeDeletion.html">Block_kRangeDeletion</a>)</td></tr>
+<tr class="separator:ae911cf570dc9338ab836404d4c559fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c2ba468d9d963829d976513e2ee9762" id="r_a5c2ba468d9d963829d976513e2ee9762"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a5c2ba468d9d963829d976513e2ee9762">ROCKSDB_NAMESPACE::INSTANTIATE_BLOCKLIKE_TEMPLATES</a> (<a class="el" href="../../da/d5e/classROCKSDB__NAMESPACE_1_1Block__kMetaIndex.html">Block_kMetaIndex</a>)</td></tr>
+<tr class="separator:a5c2ba468d9d963829d976513e2ee9762"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">매크로 문서화</h2>
+<a id="af88bc7b5defa114b3715abc18baeae4b" name="af88bc7b5defa114b3715abc18baeae4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af88bc7b5defa114b3715abc18baeae4b">&#9670;&#160;</a></span>INSTANTIATE_BLOCKLIKE_TEMPLATES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define INSTANTIATE_BLOCKLIKE_TEMPLATES</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>T</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>값:</b><div class="fragment"><div class="line">  <span class="keyword">template</span> Status BlockBasedTable::RetrieveBlock&lt;T&gt;(                           \</div>
+<div class="line">      FilePrefetchBuffer * prefetch_buffer, <span class="keyword">const</span> ReadOptions&amp; ro,             \</div>
+<div class="line">      <span class="keyword">const</span> BlockHandle&amp; handle, <span class="keyword">const</span> UncompressionDict&amp; uncompression_dict,  \</div>
+<div class="line">      CachableEntry&lt;T&gt;* out_parsed_block, GetContext* get_context,             \</div>
+<div class="line">      BlockCacheLookupContext* lookup_context, <span class="keywordtype">bool</span> for_compaction,            \</div>
+<div class="line">      <span class="keywordtype">bool</span> use_cache, <span class="keywordtype">bool</span> async_read, <span class="keywordtype">bool</span> use_block_cache_for_lookup) <span class="keyword">const</span>; \</div>
+<div class="line">  <span class="keyword">template</span> Status BlockBasedTable::MaybeReadBlockAndLoadToCache&lt;T&gt;(            \</div>
+<div class="line">      FilePrefetchBuffer * prefetch_buffer, <span class="keyword">const</span> ReadOptions&amp; ro,             \</div>
+<div class="line">      <span class="keyword">const</span> BlockHandle&amp; handle, <span class="keyword">const</span> UncompressionDict&amp; uncompression_dict,  \</div>
+<div class="line">      <span class="keywordtype">bool</span> for_compaction, CachableEntry&lt;T&gt;* block_entry,                      \</div>
+<div class="line">      GetContext* get_context, BlockCacheLookupContext* lookup_context,        \</div>
+<div class="line">      BlockContents* contents, <span class="keywordtype">bool</span> async_read,                                \</div>
+<div class="line">      <span class="keywordtype">bool</span> use_block_cache_for_lookup) <span class="keyword">const</span>;                                  \</div>
+<div class="line">  <span class="keyword">template</span> Status BlockBasedTable::LookupAndPinBlocksInCache&lt;T&gt;(               \</div>
+<div class="line">      <span class="keyword">const</span> ReadOptions&amp; ro, <span class="keyword">const</span> BlockHandle&amp; handle,                        \</div>
+<div class="line">      CachableEntry&lt;T&gt;* out_parsed_block) <span class="keyword">const</span>;</div>
+</div><!-- fragment -->
+<p class="definition"><a class="el" href="../../db/df2/block__based__table__reader_8cc_source.html">block_based_table_reader.cc</a> 파일의 <a class="el" href="../../db/df2/block__based__table__reader_8cc_source.html#l00091">91</a> 번째 라인에서 정의되었습니다.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span><span class="preprocessor">#define INSTANTIATE_BLOCKLIKE_TEMPLATES(T)                                     \</span></div>
+<div class="line"><span class="lineno">   92</span><span class="preprocessor">  template Status BlockBasedTable::RetrieveBlock&lt;T&gt;(                           \</span></div>
+<div class="line"><span class="lineno">   93</span><span class="preprocessor">      FilePrefetchBuffer * prefetch_buffer, const ReadOptions&amp; ro,             \</span></div>
+<div class="line"><span class="lineno">   94</span><span class="preprocessor">      const BlockHandle&amp; handle, const UncompressionDict&amp; uncompression_dict,  \</span></div>
+<div class="line"><span class="lineno">   95</span><span class="preprocessor">      CachableEntry&lt;T&gt;* out_parsed_block, GetContext* get_context,             \</span></div>
+<div class="line"><span class="lineno">   96</span><span class="preprocessor">      BlockCacheLookupContext* lookup_context, bool for_compaction,            \</span></div>
+<div class="line"><span class="lineno">   97</span><span class="preprocessor">      bool use_cache, bool async_read, bool use_block_cache_for_lookup) const; \</span></div>
+<div class="line"><span class="lineno">   98</span><span class="preprocessor">  template Status BlockBasedTable::MaybeReadBlockAndLoadToCache&lt;T&gt;(            \</span></div>
+<div class="line"><span class="lineno">   99</span><span class="preprocessor">      FilePrefetchBuffer * prefetch_buffer, const ReadOptions&amp; ro,             \</span></div>
+<div class="line"><span class="lineno">  100</span><span class="preprocessor">      const BlockHandle&amp; handle, const UncompressionDict&amp; uncompression_dict,  \</span></div>
+<div class="line"><span class="lineno">  101</span><span class="preprocessor">      bool for_compaction, CachableEntry&lt;T&gt;* block_entry,                      \</span></div>
+<div class="line"><span class="lineno">  102</span><span class="preprocessor">      GetContext* get_context, BlockCacheLookupContext* lookup_context,        \</span></div>
+<div class="line"><span class="lineno">  103</span><span class="preprocessor">      BlockContents* contents, bool async_read,                                \</span></div>
+<div class="line"><span class="lineno">  104</span><span class="preprocessor">      bool use_block_cache_for_lookup) const;                                  \</span></div>
+<div class="line"><span class="lineno">  105</span><span class="preprocessor">  template Status BlockBasedTable::LookupAndPinBlocksInCache&lt;T&gt;(               \</span></div>
+<div class="line"><span class="lineno">  106</span><span class="preprocessor">      const ReadOptions&amp; ro, const BlockHandle&amp; handle,                        \</span></div>
+<div class="line"><span class="lineno">  107</span><span class="preprocessor">      CachableEntry&lt;T&gt;* out_parsed_block) const;</span></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="afadfc441f2fbc9ea4311b2c2906ac2b8" name="afadfc441f2fbc9ea4311b2c2906ac2b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afadfc441f2fbc9ea4311b2c2906ac2b8">&#9670;&#160;</a></span>WITH_COROUTINES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WITH_COROUTINES</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition"><a class="el" href="../../db/df2/block__based__table__reader_8cc_source.html">block_based_table_reader.cc</a> 파일의 <a class="el" href="../../db/df2/block__based__table__reader_8cc_source.html#l00127">127</a> 번째 라인에서 정의되었습니다.</p>
+
+</div>
+</div>
+<a id="aad592976435bb0ba8aa8ae47873105f2" name="aad592976435bb0ba8aa8ae47873105f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad592976435bb0ba8aa8ae47873105f2">&#9670;&#160;</a></span>WITHOUT_COROUTINES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WITHOUT_COROUTINES</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition"><a class="el" href="../../db/df2/block__based__table__reader_8cc_source.html">block_based_table_reader.cc</a> 파일의 <a class="el" href="../../db/df2/block__based__table__reader_8cc_source.html#l00124">124</a> 번째 라인에서 정의되었습니다.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_7cea70ad8000b4ba25606f1df9c7574a.html">table</a></li><li class="navelem"><a class="el" href="../../dir_baa4495771c56dece086ba46f2450cec.html">block_based</a></li><li class="navelem"><a class="el" href="../../db/df2/block__based__table__reader_8cc.html">block_based_table_reader.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

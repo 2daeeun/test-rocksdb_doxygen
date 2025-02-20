@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/trace/file_trace_reader_writer.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d8/dc0/file__trace__reader__writer_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">file_trace_reader_writer.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d8/dc0/file__trace__reader__writer_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/dcf/file__trace__reader__writer_8h.html">utilities/trace/file_trace_reader_writer.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/df0/composite__env__wrapper_8h.html">env/composite_env_wrapper.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/d4e/random__access__file__reader_8h.html">file/random_access_file_reader.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d97/writable__file__writer_8h.html">file/writable_file_writer.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d93/trace__replay_8h.html">trace_replay/trace_replay.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/dc0/coding_8h.html">util/coding.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> FileTraceReader::kBufferSize = 1024;  <span class="comment">// 1KB</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a82751e7f1851416803da833fda4f648f">   18</a></span><a class="code hl_function" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a82751e7f1851416803da833fda4f648f">FileTraceReader::FileTraceReader</a>(</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    std::unique_ptr&lt;RandomAccessFileReader&gt;&amp;&amp; reader)</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    : <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#ac167ee08df332b8b80a6a5ac2bf3de3c">file_reader_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(reader)),</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#aa48d371f981803b0524122815a123618">offset_</a>(0),</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a6d20162480f038a2b62475cc5cc39ea6">buffer_</a>(new char[<a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#af11993d04f83dfc8db8946cb68178e37">kBufferSize</a>]) {}</div>
+</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#ae2000ee58b747467367a1a6190de5762">   24</a></span><a class="code hl_function" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#ae2000ee58b747467367a1a6190de5762">FileTraceReader::~FileTraceReader</a>() {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_function" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a55cc59b295811181ad947fef68b001e1">Close</a>().PermitUncheckedError();</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keyword">delete</span>[] <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a6d20162480f038a2b62475cc5cc39ea6">buffer_</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}</div>
+</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a55cc59b295811181ad947fef68b001e1">   29</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a55cc59b295811181ad947fef68b001e1">FileTraceReader::Close</a>() {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#ac167ee08df332b8b80a6a5ac2bf3de3c">file_reader_</a>.reset();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
+</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a6d1d3739d1d75dfe91112d96661a8282">   34</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a6d1d3739d1d75dfe91112d96661a8282">FileTraceReader::Reset</a>() {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#ac167ee08df332b8b80a6a5ac2bf3de3c">file_reader_</a> == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#ad2630fe63daa0a4ea6c63502e36384cb">Status::IOError</a>(<span class="stringliteral">&quot;TraceReader is closed.&quot;</span>);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#aa48d371f981803b0524122815a123618">offset_</a> = 0;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
+</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a5719c888e34260df0236d228dc6e2806">   42</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a5719c888e34260df0236d228dc6e2806">FileTraceReader::Read</a>(std::string* data) {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  assert(<a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#ac167ee08df332b8b80a6a5ac2bf3de3c">file_reader_</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#ac167ee08df332b8b80a6a5ac2bf3de3c">file_reader_</a>-&gt;Read(<a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>(), <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#aa48d371f981803b0524122815a123618">offset_</a>, <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a324fa6bbad8c637e389933ce226f71f9">kTraceMetadataSize</a>,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                                &amp;<a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a1073c8c074e2aa49f745f3bfa9f73ba1">result_</a>, <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a6d20162480f038a2b62475cc5cc39ea6">buffer_</a>, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a1073c8c074e2aa49f745f3bfa9f73ba1">result_</a>.size() == 0) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="comment">// No more data to read</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="comment">// Todo: Come up with a better way to indicate end of data. May be this</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// could be avoided once footer is introduced.</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#aa8a7a10751c3ffb7887b71c4e2332856">Status::Incomplete</a>();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a1073c8c074e2aa49f745f3bfa9f73ba1">result_</a>.size() &lt; <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a324fa6bbad8c637e389933ce226f71f9">kTraceMetadataSize</a>) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">Status::Corruption</a>(<span class="stringliteral">&quot;Corrupted trace file.&quot;</span>);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  *data = <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a1073c8c074e2aa49f745f3bfa9f73ba1">result_</a>.ToString();</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#aa48d371f981803b0524122815a123618">offset_</a> += <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a324fa6bbad8c637e389933ce226f71f9">kTraceMetadataSize</a>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  uint32_t payload_len =</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0afa96709ce3127ae462031b1009f797">DecodeFixed32</a>(&amp;<a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a6d20162480f038a2b62475cc5cc39ea6">buffer_</a>[<a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07d205483e120be31d5b0d3ba629251d">kTraceTimestampSize</a> + <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#add613ebd598ebcb8d6f1a9d3a4093e21">kTraceTypeSize</a>]);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">// Read Payload</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bytes_to_read = payload_len;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> to_read =</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      bytes_to_read &gt; <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#af11993d04f83dfc8db8946cb68178e37">kBufferSize</a> ? <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#af11993d04f83dfc8db8946cb68178e37">kBufferSize</a> : bytes_to_read;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordflow">while</span> (to_read &gt; 0) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    s = <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#ac167ee08df332b8b80a6a5ac2bf3de3c">file_reader_</a>-&gt;Read(<a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>(), <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#aa48d371f981803b0524122815a123618">offset_</a>, to_read, &amp;<a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a1073c8c074e2aa49f745f3bfa9f73ba1">result_</a>, <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a6d20162480f038a2b62475cc5cc39ea6">buffer_</a>,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                           <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a1073c8c074e2aa49f745f3bfa9f73ba1">result_</a>.size() &lt; to_read) {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">Status::Corruption</a>(<span class="stringliteral">&quot;Corrupted trace file.&quot;</span>);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    data-&gt;append(<a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a1073c8c074e2aa49f745f3bfa9f73ba1">result_</a>.data(), <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a1073c8c074e2aa49f745f3bfa9f73ba1">result_</a>.size());</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#aa48d371f981803b0524122815a123618">offset_</a> += to_read;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    bytes_to_read -= to_read;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    to_read = bytes_to_read &gt; <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#af11993d04f83dfc8db8946cb68178e37">kBufferSize</a> ? <a class="code hl_variable" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#af11993d04f83dfc8db8946cb68178e37">kBufferSize</a> : bytes_to_read;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>}</div>
+</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="foldopen" id="foldopen00087" data-start="{" data-end="}">
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#aba37f70816f9f17532f6ccec3c7f5b08">   87</a></span><a class="code hl_function" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#aba37f70816f9f17532f6ccec3c7f5b08">FileTraceWriter::FileTraceWriter</a>(</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    std::unique_ptr&lt;WritableFileWriter&gt;&amp;&amp; file_writer)</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    : <a class="code hl_variable" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#a7f5e63d825bbd3e0cfbdd23fe8163b03">file_writer_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(file_writer)) {}</div>
+</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#ade4b69956d4262c056e841102735a882">   91</a></span><a class="code hl_function" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#ade4b69956d4262c056e841102735a882">FileTraceWriter::~FileTraceWriter</a>() { <a class="code hl_function" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#aa1f0346e8340ae36322b9707f34cb29c">Close</a>().PermitUncheckedError(); }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#aa1f0346e8340ae36322b9707f34cb29c">   93</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#aa1f0346e8340ae36322b9707f34cb29c">FileTraceWriter::Close</a>() {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <a class="code hl_variable" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#a7f5e63d825bbd3e0cfbdd23fe8163b03">file_writer_</a>.reset();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
+</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#a7971dc564de6debddd8dcbc0a6893694">   98</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#a7971dc564de6debddd8dcbc0a6893694">FileTraceWriter::Write</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; data) {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#a7f5e63d825bbd3e0cfbdd23fe8163b03">file_writer_</a>-&gt;Append(<a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>(), data);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}</div>
+</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#ab9dceed712c871bd00f836f174bc55eb">  102</a></span>uint64_t <a class="code hl_function" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#ab9dceed712c871bd00f836f174bc55eb">FileTraceWriter::GetFileSize</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#a7f5e63d825bbd3e0cfbdd23fe8163b03">file_writer_</a>-&gt;GetFileSize(); }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6af31c41919582abecec379408900397">  104</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6af31c41919582abecec379408900397">NewFileTraceReader</a>(<a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env, <span class="keyword">const</span> <a class="code hl_struct" href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">EnvOptions</a>&amp; env_options,</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                          <span class="keyword">const</span> std::string&amp; trace_filename,</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                          std::unique_ptr&lt;TraceReader&gt;* trace_reader) {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  std::unique_ptr&lt;RandomAccessFileReader&gt; file_reader;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../db/d39/classROCKSDB__NAMESPACE_1_1RandomAccessFileReader.html#a53e5958701cb07971b2126866714edf3">RandomAccessFileReader::Create</a>(</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      env-&gt;<a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a1be4ed1309b173fc7b7cad85e5ed1086">GetFileSystem</a>(), trace_filename, <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>(env_options),</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      &amp;file_reader, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  }</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  trace_reader-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html">FileTraceReader</a>(std::move(file_reader)));</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>}</div>
+</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2bf96f69af5d28e04fe82eaf2442d994">  118</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2bf96f69af5d28e04fe82eaf2442d994">NewFileTraceWriter</a>(<a class="code hl_class" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">Env</a>* env, <span class="keyword">const</span> <a class="code hl_struct" href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">EnvOptions</a>&amp; env_options,</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                          <span class="keyword">const</span> std::string&amp; trace_filename,</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                          std::unique_ptr&lt;TraceWriter&gt;* trace_writer) {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  std::unique_ptr&lt;WritableFileWriter&gt; file_writer;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html#ae12ff6392cd07af039d067add067dfb8">WritableFileWriter::Create</a>(env-&gt;<a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a1be4ed1309b173fc7b7cad85e5ed1086">GetFileSystem</a>(), trace_filename,</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                                        <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a>(env_options), &amp;file_writer,</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                                        <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  trace_writer-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html">FileTraceWriter</a>(std::move(file_writer)));</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>}</div>
+</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html">ROCKSDB_NAMESPACE::Env</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00154">env.h:154</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a1be4ed1309b173fc7b7cad85e5ed1086"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a1be4ed1309b173fc7b7cad85e5ed1086">ROCKSDB_NAMESPACE::Env::GetFileSystem</a></div><div class="ttdeci">const std::shared_ptr&lt; FileSystem &gt; &amp; GetFileSystem() const</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d7d/env_8cc_source.html#l01173">env.cc:1173</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html">ROCKSDB_NAMESPACE::FileTraceReader</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/dcf/file__trace__reader__writer_8h_source.html#l00016">file_trace_reader_writer.h:16</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html_a1073c8c074e2aa49f745f3bfa9f73ba1"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a1073c8c074e2aa49f745f3bfa9f73ba1">ROCKSDB_NAMESPACE::FileTraceReader::result_</a></div><div class="ttdeci">Slice result_</div><div class="ttdef"><b>Definition</b> <a href="../../d6/dcf/file__trace__reader__writer_8h_source.html#l00027">file_trace_reader_writer.h:27</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html_a55cc59b295811181ad947fef68b001e1"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a55cc59b295811181ad947fef68b001e1">ROCKSDB_NAMESPACE::FileTraceReader::Close</a></div><div class="ttdeci">Status Close() override</div><div class="ttdef"><b>Definition</b> <a href="#l00029">file_trace_reader_writer.cc:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html_a5719c888e34260df0236d228dc6e2806"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a5719c888e34260df0236d228dc6e2806">ROCKSDB_NAMESPACE::FileTraceReader::Read</a></div><div class="ttdeci">Status Read(std::string *data) override</div><div class="ttdef"><b>Definition</b> <a href="#l00042">file_trace_reader_writer.cc:42</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html_a6d1d3739d1d75dfe91112d96661a8282"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a6d1d3739d1d75dfe91112d96661a8282">ROCKSDB_NAMESPACE::FileTraceReader::Reset</a></div><div class="ttdeci">Status Reset() override</div><div class="ttdef"><b>Definition</b> <a href="#l00034">file_trace_reader_writer.cc:34</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html_a6d20162480f038a2b62475cc5cc39ea6"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a6d20162480f038a2b62475cc5cc39ea6">ROCKSDB_NAMESPACE::FileTraceReader::buffer_</a></div><div class="ttdeci">char *const buffer_</div><div class="ttdef"><b>Definition</b> <a href="../../d6/dcf/file__trace__reader__writer_8h_source.html#l00029">file_trace_reader_writer.h:29</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html_a82751e7f1851416803da833fda4f648f"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#a82751e7f1851416803da833fda4f648f">ROCKSDB_NAMESPACE::FileTraceReader::FileTraceReader</a></div><div class="ttdeci">FileTraceReader(std::unique_ptr&lt; RandomAccessFileReader &gt; &amp;&amp;reader)</div><div class="ttdef"><b>Definition</b> <a href="#l00018">file_trace_reader_writer.cc:18</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html_aa48d371f981803b0524122815a123618"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#aa48d371f981803b0524122815a123618">ROCKSDB_NAMESPACE::FileTraceReader::offset_</a></div><div class="ttdeci">size_t offset_</div><div class="ttdef"><b>Definition</b> <a href="../../d6/dcf/file__trace__reader__writer_8h_source.html#l00028">file_trace_reader_writer.h:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html_ac167ee08df332b8b80a6a5ac2bf3de3c"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#ac167ee08df332b8b80a6a5ac2bf3de3c">ROCKSDB_NAMESPACE::FileTraceReader::file_reader_</a></div><div class="ttdeci">std::unique_ptr&lt; RandomAccessFileReader &gt; file_reader_</div><div class="ttdef"><b>Definition</b> <a href="../../d6/dcf/file__trace__reader__writer_8h_source.html#l00026">file_trace_reader_writer.h:26</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html_ae2000ee58b747467367a1a6190de5762"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#ae2000ee58b747467367a1a6190de5762">ROCKSDB_NAMESPACE::FileTraceReader::~FileTraceReader</a></div><div class="ttdeci">~FileTraceReader()</div><div class="ttdef"><b>Definition</b> <a href="#l00024">file_trace_reader_writer.cc:24</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceReader_html_af11993d04f83dfc8db8946cb68178e37"><div class="ttname"><a href="../../d5/da4/classROCKSDB__NAMESPACE_1_1FileTraceReader.html#af11993d04f83dfc8db8946cb68178e37">ROCKSDB_NAMESPACE::FileTraceReader::kBufferSize</a></div><div class="ttdeci">static const unsigned int kBufferSize</div><div class="ttdef"><b>Definition</b> <a href="../../d6/dcf/file__trace__reader__writer_8h_source.html#l00031">file_trace_reader_writer.h:31</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceWriter_html"><div class="ttname"><a href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html">ROCKSDB_NAMESPACE::FileTraceWriter</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/dcf/file__trace__reader__writer_8h_source.html#l00035">file_trace_reader_writer.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceWriter_html_a7971dc564de6debddd8dcbc0a6893694"><div class="ttname"><a href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#a7971dc564de6debddd8dcbc0a6893694">ROCKSDB_NAMESPACE::FileTraceWriter::Write</a></div><div class="ttdeci">Status Write(const Slice &amp;data) override</div><div class="ttdef"><b>Definition</b> <a href="#l00098">file_trace_reader_writer.cc:98</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceWriter_html_a7f5e63d825bbd3e0cfbdd23fe8163b03"><div class="ttname"><a href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#a7f5e63d825bbd3e0cfbdd23fe8163b03">ROCKSDB_NAMESPACE::FileTraceWriter::file_writer_</a></div><div class="ttdeci">std::unique_ptr&lt; WritableFileWriter &gt; file_writer_</div><div class="ttdef"><b>Definition</b> <a href="../../d6/dcf/file__trace__reader__writer_8h_source.html#l00045">file_trace_reader_writer.h:45</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceWriter_html_aa1f0346e8340ae36322b9707f34cb29c"><div class="ttname"><a href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#aa1f0346e8340ae36322b9707f34cb29c">ROCKSDB_NAMESPACE::FileTraceWriter::Close</a></div><div class="ttdeci">Status Close() override</div><div class="ttdef"><b>Definition</b> <a href="#l00093">file_trace_reader_writer.cc:93</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceWriter_html_ab9dceed712c871bd00f836f174bc55eb"><div class="ttname"><a href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#ab9dceed712c871bd00f836f174bc55eb">ROCKSDB_NAMESPACE::FileTraceWriter::GetFileSize</a></div><div class="ttdeci">uint64_t GetFileSize() override</div><div class="ttdef"><b>Definition</b> <a href="#l00102">file_trace_reader_writer.cc:102</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceWriter_html_aba37f70816f9f17532f6ccec3c7f5b08"><div class="ttname"><a href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#aba37f70816f9f17532f6ccec3c7f5b08">ROCKSDB_NAMESPACE::FileTraceWriter::FileTraceWriter</a></div><div class="ttdeci">FileTraceWriter(std::unique_ptr&lt; WritableFileWriter &gt; &amp;&amp;file_writer)</div><div class="ttdef"><b>Definition</b> <a href="#l00087">file_trace_reader_writer.cc:87</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileTraceWriter_html_ade4b69956d4262c056e841102735a882"><div class="ttname"><a href="../../da/d8f/classROCKSDB__NAMESPACE_1_1FileTraceWriter.html#ade4b69956d4262c056e841102735a882">ROCKSDB_NAMESPACE::FileTraceWriter::~FileTraceWriter</a></div><div class="ttdeci">~FileTraceWriter()</div><div class="ttdef"><b>Definition</b> <a href="#l00091">file_trace_reader_writer.cc:91</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RandomAccessFileReader_html_a53e5958701cb07971b2126866714edf3"><div class="ttname"><a href="../../db/d39/classROCKSDB__NAMESPACE_1_1RandomAccessFileReader.html#a53e5958701cb07971b2126866714edf3">ROCKSDB_NAMESPACE::RandomAccessFileReader::Create</a></div><div class="ttdeci">static IOStatus Create(const std::shared_ptr&lt; FileSystem &gt; &amp;fs, const std::string &amp;fname, const FileOptions &amp;file_opts, std::unique_ptr&lt; RandomAccessFileReader &gt; *reader, IODebugContext *dbg)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d08/random__access__file__reader_8cc_source.html#l00095">random_access_file_reader.cc:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a41dc92b90c65fe4db6b69108cf52569e"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">ROCKSDB_NAMESPACE::Status::Corruption</a></div><div class="ttdeci">static Status Corruption(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00203">status.h:203</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_aa8a7a10751c3ffb7887b71c4e2332856"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#aa8a7a10751c3ffb7887b71c4e2332856">ROCKSDB_NAMESPACE::Status::Incomplete</a></div><div class="ttdeci">static Status Incomplete(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00236">status.h:236</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_ad2630fe63daa0a4ea6c63502e36384cb"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#ad2630fe63daa0a4ea6c63502e36384cb">ROCKSDB_NAMESPACE::Status::IOError</a></div><div class="ttdeci">static Status IOError(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00224">status.h:224</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WritableFileWriter_html_ae12ff6392cd07af039d067add067dfb8"><div class="ttname"><a href="../../d8/db8/classROCKSDB__NAMESPACE_1_1WritableFileWriter.html#ae12ff6392cd07af039d067add067dfb8">ROCKSDB_NAMESPACE::WritableFileWriter::Create</a></div><div class="ttdeci">static IOStatus Create(const std::shared_ptr&lt; FileSystem &gt; &amp;fs, const std::string &amp;fname, const FileOptions &amp;file_opts, std::unique_ptr&lt; WritableFileWriter &gt; *writer, IODebugContext *dbg)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d2d/writable__file__writer_8cc_source.html#l00046">writable_file_writer.cc:46</a></div></div>
+<div class="ttc" id="acoding_8h_html"><div class="ttname"><a href="../../dd/dc0/coding_8h.html">coding.h</a></div></div>
+<div class="ttc" id="acomposite__env__wrapper_8h_html"><div class="ttname"><a href="../../d6/df0/composite__env__wrapper_8h.html">composite_env_wrapper.h</a></div></div>
+<div class="ttc" id="afile__trace__reader__writer_8h_html"><div class="ttname"><a href="../../d6/dcf/file__trace__reader__writer_8h.html">file_trace_reader_writer.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a07d205483e120be31d5b0d3ba629251d"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07d205483e120be31d5b0d3ba629251d">ROCKSDB_NAMESPACE::kTraceTimestampSize</a></div><div class="ttdeci">const unsigned int kTraceTimestampSize</div><div class="ttdef"><b>Definition</b> <a href="../../da/d93/trace__replay_8h_source.html#l00041">trace_replay.h:41</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a0afa96709ce3127ae462031b1009f797"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a0afa96709ce3127ae462031b1009f797">ROCKSDB_NAMESPACE::DecodeFixed32</a></div><div class="ttdeci">uint32_t DecodeFixed32(const char *ptr)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de8/coding__lean_8h_source.html#l00074">coding_lean.h:74</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a2bf96f69af5d28e04fe82eaf2442d994"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a2bf96f69af5d28e04fe82eaf2442d994">ROCKSDB_NAMESPACE::NewFileTraceWriter</a></div><div class="ttdeci">Status NewFileTraceWriter(Env *env, const EnvOptions &amp;env_options, const std::string &amp;trace_filename, std::unique_ptr&lt; TraceWriter &gt; *trace_writer)</div><div class="ttdef"><b>Definition</b> <a href="#l00118">file_trace_reader_writer.cc:118</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a324fa6bbad8c637e389933ce226f71f9"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a324fa6bbad8c637e389933ce226f71f9">ROCKSDB_NAMESPACE::kTraceMetadataSize</a></div><div class="ttdeci">const unsigned int kTraceMetadataSize</div><div class="ttdef"><b>Definition</b> <a href="../../da/d93/trace__replay_8h_source.html#l00044">trace_replay.h:44</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a6af31c41919582abecec379408900397"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a6af31c41919582abecec379408900397">ROCKSDB_NAMESPACE::NewFileTraceReader</a></div><div class="ttdeci">Status NewFileTraceReader(Env *env, const EnvOptions &amp;env_options, const std::string &amp;trace_filename, std::unique_ptr&lt; TraceReader &gt; *trace_reader)</div><div class="ttdef"><b>Definition</b> <a href="#l00104">file_trace_reader_writer.cc:104</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_add613ebd598ebcb8d6f1a9d3a4093e21"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#add613ebd598ebcb8d6f1a9d3a4093e21">ROCKSDB_NAMESPACE::kTraceTypeSize</a></div><div class="ttdeci">const unsigned int kTraceTypeSize</div><div class="ttdef"><b>Definition</b> <a href="../../da/d93/trace__replay_8h_source.html#l00042">trace_replay.h:42</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="arandom__access__file__reader_8h_html"><div class="ttname"><a href="../../db/d4e/random__access__file__reader_8h.html">random_access_file_reader.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1EnvOptions_html"><div class="ttname"><a href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">ROCKSDB_NAMESPACE::EnvOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00076">env.h:76</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOptions_html"><div class="ttname"><a href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">ROCKSDB_NAMESPACE::FileOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00179">file_system.h:179</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IOOptions_html"><div class="ttname"><a href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">ROCKSDB_NAMESPACE::IOOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00097">file_system.h:97</a></div></div>
+<div class="ttc" id="atrace__replay_8h_html"><div class="ttname"><a href="../../da/d93/trace__replay_8h.html">trace_replay.h</a></div></div>
+<div class="ttc" id="awritable__file__writer_8h_html"><div class="ttname"><a href="../../da/d97/writable__file__writer_8h.html">writable_file_writer.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_8c3687d86159a6fa1470326ae2147dfd.html">trace</a></li><li class="navelem"><a class="el" href="../../d8/dc0/file__trace__reader__writer_8cc.html">file_trace_reader_writer.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

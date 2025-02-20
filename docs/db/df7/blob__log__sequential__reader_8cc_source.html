@@ -1,0 +1,307 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/blob/blob_log_sequential_reader.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('db/df7/blob__log__sequential__reader_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">blob_log_sequential_reader.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../db/df7/blob__log__sequential__reader_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d8b/blob__log__sequential__reader_8h.html">db/blob/blob_log_sequential_reader.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/d4e/random__access__file__reader_8h.html">file/random_access_file_reader.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/d44/statistics__impl_8h.html">monitoring/statistics_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../dd/d93/stop__watch_8h.html">util/stop_watch.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a4730e5c440dd7a245454118492cd97a8">   15</a></span><a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a4730e5c440dd7a245454118492cd97a8">BlobLogSequentialReader::BlobLogSequentialReader</a>(</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    std::unique_ptr&lt;RandomAccessFileReader&gt;&amp;&amp; file_reader, <a class="code hl_class" href="../../dc/d06/classROCKSDB__NAMESPACE_1_1SystemClock.html">SystemClock</a>* clock,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_class" href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">Statistics</a>* statistics)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    : <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aa4a6149a0b6b2604476f7ebbd27843a7">file_</a>(<a class="code hl_namespace" href="../../d8/dcc/namespacestd.html">std</a>::move(file_reader)),</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a21d8f335b98341c2bf271b3106827a6d">clock_</a>(clock),</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>      <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ad5fca9bb459357d46b1e549cf3864825">statistics_</a>(statistics),</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a1944113443caa3021b2815a627001270">next_byte_</a>(0) {}</div>
+</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a86fb0e759cb919f50244e82d7ad5bf43">BlobLogSequentialReader::~BlobLogSequentialReader</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#acfc6b6945730ab57f0f9a6414afb0829">   25</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#acfc6b6945730ab57f0f9a6414afb0829">BlobLogSequentialReader::ReadSlice</a>(uint64_t size, <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>* slice,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                                          <span class="keywordtype">char</span>* buf) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  assert(slice);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  assert(<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aa4a6149a0b6b2604476f7ebbd27843a7">file_</a>);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <a class="code hl_class" href="../../db/d3e/classROCKSDB__NAMESPACE_1_1StopWatch.html">StopWatch</a> read_sw(<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a21d8f335b98341c2bf271b3106827a6d">clock_</a>, <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ad5fca9bb459357d46b1e549cf3864825">statistics_</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a30b2e446a560b08882354e1cdb5f68f6a8f4e48ebeb7d2cb93ccd9e27c3aa6c70">BLOB_DB_BLOB_FILE_READ_MICROS</a>);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment">// TODO: rate limit `BlobLogSequentialReader` reads (it appears unused?)</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aa4a6149a0b6b2604476f7ebbd27843a7">file_</a>-&gt;Read(<a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a>(), <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a1944113443caa3021b2815a627001270">next_byte_</a>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(size),</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                         slice, buf, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a1944113443caa3021b2815a627001270">next_byte_</a> += size;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7cef279c0d29555aff2708f7e380049e">RecordTick</a>(<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ad5fca9bb459357d46b1e549cf3864825">statistics_</a>, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a153247a8e045efa11bbb3134499dfc47ae0aa161e2e482f96825864984bd87bd1">BLOB_DB_BLOB_FILE_BYTES_READ</a>, slice-&gt;<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>());</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">if</span> (slice-&gt;<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>() != size) {</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">Status::Corruption</a>(<span class="stringliteral">&quot;EOF reached while reading record&quot;</span>);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
+</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a5c5a7af394d7d7e26141de020ff84607">   45</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a5c5a7af394d7d7e26141de020ff84607">BlobLogSequentialReader::ReadHeader</a>(<a class="code hl_struct" href="../../d5/d76/structROCKSDB__NAMESPACE_1_1BlobLogHeader.html">BlobLogHeader</a>* header) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  assert(header);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  assert(<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a1944113443caa3021b2815a627001270">next_byte_</a> == 0);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">static_assert</span>(<a class="code hl_variable" href="../../d5/d76/structROCKSDB__NAMESPACE_1_1BlobLogHeader.html#a224d833e72a048df141c2190cb3b4e27">BlobLogHeader::kSize</a> &lt;= <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aeea2492eb6857ce85f18904f23809479">header_buf_</a>),</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                <span class="stringliteral">&quot;Buffer is smaller than BlobLogHeader::kSize&quot;</span>);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#acfc6b6945730ab57f0f9a6414afb0829">ReadSlice</a>(<a class="code hl_variable" href="../../d5/d76/structROCKSDB__NAMESPACE_1_1BlobLogHeader.html#a224d833e72a048df141c2190cb3b4e27">BlobLogHeader::kSize</a>, &amp;<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a47feea7eb218cdb5d06e622324f3839a">buffer_</a>, <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aeea2492eb6857ce85f18904f23809479">header_buf_</a>);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a47feea7eb218cdb5d06e622324f3839a">buffer_</a>.size() != <a class="code hl_variable" href="../../d5/d76/structROCKSDB__NAMESPACE_1_1BlobLogHeader.html#a224d833e72a048df141c2190cb3b4e27">BlobLogHeader::kSize</a>) {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">Status::Corruption</a>(<span class="stringliteral">&quot;EOF reached before file header&quot;</span>);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">return</span> header-&gt;<a class="code hl_function" href="../../d5/d76/structROCKSDB__NAMESPACE_1_1BlobLogHeader.html#aecb8233050a96218d7307c6ecdd29312">DecodeFrom</a>(<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a47feea7eb218cdb5d06e622324f3839a">buffer_</a>);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
+</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac44ab76e2e27278e3535cc0ffb0e793e">   64</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac44ab76e2e27278e3535cc0ffb0e793e">BlobLogSequentialReader::ReadRecord</a>(<a class="code hl_struct" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html">BlobLogRecord</a>* record,</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                                           <a class="code hl_enumeration" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac782d3076ff936f2636e42153cc7ee5a">ReadLevel</a> level,</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                                           uint64_t* blob_offset) {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  assert(record);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keyword">static_assert</span>(<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af6fa03a686aa229610e586d37fa713d6">BlobLogRecord::kHeaderSize</a> &lt;= <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aeea2492eb6857ce85f18904f23809479">header_buf_</a>),</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                <span class="stringliteral">&quot;Buffer is smaller than BlobLogRecord::kHeaderSize&quot;</span>);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#acfc6b6945730ab57f0f9a6414afb0829">ReadSlice</a>(<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af6fa03a686aa229610e586d37fa713d6">BlobLogRecord::kHeaderSize</a>, &amp;<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a47feea7eb218cdb5d06e622324f3839a">buffer_</a>, <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aeea2492eb6857ce85f18904f23809479">header_buf_</a>);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  }</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a47feea7eb218cdb5d06e622324f3839a">buffer_</a>.size() != <a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af6fa03a686aa229610e586d37fa713d6">BlobLogRecord::kHeaderSize</a>) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">Status::Corruption</a>(<span class="stringliteral">&quot;EOF reached before record header&quot;</span>);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  s = record-&gt;<a class="code hl_function" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a20a3f8811e5ac5a1c4c1eefcfec6efd2">DecodeHeaderFrom</a>(<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a47feea7eb218cdb5d06e622324f3839a">buffer_</a>);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  uint64_t kb_size = record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a5307677011188e4a71389f863dac600c">key_size</a> + record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af8eaa294173554f354ae542abe06cfc5">value_size</a>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordflow">if</span> (blob_offset != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    *blob_offset = <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a1944113443caa3021b2815a627001270">next_byte_</a> + record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a5307677011188e4a71389f863dac600c">key_size</a>;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordflow">switch</span> (level) {</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac782d3076ff936f2636e42153cc7ee5aa703e05a1dced5ee78597318fb00ab928">kReadHeader</a>:</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a1944113443caa3021b2815a627001270">next_byte_</a> += kb_size;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac782d3076ff936f2636e42153cc7ee5aaee0dbf5497061363f486f4f4299c94d9">kReadHeaderKey</a>:</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a565c8ed3e6ec0c87608fd4fa1c3eabb6">key_buf</a>.reset(<span class="keyword">new</span> <span class="keywordtype">char</span>[record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a5307677011188e4a71389f863dac600c">key_size</a>]);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      s = <a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#acfc6b6945730ab57f0f9a6414afb0829">ReadSlice</a>(record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a5307677011188e4a71389f863dac600c">key_size</a>, &amp;record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af6428aed972b216a996c9d96f184675b">key</a>, record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a565c8ed3e6ec0c87608fd4fa1c3eabb6">key_buf</a>.get());</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a1944113443caa3021b2815a627001270">next_byte_</a> += record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af8eaa294173554f354ae542abe06cfc5">value_size</a>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac782d3076ff936f2636e42153cc7ee5aa01a330e82e0c3c6f6729270ca2a55c3d">kReadHeaderKeyBlob</a>:</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a565c8ed3e6ec0c87608fd4fa1c3eabb6">key_buf</a>.reset(<span class="keyword">new</span> <span class="keywordtype">char</span>[record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a5307677011188e4a71389f863dac600c">key_size</a>]);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      s = <a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#acfc6b6945730ab57f0f9a6414afb0829">ReadSlice</a>(record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a5307677011188e4a71389f863dac600c">key_size</a>, &amp;record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af6428aed972b216a996c9d96f184675b">key</a>, record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a565c8ed3e6ec0c87608fd4fa1c3eabb6">key_buf</a>.get());</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      <span class="keywordflow">if</span> (s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a5c84e5ae1ae495de19ce6f260c742be7">value_buf</a>.reset(<span class="keyword">new</span> <span class="keywordtype">char</span>[record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af8eaa294173554f354ae542abe06cfc5">value_size</a>]);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        s = <a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#acfc6b6945730ab57f0f9a6414afb0829">ReadSlice</a>(record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af8eaa294173554f354ae542abe06cfc5">value_size</a>, &amp;record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#ab08f9eb7a7de9f50c3290dac3296b41a">value</a>,</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                      record-&gt;<a class="code hl_variable" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a5c84e5ae1ae495de19ce6f260c742be7">value_buf</a>.get());</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="keywordflow">if</span> (s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        s = record-&gt;<a class="code hl_function" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#ad9c99dd64fd6f5cff25ef248c1c987e2">CheckBlobCRC</a>();</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      }</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  }</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>}</div>
+</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a0143c8c71bd84c3bb7976bb0812141b4">  116</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a0143c8c71bd84c3bb7976bb0812141b4">BlobLogSequentialReader::ReadFooter</a>(<a class="code hl_struct" href="../../d0/d97/structROCKSDB__NAMESPACE_1_1BlobLogFooter.html">BlobLogFooter</a>* footer) {</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  assert(footer);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="keyword">static_assert</span>(<a class="code hl_variable" href="../../d0/d97/structROCKSDB__NAMESPACE_1_1BlobLogFooter.html#aa62065b3fa5549bfc668a155d7c62871">BlobLogFooter::kSize</a> &lt;= <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aeea2492eb6857ce85f18904f23809479">header_buf_</a>),</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                <span class="stringliteral">&quot;Buffer is smaller than BlobLogFooter::kSize&quot;</span>);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#acfc6b6945730ab57f0f9a6414afb0829">ReadSlice</a>(<a class="code hl_variable" href="../../d0/d97/structROCKSDB__NAMESPACE_1_1BlobLogFooter.html#aa62065b3fa5549bfc668a155d7c62871">BlobLogFooter::kSize</a>, &amp;<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a47feea7eb218cdb5d06e622324f3839a">buffer_</a>, <a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aeea2492eb6857ce85f18904f23809479">header_buf_</a>);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  }</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a47feea7eb218cdb5d06e622324f3839a">buffer_</a>.size() != <a class="code hl_variable" href="../../d0/d97/structROCKSDB__NAMESPACE_1_1BlobLogFooter.html#aa62065b3fa5549bfc668a155d7c62871">BlobLogFooter::kSize</a>) {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">Status::Corruption</a>(<span class="stringliteral">&quot;EOF reached before file footer&quot;</span>);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  }</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keywordflow">return</span> footer-&gt;<a class="code hl_function" href="../../d0/d97/structROCKSDB__NAMESPACE_1_1BlobLogFooter.html#a8fb23d17dfb566ee1164989de199d3a4">DecodeFrom</a>(<a class="code hl_variable" href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a47feea7eb218cdb5d06e622324f3839a">buffer_</a>);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>}</div>
+</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="ablob__log__sequential__reader_8h_html"><div class="ttname"><a href="../../d0/d8b/blob__log__sequential__reader_8h.html">blob_log_sequential_reader.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_a0143c8c71bd84c3bb7976bb0812141b4"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a0143c8c71bd84c3bb7976bb0812141b4">ROCKSDB_NAMESPACE::BlobLogSequentialReader::ReadFooter</a></div><div class="ttdeci">Status ReadFooter(BlobLogFooter *footer)</div><div class="ttdef"><b>Definition</b> <a href="#l00116">blob_log_sequential_reader.cc:116</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_a1944113443caa3021b2815a627001270"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a1944113443caa3021b2815a627001270">ROCKSDB_NAMESPACE::BlobLogSequentialReader::next_byte_</a></div><div class="ttdeci">uint64_t next_byte_</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d8b/blob__log__sequential__reader_8h_source.html#l00078">blob_log_sequential_reader.h:78</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_a21d8f335b98341c2bf271b3106827a6d"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a21d8f335b98341c2bf271b3106827a6d">ROCKSDB_NAMESPACE::BlobLogSequentialReader::clock_</a></div><div class="ttdeci">SystemClock * clock_</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d8b/blob__log__sequential__reader_8h_source.html#l00069">blob_log_sequential_reader.h:69</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_a4730e5c440dd7a245454118492cd97a8"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a4730e5c440dd7a245454118492cd97a8">ROCKSDB_NAMESPACE::BlobLogSequentialReader::BlobLogSequentialReader</a></div><div class="ttdeci">BlobLogSequentialReader(std::unique_ptr&lt; RandomAccessFileReader &gt; &amp;&amp;file_reader, SystemClock *clock, Statistics *statistics)</div><div class="ttdef"><b>Definition</b> <a href="#l00015">blob_log_sequential_reader.cc:15</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_a47feea7eb218cdb5d06e622324f3839a"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a47feea7eb218cdb5d06e622324f3839a">ROCKSDB_NAMESPACE::BlobLogSequentialReader::buffer_</a></div><div class="ttdeci">Slice buffer_</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d8b/blob__log__sequential__reader_8h_source.html#l00073">blob_log_sequential_reader.h:73</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_a5c5a7af394d7d7e26141de020ff84607"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a5c5a7af394d7d7e26141de020ff84607">ROCKSDB_NAMESPACE::BlobLogSequentialReader::ReadHeader</a></div><div class="ttdeci">Status ReadHeader(BlobLogHeader *header)</div><div class="ttdef"><b>Definition</b> <a href="#l00045">blob_log_sequential_reader.cc:45</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_a86fb0e759cb919f50244e82d7ad5bf43"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#a86fb0e759cb919f50244e82d7ad5bf43">ROCKSDB_NAMESPACE::BlobLogSequentialReader::~BlobLogSequentialReader</a></div><div class="ttdeci">~BlobLogSequentialReader()</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_aa4a6149a0b6b2604476f7ebbd27843a7"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aa4a6149a0b6b2604476f7ebbd27843a7">ROCKSDB_NAMESPACE::BlobLogSequentialReader::file_</a></div><div class="ttdeci">const std::unique_ptr&lt; RandomAccessFileReader &gt; file_</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d8b/blob__log__sequential__reader_8h_source.html#l00068">blob_log_sequential_reader.h:68</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_ac44ab76e2e27278e3535cc0ffb0e793e"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac44ab76e2e27278e3535cc0ffb0e793e">ROCKSDB_NAMESPACE::BlobLogSequentialReader::ReadRecord</a></div><div class="ttdeci">Status ReadRecord(BlobLogRecord *record, ReadLevel level=kReadHeader, uint64_t *blob_offset=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="#l00064">blob_log_sequential_reader.cc:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_ac782d3076ff936f2636e42153cc7ee5a"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac782d3076ff936f2636e42153cc7ee5a">ROCKSDB_NAMESPACE::BlobLogSequentialReader::ReadLevel</a></div><div class="ttdeci">ReadLevel</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d8b/blob__log__sequential__reader_8h_source.html#l00033">blob_log_sequential_reader.h:33</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_ac782d3076ff936f2636e42153cc7ee5aa01a330e82e0c3c6f6729270ca2a55c3d"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac782d3076ff936f2636e42153cc7ee5aa01a330e82e0c3c6f6729270ca2a55c3d">ROCKSDB_NAMESPACE::BlobLogSequentialReader::kReadHeaderKeyBlob</a></div><div class="ttdeci">@ kReadHeaderKeyBlob</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d8b/blob__log__sequential__reader_8h_source.html#l00036">blob_log_sequential_reader.h:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_ac782d3076ff936f2636e42153cc7ee5aa703e05a1dced5ee78597318fb00ab928"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac782d3076ff936f2636e42153cc7ee5aa703e05a1dced5ee78597318fb00ab928">ROCKSDB_NAMESPACE::BlobLogSequentialReader::kReadHeader</a></div><div class="ttdeci">@ kReadHeader</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d8b/blob__log__sequential__reader_8h_source.html#l00034">blob_log_sequential_reader.h:34</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_ac782d3076ff936f2636e42153cc7ee5aaee0dbf5497061363f486f4f4299c94d9"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ac782d3076ff936f2636e42153cc7ee5aaee0dbf5497061363f486f4f4299c94d9">ROCKSDB_NAMESPACE::BlobLogSequentialReader::kReadHeaderKey</a></div><div class="ttdeci">@ kReadHeaderKey</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d8b/blob__log__sequential__reader_8h_source.html#l00035">blob_log_sequential_reader.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_acfc6b6945730ab57f0f9a6414afb0829"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#acfc6b6945730ab57f0f9a6414afb0829">ROCKSDB_NAMESPACE::BlobLogSequentialReader::ReadSlice</a></div><div class="ttdeci">Status ReadSlice(uint64_t size, Slice *slice, char *buf)</div><div class="ttdef"><b>Definition</b> <a href="#l00025">blob_log_sequential_reader.cc:25</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_ad5fca9bb459357d46b1e549cf3864825"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#ad5fca9bb459357d46b1e549cf3864825">ROCKSDB_NAMESPACE::BlobLogSequentialReader::statistics_</a></div><div class="ttdeci">Statistics * statistics_</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d8b/blob__log__sequential__reader_8h_source.html#l00071">blob_log_sequential_reader.h:71</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobLogSequentialReader_html_aeea2492eb6857ce85f18904f23809479"><div class="ttname"><a href="../../de/d9d/classROCKSDB__NAMESPACE_1_1BlobLogSequentialReader.html#aeea2492eb6857ce85f18904f23809479">ROCKSDB_NAMESPACE::BlobLogSequentialReader::header_buf_</a></div><div class="ttdeci">char header_buf_[MAX_HEADER_SIZE(BlobLogHeader::kSize, BlobLogFooter::kSize, BlobLogRecord::kHeaderSize)]</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d8b/blob__log__sequential__reader_8h_source.html#l00074">blob_log_sequential_reader.h:75</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a47c51c16ecee27b619768f1b817a342c"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">ROCKSDB_NAMESPACE::Slice::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00060">slice.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Statistics_html"><div class="ttname"><a href="../../d0/d87/classROCKSDB__NAMESPACE_1_1Statistics.html">ROCKSDB_NAMESPACE::Statistics</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00727">statistics.h:727</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a41dc92b90c65fe4db6b69108cf52569e"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">ROCKSDB_NAMESPACE::Status::Corruption</a></div><div class="ttdeci">static Status Corruption(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00203">status.h:203</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StopWatch_html"><div class="ttname"><a href="../../db/d3e/classROCKSDB__NAMESPACE_1_1StopWatch.html">ROCKSDB_NAMESPACE::StopWatch</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/d93/stop__watch_8h_source.html#l00017">stop_watch.h:17</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SystemClock_html"><div class="ttname"><a href="../../dc/d06/classROCKSDB__NAMESPACE_1_1SystemClock.html">ROCKSDB_NAMESPACE::SystemClock</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d2f/system__clock_8h_source.html#l00030">system_clock.h:30</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a153247a8e045efa11bbb3134499dfc47ae0aa161e2e482f96825864984bd87bd1"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a153247a8e045efa11bbb3134499dfc47ae0aa161e2e482f96825864984bd87bd1">ROCKSDB_NAMESPACE::BLOB_DB_BLOB_FILE_BYTES_READ</a></div><div class="ttdeci">@ BLOB_DB_BLOB_FILE_BYTES_READ</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00344">statistics.h:344</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a30b2e446a560b08882354e1cdb5f68f6a8f4e48ebeb7d2cb93ccd9e27c3aa6c70"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a30b2e446a560b08882354e1cdb5f68f6a8f4e48ebeb7d2cb93ccd9e27c3aa6c70">ROCKSDB_NAMESPACE::BLOB_DB_BLOB_FILE_READ_MICROS</a></div><div class="ttdeci">@ BLOB_DB_BLOB_FILE_READ_MICROS</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dc5/statistics_8h_source.html#l00632">statistics.h:632</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a7cef279c0d29555aff2708f7e380049e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7cef279c0d29555aff2708f7e380049e">ROCKSDB_NAMESPACE::RecordTick</a></div><div class="ttdeci">void RecordTick(Statistics *statistics, uint32_t ticker_type, uint64_t count=1)</div><div class="ttdef"><b>Definition</b> <a href="../../db/d44/statistics__impl_8h_source.html#l00129">statistics_impl.h:129</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00110">win_thread.h:110</a></div></div>
+<div class="ttc" id="arandom__access__file__reader_8h_html"><div class="ttname"><a href="../../db/d4e/random__access__file__reader_8h.html">random_access_file_reader.h</a></div></div>
+<div class="ttc" id="astatistics__impl_8h_html"><div class="ttname"><a href="../../db/d44/statistics__impl_8h.html">statistics_impl.h</a></div></div>
+<div class="ttc" id="astop__watch_8h_html"><div class="ttname"><a href="../../dd/d93/stop__watch_8h.html">stop_watch.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogFooter_html"><div class="ttname"><a href="../../d0/d97/structROCKSDB__NAMESPACE_1_1BlobLogFooter.html">ROCKSDB_NAMESPACE::BlobLogFooter</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00082">blob_log_format.h:82</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogFooter_html_a8fb23d17dfb566ee1164989de199d3a4"><div class="ttname"><a href="../../d0/d97/structROCKSDB__NAMESPACE_1_1BlobLogFooter.html#a8fb23d17dfb566ee1164989de199d3a4">ROCKSDB_NAMESPACE::BlobLogFooter::DecodeFrom</a></div><div class="ttdeci">Status DecodeFrom(Slice slice)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d52/blob__log__format_8cc_source.html#l00072">blob_log_format.cc:72</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogFooter_html_aa62065b3fa5549bfc668a155d7c62871"><div class="ttname"><a href="../../d0/d97/structROCKSDB__NAMESPACE_1_1BlobLogFooter.html#aa62065b3fa5549bfc668a155d7c62871">ROCKSDB_NAMESPACE::BlobLogFooter::kSize</a></div><div class="ttdeci">static constexpr size_t kSize</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00083">blob_log_format.h:83</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogHeader_html"><div class="ttname"><a href="../../d5/d76/structROCKSDB__NAMESPACE_1_1BlobLogHeader.html">ROCKSDB_NAMESPACE::BlobLogHeader</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00043">blob_log_format.h:43</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogHeader_html_a224d833e72a048df141c2190cb3b4e27"><div class="ttname"><a href="../../d5/d76/structROCKSDB__NAMESPACE_1_1BlobLogHeader.html#a224d833e72a048df141c2190cb3b4e27">ROCKSDB_NAMESPACE::BlobLogHeader::kSize</a></div><div class="ttdeci">static constexpr size_t kSize</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00044">blob_log_format.h:44</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogHeader_html_aecb8233050a96218d7307c6ecdd29312"><div class="ttname"><a href="../../d5/d76/structROCKSDB__NAMESPACE_1_1BlobLogHeader.html#aecb8233050a96218d7307c6ecdd29312">ROCKSDB_NAMESPACE::BlobLogHeader::DecodeFrom</a></div><div class="ttdeci">Status DecodeFrom(Slice slice)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d52/blob__log__format_8cc_source.html#l00028">blob_log_format.cc:28</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html">ROCKSDB_NAMESPACE::BlobLogRecord</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00118">blob_log_format.h:118</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html_a20a3f8811e5ac5a1c4c1eefcfec6efd2"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a20a3f8811e5ac5a1c4c1eefcfec6efd2">ROCKSDB_NAMESPACE::BlobLogRecord::DecodeHeaderFrom</a></div><div class="ttdeci">Status DecodeHeaderFrom(Slice src)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d52/blob__log__format_8cc_source.html#l00112">blob_log_format.cc:112</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html_a5307677011188e4a71389f863dac600c"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a5307677011188e4a71389f863dac600c">ROCKSDB_NAMESPACE::BlobLogRecord::key_size</a></div><div class="ttdeci">uint64_t key_size</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00130">blob_log_format.h:130</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html_a565c8ed3e6ec0c87608fd4fa1c3eabb6"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a565c8ed3e6ec0c87608fd4fa1c3eabb6">ROCKSDB_NAMESPACE::BlobLogRecord::key_buf</a></div><div class="ttdeci">std::unique_ptr&lt; char[]&gt; key_buf</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00137">blob_log_format.h:137</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html_a5c84e5ae1ae495de19ce6f260c742be7"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a5c84e5ae1ae495de19ce6f260c742be7">ROCKSDB_NAMESPACE::BlobLogRecord::value_buf</a></div><div class="ttdeci">std::unique_ptr&lt; char[]&gt; value_buf</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00138">blob_log_format.h:138</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html_ab08f9eb7a7de9f50c3290dac3296b41a"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#ab08f9eb7a7de9f50c3290dac3296b41a">ROCKSDB_NAMESPACE::BlobLogRecord::value</a></div><div class="ttdeci">Slice value</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00136">blob_log_format.h:136</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html_ad9c99dd64fd6f5cff25ef248c1c987e2"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#ad9c99dd64fd6f5cff25ef248c1c987e2">ROCKSDB_NAMESPACE::BlobLogRecord::CheckBlobCRC</a></div><div class="ttdeci">Status CheckBlobCRC() const</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d52/blob__log__format_8cc_source.html#l00132">blob_log_format.cc:132</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html_af6428aed972b216a996c9d96f184675b"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af6428aed972b216a996c9d96f184675b">ROCKSDB_NAMESPACE::BlobLogRecord::key</a></div><div class="ttdeci">Slice key</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00135">blob_log_format.h:135</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html_af6fa03a686aa229610e586d37fa713d6"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af6fa03a686aa229610e586d37fa713d6">ROCKSDB_NAMESPACE::BlobLogRecord::kHeaderSize</a></div><div class="ttdeci">static constexpr size_t kHeaderSize</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00120">blob_log_format.h:120</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html_af8eaa294173554f354ae542abe06cfc5"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#af8eaa294173554f354ae542abe06cfc5">ROCKSDB_NAMESPACE::BlobLogRecord::value_size</a></div><div class="ttdeci">uint64_t value_size</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00131">blob_log_format.h:131</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IOOptions_html"><div class="ttname"><a href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">ROCKSDB_NAMESPACE::IOOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00097">file_system.h:97</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../dir_b850757ce2504bdef52f7eb2839ed90a.html">blob</a></li><li class="navelem"><a class="el" href="../../db/df7/blob__log__sequential__reader_8cc.html">blob_log_sequential_reader.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+var classROCKSDB__NAMESPACE_1_1PlainTableDBTest =
+[
+    [ "PlainTableDBTest", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a2fbc78efe9b3524bbc7c1f2b7eb0101c", null ],
+    [ "~PlainTableDBTest", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a6a2c5f0c2254cc2c8228d1091ffe7efc", null ],
+    [ "Close", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#acf4f3e150201ffb21e403ad5d971b24a", null ],
+    [ "CurrentOptions", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#acc90178dcf5b8645de8866596022eecf", null ],
+    [ "dbfull", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#aaaffcdf5c13948bca264687f91a5e06e", null ],
+    [ "Delete", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#ad8bbabf5a8819359fa65d4866a28ab11", null ],
+    [ "Destroy", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a5dc77878c3275aeaca50625477b677ba", null ],
+    [ "DestroyAndReopen", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a43c1f84f6d7d3779088329e5332c9e35", null ],
+    [ "FilesPerLevel", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a8ce255b544f29f911d0ae5def58473db", null ],
+    [ "Get", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a003e3b2c9aac8b4d0523b29c99f3c941", null ],
+    [ "IterStatus", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#aaeb5ce1893838a1d0d1b12604fa1478d", null ],
+    [ "mmap_mode", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a58627e23f01f602a9deb56d285eeb985", null ],
+    [ "NumTableFilesAtLevel", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a5ff26f1db25ee2da363439c789edf125", null ],
+    [ "PureReopen", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a567785c8dc3e1138ab92fbffde523a57", null ],
+    [ "Put", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a40b6271d0932d8e8e1dadd8d6026b7fb", null ],
+    [ "Reopen", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a1a941ac8597bc6d8104b6c456a2af8c6", null ],
+    [ "ReopenForReadOnly", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a61a24a5025fa7f8fd4c5d71979534383", null ],
+    [ "SetUp", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a9608afe17b88cbb1a29671b6038f997f", null ],
+    [ "TryReopen", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a6792ad2e9ca66cdc8f2050d7fb4ebb2d", null ],
+    [ "db_", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a9f2defd942fc0c72abae6fa61d938781", null ],
+    [ "dbname_", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a9d9a2ad20d984e7dda39f3dc3a3475e6", null ],
+    [ "env_", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a4c773729eeb7c9b8865b5a2b493b053b", null ],
+    [ "last_options_", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a18ed760753b5b29b1e0cdffa279fa6d8", null ],
+    [ "mmap_mode_", "da/dd5/classROCKSDB__NAMESPACE_1_1PlainTableDBTest.html#a2db4e7cdc2d71e06616830422803f3dc", null ]
+];

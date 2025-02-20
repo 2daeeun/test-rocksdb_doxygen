@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: include/rocksdb/iterator.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('df/d22/iterator_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">iterator.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../df/d22/iterator_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">//</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">// An iterator yields a sequence of key/value pairs from a source.</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">// The following class defines the interface.  Multiple implementations</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// are provided by this library.  In particular, iterators are provided</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// to access the contents of a Table or a DB.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">//</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// Multiple threads can invoke const methods on an Iterator without</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// external synchronization, but if any of the threads may call a</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// non-const method, all threads accessing the same Iterator must use</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// external synchronization.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/d86/iterator__base_8h.html">rocksdb/iterator_base.h</a>&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/dde/wide__columns_8h.html">rocksdb/wide_columns.h</a>&quot;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html">   28</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#acd6d057afdc44037440004e6bc4916d1">Iterator</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../dd/d44/classROCKSDB__NAMESPACE_1_1IteratorBase.html#ae37b1343b748ff8ba3e717c0e72649e4">IteratorBase</a> {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#acd6d057afdc44037440004e6bc4916d1">   30</a></span>  <a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#acd6d057afdc44037440004e6bc4916d1">Iterator</a>() {}</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment">// No copying allowed</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#a427bc08c6841140283d5b95a7cd264a9">   32</a></span>  <a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#a427bc08c6841140283d5b95a7cd264a9">Iterator</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#acd6d057afdc44037440004e6bc4916d1">Iterator</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#a69414d7b256fbc6dedc4c45febc66765">   33</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#a69414d7b256fbc6dedc4c45febc66765">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#acd6d057afdc44037440004e6bc4916d1">Iterator</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#ad5c6abe05878126292d1d6b6d9f585cc">   35</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#ad5c6abe05878126292d1d6b6d9f585cc">~Iterator</a>()<span class="keyword"> override </span>{}</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// Return the value for the current entry.  If the entry is a plain key-value,</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="comment">// return the value as-is; if it is a wide-column entity, return the value of</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// the default anonymous column (see kDefaultWideColumnName) if any, or an</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// empty value otherwise.  The underlying storage for the returned slice is</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="comment">// valid only until the next modification of the iterator (i.e. the next</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// SeekToFirst/SeekToLast/Seek/SeekForPrev/Next/Prev operation).</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">// REQUIRES: Valid()</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#ab52f1de5a4d28113cd78257fc87f1c94">   44</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#ab52f1de5a4d28113cd78257fc87f1c94">value</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// Return the wide columns for the current entry.  If the entry is a</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// wide-column entity, return it as-is; if it is a plain key-value, return it</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// as an entity with a single anonymous column (see kDefaultWideColumnName)</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// which contains the value.  The underlying storage for the returned</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// structure is valid only until the next modification of the iterator (i.e.</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// the next SeekToFirst/SeekToLast/Seek/SeekForPrev/Next/Prev operation).</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// REQUIRES: Valid()</span></div>
+<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#af4bfaa1d3a88fb28730f0acaff2c6419">   53</a></span>  <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">WideColumns</a>&amp; <a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#af4bfaa1d3a88fb28730f0acaff2c6419">columns</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a563c29699c57f5c752202d64e4fa1948">kNoWideColumns</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
+</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// Property &quot;rocksdb.iterator.is-key-pinned&quot;:</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">//   If returning &quot;1&quot;, this means that the Slice returned by key() is valid</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="comment">//   as long as the iterator is not deleted.</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">//   It is guaranteed to always return &quot;1&quot; if</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">//      - Iterator created with ReadOptions::pin_data = true</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">//      - DB tables were created with</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">//        BlockBasedTableOptions::use_delta_encoding = false.</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// Property &quot;rocksdb.iterator.is-value-pinned&quot;:</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">//   If returning &quot;1&quot;, this means that the Slice returned by value() is valid</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="comment">//   as long as the iterator is not deleted.</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="comment">//   It is guaranteed to always return &quot;1&quot; if</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">//      - Iterator created with ReadOptions::pin_data = true</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">//      - The value is found in a `kTypeValue` record</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// Property &quot;rocksdb.iterator.super-version-number&quot;:</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">//   LSM version used by the iterator. The same format as DB Property</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">//   kCurrentSuperVersionNumber. See its comment for more information.</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// Property &quot;rocksdb.iterator.internal-key&quot;:</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">//   Get the user-key portion of the internal key at which the iteration</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">//   stopped.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">// Property &quot;rocksdb.iterator.write-time&quot;:</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">//   Get the unix time of the best estimate of the write time of the entry.</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">//   Returned as 64-bit raw value (8 bytes). It can be converted to uint64_t</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">//   with util method `DecodeU64Ts`. The accuracy of the write time depends on</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">//   settings like preserve_internal_time_seconds. The actual write time of</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">//   the entry should be the same or newer than the returned write time. So</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">//   this property can be interpreted as the possible oldest write time for</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">//   the entry.</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="comment">//   If the seqno to time mapping recording is not enabled,</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="comment">//   std::numeric_limits&lt;uint64_t&gt;::max() will be returned to indicate the</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">//   write time is unknown. For data entry whose sequence number has</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="comment">//   been zeroed out (possible when they reach the last level), 0 is returned</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="comment">//   no matter whether the seqno to time recording feature is enabled or not.</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> GetProperty(std::string prop_name, std::string* prop);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#ab944ececa8b85e0cd9a2d09480db0bb6">   92</a></span>  <span class="keyword">virtual</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a> <a class="code hl_function" href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#ab944ececa8b85e0cd9a2d09480db0bb6">timestamp</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">return</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>};</div>
+</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">// Return an empty iterator (yields nothing).</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>Iterator* NewEmptyIterator();</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">// Return an empty iterator with the specified status.</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>Iterator* NewErrorIterator(<span class="keyword">const</span> Status&amp; status);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1IteratorBase_html_ae37b1343b748ff8ba3e717c0e72649e4"><div class="ttname"><a href="../../dd/d44/classROCKSDB__NAMESPACE_1_1IteratorBase.html#ae37b1343b748ff8ba3e717c0e72649e4">ROCKSDB_NAMESPACE::IteratorBase::IteratorBase</a></div><div class="ttdeci">IteratorBase()</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d86/iterator__base_8h_source.html#l00016">iterator_base.h:16</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Iterator_html_a427bc08c6841140283d5b95a7cd264a9"><div class="ttname"><a href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#a427bc08c6841140283d5b95a7cd264a9">ROCKSDB_NAMESPACE::Iterator::Iterator</a></div><div class="ttdeci">Iterator(const Iterator &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Iterator_html_a69414d7b256fbc6dedc4c45febc66765"><div class="ttname"><a href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#a69414d7b256fbc6dedc4c45febc66765">ROCKSDB_NAMESPACE::Iterator::operator=</a></div><div class="ttdeci">void operator=(const Iterator &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Iterator_html_ab52f1de5a4d28113cd78257fc87f1c94"><div class="ttname"><a href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#ab52f1de5a4d28113cd78257fc87f1c94">ROCKSDB_NAMESPACE::Iterator::value</a></div><div class="ttdeci">virtual Slice value() const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Iterator_html_ab944ececa8b85e0cd9a2d09480db0bb6"><div class="ttname"><a href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#ab944ececa8b85e0cd9a2d09480db0bb6">ROCKSDB_NAMESPACE::Iterator::timestamp</a></div><div class="ttdeci">virtual Slice timestamp() const</div><div class="ttdef"><b>Definition</b> <a href="#l00092">iterator.h:92</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Iterator_html_acd6d057afdc44037440004e6bc4916d1"><div class="ttname"><a href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#acd6d057afdc44037440004e6bc4916d1">ROCKSDB_NAMESPACE::Iterator::Iterator</a></div><div class="ttdeci">Iterator()</div><div class="ttdef"><b>Definition</b> <a href="#l00030">iterator.h:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Iterator_html_ad5c6abe05878126292d1d6b6d9f585cc"><div class="ttname"><a href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#ad5c6abe05878126292d1d6b6d9f585cc">ROCKSDB_NAMESPACE::Iterator::~Iterator</a></div><div class="ttdeci">virtual ~Iterator() override</div><div class="ttdef"><b>Definition</b> <a href="#l00035">iterator.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Iterator_html_af4bfaa1d3a88fb28730f0acaff2c6419"><div class="ttname"><a href="../../d7/d0e/classROCKSDB__NAMESPACE_1_1Iterator.html#af4bfaa1d3a88fb28730f0acaff2c6419">ROCKSDB_NAMESPACE::Iterator::columns</a></div><div class="ttdeci">virtual const WideColumns &amp; columns() const</div><div class="ttdef"><b>Definition</b> <a href="#l00053">iterator.h:53</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aiterator__base_8h_html"><div class="ttname"><a href="../../d3/d86/iterator__base_8h.html">iterator_base.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a563c29699c57f5c752202d64e4fa1948"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a563c29699c57f5c752202d64e4fa1948">ROCKSDB_NAMESPACE::kNoWideColumns</a></div><div class="ttdeci">const WideColumns kNoWideColumns</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d7c/wide__columns_8cc_source.html#l00013">wide_columns.cc:13</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa3d6cbb70dfce12fe11d4a341f361d09"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa3d6cbb70dfce12fe11d4a341f361d09">ROCKSDB_NAMESPACE::WideColumns</a></div><div class="ttdeci">std::vector&lt; WideColumn &gt; WideColumns</div><div class="ttdef"><b>Definition</b> <a href="../../d4/dde/wide__columns_8h_source.html#l00096">wide_columns.h:96</a></div></div>
+<div class="ttc" id="awide__columns_8h_html"><div class="ttname"><a href="../../d4/dde/wide__columns_8h.html">wide_columns.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_8784722d8c2e7f3978e4945ad578533f.html">rocksdb</a></li><li class="navelem"><a class="el" href="../../df/d22/iterator_8h.html">iterator.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

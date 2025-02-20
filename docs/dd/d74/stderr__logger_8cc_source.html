@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: util/stderr_logger.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('dd/d74/stderr__logger_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">stderr_logger.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../dd/d74/stderr__logger_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/dec/stderr__logger_8h.html">util/stderr_logger.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d4c/malloc_8h.html">port/malloc.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/dcb/sys__time_8h.html">port/sys_time.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a964eaa9260f67c9f39e3bc8a5794c341">   13</a></span><a class="code hl_function" href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a964eaa9260f67c9f39e3bc8a5794c341">StderrLogger::~StderrLogger</a>() {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a49387d1c889061cff80d9592a94ed72d">log_prefix</a> != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    free((<span class="keywordtype">void</span>*)<a class="code hl_variable" href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a49387d1c889061cff80d9592a94ed72d">log_prefix</a>);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  }</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>}</div>
+</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a901ec39c6ed26255a36b2abad6ce32cb">   19</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a901ec39c6ed26255a36b2abad6ce32cb">StderrLogger::Logv</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* format, va_list ap) {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">const</span> uint64_t thread_id = <a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">Env::Default</a>()-&gt;GetThreadID();</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <a class="code hl_typedef" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a5c930528c5b6089b14a3c1cc50b00c97">port::TimeVal</a> now_tv;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a475f287137029a7be9f567ea329ae81f">port::GetTimeOfDay</a>(&amp;now_tv, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keyword">const</span> time_t seconds = now_tv.tv_sec;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keyword">struct </span>tm t;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a4f3bf62a8423974f9abfbd0656b54496">port::LocalTimeR</a>(&amp;seconds, &amp;t);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// The string we eventually log has three parts: the context (time, thread),</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="comment">// optional user-supplied prefix, and the actual log message (the &quot;suffix&quot;).</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment">// We compute their lengths so that we can allocate a buffer big enough to</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// print it. The context string (with the date and thread id) is really only</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="comment">// 44 bytes, but we allocate 50 to be safe.</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="comment">//    ctx_len = 44         = ( 4+ 1+ 2+1+2+ 1+2+ 1+2+ 1+ 2+1+6+ 1+16+1)</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* ctx_prefix_fmt = <span class="stringliteral">&quot;%04d/%02d/%02d-%02d:%02d:%02d.%06d %llx %s&quot;</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">size_t</span> ctx_len = 50;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  va_list ap_copy;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  va_copy(ap_copy, ap);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> log_suffix_len = vsnprintf(<span class="keyword">nullptr</span>, 0, format, ap_copy) + 1;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  va_end(ap_copy);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">// Allocate space for the context, log_prefix, and log itself</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// Extra byte for null termination</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">size_t</span> buf_len = ctx_len + <a class="code hl_variable" href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a1774456767a7d55f2dd22ab815dc0b4b">log_prefix_len</a> + log_suffix_len;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  std::unique_ptr&lt;char[]&gt; buf(<span class="keyword">new</span> <span class="keywordtype">char</span>[buf_len]);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// If the logger was created without a prefix, the prefix is a nullptr</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* prefix = <a class="code hl_variable" href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a49387d1c889061cff80d9592a94ed72d">log_prefix</a> == <span class="keyword">nullptr</span> ? <span class="stringliteral">&quot;&quot;</span> : <a class="code hl_variable" href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a49387d1c889061cff80d9592a94ed72d">log_prefix</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// Write out the context and prefix string</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">int</span> written =</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      snprintf(buf.get(), ctx_len + <a class="code hl_variable" href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a1774456767a7d55f2dd22ab815dc0b4b">log_prefix_len</a>, ctx_prefix_fmt,</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>               t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min,</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>               t.tm_sec, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(now_tv.tv_usec),</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>               <span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(thread_id), prefix);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  vsnprintf(buf.get() + written, log_suffix_len, format, ap);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  fprintf(stderr, <span class="stringliteral">&quot;%s%c&quot;</span>, buf.get(), <span class="charliteral">&#39;\n&#39;</span>);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>}</div>
+</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a6ab2e37815691608582aa44201663888"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a6ab2e37815691608582aa44201663888">ROCKSDB_NAMESPACE::Env::Default</a></div><div class="ttdeci">static Env * Default()</div><div class="ttdef"><b>Definition</b> <a href="../../de/d24/env__posix_8cc_source.html#l00498">env_posix.cc:498</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StderrLogger_html_a1774456767a7d55f2dd22ab815dc0b4b"><div class="ttname"><a href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a1774456767a7d55f2dd22ab815dc0b4b">ROCKSDB_NAMESPACE::StderrLogger::log_prefix_len</a></div><div class="ttdeci">size_t log_prefix_len</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dec/stderr__logger_8h_source.html#l00038">stderr_logger.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StderrLogger_html_a49387d1c889061cff80d9592a94ed72d"><div class="ttname"><a href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a49387d1c889061cff80d9592a94ed72d">ROCKSDB_NAMESPACE::StderrLogger::log_prefix</a></div><div class="ttdeci">const char * log_prefix</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dec/stderr__logger_8h_source.html#l00036">stderr_logger.h:36</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StderrLogger_html_a901ec39c6ed26255a36b2abad6ce32cb"><div class="ttname"><a href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a901ec39c6ed26255a36b2abad6ce32cb">ROCKSDB_NAMESPACE::StderrLogger::Logv</a></div><div class="ttdeci">void Logv(const char *format, va_list ap) override</div><div class="ttdef"><b>Definition</b> <a href="#l00019">stderr_logger.cc:19</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1StderrLogger_html_a964eaa9260f67c9f39e3bc8a5794c341"><div class="ttname"><a href="../../d4/d57/classROCKSDB__NAMESPACE_1_1StderrLogger.html#a964eaa9260f67c9f39e3bc8a5794c341">ROCKSDB_NAMESPACE::StderrLogger::~StderrLogger</a></div><div class="ttdeci">~StderrLogger() override</div><div class="ttdef"><b>Definition</b> <a href="#l00013">stderr_logger.cc:13</a></div></div>
+<div class="ttc" id="amalloc_8h_html"><div class="ttname"><a href="../../d0/d4c/malloc_8h.html">malloc.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a475f287137029a7be9f567ea329ae81f"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a475f287137029a7be9f567ea329ae81f">ROCKSDB_NAMESPACE::port::GetTimeOfDay</a></div><div class="ttdeci">void GetTimeOfDay(TimeVal *tv, struct timezone *tz)</div><div class="ttdef"><b>Definition</b> <a href="../../db/dcb/sys__time_8h_source.html#l00051">sys_time.h:51</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a4f3bf62a8423974f9abfbd0656b54496"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a4f3bf62a8423974f9abfbd0656b54496">ROCKSDB_NAMESPACE::port::LocalTimeR</a></div><div class="ttdeci">struct tm * LocalTimeR(const time_t *timep, struct tm *result)</div><div class="ttdef"><b>Definition</b> <a href="../../db/dcb/sys__time_8h_source.html#l00055">sys_time.h:55</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_a5c930528c5b6089b14a3c1cc50b00c97"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#a5c930528c5b6089b14a3c1cc50b00c97">ROCKSDB_NAMESPACE::port::TimeVal</a></div><div class="ttdeci">struct timeval TimeVal</div><div class="ttdef"><b>Definition</b> <a href="../../db/dcb/sys__time_8h_source.html#l00049">sys_time.h:49</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="astderr__logger_8h_html"><div class="ttname"><a href="../../d7/dec/stderr__logger_8h.html">stderr_logger.h</a></div></div>
+<div class="ttc" id="asys__time_8h_html"><div class="ttname"><a href="../../db/dcb/sys__time_8h.html">sys_time.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_23ec12649285f9fabf3a6b7380226c28.html">util</a></li><li class="navelem"><a class="el" href="../../dd/d74/stderr__logger_8cc.html">stderr_logger.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

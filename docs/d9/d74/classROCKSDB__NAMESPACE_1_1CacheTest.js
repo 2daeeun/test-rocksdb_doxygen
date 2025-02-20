@@ -1,0 +1,27 @@
+var classROCKSDB__NAMESPACE_1_1CacheTest =
+[
+    [ "CacheTest", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a20723fd44e29695129482c31a0eee0f4", null ],
+    [ "~CacheTest", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#ae89461cf2dbe302a096d533d832d8e2e", null ],
+    [ "DecodeKey", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a848e93ab971668d432e89fc99ccfd00c", null ],
+    [ "Deleter", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a378cb1b8094b967cc9499546ccc457ba", null ],
+    [ "EncodeKey", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a81d5dd32dc1b37bdd609f09e3ae28774", null ],
+    [ "Erase", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#ab17e65c2a1b7f4b61edcd62c50df599c", null ],
+    [ "Erase", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a337f8ac8bebc10a9fda31b1f4dd2cce1", null ],
+    [ "Erase2", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#ac34582d7a34fce60dc204854460d7dc5", null ],
+    [ "Insert", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a6085aa5cbf2199668db32ce80a4a3ce6", null ],
+    [ "Insert", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a1e59f34e6c26b94aeb4c81cde77bf751", null ],
+    [ "Insert2", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a168a2a1b922bdccd2121f138677b3f47", null ],
+    [ "Lookup", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a333c67bff6a9a889fc61d44b911f895e", null ],
+    [ "Lookup", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#aca1e4edf08afaf3b4528f1a5995edbea", null ],
+    [ "Lookup2", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a5253625184af4b4be08c0657483a4002", null ],
+    [ "cache2_", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#aff22ca4017424067ce423257c2bd69d1", null ],
+    [ "cache_", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#af50a0c045c42dde6bad22c86daad2639", null ],
+    [ "current_", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a4f7588ee9f0a45a33869a894a0660351", null ],
+    [ "deleted_values_", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#acc3d0895dd5ddc49596108fcb5f4938f", null ],
+    [ "kCacheSize", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a088b03353659902da6315277811c9cb7", null ],
+    [ "kCacheSize2", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a4795fe1754f6deae70231762b0c3b7cb", null ],
+    [ "kHelper", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a72fb9612f3fbf0f7c75c492147472ebf", null ],
+    [ "kNumShardBits", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a9500fabb622feaf91db24c38f00c257a", null ],
+    [ "kNumShardBits2", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#a4cff9865fb063f2d0f814abd9e3b68a1", null ],
+    [ "type_", "d9/d74/classROCKSDB__NAMESPACE_1_1CacheTest.html#aa245f6ca2d36be38586495a18f66a0a0", null ]
+];

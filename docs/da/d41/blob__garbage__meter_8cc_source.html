@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: db/blob/blob_garbage_meter.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('da/d41/blob__garbage__meter_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">blob_garbage_meter.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../da/d41/blob__garbage__meter_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../d2/dde/blob__garbage__meter_8h.html">db/blob/blob_garbage_meter.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d01/blob__index_8h.html">db/blob/blob_index.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/d3f/blob__log__format_8h.html">db/blob/blob_log_format.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d73/dbformat_8h.html">db/dbformat.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="foldopen" id="foldopen00014" data-start="{" data-end="}">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#af25598cbd17d4afef294a328b08dbedf">   14</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#af25598cbd17d4afef294a328b08dbedf">BlobGarbageMeter::ProcessInFlow</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value) {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  uint64_t blob_file_number = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac3b2cf3133100c394ced2eedbc1c94ac">kInvalidBlobFileNumber</a>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  uint64_t bytes = 0;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#abb419cb6ac8f077013a204ee3fd53e93">Parse</a>(key, value, &amp;blob_file_number, &amp;bytes);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  }</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keywordflow">if</span> (blob_file_number == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac3b2cf3133100c394ced2eedbc1c94ac">kInvalidBlobFileNumber</a>) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  }</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <a class="code hl_variable" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#ae285ad386033807491108e85d94a3f16">flows_</a>[blob_file_number].AddInFlow(bytes);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
+</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#a2e1b193b629902a86c202fce2f283c5f">   32</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#a2e1b193b629902a86c202fce2f283c5f">BlobGarbageMeter::ProcessOutFlow</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value) {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  uint64_t blob_file_number = <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac3b2cf3133100c394ced2eedbc1c94ac">kInvalidBlobFileNumber</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  uint64_t bytes = 0;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#abb419cb6ac8f077013a204ee3fd53e93">Parse</a>(key, value, &amp;blob_file_number, &amp;bytes);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">if</span> (blob_file_number == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac3b2cf3133100c394ced2eedbc1c94ac">kInvalidBlobFileNumber</a>) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// Note: in order to measure the amount of additional garbage, we only need to</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// track the outflow for preexisting files, i.e. those that also had inflow.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// (Newly written files would only have outflow.)</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">auto</span> it = <a class="code hl_variable" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#ae285ad386033807491108e85d94a3f16">flows_</a>.find(blob_file_number);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">if</span> (it == <a class="code hl_variable" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#ae285ad386033807491108e85d94a3f16">flows_</a>.end()) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  it-&gt;second.AddOutFlow(bytes);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
+</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#abb419cb6ac8f077013a204ee3fd53e93">   58</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#abb419cb6ac8f077013a204ee3fd53e93">BlobGarbageMeter::Parse</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; value,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                               uint64_t* blob_file_number, uint64_t* bytes) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  assert(blob_file_number);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  assert(*blob_file_number == <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac3b2cf3133100c394ced2eedbc1c94ac">kInvalidBlobFileNumber</a>);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  assert(bytes);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  assert(*bytes == 0);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <a class="code hl_struct" href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html">ParsedInternalKey</a> ikey;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> log_err_key = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7fae4a23fa6b9c2c08ee516677913d33">ParseInternalKey</a>(key, &amp;ikey, log_err_key);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">if</span> (ikey.<a class="code hl_variable" href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html#abbfe057bb02455d894db433d44e7c3fe">type</a> != <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a63da61d97d5cc28e7b9c847bb8a76abcad56d6942808ab0080d07a0ec34488941">kTypeBlobIndex</a>) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <a class="code hl_class" href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html">BlobIndex</a> blob_index;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keyword">const</span> <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = blob_index.<a class="code hl_function" href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html#ac41599f0311c919579a097c22b3d20a7">DecodeFrom</a>(value);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  }</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordflow">if</span> (blob_index.<a class="code hl_function" href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html#a15e208497b61f7c5c654ce8775b74f66">IsInlined</a>() || blob_index.<a class="code hl_function" href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html#afd444af78b33f7826ab1befdf858f4e7">HasTTL</a>()) {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">Status::Corruption</a>(<span class="stringliteral">&quot;Unexpected TTL/inlined blob index&quot;</span>);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  *blob_file_number = blob_index.<a class="code hl_function" href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html#a4c5ebb23307638e76198b0007b1a9f3b">file_number</a>();</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  *bytes =</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      blob_index.<a class="code hl_function" href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html#af6782aa8e8dc77a5e52b0fc3660ea684">size</a>() +</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      <a class="code hl_function" href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a75b7e268daa22e8d425aa843a1a29070">BlobLogRecord::CalculateAdjustmentForRecordHeader</a>(ikey.<a class="code hl_variable" href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html#a3fa54a8b2f8309aaa3a5b685d058b786">user_key</a>.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>());</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
+</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="ablob__garbage__meter_8h_html"><div class="ttname"><a href="../../d2/dde/blob__garbage__meter_8h.html">blob_garbage_meter.h</a></div></div>
+<div class="ttc" id="ablob__index_8h_html"><div class="ttname"><a href="../../d5/d01/blob__index_8h.html">blob_index.h</a></div></div>
+<div class="ttc" id="ablob__log__format_8h_html"><div class="ttname"><a href="../../d3/d3f/blob__log__format_8h.html">blob_log_format.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobGarbageMeter_html_a2e1b193b629902a86c202fce2f283c5f"><div class="ttname"><a href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#a2e1b193b629902a86c202fce2f283c5f">ROCKSDB_NAMESPACE::BlobGarbageMeter::ProcessOutFlow</a></div><div class="ttdeci">Status ProcessOutFlow(const Slice &amp;key, const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00032">blob_garbage_meter.cc:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobGarbageMeter_html_abb419cb6ac8f077013a204ee3fd53e93"><div class="ttname"><a href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#abb419cb6ac8f077013a204ee3fd53e93">ROCKSDB_NAMESPACE::BlobGarbageMeter::Parse</a></div><div class="ttdeci">static Status Parse(const Slice &amp;key, const Slice &amp;value, uint64_t *blob_file_number, uint64_t *bytes)</div><div class="ttdef"><b>Definition</b> <a href="#l00058">blob_garbage_meter.cc:58</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobGarbageMeter_html_ae285ad386033807491108e85d94a3f16"><div class="ttname"><a href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#ae285ad386033807491108e85d94a3f16">ROCKSDB_NAMESPACE::BlobGarbageMeter::flows_</a></div><div class="ttdeci">std::unordered_map&lt; uint64_t, BlobInOutFlow &gt; flows_</div><div class="ttdef"><b>Definition</b> <a href="../../d2/dde/blob__garbage__meter_8h_source.html#l00099">blob_garbage_meter.h:99</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobGarbageMeter_html_af25598cbd17d4afef294a328b08dbedf"><div class="ttname"><a href="../../dc/d42/classROCKSDB__NAMESPACE_1_1BlobGarbageMeter.html#af25598cbd17d4afef294a328b08dbedf">ROCKSDB_NAMESPACE::BlobGarbageMeter::ProcessInFlow</a></div><div class="ttdeci">Status ProcessInFlow(const Slice &amp;key, const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="#l00014">blob_garbage_meter.cc:14</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobIndex_html"><div class="ttname"><a href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html">ROCKSDB_NAMESPACE::BlobIndex</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d01/blob__index_8h_source.html#l00044">blob_index.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobIndex_html_a15e208497b61f7c5c654ce8775b74f66"><div class="ttname"><a href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html#a15e208497b61f7c5c654ce8775b74f66">ROCKSDB_NAMESPACE::BlobIndex::IsInlined</a></div><div class="ttdeci">bool IsInlined() const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d01/blob__index_8h_source.html#l00058">blob_index.h:58</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobIndex_html_a4c5ebb23307638e76198b0007b1a9f3b"><div class="ttname"><a href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html#a4c5ebb23307638e76198b0007b1a9f3b">ROCKSDB_NAMESPACE::BlobIndex::file_number</a></div><div class="ttdeci">uint64_t file_number() const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d01/blob__index_8h_source.html#l00074">blob_index.h:74</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobIndex_html_ac41599f0311c919579a097c22b3d20a7"><div class="ttname"><a href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html#ac41599f0311c919579a097c22b3d20a7">ROCKSDB_NAMESPACE::BlobIndex::DecodeFrom</a></div><div class="ttdeci">Status DecodeFrom(Slice slice)</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d01/blob__index_8h_source.html#l00094">blob_index.h:94</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobIndex_html_af6782aa8e8dc77a5e52b0fc3660ea684"><div class="ttname"><a href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html#af6782aa8e8dc77a5e52b0fc3660ea684">ROCKSDB_NAMESPACE::BlobIndex::size</a></div><div class="ttdeci">uint64_t size() const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d01/blob__index_8h_source.html#l00084">blob_index.h:84</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1BlobIndex_html_afd444af78b33f7826ab1befdf858f4e7"><div class="ttname"><a href="../../d2/d44/classROCKSDB__NAMESPACE_1_1BlobIndex.html#afd444af78b33f7826ab1befdf858f4e7">ROCKSDB_NAMESPACE::BlobIndex::HasTTL</a></div><div class="ttdeci">bool HasTTL() const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d01/blob__index_8h_source.html#l00060">blob_index.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a47c51c16ecee27b619768f1b817a342c"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">ROCKSDB_NAMESPACE::Slice::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00060">slice.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a41dc92b90c65fe4db6b69108cf52569e"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a41dc92b90c65fe4db6b69108cf52569e">ROCKSDB_NAMESPACE::Status::Corruption</a></div><div class="ttdeci">static Status Corruption(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00203">status.h:203</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="adbformat_8h_html"><div class="ttname"><a href="../../d1/d73/dbformat_8h.html">dbformat.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a63da61d97d5cc28e7b9c847bb8a76abcad56d6942808ab0080d07a0ec34488941"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a63da61d97d5cc28e7b9c847bb8a76abcad56d6942808ab0080d07a0ec34488941">ROCKSDB_NAMESPACE::kTypeBlobIndex</a></div><div class="ttdeci">@ kTypeBlobIndex</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00059">dbformat.h:59</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a7fae4a23fa6b9c2c08ee516677913d33"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7fae4a23fa6b9c2c08ee516677913d33">ROCKSDB_NAMESPACE::ParseInternalKey</a></div><div class="ttdeci">Status ParseInternalKey(const Slice &amp;internal_key, ParsedInternalKey *result, bool log_err_key)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00515">dbformat.h:515</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ac3b2cf3133100c394ced2eedbc1c94ac"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac3b2cf3133100c394ced2eedbc1c94ac">ROCKSDB_NAMESPACE::kInvalidBlobFileNumber</a></div><div class="ttdeci">constexpr uint64_t kInvalidBlobFileNumber</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d46/blob__constants_8h_source.html#l00014">blob_constants.h:14</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlobLogRecord_html_a75b7e268daa22e8d425aa843a1a29070"><div class="ttname"><a href="../../d8/d25/structROCKSDB__NAMESPACE_1_1BlobLogRecord.html#a75b7e268daa22e8d425aa843a1a29070">ROCKSDB_NAMESPACE::BlobLogRecord::CalculateAdjustmentForRecordHeader</a></div><div class="ttdeci">static constexpr uint64_t CalculateAdjustmentForRecordHeader(uint64_t key_size)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d3f/blob__log__format_8h_source.html#l00125">blob_log_format.h:125</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ParsedInternalKey_html"><div class="ttname"><a href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html">ROCKSDB_NAMESPACE::ParsedInternalKey</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00140">dbformat.h:140</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ParsedInternalKey_html_a3fa54a8b2f8309aaa3a5b685d058b786"><div class="ttname"><a href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html#a3fa54a8b2f8309aaa3a5b685d058b786">ROCKSDB_NAMESPACE::ParsedInternalKey::user_key</a></div><div class="ttdeci">Slice user_key</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00141">dbformat.h:141</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ParsedInternalKey_html_abbfe057bb02455d894db433d44e7c3fe"><div class="ttname"><a href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html#abbfe057bb02455d894db433d44e7c3fe">ROCKSDB_NAMESPACE::ParsedInternalKey::type</a></div><div class="ttdeci">ValueType type</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00143">dbformat.h:143</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_ce5981f09099a3fa6071b9eb8fe67a2c.html">db</a></li><li class="navelem"><a class="el" href="../../dir_b850757ce2504bdef52f7eb2839ed90a.html">blob</a></li><li class="navelem"><a class="el" href="../../da/d41/blob__garbage__meter_8cc.html">blob_garbage_meter.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

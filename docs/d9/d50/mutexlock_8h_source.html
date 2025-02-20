@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: util/mutexlock.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d9/d50/mutexlock_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">mutexlock.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d9/d50/mutexlock_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="foldopen" id="foldopen00001" data-start="{" data-end="}">
+<div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8ad3d7954dd77c4bbe3c7170699364dd">    1</a></span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;assert.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;mutex&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d00/port_8h.html">port/port.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/d57/fastrange_8h.html">util/fastrange.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="../../db/dfb/hash_8h.html">util/hash.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">// Helper class that locks a mutex on construction and unlocks the mutex when</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// the destructor of the MutexLock object is invoked.</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">//</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// Typical usage:</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">//</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">//   void MyClass::MyMethod() {</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">//     MutexLock l(&amp;mu_);       // mu_ is an instance variable</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">//     ... some complex code, possibly with multiple return paths ...</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">//   }</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html">   35</a></span><span class="keyword">class </span><a class="code hl_function" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a741e226ff038bd24c8c65c8e11ac3374">MutexLock</a> {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a741e226ff038bd24c8c65c8e11ac3374">   37</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a741e226ff038bd24c8c65c8e11ac3374">MutexLock</a>(<a class="code hl_class" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">port::Mutex</a> *mu) : <a class="code hl_variable" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#abf7ad08589f212b6beb2ec1f788ea7ed">mu_</a>(mu) { this-&gt;<a class="code hl_variable" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#abf7ad08589f212b6beb2ec1f788ea7ed">mu_</a>-&gt;Lock(); }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="comment">// No copying allowed</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#ab7a2a2f9e402e9802bb38f8b92520c7b">   39</a></span>  <a class="code hl_function" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#ab7a2a2f9e402e9802bb38f8b92520c7b">MutexLock</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a741e226ff038bd24c8c65c8e11ac3374">MutexLock</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a1a2fa6b6a2ed751172360e6c1e2f5a47">   40</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a1a2fa6b6a2ed751172360e6c1e2f5a47">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a741e226ff038bd24c8c65c8e11ac3374">MutexLock</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a798f9ce51ca77b6de4336182959d0bdd">   42</a></span>  <a class="code hl_function" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a798f9ce51ca77b6de4336182959d0bdd">~MutexLock</a>() { this-&gt;<a class="code hl_variable" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#abf7ad08589f212b6beb2ec1f788ea7ed">mu_</a>-&gt;Unlock(); }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#abf7ad08589f212b6beb2ec1f788ea7ed">   45</a></span>  <a class="code hl_class" href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">port::Mutex</a> *<span class="keyword">const</span> <a class="code hl_variable" href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#abf7ad08589f212b6beb2ec1f788ea7ed">mu_</a>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>};</div>
+</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">//</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">// Acquire a ReadLock on the specified RWMutex.</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">// The Lock will be automatically released when the</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">// object goes out of scope.</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">//</span></div>
+<div class="foldopen" id="foldopen00053" data-start="{" data-end="};">
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html">   53</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#ae5a9c92a429a7e8bddf2e55ad76da0cd">ReadLock</a> {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#ae5a9c92a429a7e8bddf2e55ad76da0cd">   55</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#ae5a9c92a429a7e8bddf2e55ad76da0cd">ReadLock</a>(<a class="code hl_class" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html">port::RWMutex</a> *mu) : <a class="code hl_variable" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#af29bcb9b6dd7c4fd57e4321aba635b40">mu_</a>(mu) { this-&gt;<a class="code hl_variable" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#af29bcb9b6dd7c4fd57e4321aba635b40">mu_</a>-&gt;ReadLock(); }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="comment">// No copying allowed</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#ab3937bf3c5ca83d63386330ac4eacfb8">   57</a></span>  <a class="code hl_function" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#ab3937bf3c5ca83d63386330ac4eacfb8">ReadLock</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#ae5a9c92a429a7e8bddf2e55ad76da0cd">ReadLock</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#a81d2050790ea538dfaa96dd56fe2e6d1">   58</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#a81d2050790ea538dfaa96dd56fe2e6d1">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#ae5a9c92a429a7e8bddf2e55ad76da0cd">ReadLock</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#a20a0a81fa905eb0e1ac4b350f983db9f">   60</a></span>  <a class="code hl_function" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#a20a0a81fa905eb0e1ac4b350f983db9f">~ReadLock</a>() { this-&gt;<a class="code hl_variable" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#af29bcb9b6dd7c4fd57e4321aba635b40">mu_</a>-&gt;ReadUnlock(); }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#af29bcb9b6dd7c4fd57e4321aba635b40">   63</a></span>  <a class="code hl_class" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html">port::RWMutex</a> *<span class="keyword">const</span> <a class="code hl_variable" href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#af29bcb9b6dd7c4fd57e4321aba635b40">mu_</a>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>};</div>
+</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">//</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// Automatically unlock a locked mutex when the object is destroyed</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">//</span></div>
+<div class="foldopen" id="foldopen00069" data-start="{" data-end="};">
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html">   69</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#ae3c56faa0ce85f401deafefad3ba19d2">ReadUnlock</a> {</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#ae3c56faa0ce85f401deafefad3ba19d2">   71</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#ae3c56faa0ce85f401deafefad3ba19d2">ReadUnlock</a>(<a class="code hl_class" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html">port::RWMutex</a> *mu) : <a class="code hl_variable" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a5d26326884bcaf994248b078bf4cdfee">mu_</a>(mu) { mu-&gt;<a class="code hl_function" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a435c7783df58f4966618c438882f2ab3">AssertHeld</a>(); }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">// No copying allowed</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a08ee2e45b9488827b575e30f75af0d07">   73</a></span>  <a class="code hl_function" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a08ee2e45b9488827b575e30f75af0d07">ReadUnlock</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#ae3c56faa0ce85f401deafefad3ba19d2">ReadUnlock</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a0b7a074785eec18853e4cbd908d3916c">   74</a></span>  <a class="code hl_function" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#ae3c56faa0ce85f401deafefad3ba19d2">ReadUnlock</a> &amp;<a class="code hl_function" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a0b7a074785eec18853e4cbd908d3916c">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#ae3c56faa0ce85f401deafefad3ba19d2">ReadUnlock</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#ab78845090b4329947e0f4eb921f27cf8">   76</a></span>  <a class="code hl_function" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#ab78845090b4329947e0f4eb921f27cf8">~ReadUnlock</a>() { <a class="code hl_variable" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a5d26326884bcaf994248b078bf4cdfee">mu_</a>-&gt;ReadUnlock(); }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a5d26326884bcaf994248b078bf4cdfee">   79</a></span>  <a class="code hl_class" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html">port::RWMutex</a> *<span class="keyword">const</span> <a class="code hl_variable" href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a5d26326884bcaf994248b078bf4cdfee">mu_</a>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>};</div>
+</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">//</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">// Acquire a WriteLock on the specified RWMutex.</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">// The Lock will be automatically released then the</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">// object goes out of scope.</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">//</span></div>
+<div class="foldopen" id="foldopen00087" data-start="{" data-end="};">
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html">   87</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a0aaa90824854c86f8da0129c39de2904">WriteLock</a> {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a0aaa90824854c86f8da0129c39de2904">   89</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a0aaa90824854c86f8da0129c39de2904">WriteLock</a>(<a class="code hl_class" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html">port::RWMutex</a> *mu) : <a class="code hl_variable" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a5e9a8e26eea41cc5378440d8353050de">mu_</a>(mu) { this-&gt;<a class="code hl_variable" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a5e9a8e26eea41cc5378440d8353050de">mu_</a>-&gt;WriteLock(); }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="comment">// No copying allowed</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a15951b7a5c91cf6d6fa0656949d4e5ef">   91</a></span>  <a class="code hl_function" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a15951b7a5c91cf6d6fa0656949d4e5ef">WriteLock</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a0aaa90824854c86f8da0129c39de2904">WriteLock</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#ab89a8f0604aae56fd1bf61952f07dbf6">   92</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#ab89a8f0604aae56fd1bf61952f07dbf6">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a0aaa90824854c86f8da0129c39de2904">WriteLock</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#aa7ce7ca2e841623f60c9040711ddc589">   94</a></span>  <a class="code hl_function" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#aa7ce7ca2e841623f60c9040711ddc589">~WriteLock</a>() { this-&gt;<a class="code hl_variable" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a5e9a8e26eea41cc5378440d8353050de">mu_</a>-&gt;WriteUnlock(); }</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a5e9a8e26eea41cc5378440d8353050de">   97</a></span>  <a class="code hl_class" href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html">port::RWMutex</a> *<span class="keyword">const</span> <a class="code hl_variable" href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a5e9a8e26eea41cc5378440d8353050de">mu_</a>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>};</div>
+</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">//</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">// SpinMutex has very low overhead for low-contention cases.  Method names</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">// are chosen so you can use std::unique_lock or std::lock_guard with it.</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">//</span></div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="};">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html">  104</a></span><span class="keyword">class </span><a class="code hl_function" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#ad3a6be86a2d9d51d8e8f757aece21706">SpinMutex</a> {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#ad3a6be86a2d9d51d8e8f757aece21706">  106</a></span>  <a class="code hl_function" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#ad3a6be86a2d9d51d8e8f757aece21706">SpinMutex</a>() : <a class="code hl_variable" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#aeb99d8448aa2907b45f635e8a0858d01">locked_</a>(false) {}</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="foldopen" id="foldopen00108" data-start="{" data-end="}">
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#ab53ead6e5a5918584cb352ac38477ff6">  108</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#ab53ead6e5a5918584cb352ac38477ff6">try_lock</a>() {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keyword">auto</span> currently_locked = <a class="code hl_variable" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#aeb99d8448aa2907b45f635e8a0858d01">locked_</a>.load(std::memory_order_relaxed);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordflow">return</span> !currently_locked &amp;&amp;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>           <a class="code hl_variable" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#aeb99d8448aa2907b45f635e8a0858d01">locked_</a>.compare_exchange_weak(currently_locked, <span class="keyword">true</span>,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                                         std::memory_order_acquire,</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                                         std::memory_order_relaxed);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  }</div>
+</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#a880c75fe1439a0f7b66f5584c8904e8b">  116</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#a880c75fe1439a0f7b66f5584c8904e8b">lock</a>() {</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> tries = 0;; ++tries) {</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#ab53ead6e5a5918584cb352ac38477ff6">try_lock</a>()) {</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="comment">// success</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      }</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <a class="code hl_function" href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#af607d0a9ee351c575aacff9596f48949">port::AsmVolatilePause</a>();</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <span class="keywordflow">if</span> (tries &gt; 100) {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        std::this_thread::yield();</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      }</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    }</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  }</div>
+</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#aefc4c8d725e881240e2a3424bc960cac">  129</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#aefc4c8d725e881240e2a3424bc960cac">unlock</a>() { <a class="code hl_variable" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#aeb99d8448aa2907b45f635e8a0858d01">locked_</a>.store(<span class="keyword">false</span>, std::memory_order_release); }</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#aeb99d8448aa2907b45f635e8a0858d01">  132</a></span>  std::atomic&lt;bool&gt; <a class="code hl_variable" href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#aeb99d8448aa2907b45f635e8a0858d01">locked_</a>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>};</div>
+</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">// For preventing false sharing, especially for mutexes.</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment">// NOTE: if a mutex is less than half the size of a cache line, it would</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment">// make more sense for Striped structure below to pack more than one mutex</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment">// into each cache line, as this would only reduce contention for the same</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment">// amount of space and cache sharing. However, a mutex is often 40 bytes out</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="comment">// of a 64 byte cache line.</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="keyword">struct </span>ALIGN_AS(CACHE_LINE_SIZE) CacheAlignedWrapper {</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  T obj_;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>};</div>
+</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00146" data-start="{" data-end="};">
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html">  146</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html">Unwrap</a> {</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html#a71bea0e776761319ac8253f366f70f32">  147</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html#a71bea0e776761319ac8253f366f70f32">type</a> = T;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html#aa4f2fc436c7464deb2b26e5dd8824a18">  148</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html#a71bea0e776761319ac8253f366f70f32">type</a> &amp;<a class="code hl_function" href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html#aa4f2fc436c7464deb2b26e5dd8824a18">Go</a>(T &amp;t) { <span class="keywordflow">return</span> t; }</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>};</div>
+</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00151" data-start="{" data-end="};">
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="../../d6/d52/structROCKSDB__NAMESPACE_1_1Unwrap_3_01CacheAlignedWrapper_3_01T_01_4_01_4.html">  151</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html">Unwrap</a>&lt;CacheAlignedWrapper&lt;T&gt;&gt; {</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="../../d6/d52/structROCKSDB__NAMESPACE_1_1Unwrap_3_01CacheAlignedWrapper_3_01T_01_4_01_4.html#ab069f28f1e7d4f275be1aeaa448d48eb">  152</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../d6/d52/structROCKSDB__NAMESPACE_1_1Unwrap_3_01CacheAlignedWrapper_3_01T_01_4_01_4.html#ab069f28f1e7d4f275be1aeaa448d48eb">type</a> = T;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="../../d6/d52/structROCKSDB__NAMESPACE_1_1Unwrap_3_01CacheAlignedWrapper_3_01T_01_4_01_4.html#ad514adbe13d147abef6a2ce32cb710fe">  153</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="../../d6/d52/structROCKSDB__NAMESPACE_1_1Unwrap_3_01CacheAlignedWrapper_3_01T_01_4_01_4.html#ab069f28f1e7d4f275be1aeaa448d48eb">type</a> &amp;<a class="code hl_function" href="../../d6/d52/structROCKSDB__NAMESPACE_1_1Unwrap_3_01CacheAlignedWrapper_3_01T_01_4_01_4.html#ad514adbe13d147abef6a2ce32cb710fe">Go</a>(CacheAlignedWrapper&lt;T&gt; &amp;t) { <span class="keywordflow">return</span> t.obj_; }</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>};</div>
+</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">//</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">// Inspired by Guava: https://github.com/google/guava/wiki/StripedExplained</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">// A striped Lock. This offers the underlying lock striping similar</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">// to that of ConcurrentHashMap in a reusable form, and extends it for</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment">// semaphores and read-write locks. Conceptually, lock striping is the technique</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">// of dividing a lock into many &lt;i&gt;stripes&lt;/i&gt;, increasing the granularity of a</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">// single lock and allowing independent operations to lock different stripes and</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">// proceed concurrently, instead of creating contention for a single lock.</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">//</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> Key = Slice, <span class="keyword">class</span> Hash = SliceNPHasher64&gt;</div>
+<div class="foldopen" id="foldopen00166" data-start="{" data-end="};">
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html">  166</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#abce7d9bec685f77d361f8fcf84be6a31">Striped</a> {</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00168" data-start="{" data-end="}">
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#abce7d9bec685f77d361f8fcf84be6a31">  168</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#abce7d9bec685f77d361f8fcf84be6a31">Striped</a>(<span class="keywordtype">size_t</span> stripe_count)</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>      : <a class="code hl_variable" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#adeccf3394adc838b5b1762a80f86a709">stripe_count_</a>(stripe_count), <a class="code hl_variable" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#ad529a0160f4fcd4800a8f4ba610421a8">data_</a>(new T[stripe_count]) {}</div>
+</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a0a88ea739c94ebce6c2feeca2268ca9d">  171</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a0a88ea739c94ebce6c2feeca2268ca9d">Unwrapped</a> = <span class="keyword">typename</span> <a class="code hl_typedef" href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html#a71bea0e776761319ac8253f366f70f32">Unwrap&lt;T&gt;::type</a>;</div>
+<div class="foldopen" id="foldopen00172" data-start="{" data-end="}">
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a02358c26216ad8efe113fb3db9c76140">  172</a></span>  <a class="code hl_typedef" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a0a88ea739c94ebce6c2feeca2268ca9d">Unwrapped</a> &amp;<a class="code hl_function" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a02358c26216ad8efe113fb3db9c76140">Get</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a4f1dc1fcd29785a38f103367e7959cb6">Key</a> &amp;key, uint64_t seed = 0) {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordtype">size_t</span> index = <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9ac5ae7c4f5e0958fcf16322a0fc4dde">FastRangeGeneric</a>(<a class="code hl_variable" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a0bcdd73551f9e597f395e37ded41e258">hash_</a>(key, seed), <a class="code hl_variable" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#adeccf3394adc838b5b1762a80f86a709">stripe_count_</a>);</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html#aa4f2fc436c7464deb2b26e5dd8824a18">Unwrap&lt;T&gt;::Go</a>(<a class="code hl_variable" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#ad529a0160f4fcd4800a8f4ba610421a8">data_</a>[index]);</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  }</div>
+</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="foldopen" id="foldopen00177" data-start="{" data-end="}">
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a22282f09262d8df7fb8fa159cc962e8d">  177</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a22282f09262d8df7fb8fa159cc962e8d">ApproximateMemoryUsage</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="comment">// NOTE: could use malloc_usable_size() here, but that could count unmapped</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="comment">// pages and could mess up unit test OccLockBucketsTest::CacheAligned</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordflow">return</span> <span class="keyword">sizeof</span>(*this) + <a class="code hl_variable" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#adeccf3394adc838b5b1762a80f86a709">stripe_count_</a> * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  }</div>
+</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#adeccf3394adc838b5b1762a80f86a709">  184</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#adeccf3394adc838b5b1762a80f86a709">stripe_count_</a>;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#ad529a0160f4fcd4800a8f4ba610421a8">  185</a></span>  std::unique_ptr&lt;T[]&gt; <a class="code hl_variable" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#ad529a0160f4fcd4800a8f4ba610421a8">data_</a>;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a0bcdd73551f9e597f395e37ded41e258">  186</a></span>  <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abac7e970c8f0247cdcda486f69313851">Hash</a> <a class="code hl_variable" href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a0bcdd73551f9e597f395e37ded41e258">hash_</a>;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>};</div>
+</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MutexLock_html_a1a2fa6b6a2ed751172360e6c1e2f5a47"><div class="ttname"><a href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a1a2fa6b6a2ed751172360e6c1e2f5a47">ROCKSDB_NAMESPACE::MutexLock::operator=</a></div><div class="ttdeci">void operator=(const MutexLock &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MutexLock_html_a741e226ff038bd24c8c65c8e11ac3374"><div class="ttname"><a href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a741e226ff038bd24c8c65c8e11ac3374">ROCKSDB_NAMESPACE::MutexLock::MutexLock</a></div><div class="ttdeci">MutexLock(port::Mutex *mu)</div><div class="ttdef"><b>Definition</b> <a href="#l00037">mutexlock.h:37</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MutexLock_html_a798f9ce51ca77b6de4336182959d0bdd"><div class="ttname"><a href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#a798f9ce51ca77b6de4336182959d0bdd">ROCKSDB_NAMESPACE::MutexLock::~MutexLock</a></div><div class="ttdeci">~MutexLock()</div><div class="ttdef"><b>Definition</b> <a href="#l00042">mutexlock.h:42</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MutexLock_html_ab7a2a2f9e402e9802bb38f8b92520c7b"><div class="ttname"><a href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#ab7a2a2f9e402e9802bb38f8b92520c7b">ROCKSDB_NAMESPACE::MutexLock::MutexLock</a></div><div class="ttdeci">MutexLock(const MutexLock &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1MutexLock_html_abf7ad08589f212b6beb2ec1f788ea7ed"><div class="ttname"><a href="../../dd/dcc/classROCKSDB__NAMESPACE_1_1MutexLock.html#abf7ad08589f212b6beb2ec1f788ea7ed">ROCKSDB_NAMESPACE::MutexLock::mu_</a></div><div class="ttdeci">port::Mutex *const mu_</div><div class="ttdef"><b>Definition</b> <a href="#l00045">mutexlock.h:45</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadLock_html_a20a0a81fa905eb0e1ac4b350f983db9f"><div class="ttname"><a href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#a20a0a81fa905eb0e1ac4b350f983db9f">ROCKSDB_NAMESPACE::ReadLock::~ReadLock</a></div><div class="ttdeci">~ReadLock()</div><div class="ttdef"><b>Definition</b> <a href="#l00060">mutexlock.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadLock_html_a81d2050790ea538dfaa96dd56fe2e6d1"><div class="ttname"><a href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#a81d2050790ea538dfaa96dd56fe2e6d1">ROCKSDB_NAMESPACE::ReadLock::operator=</a></div><div class="ttdeci">void operator=(const ReadLock &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadLock_html_ab3937bf3c5ca83d63386330ac4eacfb8"><div class="ttname"><a href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#ab3937bf3c5ca83d63386330ac4eacfb8">ROCKSDB_NAMESPACE::ReadLock::ReadLock</a></div><div class="ttdeci">ReadLock(const ReadLock &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadLock_html_ae5a9c92a429a7e8bddf2e55ad76da0cd"><div class="ttname"><a href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#ae5a9c92a429a7e8bddf2e55ad76da0cd">ROCKSDB_NAMESPACE::ReadLock::ReadLock</a></div><div class="ttdeci">ReadLock(port::RWMutex *mu)</div><div class="ttdef"><b>Definition</b> <a href="#l00055">mutexlock.h:55</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadLock_html_af29bcb9b6dd7c4fd57e4321aba635b40"><div class="ttname"><a href="../../d6/d00/classROCKSDB__NAMESPACE_1_1ReadLock.html#af29bcb9b6dd7c4fd57e4321aba635b40">ROCKSDB_NAMESPACE::ReadLock::mu_</a></div><div class="ttdeci">port::RWMutex *const mu_</div><div class="ttdef"><b>Definition</b> <a href="#l00063">mutexlock.h:63</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadUnlock_html_a08ee2e45b9488827b575e30f75af0d07"><div class="ttname"><a href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a08ee2e45b9488827b575e30f75af0d07">ROCKSDB_NAMESPACE::ReadUnlock::ReadUnlock</a></div><div class="ttdeci">ReadUnlock(const ReadUnlock &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadUnlock_html_a0b7a074785eec18853e4cbd908d3916c"><div class="ttname"><a href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a0b7a074785eec18853e4cbd908d3916c">ROCKSDB_NAMESPACE::ReadUnlock::operator=</a></div><div class="ttdeci">ReadUnlock &amp; operator=(const ReadUnlock &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadUnlock_html_a5d26326884bcaf994248b078bf4cdfee"><div class="ttname"><a href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#a5d26326884bcaf994248b078bf4cdfee">ROCKSDB_NAMESPACE::ReadUnlock::mu_</a></div><div class="ttdeci">port::RWMutex *const mu_</div><div class="ttdef"><b>Definition</b> <a href="#l00079">mutexlock.h:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadUnlock_html_ab78845090b4329947e0f4eb921f27cf8"><div class="ttname"><a href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#ab78845090b4329947e0f4eb921f27cf8">ROCKSDB_NAMESPACE::ReadUnlock::~ReadUnlock</a></div><div class="ttdeci">~ReadUnlock()</div><div class="ttdef"><b>Definition</b> <a href="#l00076">mutexlock.h:76</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ReadUnlock_html_ae3c56faa0ce85f401deafefad3ba19d2"><div class="ttname"><a href="../../d8/d26/classROCKSDB__NAMESPACE_1_1ReadUnlock.html#ae3c56faa0ce85f401deafefad3ba19d2">ROCKSDB_NAMESPACE::ReadUnlock::ReadUnlock</a></div><div class="ttdeci">ReadUnlock(port::RWMutex *mu)</div><div class="ttdef"><b>Definition</b> <a href="#l00071">mutexlock.h:71</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SpinMutex_html_a880c75fe1439a0f7b66f5584c8904e8b"><div class="ttname"><a href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#a880c75fe1439a0f7b66f5584c8904e8b">ROCKSDB_NAMESPACE::SpinMutex::lock</a></div><div class="ttdeci">void lock()</div><div class="ttdef"><b>Definition</b> <a href="#l00116">mutexlock.h:116</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SpinMutex_html_ab53ead6e5a5918584cb352ac38477ff6"><div class="ttname"><a href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#ab53ead6e5a5918584cb352ac38477ff6">ROCKSDB_NAMESPACE::SpinMutex::try_lock</a></div><div class="ttdeci">bool try_lock()</div><div class="ttdef"><b>Definition</b> <a href="#l00108">mutexlock.h:108</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SpinMutex_html_ad3a6be86a2d9d51d8e8f757aece21706"><div class="ttname"><a href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#ad3a6be86a2d9d51d8e8f757aece21706">ROCKSDB_NAMESPACE::SpinMutex::SpinMutex</a></div><div class="ttdeci">SpinMutex()</div><div class="ttdef"><b>Definition</b> <a href="#l00106">mutexlock.h:106</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SpinMutex_html_aeb99d8448aa2907b45f635e8a0858d01"><div class="ttname"><a href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#aeb99d8448aa2907b45f635e8a0858d01">ROCKSDB_NAMESPACE::SpinMutex::locked_</a></div><div class="ttdeci">std::atomic&lt; bool &gt; locked_</div><div class="ttdef"><b>Definition</b> <a href="#l00132">mutexlock.h:132</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SpinMutex_html_aefc4c8d725e881240e2a3424bc960cac"><div class="ttname"><a href="../../de/d1c/classROCKSDB__NAMESPACE_1_1SpinMutex.html#aefc4c8d725e881240e2a3424bc960cac">ROCKSDB_NAMESPACE::SpinMutex::unlock</a></div><div class="ttdeci">void unlock()</div><div class="ttdef"><b>Definition</b> <a href="#l00129">mutexlock.h:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Striped_html_a02358c26216ad8efe113fb3db9c76140"><div class="ttname"><a href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a02358c26216ad8efe113fb3db9c76140">ROCKSDB_NAMESPACE::Striped::Get</a></div><div class="ttdeci">Unwrapped &amp; Get(const Key &amp;key, uint64_t seed=0)</div><div class="ttdef"><b>Definition</b> <a href="#l00172">mutexlock.h:172</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Striped_html_a0a88ea739c94ebce6c2feeca2268ca9d"><div class="ttname"><a href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a0a88ea739c94ebce6c2feeca2268ca9d">ROCKSDB_NAMESPACE::Striped::Unwrapped</a></div><div class="ttdeci">typename Unwrap&lt; T &gt;::type Unwrapped</div><div class="ttdef"><b>Definition</b> <a href="#l00171">mutexlock.h:171</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Striped_html_a0bcdd73551f9e597f395e37ded41e258"><div class="ttname"><a href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a0bcdd73551f9e597f395e37ded41e258">ROCKSDB_NAMESPACE::Striped::hash_</a></div><div class="ttdeci">Hash hash_</div><div class="ttdef"><b>Definition</b> <a href="#l00186">mutexlock.h:186</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Striped_html_a22282f09262d8df7fb8fa159cc962e8d"><div class="ttname"><a href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#a22282f09262d8df7fb8fa159cc962e8d">ROCKSDB_NAMESPACE::Striped::ApproximateMemoryUsage</a></div><div class="ttdeci">size_t ApproximateMemoryUsage() const</div><div class="ttdef"><b>Definition</b> <a href="#l00177">mutexlock.h:177</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Striped_html_abce7d9bec685f77d361f8fcf84be6a31"><div class="ttname"><a href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#abce7d9bec685f77d361f8fcf84be6a31">ROCKSDB_NAMESPACE::Striped::Striped</a></div><div class="ttdeci">Striped(size_t stripe_count)</div><div class="ttdef"><b>Definition</b> <a href="#l00168">mutexlock.h:168</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Striped_html_ad529a0160f4fcd4800a8f4ba610421a8"><div class="ttname"><a href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#ad529a0160f4fcd4800a8f4ba610421a8">ROCKSDB_NAMESPACE::Striped::data_</a></div><div class="ttdeci">std::unique_ptr&lt; T[]&gt; data_</div><div class="ttdef"><b>Definition</b> <a href="#l00185">mutexlock.h:185</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Striped_html_adeccf3394adc838b5b1762a80f86a709"><div class="ttname"><a href="../../d0/d5f/classROCKSDB__NAMESPACE_1_1Striped.html#adeccf3394adc838b5b1762a80f86a709">ROCKSDB_NAMESPACE::Striped::stripe_count_</a></div><div class="ttdeci">size_t stripe_count_</div><div class="ttdef"><b>Definition</b> <a href="#l00184">mutexlock.h:184</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteLock_html_a0aaa90824854c86f8da0129c39de2904"><div class="ttname"><a href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a0aaa90824854c86f8da0129c39de2904">ROCKSDB_NAMESPACE::WriteLock::WriteLock</a></div><div class="ttdeci">WriteLock(port::RWMutex *mu)</div><div class="ttdef"><b>Definition</b> <a href="#l00089">mutexlock.h:89</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteLock_html_a15951b7a5c91cf6d6fa0656949d4e5ef"><div class="ttname"><a href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a15951b7a5c91cf6d6fa0656949d4e5ef">ROCKSDB_NAMESPACE::WriteLock::WriteLock</a></div><div class="ttdeci">WriteLock(const WriteLock &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteLock_html_a5e9a8e26eea41cc5378440d8353050de"><div class="ttname"><a href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#a5e9a8e26eea41cc5378440d8353050de">ROCKSDB_NAMESPACE::WriteLock::mu_</a></div><div class="ttdeci">port::RWMutex *const mu_</div><div class="ttdef"><b>Definition</b> <a href="#l00097">mutexlock.h:97</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteLock_html_aa7ce7ca2e841623f60c9040711ddc589"><div class="ttname"><a href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#aa7ce7ca2e841623f60c9040711ddc589">ROCKSDB_NAMESPACE::WriteLock::~WriteLock</a></div><div class="ttdeci">~WriteLock()</div><div class="ttdef"><b>Definition</b> <a href="#l00094">mutexlock.h:94</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1WriteLock_html_ab89a8f0604aae56fd1bf61952f07dbf6"><div class="ttname"><a href="../../d6/dc8/classROCKSDB__NAMESPACE_1_1WriteLock.html#ab89a8f0604aae56fd1bf61952f07dbf6">ROCKSDB_NAMESPACE::WriteLock::operator=</a></div><div class="ttdeci">void operator=(const WriteLock &amp;)=delete</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1Mutex_html"><div class="ttname"><a href="../../d5/d4f/classROCKSDB__NAMESPACE_1_1port_1_1Mutex.html">ROCKSDB_NAMESPACE::port::Mutex</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d4a/port__example_8h_source.html#l00030">port_example.h:30</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1RWMutex_html"><div class="ttname"><a href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html">ROCKSDB_NAMESPACE::port::RWMutex</a></div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00129">port_posix.h:129</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1port_1_1RWMutex_html_a435c7783df58f4966618c438882f2ab3"><div class="ttname"><a href="../../dd/d6c/classROCKSDB__NAMESPACE_1_1port_1_1RWMutex.html#a435c7783df58f4966618c438882f2ab3">ROCKSDB_NAMESPACE::port::RWMutex::AssertHeld</a></div><div class="ttdeci">void AssertHeld() const</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00142">port_posix.h:142</a></div></div>
+<div class="ttc" id="afastrange_8h_html"><div class="ttname"><a href="../../db/d57/fastrange_8h.html">fastrange.h</a></div></div>
+<div class="ttc" id="ahash_8h_html"><div class="ttname"><a href="../../db/dfb/hash_8h.html">hash.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_1_1port_html_af607d0a9ee351c575aacff9596f48949"><div class="ttname"><a href="../../df/db3/namespaceROCKSDB__NAMESPACE_1_1port.html#af607d0a9ee351c575aacff9596f48949">ROCKSDB_NAMESPACE::port::AsmVolatilePause</a></div><div class="ttdeci">static void AsmVolatilePause()</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d7c/port__posix_8h_source.html#l00168">port_posix.h:168</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a4f1dc1fcd29785a38f103367e7959cb6"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a4f1dc1fcd29785a38f103367e7959cb6">ROCKSDB_NAMESPACE::Key</a></div><div class="ttdeci">uint64_t Key</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d68/inlineskiplist__test_8cc_source.html#l00024">inlineskiplist_test.cc:24</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a9ac5ae7c4f5e0958fcf16322a0fc4dde"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9ac5ae7c4f5e0958fcf16322a0fc4dde">ROCKSDB_NAMESPACE::FastRangeGeneric</a></div><div class="ttdeci">Range FastRangeGeneric(Hash hash, Range range)</div><div class="ttdef"><b>Definition</b> <a href="../../db/d57/fastrange_8h_source.html#l00097">fastrange.h:97</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_abac7e970c8f0247cdcda486f69313851"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#abac7e970c8f0247cdcda486f69313851">ROCKSDB_NAMESPACE::Hash</a></div><div class="ttdeci">uint32_t Hash(const Slice &amp;s)</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d55/block__prefix__index_8cc_source.html#l00019">block_prefix_index.cc:19</a></div></div>
+<div class="ttc" id="aport_8h_html"><div class="ttname"><a href="../../da/d00/port_8h.html">port.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unwrap_3_01CacheAlignedWrapper_3_01T_01_4_01_4_html_ab069f28f1e7d4f275be1aeaa448d48eb"><div class="ttname"><a href="../../d6/d52/structROCKSDB__NAMESPACE_1_1Unwrap_3_01CacheAlignedWrapper_3_01T_01_4_01_4.html#ab069f28f1e7d4f275be1aeaa448d48eb">ROCKSDB_NAMESPACE::Unwrap&lt; CacheAlignedWrapper&lt; T &gt; &gt;::type</a></div><div class="ttdeci">T type</div><div class="ttdef"><b>Definition</b> <a href="#l00152">mutexlock.h:152</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unwrap_3_01CacheAlignedWrapper_3_01T_01_4_01_4_html_ad514adbe13d147abef6a2ce32cb710fe"><div class="ttname"><a href="../../d6/d52/structROCKSDB__NAMESPACE_1_1Unwrap_3_01CacheAlignedWrapper_3_01T_01_4_01_4.html#ad514adbe13d147abef6a2ce32cb710fe">ROCKSDB_NAMESPACE::Unwrap&lt; CacheAlignedWrapper&lt; T &gt; &gt;::Go</a></div><div class="ttdeci">static type &amp; Go(CacheAlignedWrapper&lt; T &gt; &amp;t)</div><div class="ttdef"><b>Definition</b> <a href="#l00153">mutexlock.h:153</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unwrap_html"><div class="ttname"><a href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html">ROCKSDB_NAMESPACE::Unwrap</a></div><div class="ttdef"><b>Definition</b> <a href="#l00146">mutexlock.h:146</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unwrap_html_a71bea0e776761319ac8253f366f70f32"><div class="ttname"><a href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html#a71bea0e776761319ac8253f366f70f32">ROCKSDB_NAMESPACE::Unwrap::type</a></div><div class="ttdeci">T type</div><div class="ttdef"><b>Definition</b> <a href="#l00147">mutexlock.h:147</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Unwrap_html_aa4f2fc436c7464deb2b26e5dd8824a18"><div class="ttname"><a href="../../dd/db7/structROCKSDB__NAMESPACE_1_1Unwrap.html#aa4f2fc436c7464deb2b26e5dd8824a18">ROCKSDB_NAMESPACE::Unwrap::Go</a></div><div class="ttdeci">static type &amp; Go(T &amp;t)</div><div class="ttdef"><b>Definition</b> <a href="#l00148">mutexlock.h:148</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_23ec12649285f9fabf3a6b7380226c28.html">util</a></li><li class="navelem"><a class="el" href="../../d9/d50/mutexlock_8h.html">mutexlock.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

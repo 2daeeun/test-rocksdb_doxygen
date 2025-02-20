@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: cache/cache_helpers.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('de/dd1/cache__helpers_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">cache_helpers.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../de/dd1/cache__helpers_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/d5e/cache__helpers_8h.html">cache/cache_helpers.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a19da91995e1b4e97412a067ff613bf0d">   10</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a19da91995e1b4e97412a067ff613bf0d">ReleaseCacheHandleCleanup</a>(<span class="keywordtype">void</span>* arg1, <span class="keywordtype">void</span>* arg2) {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  <a class="code hl_class" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html">Cache</a>* <span class="keyword">const</span> cache = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html">Cache</a>*<span class="keyword">&gt;</span>(arg1);</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  assert(cache);</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <a class="code hl_struct" href="../../d0/dee/structROCKSDB__NAMESPACE_1_1Cache_1_1Handle.html">Cache::Handle</a>* <span class="keyword">const</span> cache_handle = <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="../../d0/dee/structROCKSDB__NAMESPACE_1_1Cache_1_1Handle.html">Cache::Handle</a>*<span class="keyword">&gt;</span>(arg2);</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  assert(cache_handle);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  cache-&gt;Release(cache_handle);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
+</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8818a04a12769173da871c2faa3b2a56">   20</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8818a04a12769173da871c2faa3b2a56">WarmInCache</a>(<a class="code hl_class" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html">Cache</a>* cache, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; key, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; saved,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                   <a class="code hl_struct" href="../../d4/d9b/structROCKSDB__NAMESPACE_1_1Cache_1_1CreateContext.html">Cache::CreateContext</a>* create_context,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                   <span class="keyword">const</span> <a class="code hl_struct" href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html">Cache::CacheItemHelper</a>* helper,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                   <a class="code hl_enumeration" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html#aae9756924748d66b8202bd4850e9d84d">Cache::Priority</a> priority, <span class="keywordtype">size_t</span>* out_charge) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  assert(helper);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  assert(helper-&gt;<a class="code hl_variable" href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html#a7d27dfb0726d410c98d44c8112f49ebe">create_cb</a>);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <a class="code hl_typedef" href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html#adc5ed3b8e4b8707e1e3a39cc0a1337df">Cache::ObjectPtr</a> value;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keywordtype">size_t</span> charge;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> st = helper-&gt;<a class="code hl_variable" href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html#a7d27dfb0726d410c98d44c8112f49ebe">create_cb</a>(saved, <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5aa1babd632a7e989f50266abdf8d61c1d">CompressionType::kNoCompression</a>,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                                <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8267448672a5161843bc6fd001fcae7a2e37645333e9d1fb7a0fd0862c2eff3e">CacheTier::kVolatileTier</a>, create_context,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                                cache-&gt;memory_allocator(), &amp;value, &amp;charge);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">if</span> (st.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    st =</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        cache-&gt;Insert(key, value, helper, charge, <span class="comment">/*handle*/</span> <span class="keyword">nullptr</span>, priority);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">if</span> (out_charge) {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      *out_charge = charge;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">return</span> st;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
+</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="acache__helpers_8h_html"><div class="ttname"><a href="../../de/d5e/cache__helpers_8h.html">cache_helpers.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Cache_html"><div class="ttname"><a href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html">ROCKSDB_NAMESPACE::Cache</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00044">advanced_cache.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Cache_html_aae9756924748d66b8202bd4850e9d84d"><div class="ttname"><a href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html#aae9756924748d66b8202bd4850e9d84d">ROCKSDB_NAMESPACE::Cache::Priority</a></div><div class="ttdeci">Priority</div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00068">advanced_cache.h:68</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Cache_html_adc5ed3b8e4b8707e1e3a39cc0a1337df"><div class="ttname"><a href="../../d2/d0d/classROCKSDB__NAMESPACE_1_1Cache.html#adc5ed3b8e4b8707e1e3a39cc0a1337df">ROCKSDB_NAMESPACE::Cache::ObjectPtr</a></div><div class="ttdeci">void * ObjectPtr</div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00052">advanced_cache.h:52</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a19da91995e1b4e97412a067ff613bf0d"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a19da91995e1b4e97412a067ff613bf0d">ROCKSDB_NAMESPACE::ReleaseCacheHandleCleanup</a></div><div class="ttdeci">void ReleaseCacheHandleCleanup(void *arg1, void *arg2)</div><div class="ttdef"><b>Definition</b> <a href="#l00010">cache_helpers.cc:10</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8818a04a12769173da871c2faa3b2a56"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8818a04a12769173da871c2faa3b2a56">ROCKSDB_NAMESPACE::WarmInCache</a></div><div class="ttdeci">Status WarmInCache(Cache *cache, const Slice &amp;key, const Slice &amp;saved, Cache::CreateContext *create_context, const Cache::CacheItemHelper *helper, Cache::Priority priority, size_t *out_charge)</div><div class="ttdef"><b>Definition</b> <a href="#l00020">cache_helpers.cc:20</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa8267448672a5161843bc6fd001fcae7a2e37645333e9d1fb7a0fd0862c2eff3e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8267448672a5161843bc6fd001fcae7a2e37645333e9d1fb7a0fd0862c2eff3e">ROCKSDB_NAMESPACE::CacheTier::kVolatileTier</a></div><div class="ttdeci">@ kVolatileTier</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d27/advanced__options_8h_source.html#l00125">advanced_options.h:125</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aacfc9de2946b33f6a70b6fce4aec79d5aa1babd632a7e989f50266abdf8d61c1d"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aacfc9de2946b33f6a70b6fce4aec79d5aa1babd632a7e989f50266abdf8d61c1d">ROCKSDB_NAMESPACE::kNoCompression</a></div><div class="ttdeci">@ kNoCompression</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d17/compression__type_8h_source.html#l00021">compression_type.h:21</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper_html"><div class="ttname"><a href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html">ROCKSDB_NAMESPACE::Cache::CacheItemHelper</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00132">advanced_cache.h:132</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper_html_a7d27dfb0726d410c98d44c8112f49ebe"><div class="ttname"><a href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html#a7d27dfb0726d410c98d44c8112f49ebe">ROCKSDB_NAMESPACE::Cache::CacheItemHelper::create_cb</a></div><div class="ttdeci">CreateCallback create_cb</div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00142">advanced_cache.h:142</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Cache_1_1CreateContext_html"><div class="ttname"><a href="../../d4/d9b/structROCKSDB__NAMESPACE_1_1Cache_1_1CreateContext.html">ROCKSDB_NAMESPACE::Cache::CreateContext</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00056">advanced_cache.h:56</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Cache_1_1Handle_html"><div class="ttname"><a href="../../d0/dee/structROCKSDB__NAMESPACE_1_1Cache_1_1Handle.html">ROCKSDB_NAMESPACE::Cache::Handle</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00047">advanced_cache.h:47</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_538dafc855c634b9f6cc516e21dfcdce.html">cache</a></li><li class="navelem"><a class="el" href="../../de/dd1/cache__helpers_8cc.html">cache_helpers.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

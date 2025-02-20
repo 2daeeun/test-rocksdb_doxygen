@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/range/range_tree/lib/util/memarena.h 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('dc/dca/memarena_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">memarena.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../dc/dca/memarena_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/* -*- mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*- */</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// vim: ft=cpp:expandtab:ts=8:sw=4:softtabstop=4:</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#ident &quot;$Id$&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">/*======</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">This file is part of PerconaFT.</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"></span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"></span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">Copyright (c) 2006, 2015, Percona and/or its affiliates. All rights reserved.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"></span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">    PerconaFT is free software: you can redistribute it and/or modify</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">    it under the terms of the GNU General Public License, version 2,</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">    as published by the Free Software Foundation.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"></span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">    PerconaFT is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">    GNU General Public License for more details.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"></span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">    You should have received a copy of the GNU General Public License</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">    along with PerconaFT.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"></span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">----------------------------------------</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"></span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">    PerconaFT is free software: you can redistribute it and/or modify</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">    it under the terms of the GNU Affero General Public License, version 3,</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">    as published by the Free Software Foundation.</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"></span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">    PerconaFT is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">    GNU Affero General Public License for more details.</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"></span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    You should have received a copy of the GNU Affero General Public License</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">    along with PerconaFT.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"></span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">----------------------------------------</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"></span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">   you may not use this file except in compliance with the License.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">   You may obtain a copy of the License at</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"></span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">       http://www.apache.org/licenses/LICENSE-2.0</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"></span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">   Unless required by applicable law or agreed to in writing, software</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">   See the License for the specific language governing permissions and</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">   limitations under the License.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">======= */</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#ident \</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">    &quot;Copyright (c) 2006, 2015, Percona and/or its affiliates. All rights reserved.&quot;</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment"> * A memarena is used to efficiently store a collection of objects that never</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"> * move The pattern is allocate more and more stuff and free all of the items at</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"> * once. The underlying memory will store 1 or more objects per chunk. Each</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment"> * chunk is contiguously laid out in memory but chunks are not necessarily</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment"> * contiguous with each other.</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00065" data-start="{" data-end="};">
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="../../d7/d78/classmemarena.html">   65</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d7/d78/classmemarena.html#a05030114c96b97235d75e2d025660a52">memarena</a> {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="../../d7/d78/classmemarena.html#a05030114c96b97235d75e2d025660a52">   67</a></span>  <a class="code hl_function" href="../../d7/d78/classmemarena.html#a05030114c96b97235d75e2d025660a52">memarena</a>()</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      : <a class="code hl_variable" href="../../d7/d78/classmemarena.html#a674605d6a2b3a3099bb969d3309bbe82">_current_chunk</a>(<a class="code hl_struct" href="../../da/d5f/structmemarena_1_1arena__chunk.html">arena_chunk</a>()),</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <a class="code hl_variable" href="../../d7/d78/classmemarena.html#a62eaa7e1085c469d1c880d50a3d6f043">_other_chunks</a>(nullptr),</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <a class="code hl_variable" href="../../d7/d78/classmemarena.html#a0a30cb0ce4d2cdc0674c0dbca8577dcd">_n_other_chunks</a>(0),</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <a class="code hl_variable" href="../../d7/d78/classmemarena.html#a4ba973e2d1dbe813b91c28fcaa481366">_size_of_other_chunks</a>(0),</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <a class="code hl_variable" href="../../d7/d78/classmemarena.html#acc216c011b61d010327608bf6e358c55">_footprint_of_other_chunks</a>(0) {}</div>
+</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// Effect: Create a memarena with the specified initial size</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/d78/classmemarena.html#ad3f24a64c78dc76b44582abd6eb0f990">create</a>(<span class="keywordtype">size_t</span> initial_size);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/d78/classmemarena.html#acafba4661f1c2c4ed8845bb8692e2c5b">destroy</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">// Effect: Allocate some memory.  The returned value remains valid until the</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// memarena is cleared or closed.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">//  In case of ENOMEM, aborts.</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordtype">void</span> *<a class="code hl_function" href="../../d7/d78/classmemarena.html#a44873cd8e390297160a239c068b9594d">malloc_from_arena</a>(<span class="keywordtype">size_t</span> size);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">// Effect: Move all the memory from this memarena into DEST.</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="comment">//         When SOURCE is closed the memory won&#39;t be freed.</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="comment">//         When DEST is closed, the memory will be freed, unless DEST moves</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">//         its memory to another memarena...</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/d78/classmemarena.html#aea7a3f2c9df6eb32d67ca404e05570f3">move_memory</a>(<a class="code hl_class" href="../../d7/d78/classmemarena.html">memarena</a> *dest);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="comment">// Effect: Calculate the amount of memory used by a memory arena.</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../d7/d78/classmemarena.html#abe7ef910ceaa531d88861492a9f250d4">total_memory_size</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">// Effect: Calculate the used space of the memory arena (ie: excludes unused</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="comment">// space)</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../d7/d78/classmemarena.html#a491be0caf679e17cedfd0b5f07eb9974">total_size_in_use</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="comment">// Effect: Calculate the amount of memory used, according to</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="comment">// toku_memory_footprint(),</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="comment">//         which is a more expensive but more accurate count of memory used.</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="../../d7/d78/classmemarena.html#a9e2b103c12435b08186960c053bc2a85">total_footprint</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="comment">// iterator over the underlying chunks that store objects in the memarena.</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="comment">// a chunk is represented by a pointer to const memory and a usable byte</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="comment">// count.</span></div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="};">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="../../da/dc1/classmemarena_1_1chunk__iterator.html">  105</a></span>  <span class="keyword">class </span><a class="code hl_function" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#aedd87df9c1d817a42d67e0ddf442a011">chunk_iterator</a> {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>   <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#aedd87df9c1d817a42d67e0ddf442a011">  107</a></span>    <a class="code hl_function" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#aedd87df9c1d817a42d67e0ddf442a011">chunk_iterator</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d7/d78/classmemarena.html#a05030114c96b97235d75e2d025660a52">memarena</a> *ma) : <a class="code hl_variable" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a95d7759e2a60e6c1d9787bc3637ebfea">_ma</a>(ma), <a class="code hl_variable" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a8812916375fe1b38ae296e417eede2be">_chunk_idx</a>(-1) {}</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="comment">// returns: base pointer to the current chunk</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="comment">//          *used set to the number of usable bytes</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="comment">//          if more() is false, returns nullptr and *used = 0</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keyword">const</span> <span class="keywordtype">void</span> *<a class="code hl_function" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#ade47135261d4ab86e247768d1729f9cb">current</a>(<span class="keywordtype">size_t</span> *used) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="comment">// requires: more() is true</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a792a220927ac11d2b7773ee6a805cf1f">next</a>();</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a82bb8292bc2725d39f36f8fc8ce849a4">more</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>   <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="comment">// -1 represents the &#39;initial&#39; chunk in a memarena, ie: ma-&gt;_current_chunk</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="comment">// &gt;= 0 represents the i&#39;th chunk in the ma-&gt;_other_chunks array</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a95d7759e2a60e6c1d9787bc3637ebfea">  122</a></span>    <span class="keyword">const</span> <a class="code hl_function" href="../../d7/d78/classmemarena.html#a05030114c96b97235d75e2d025660a52">memarena</a> *<a class="code hl_variable" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a95d7759e2a60e6c1d9787bc3637ebfea">_ma</a>;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a8812916375fe1b38ae296e417eede2be">  123</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a8812916375fe1b38ae296e417eede2be">_chunk_idx</a>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  };</div>
+</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> <span class="keyword">private</span>:</div>
+<div class="foldopen" id="foldopen00127" data-start="{" data-end="};">
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="../../da/d5f/structmemarena_1_1arena__chunk.html">  127</a></span>  <span class="keyword">struct </span><a class="code hl_function" href="../../da/d5f/structmemarena_1_1arena__chunk.html#a00803ca5f7c141c0550bb96625d773ec">arena_chunk</a> {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="../../da/d5f/structmemarena_1_1arena__chunk.html#a00803ca5f7c141c0550bb96625d773ec">  128</a></span>    <a class="code hl_function" href="../../da/d5f/structmemarena_1_1arena__chunk.html#a00803ca5f7c141c0550bb96625d773ec">arena_chunk</a>() : <a class="code hl_variable" href="../../da/d5f/structmemarena_1_1arena__chunk.html#a720884add899197838e9dddc826b5d7f">buf</a>(nullptr), <a class="code hl_variable" href="../../da/d5f/structmemarena_1_1arena__chunk.html#aa69a10bbd596764848395ee11ac6f7d7">used</a>(0), <a class="code hl_variable" href="../../da/d5f/structmemarena_1_1arena__chunk.html#abbc8dc2ebd6b81250f964266fd33cd17">size</a>(0) {}</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../da/d5f/structmemarena_1_1arena__chunk.html#a720884add899197838e9dddc826b5d7f">  129</a></span>    <span class="keywordtype">char</span> *<a class="code hl_variable" href="../../da/d5f/structmemarena_1_1arena__chunk.html#a720884add899197838e9dddc826b5d7f">buf</a>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="../../da/d5f/structmemarena_1_1arena__chunk.html#aa69a10bbd596764848395ee11ac6f7d7">  130</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../da/d5f/structmemarena_1_1arena__chunk.html#aa69a10bbd596764848395ee11ac6f7d7">used</a>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="../../da/d5f/structmemarena_1_1arena__chunk.html#abbc8dc2ebd6b81250f964266fd33cd17">  131</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../da/d5f/structmemarena_1_1arena__chunk.html#abbc8dc2ebd6b81250f964266fd33cd17">size</a>;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  };</div>
+</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="../../d7/d78/classmemarena.html#a674605d6a2b3a3099bb969d3309bbe82">  134</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="../../da/d5f/structmemarena_1_1arena__chunk.html">arena_chunk</a> <a class="code hl_variable" href="../../d7/d78/classmemarena.html#a674605d6a2b3a3099bb969d3309bbe82">_current_chunk</a>;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="../../d7/d78/classmemarena.html#a62eaa7e1085c469d1c880d50a3d6f043">  135</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="../../da/d5f/structmemarena_1_1arena__chunk.html">arena_chunk</a> *<a class="code hl_variable" href="../../d7/d78/classmemarena.html#a62eaa7e1085c469d1c880d50a3d6f043">_other_chunks</a>;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="../../d7/d78/classmemarena.html#a0a30cb0ce4d2cdc0674c0dbca8577dcd">  136</a></span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="../../d7/d78/classmemarena.html#a0a30cb0ce4d2cdc0674c0dbca8577dcd">_n_other_chunks</a>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="../../d7/d78/classmemarena.html#a4ba973e2d1dbe813b91c28fcaa481366">  137</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d7/d78/classmemarena.html#a4ba973e2d1dbe813b91c28fcaa481366">_size_of_other_chunks</a>;       <span class="comment">// the buf_size of all the other chunks.</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../d7/d78/classmemarena.html#acc216c011b61d010327608bf6e358c55">  138</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="../../d7/d78/classmemarena.html#acc216c011b61d010327608bf6e358c55">_footprint_of_other_chunks</a>;  <span class="comment">// the footprint of all the other chunks.</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="../../d7/d78/classmemarena.html#ae714ab66a3d23de2c0c947b43cf28578">  140</a></span>  <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_friend" href="../../d7/d78/classmemarena.html#ae714ab66a3d23de2c0c947b43cf28578">memarena_unit_test</a>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>};</div>
+</div>
+<div class="ttc" id="aclassmemarena_1_1chunk__iterator_html_a792a220927ac11d2b7773ee6a805cf1f"><div class="ttname"><a href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a792a220927ac11d2b7773ee6a805cf1f">memarena::chunk_iterator::next</a></div><div class="ttdeci">void next()</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de8/memarena_8cc_source.html#l00191">memarena.cc:191</a></div></div>
+<div class="ttc" id="aclassmemarena_1_1chunk__iterator_html_a82bb8292bc2725d39f36f8fc8ce849a4"><div class="ttname"><a href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a82bb8292bc2725d39f36f8fc8ce849a4">memarena::chunk_iterator::more</a></div><div class="ttdeci">bool more() const</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de8/memarena_8cc_source.html#l00193">memarena.cc:193</a></div></div>
+<div class="ttc" id="aclassmemarena_1_1chunk__iterator_html_a8812916375fe1b38ae296e417eede2be"><div class="ttname"><a href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a8812916375fe1b38ae296e417eede2be">memarena::chunk_iterator::_chunk_idx</a></div><div class="ttdeci">int _chunk_idx</div><div class="ttdef"><b>Definition</b> <a href="#l00123">memarena.h:123</a></div></div>
+<div class="ttc" id="aclassmemarena_1_1chunk__iterator_html_a95d7759e2a60e6c1d9787bc3637ebfea"><div class="ttname"><a href="../../da/dc1/classmemarena_1_1chunk__iterator.html#a95d7759e2a60e6c1d9787bc3637ebfea">memarena::chunk_iterator::_ma</a></div><div class="ttdeci">const memarena * _ma</div><div class="ttdef"><b>Definition</b> <a href="#l00122">memarena.h:122</a></div></div>
+<div class="ttc" id="aclassmemarena_1_1chunk__iterator_html_ade47135261d4ab86e247768d1729f9cb"><div class="ttname"><a href="../../da/dc1/classmemarena_1_1chunk__iterator.html#ade47135261d4ab86e247768d1729f9cb">memarena::chunk_iterator::current</a></div><div class="ttdeci">const void * current(size_t *used) const</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de8/memarena_8cc_source.html#l00179">memarena.cc:179</a></div></div>
+<div class="ttc" id="aclassmemarena_1_1chunk__iterator_html_aedd87df9c1d817a42d67e0ddf442a011"><div class="ttname"><a href="../../da/dc1/classmemarena_1_1chunk__iterator.html#aedd87df9c1d817a42d67e0ddf442a011">memarena::chunk_iterator::chunk_iterator</a></div><div class="ttdeci">chunk_iterator(const memarena *ma)</div><div class="ttdef"><b>Definition</b> <a href="#l00107">memarena.h:107</a></div></div>
+<div class="ttc" id="aclassmemarena_html"><div class="ttname"><a href="../../d7/d78/classmemarena.html">memarena</a></div><div class="ttdef"><b>Definition</b> <a href="#l00065">memarena.h:65</a></div></div>
+<div class="ttc" id="aclassmemarena_html_a05030114c96b97235d75e2d025660a52"><div class="ttname"><a href="../../d7/d78/classmemarena.html#a05030114c96b97235d75e2d025660a52">memarena::memarena</a></div><div class="ttdeci">memarena()</div><div class="ttdef"><b>Definition</b> <a href="#l00067">memarena.h:67</a></div></div>
+<div class="ttc" id="aclassmemarena_html_a0a30cb0ce4d2cdc0674c0dbca8577dcd"><div class="ttname"><a href="../../d7/d78/classmemarena.html#a0a30cb0ce4d2cdc0674c0dbca8577dcd">memarena::_n_other_chunks</a></div><div class="ttdeci">int _n_other_chunks</div><div class="ttdef"><b>Definition</b> <a href="#l00136">memarena.h:136</a></div></div>
+<div class="ttc" id="aclassmemarena_html_a44873cd8e390297160a239c068b9594d"><div class="ttname"><a href="../../d7/d78/classmemarena.html#a44873cd8e390297160a239c068b9594d">memarena::malloc_from_arena</a></div><div class="ttdeci">void * malloc_from_arena(size_t size)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de8/memarena_8cc_source.html#l00103">memarena.cc:103</a></div></div>
+<div class="ttc" id="aclassmemarena_html_a491be0caf679e17cedfd0b5f07eb9974"><div class="ttname"><a href="../../d7/d78/classmemarena.html#a491be0caf679e17cedfd0b5f07eb9974">memarena::total_size_in_use</a></div><div class="ttdeci">size_t total_size_in_use(void) const</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de8/memarena_8cc_source.html#l00167">memarena.cc:167</a></div></div>
+<div class="ttc" id="aclassmemarena_html_a4ba973e2d1dbe813b91c28fcaa481366"><div class="ttname"><a href="../../d7/d78/classmemarena.html#a4ba973e2d1dbe813b91c28fcaa481366">memarena::_size_of_other_chunks</a></div><div class="ttdeci">size_t _size_of_other_chunks</div><div class="ttdef"><b>Definition</b> <a href="#l00137">memarena.h:137</a></div></div>
+<div class="ttc" id="aclassmemarena_html_a62eaa7e1085c469d1c880d50a3d6f043"><div class="ttname"><a href="../../d7/d78/classmemarena.html#a62eaa7e1085c469d1c880d50a3d6f043">memarena::_other_chunks</a></div><div class="ttdeci">struct arena_chunk * _other_chunks</div><div class="ttdef"><b>Definition</b> <a href="#l00135">memarena.h:135</a></div></div>
+<div class="ttc" id="aclassmemarena_html_a674605d6a2b3a3099bb969d3309bbe82"><div class="ttname"><a href="../../d7/d78/classmemarena.html#a674605d6a2b3a3099bb969d3309bbe82">memarena::_current_chunk</a></div><div class="ttdeci">struct arena_chunk _current_chunk</div><div class="ttdef"><b>Definition</b> <a href="#l00134">memarena.h:134</a></div></div>
+<div class="ttc" id="aclassmemarena_html_a9e2b103c12435b08186960c053bc2a85"><div class="ttname"><a href="../../d7/d78/classmemarena.html#a9e2b103c12435b08186960c053bc2a85">memarena::total_footprint</a></div><div class="ttdeci">size_t total_footprint(void) const</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de8/memarena_8cc_source.html#l00171">memarena.cc:171</a></div></div>
+<div class="ttc" id="aclassmemarena_html_abe7ef910ceaa531d88861492a9f250d4"><div class="ttname"><a href="../../d7/d78/classmemarena.html#abe7ef910ceaa531d88861492a9f250d4">memarena::total_memory_size</a></div><div class="ttdeci">size_t total_memory_size(void) const</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de8/memarena_8cc_source.html#l00162">memarena.cc:162</a></div></div>
+<div class="ttc" id="aclassmemarena_html_acafba4661f1c2c4ed8845bb8692e2c5b"><div class="ttname"><a href="../../d7/d78/classmemarena.html#acafba4661f1c2c4ed8845bb8692e2c5b">memarena::destroy</a></div><div class="ttdeci">void destroy(void)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de8/memarena_8cc_source.html#l00076">memarena.cc:76</a></div></div>
+<div class="ttc" id="aclassmemarena_html_acc216c011b61d010327608bf6e358c55"><div class="ttname"><a href="../../d7/d78/classmemarena.html#acc216c011b61d010327608bf6e358c55">memarena::_footprint_of_other_chunks</a></div><div class="ttdeci">size_t _footprint_of_other_chunks</div><div class="ttdef"><b>Definition</b> <a href="#l00138">memarena.h:138</a></div></div>
+<div class="ttc" id="aclassmemarena_html_ad3f24a64c78dc76b44582abd6eb0f990"><div class="ttname"><a href="../../d7/d78/classmemarena.html#ad3f24a64c78dc76b44582abd6eb0f990">memarena::create</a></div><div class="ttdeci">void create(size_t initial_size)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de8/memarena_8cc_source.html#l00063">memarena.cc:63</a></div></div>
+<div class="ttc" id="aclassmemarena_html_ae714ab66a3d23de2c0c947b43cf28578"><div class="ttname"><a href="../../d7/d78/classmemarena.html#ae714ab66a3d23de2c0c947b43cf28578">memarena::memarena_unit_test</a></div><div class="ttdeci">friend class memarena_unit_test</div><div class="ttdef"><b>Definition</b> <a href="#l00140">memarena.h:140</a></div></div>
+<div class="ttc" id="aclassmemarena_html_aea7a3f2c9df6eb32d67ca404e05570f3"><div class="ttname"><a href="../../d7/d78/classmemarena.html#aea7a3f2c9df6eb32d67ca404e05570f3">memarena::move_memory</a></div><div class="ttdeci">void move_memory(memarena *dest)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de8/memarena_8cc_source.html#l00141">memarena.cc:141</a></div></div>
+<div class="ttc" id="astructmemarena_1_1arena__chunk_html"><div class="ttname"><a href="../../da/d5f/structmemarena_1_1arena__chunk.html">memarena::arena_chunk</a></div><div class="ttdef"><b>Definition</b> <a href="#l00127">memarena.h:127</a></div></div>
+<div class="ttc" id="astructmemarena_1_1arena__chunk_html_a00803ca5f7c141c0550bb96625d773ec"><div class="ttname"><a href="../../da/d5f/structmemarena_1_1arena__chunk.html#a00803ca5f7c141c0550bb96625d773ec">memarena::arena_chunk::arena_chunk</a></div><div class="ttdeci">arena_chunk()</div><div class="ttdef"><b>Definition</b> <a href="#l00128">memarena.h:128</a></div></div>
+<div class="ttc" id="astructmemarena_1_1arena__chunk_html_a720884add899197838e9dddc826b5d7f"><div class="ttname"><a href="../../da/d5f/structmemarena_1_1arena__chunk.html#a720884add899197838e9dddc826b5d7f">memarena::arena_chunk::buf</a></div><div class="ttdeci">char * buf</div><div class="ttdef"><b>Definition</b> <a href="#l00129">memarena.h:129</a></div></div>
+<div class="ttc" id="astructmemarena_1_1arena__chunk_html_aa69a10bbd596764848395ee11ac6f7d7"><div class="ttname"><a href="../../da/d5f/structmemarena_1_1arena__chunk.html#aa69a10bbd596764848395ee11ac6f7d7">memarena::arena_chunk::used</a></div><div class="ttdeci">size_t used</div><div class="ttdef"><b>Definition</b> <a href="#l00130">memarena.h:130</a></div></div>
+<div class="ttc" id="astructmemarena_1_1arena__chunk_html_abbc8dc2ebd6b81250f964266fd33cd17"><div class="ttname"><a href="../../da/d5f/structmemarena_1_1arena__chunk.html#abbc8dc2ebd6b81250f964266fd33cd17">memarena::arena_chunk::size</a></div><div class="ttdeci">size_t size</div><div class="ttdef"><b>Definition</b> <a href="#l00131">memarena.h:131</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../dir_3eff4fc1b9bdc927695daa6eaf220609.html">range</a></li><li class="navelem"><a class="el" href="../../dir_1fdd669514be316dc6b9821c4ef31e1a.html">range_tree</a></li><li class="navelem"><a class="el" href="../../dir_103d03b151a8543e8b0cd5714558840a.html">lib</a></li><li class="navelem"><a class="el" href="../../dir_b30efc42219fe604bcb7647cb6610c6a.html">util</a></li><li class="navelem"><a class="el" href="../../dc/dca/memarena_8h.html">memarena.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

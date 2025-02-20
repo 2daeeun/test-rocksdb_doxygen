@@ -1,0 +1,428 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/transactions/lock/point/point_lock_tracker.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('da/def/point__lock__tracker_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">point_lock_tracker.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../da/def/point__lock__tracker_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/d94/point__lock__tracker_8h.html">utilities/transactions/lock/point/point_lock_tracker.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span>{</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">class </span>TrackedKeysColumnFamilyIterator</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    : <span class="keyword">public</span> LockTracker::ColumnFamilyIterator {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keyword">explicit</span> TrackedKeysColumnFamilyIterator(<span class="keyword">const</span> TrackedKeys&amp; keys)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      : tracked_keys_(keys), it_(keys.begin()) {}</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keywordtype">bool</span> HasNext()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> it_ != tracked_keys_.end(); }</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> Next()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> (it_++)-&gt;first; }</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a796f90aec424bd059fb93d81a6219351">TrackedKeys</a>&amp; tracked_keys_;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  TrackedKeys::const_iterator it_;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>};</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">class </span>TrackedKeysIterator : <span class="keyword">public</span> LockTracker::KeyIterator {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  TrackedKeysIterator(<span class="keyword">const</span> TrackedKeys&amp; keys, ColumnFamilyId <span class="keywordtype">id</span>)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      : key_infos_(keys.at(id)), it_(key_infos_.begin()) {}</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordtype">bool</span> HasNext()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> it_ != key_infos_.end(); }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">const</span> std::string&amp; Next()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> (it_++)-&gt;first; }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afef4cfb6079ac8ae2d8a5ee5446bedce">TrackedKeyInfos</a>&amp; key_infos_;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  TrackedKeyInfos::const_iterator it_;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>};</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}  <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#ad80259f09a272b61d0335536928ed623">   44</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#ad80259f09a272b61d0335536928ed623">PointLockTracker::Track</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html">PointLockRequest</a>&amp; r) {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">auto</span>&amp; keys = <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>[r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a36cd6f196509c967739ef1f3c0e6d4e3">column_family_id</a>];</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">auto</span> result = keys.try_emplace(r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a71715ddfa3972389e1a9c101dd6c3eda">key</a>, r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a658b292047603549532963cc1d48ef55">seq</a>);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">auto</span> it = result.first;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">if</span> (!result.second &amp;&amp; r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a658b292047603549532963cc1d48ef55">seq</a> &lt; it-&gt;second.seq) {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="comment">// Now tracking this key with an earlier sequence number</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    it-&gt;second.seq = r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a658b292047603549532963cc1d48ef55">seq</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// else we do not update the seq. The smaller the tracked seq, the stronger it</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// the guarantee since it implies from the seq onward there has not been a</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// concurrent update to the key. So we update the seq if it implies stronger</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="comment">// guarantees, i.e., if it is smaller than the existing tracked seq.</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">if</span> (r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a069509658805a8df3cb2d04d891a970b">read_only</a>) {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    it-&gt;second.num_reads++;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    it-&gt;second.num_writes++;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  it-&gt;second.exclusive = it-&gt;second.exclusive || r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a45cbfe1ef1030b58fa6d32cf35225294">exclusive</a>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
+</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a9fc35fb4bb4307fb8db3fc00e5b69a5b">   66</a></span><a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af89949140eb12620615103218affd775">UntrackStatus</a> <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a9fc35fb4bb4307fb8db3fc00e5b69a5b">PointLockTracker::Untrack</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html">PointLockRequest</a>&amp; r) {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">auto</span> cf_keys = <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.find(r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a36cd6f196509c967739ef1f3c0e6d4e3">column_family_id</a>);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordflow">if</span> (cf_keys == <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.end()) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af89949140eb12620615103218affd775afccfb54c1af2c86685ed67231cfc6954">UntrackStatus::NOT_TRACKED</a>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">auto</span>&amp; keys = cf_keys-&gt;second;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">auto</span> it = keys.find(r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a71715ddfa3972389e1a9c101dd6c3eda">key</a>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">if</span> (it == keys.end()) {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af89949140eb12620615103218affd775afccfb54c1af2c86685ed67231cfc6954">UntrackStatus::NOT_TRACKED</a>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordtype">bool</span> untracked = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">auto</span>&amp; info = it-&gt;second;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordflow">if</span> (r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a069509658805a8df3cb2d04d891a970b">read_only</a>) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">if</span> (info.num_reads &gt; 0) {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      info.num_reads--;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      untracked = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">if</span> (info.num_writes &gt; 0) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      info.num_writes--;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      untracked = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keywordtype">bool</span> removed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">if</span> (info.num_reads == 0 &amp;&amp; info.num_writes == 0) {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    keys.erase(it);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">if</span> (keys.empty()) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.erase(cf_keys);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    removed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">if</span> (removed) {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af89949140eb12620615103218affd775ab3461745d64b12346503b2980e436db5">UntrackStatus::REMOVED</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  }</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keywordflow">if</span> (untracked) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af89949140eb12620615103218affd775aa6aa7aaab436d05e461fafcada25aaa2">UntrackStatus::UNTRACKED</a>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af89949140eb12620615103218affd775afccfb54c1af2c86685ed67231cfc6954">UntrackStatus::NOT_TRACKED</a>;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
+</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#aee027c12f0fb19e01b6cee2ecd52a628">  110</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#aee027c12f0fb19e01b6cee2ecd52a628">PointLockTracker::Merge</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html">LockTracker</a>&amp; tracker) {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">const</span> <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a90665b237738f40adb204d2287afdd92">PointLockTracker</a>&amp; t = <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a90665b237738f40adb204d2287afdd92">PointLockTracker</a>&amp;<span class="keyword">&gt;</span>(tracker);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; cf_keys : t.<a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>) {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> cf = cf_keys.first;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; keys = cf_keys.second;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keyword">auto</span> current_cf_keys = <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.find(cf);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">if</span> (current_cf_keys == <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.end()) {</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.emplace(cf_keys);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      <span class="keyword">auto</span>&amp; current_keys = current_cf_keys-&gt;second;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; key_info : keys) {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keyword">const</span> std::string&amp; key = key_info.first;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keyword">const</span> <a class="code hl_struct" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html">TrackedKeyInfo</a>&amp; info = key_info.second;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="comment">// If key was not previously tracked, just copy the whole struct over.</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="comment">// Otherwise, some merging needs to occur.</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keyword">auto</span> current_info = current_keys.find(key);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keywordflow">if</span> (current_info == current_keys.end()) {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>          current_keys.emplace(key_info);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>          current_info-&gt;second.Merge(info);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        }</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  }</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
+</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="foldopen" id="foldopen00137" data-start="{" data-end="}">
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a4c2f00ff54db7c7125601608bef4ecd8">  137</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a4c2f00ff54db7c7125601608bef4ecd8">PointLockTracker::Subtract</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html">LockTracker</a>&amp; tracker) {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keyword">const</span> <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a90665b237738f40adb204d2287afdd92">PointLockTracker</a>&amp; t = <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a90665b237738f40adb204d2287afdd92">PointLockTracker</a>&amp;<span class="keyword">&gt;</span>(tracker);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; cf_keys : t.<a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>) {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> cf = cf_keys.first;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; keys = cf_keys.second;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keyword">auto</span>&amp; current_keys = <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.at(cf);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; key_info : keys) {</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>      <span class="keyword">const</span> std::string&amp; key = key_info.first;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      <span class="keyword">const</span> <a class="code hl_struct" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html">TrackedKeyInfo</a>&amp; info = key_info.second;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>      uint32_t num_reads = info.<a class="code hl_variable" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#a76887d97730ff0549691e4e35fca32de">num_reads</a>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      uint32_t num_writes = info.<a class="code hl_variable" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#a9ce9b2a8bde6ca84e88531eb9acd1682">num_writes</a>;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      <span class="keyword">auto</span> current_key_info = current_keys.find(key);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>      assert(current_key_info != current_keys.end());</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>      <span class="comment">// Decrement the total reads/writes of this key by the number of</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      <span class="comment">// reads/writes done since the last SavePoint.</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      <span class="keywordflow">if</span> (num_reads &gt; 0) {</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        assert(current_key_info-&gt;second.num_reads &gt;= num_reads);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        current_key_info-&gt;second.num_reads -= num_reads;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>      }</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <span class="keywordflow">if</span> (num_writes &gt; 0) {</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        assert(current_key_info-&gt;second.num_writes &gt;= num_writes);</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        current_key_info-&gt;second.num_writes -= num_writes;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      }</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>      <span class="keywordflow">if</span> (current_key_info-&gt;second.num_reads == 0 &amp;&amp;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>          current_key_info-&gt;second.num_writes == 0) {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        current_keys.erase(current_key_info);</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>      }</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    }</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>}</div>
+</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="foldopen" id="foldopen00171" data-start="{" data-end="}">
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#abd16951ef536a138d03cfdef2f1bb44f">  171</a></span><a class="code hl_class" href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html">LockTracker</a>* <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#abd16951ef536a138d03cfdef2f1bb44f">PointLockTracker::GetTrackedLocksSinceSavePoint</a>(</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keyword">const</span> <a class="code hl_class" href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html">LockTracker</a>&amp; save_point_tracker)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="comment">// Examine the number of reads/writes performed on all keys written</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  <span class="comment">// since the last SavePoint and compare to the total number of reads/writes</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <span class="comment">// for each key.</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <a class="code hl_class" href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html">LockTracker</a>* t = <span class="keyword">new</span> <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a90665b237738f40adb204d2287afdd92">PointLockTracker</a>();</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <span class="keyword">const</span> <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a90665b237738f40adb204d2287afdd92">PointLockTracker</a>&amp; save_point_t =</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>      <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a90665b237738f40adb204d2287afdd92">PointLockTracker</a>&amp;<span class="keyword">&gt;</span>(save_point_tracker);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; cf_keys : save_point_t.<a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>) {</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> cf = cf_keys.first;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; keys = cf_keys.second;</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keyword">auto</span>&amp; current_keys = <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.at(cf);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; key_info : keys) {</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>      <span class="keyword">const</span> std::string&amp; key = key_info.first;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>      <span class="keyword">const</span> <a class="code hl_struct" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html">TrackedKeyInfo</a>&amp; info = key_info.second;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>      uint32_t num_reads = info.<a class="code hl_variable" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#a76887d97730ff0549691e4e35fca32de">num_reads</a>;</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>      uint32_t num_writes = info.<a class="code hl_variable" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#a9ce9b2a8bde6ca84e88531eb9acd1682">num_writes</a>;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>      <span class="keyword">auto</span> current_key_info = current_keys.find(key);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>      assert(current_key_info != current_keys.end());</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>      assert(current_key_info-&gt;second.num_reads &gt;= num_reads);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>      assert(current_key_info-&gt;second.num_writes &gt;= num_writes);</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      <span class="keywordflow">if</span> (current_key_info-&gt;second.num_reads == num_reads &amp;&amp;</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>          current_key_info-&gt;second.num_writes == num_writes) {</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        <span class="comment">// All the reads/writes to this key were done in the last savepoint.</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        <a class="code hl_struct" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html">PointLockRequest</a> r;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a36cd6f196509c967739ef1f3c0e6d4e3">column_family_id</a> = cf;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a71715ddfa3972389e1a9c101dd6c3eda">key</a> = key;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a658b292047603549532963cc1d48ef55">seq</a> = info.<a class="code hl_variable" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#ad70178f8b9ce9eb6ec13be789221ae61">seq</a>;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a069509658805a8df3cb2d04d891a970b">read_only</a> = (num_writes == 0);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        r.<a class="code hl_variable" href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a45cbfe1ef1030b58fa6d32cf35225294">exclusive</a> = info.<a class="code hl_variable" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#ab89919f796d1590d7117bde10f1ae66f">exclusive</a>;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        t-&gt;<a class="code hl_function" href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html#a10a1e0766b8ce06025702fffea3deb0d">Track</a>(r);</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>      }</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    }</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  <span class="keywordflow">return</span> t;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>}</div>
+</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="foldopen" id="foldopen00211" data-start="{" data-end="}">
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno"><a class="line" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#aefdddb9d6d4643e7361ac5da3c1bb544">  211</a></span><a class="code hl_struct" href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html">PointLockStatus</a> <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#aefdddb9d6d4643e7361ac5da3c1bb544">PointLockTracker::GetPointLockStatus</a>(</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> column_family_id, <span class="keyword">const</span> std::string&amp; key)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  assert(<a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#ab67b67c5a4da3589043d9ac8c76e92d3">IsPointLockSupported</a>());</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <a class="code hl_struct" href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html">PointLockStatus</a> status;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  <span class="keyword">auto</span> it = <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.find(column_family_id);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <span class="keywordflow">if</span> (it == <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.end()) {</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keywordflow">return</span> status;</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  }</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; keys = it-&gt;second;</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <span class="keyword">auto</span> key_it = keys.find(key);</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <span class="keywordflow">if</span> (key_it == keys.end()) {</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="keywordflow">return</span> status;</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  }</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <span class="keyword">const</span> <a class="code hl_struct" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html">TrackedKeyInfo</a>&amp; key_info = key_it-&gt;second;</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  status.<a class="code hl_variable" href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html#ad39b23a942f0a40675169dd0c49b2f51">locked</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  status.<a class="code hl_variable" href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html#a439262055264856a67af8fd2bf2b5f30">exclusive</a> = key_info.<a class="code hl_variable" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#ab89919f796d1590d7117bde10f1ae66f">exclusive</a>;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  status.<a class="code hl_variable" href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html#a2780bbaec5deae37db82075e34e1caa7">seq</a> = key_info.<a class="code hl_variable" href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#ad70178f8b9ce9eb6ec13be789221ae61">seq</a>;</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>}</div>
+</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
+<div class="foldopen" id="foldopen00233" data-start="{" data-end="}">
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno"><a class="line" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a471be443c97814a1ef9e92c3a90a225d">  233</a></span>uint64_t <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a471be443c97814a1ef9e92c3a90a225d">PointLockTracker::GetNumPointLocks</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  uint64_t num_keys = 0;</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; cf_keys : <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>) {</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    num_keys += cf_keys.second.size();</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  }</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <span class="keywordflow">return</span> num_keys;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>}</div>
+</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
+<div class="foldopen" id="foldopen00241" data-start="{" data-end="}">
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno"><a class="line" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a6b1468f28e3705ff070372a9d387bf8c">  241</a></span><a class="code hl_class" href="../../d1/da3/classROCKSDB__NAMESPACE_1_1LockTracker_1_1ColumnFamilyIterator.html">LockTracker::ColumnFamilyIterator</a>* <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a6b1468f28e3705ff070372a9d387bf8c">PointLockTracker::GetColumnFamilyIterator</a>()<span class="keyword"></span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="keyword">    const </span>{</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <span class="keywordflow">return</span> <span class="keyword">new</span> TrackedKeysColumnFamilyIterator(<a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>);</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>}</div>
+</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
+<div class="foldopen" id="foldopen00246" data-start="{" data-end="}">
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno"><a class="line" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a16a820ebb0705486267061f1d90c87fa">  246</a></span><a class="code hl_class" href="../../d3/d18/classROCKSDB__NAMESPACE_1_1LockTracker_1_1KeyIterator.html">LockTracker::KeyIterator</a>* <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a16a820ebb0705486267061f1d90c87fa">PointLockTracker::GetKeyIterator</a>(</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ColumnFamilyId</a> column_family_id)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  assert(<a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.find(column_family_id) != <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.end());</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="keywordflow">return</span> <span class="keyword">new</span> TrackedKeysIterator(<a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>, column_family_id);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>}</div>
+</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#ac8d73389457fd37dda96c2fc7de9dead">  252</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#ac8d73389457fd37dda96c2fc7de9dead">PointLockTracker::Clear</a>() { <a class="code hl_variable" href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">tracked_keys_</a>.clear(); }</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockTracker_1_1ColumnFamilyIterator_html"><div class="ttname"><a href="../../d1/da3/classROCKSDB__NAMESPACE_1_1LockTracker_1_1ColumnFamilyIterator.html">ROCKSDB_NAMESPACE::LockTracker::ColumnFamilyIterator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00155">lock_tracker.h:155</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockTracker_1_1KeyIterator_html"><div class="ttname"><a href="../../d3/d18/classROCKSDB__NAMESPACE_1_1LockTracker_1_1KeyIterator.html">ROCKSDB_NAMESPACE::LockTracker::KeyIterator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00176">lock_tracker.h:176</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockTracker_html"><div class="ttname"><a href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html">ROCKSDB_NAMESPACE::LockTracker</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00064">lock_tracker.h:64</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1LockTracker_html_a10a1e0766b8ce06025702fffea3deb0d"><div class="ttname"><a href="../../d9/da3/classROCKSDB__NAMESPACE_1_1LockTracker.html#a10a1e0766b8ce06025702fffea3deb0d">ROCKSDB_NAMESPACE::LockTracker::Track</a></div><div class="ttdeci">virtual void Track(const PointLockRequest &amp;)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_a16a820ebb0705486267061f1d90c87fa"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a16a820ebb0705486267061f1d90c87fa">ROCKSDB_NAMESPACE::PointLockTracker::GetKeyIterator</a></div><div class="ttdeci">KeyIterator * GetKeyIterator(ColumnFamilyId column_family_id) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00246">point_lock_tracker.cc:246</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_a36f3c3bec1ad1fc7e9be60b96917f229"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a36f3c3bec1ad1fc7e9be60b96917f229">ROCKSDB_NAMESPACE::PointLockTracker::tracked_keys_</a></div><div class="ttdeci">TrackedKeys tracked_keys_</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d94/point__lock__tracker_8h_source.html#l00081">point_lock_tracker.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_a471be443c97814a1ef9e92c3a90a225d"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a471be443c97814a1ef9e92c3a90a225d">ROCKSDB_NAMESPACE::PointLockTracker::GetNumPointLocks</a></div><div class="ttdeci">uint64_t GetNumPointLocks() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00233">point_lock_tracker.cc:233</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_a4c2f00ff54db7c7125601608bef4ecd8"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a4c2f00ff54db7c7125601608bef4ecd8">ROCKSDB_NAMESPACE::PointLockTracker::Subtract</a></div><div class="ttdeci">void Subtract(const LockTracker &amp;tracker) override</div><div class="ttdef"><b>Definition</b> <a href="#l00137">point_lock_tracker.cc:137</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_a6b1468f28e3705ff070372a9d387bf8c"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a6b1468f28e3705ff070372a9d387bf8c">ROCKSDB_NAMESPACE::PointLockTracker::GetColumnFamilyIterator</a></div><div class="ttdeci">ColumnFamilyIterator * GetColumnFamilyIterator() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00241">point_lock_tracker.cc:241</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_a90665b237738f40adb204d2287afdd92"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a90665b237738f40adb204d2287afdd92">ROCKSDB_NAMESPACE::PointLockTracker::PointLockTracker</a></div><div class="ttdeci">PointLockTracker()=default</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_a9fc35fb4bb4307fb8db3fc00e5b69a5b"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#a9fc35fb4bb4307fb8db3fc00e5b69a5b">ROCKSDB_NAMESPACE::PointLockTracker::Untrack</a></div><div class="ttdeci">UntrackStatus Untrack(const PointLockRequest &amp;lock_request) override</div><div class="ttdef"><b>Definition</b> <a href="#l00066">point_lock_tracker.cc:66</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_ab67b67c5a4da3589043d9ac8c76e92d3"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#ab67b67c5a4da3589043d9ac8c76e92d3">ROCKSDB_NAMESPACE::PointLockTracker::IsPointLockSupported</a></div><div class="ttdeci">bool IsPointLockSupported() const override</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d94/point__lock__tracker_8h_source.html#l00048">point_lock_tracker.h:48</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_abd16951ef536a138d03cfdef2f1bb44f"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#abd16951ef536a138d03cfdef2f1bb44f">ROCKSDB_NAMESPACE::PointLockTracker::GetTrackedLocksSinceSavePoint</a></div><div class="ttdeci">LockTracker * GetTrackedLocksSinceSavePoint(const LockTracker &amp;save_point_tracker) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00171">point_lock_tracker.cc:171</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_ac8d73389457fd37dda96c2fc7de9dead"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#ac8d73389457fd37dda96c2fc7de9dead">ROCKSDB_NAMESPACE::PointLockTracker::Clear</a></div><div class="ttdeci">void Clear() override</div><div class="ttdef"><b>Definition</b> <a href="#l00252">point_lock_tracker.cc:252</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_ad80259f09a272b61d0335536928ed623"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#ad80259f09a272b61d0335536928ed623">ROCKSDB_NAMESPACE::PointLockTracker::Track</a></div><div class="ttdeci">void Track(const PointLockRequest &amp;lock_request) override</div><div class="ttdef"><b>Definition</b> <a href="#l00044">point_lock_tracker.cc:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_aee027c12f0fb19e01b6cee2ecd52a628"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#aee027c12f0fb19e01b6cee2ecd52a628">ROCKSDB_NAMESPACE::PointLockTracker::Merge</a></div><div class="ttdeci">void Merge(const LockTracker &amp;tracker) override</div><div class="ttdef"><b>Definition</b> <a href="#l00110">point_lock_tracker.cc:110</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PointLockTracker_html_aefdddb9d6d4643e7361ac5da3c1bb544"><div class="ttname"><a href="../../d6/d54/classROCKSDB__NAMESPACE_1_1PointLockTracker.html#aefdddb9d6d4643e7361ac5da3c1bb544">ROCKSDB_NAMESPACE::PointLockTracker::GetPointLockStatus</a></div><div class="ttdeci">PointLockStatus GetPointLockStatus(ColumnFamilyId column_family_id, const std::string &amp;key) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00211">point_lock_tracker.cc:211</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a796f90aec424bd059fb93d81a6219351"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a796f90aec424bd059fb93d81a6219351">ROCKSDB_NAMESPACE::TrackedKeys</a></div><div class="ttdeci">std::unordered_map&lt; ColumnFamilyId, TrackedKeyInfos &gt; TrackedKeys</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d94/point__lock__tracker_8h_source.html#l00038">point_lock_tracker.h:38</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a8a39a75cbd2dd36afa8c75d6fc169606"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a8a39a75cbd2dd36afa8c75d6fc169606">ROCKSDB_NAMESPACE::ColumnFamilyId</a></div><div class="ttdeci">uint32_t ColumnFamilyId</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d49/types_8h_source.html#l00019">types.h:19</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_af89949140eb12620615103218affd775"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af89949140eb12620615103218affd775">ROCKSDB_NAMESPACE::UntrackStatus</a></div><div class="ttdeci">UntrackStatus</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00051">lock_tracker.h:51</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_af89949140eb12620615103218affd775aa6aa7aaab436d05e461fafcada25aaa2"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af89949140eb12620615103218affd775aa6aa7aaab436d05e461fafcada25aaa2">ROCKSDB_NAMESPACE::UntrackStatus::UNTRACKED</a></div><div class="ttdeci">@ UNTRACKED</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00055">lock_tracker.h:55</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_af89949140eb12620615103218affd775ab3461745d64b12346503b2980e436db5"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af89949140eb12620615103218affd775ab3461745d64b12346503b2980e436db5">ROCKSDB_NAMESPACE::UntrackStatus::REMOVED</a></div><div class="ttdeci">@ REMOVED</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00057">lock_tracker.h:57</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_af89949140eb12620615103218affd775afccfb54c1af2c86685ed67231cfc6954"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#af89949140eb12620615103218affd775afccfb54c1af2c86685ed67231cfc6954">ROCKSDB_NAMESPACE::UntrackStatus::NOT_TRACKED</a></div><div class="ttdeci">@ NOT_TRACKED</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00053">lock_tracker.h:53</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_afef4cfb6079ac8ae2d8a5ee5446bedce"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#afef4cfb6079ac8ae2d8a5ee5446bedce">ROCKSDB_NAMESPACE::TrackedKeyInfos</a></div><div class="ttdeci">std::unordered_map&lt; std::string, TrackedKeyInfo &gt; TrackedKeyInfos</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d94/point__lock__tracker_8h_source.html#l00036">point_lock_tracker.h:36</a></div></div>
+<div class="ttc" id="apoint__lock__tracker_8h_html"><div class="ttname"><a href="../../d4/d94/point__lock__tracker_8h.html">point_lock_tracker.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockRequest_html"><div class="ttname"><a href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html">ROCKSDB_NAMESPACE::PointLockRequest</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00018">lock_tracker.h:18</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockRequest_html_a069509658805a8df3cb2d04d891a970b"><div class="ttname"><a href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a069509658805a8df3cb2d04d891a970b">ROCKSDB_NAMESPACE::PointLockRequest::read_only</a></div><div class="ttdeci">bool read_only</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00026">lock_tracker.h:26</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockRequest_html_a36cd6f196509c967739ef1f3c0e6d4e3"><div class="ttname"><a href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a36cd6f196509c967739ef1f3c0e6d4e3">ROCKSDB_NAMESPACE::PointLockRequest::column_family_id</a></div><div class="ttdeci">ColumnFamilyId column_family_id</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00020">lock_tracker.h:20</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockRequest_html_a45cbfe1ef1030b58fa6d32cf35225294"><div class="ttname"><a href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a45cbfe1ef1030b58fa6d32cf35225294">ROCKSDB_NAMESPACE::PointLockRequest::exclusive</a></div><div class="ttdeci">bool exclusive</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00028">lock_tracker.h:28</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockRequest_html_a658b292047603549532963cc1d48ef55"><div class="ttname"><a href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a658b292047603549532963cc1d48ef55">ROCKSDB_NAMESPACE::PointLockRequest::seq</a></div><div class="ttdeci">SequenceNumber seq</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00024">lock_tracker.h:24</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockRequest_html_a71715ddfa3972389e1a9c101dd6c3eda"><div class="ttname"><a href="../../d7/df9/structROCKSDB__NAMESPACE_1_1PointLockRequest.html#a71715ddfa3972389e1a9c101dd6c3eda">ROCKSDB_NAMESPACE::PointLockRequest::key</a></div><div class="ttdeci">std::string key</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00022">lock_tracker.h:22</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockStatus_html"><div class="ttname"><a href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html">ROCKSDB_NAMESPACE::PointLockStatus</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00041">lock_tracker.h:41</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockStatus_html_a2780bbaec5deae37db82075e34e1caa7"><div class="ttname"><a href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html#a2780bbaec5deae37db82075e34e1caa7">ROCKSDB_NAMESPACE::PointLockStatus::seq</a></div><div class="ttdeci">SequenceNumber seq</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00047">lock_tracker.h:47</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockStatus_html_a439262055264856a67af8fd2bf2b5f30"><div class="ttname"><a href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html#a439262055264856a67af8fd2bf2b5f30">ROCKSDB_NAMESPACE::PointLockStatus::exclusive</a></div><div class="ttdeci">bool exclusive</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00045">lock_tracker.h:45</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1PointLockStatus_html_ad39b23a942f0a40675169dd0c49b2f51"><div class="ttname"><a href="../../da/d4b/structROCKSDB__NAMESPACE_1_1PointLockStatus.html#ad39b23a942f0a40675169dd0c49b2f51">ROCKSDB_NAMESPACE::PointLockStatus::locked</a></div><div class="ttdeci">bool locked</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db8/lock__tracker_8h_source.html#l00043">lock_tracker.h:43</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TrackedKeyInfo_html"><div class="ttname"><a href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html">ROCKSDB_NAMESPACE::TrackedKeyInfo</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d94/point__lock__tracker_8h_source.html#l00016">point_lock_tracker.h:16</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TrackedKeyInfo_html_a76887d97730ff0549691e4e35fca32de"><div class="ttname"><a href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#a76887d97730ff0549691e4e35fca32de">ROCKSDB_NAMESPACE::TrackedKeyInfo::num_reads</a></div><div class="ttdeci">uint32_t num_reads</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d94/point__lock__tracker_8h_source.html#l00021">point_lock_tracker.h:21</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TrackedKeyInfo_html_a9ce9b2a8bde6ca84e88531eb9acd1682"><div class="ttname"><a href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#a9ce9b2a8bde6ca84e88531eb9acd1682">ROCKSDB_NAMESPACE::TrackedKeyInfo::num_writes</a></div><div class="ttdeci">uint32_t num_writes</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d94/point__lock__tracker_8h_source.html#l00020">point_lock_tracker.h:20</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TrackedKeyInfo_html_ab89919f796d1590d7117bde10f1ae66f"><div class="ttname"><a href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#ab89919f796d1590d7117bde10f1ae66f">ROCKSDB_NAMESPACE::TrackedKeyInfo::exclusive</a></div><div class="ttdeci">bool exclusive</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d94/point__lock__tracker_8h_source.html#l00023">point_lock_tracker.h:23</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TrackedKeyInfo_html_ad70178f8b9ce9eb6ec13be789221ae61"><div class="ttname"><a href="../../dd/d1c/structROCKSDB__NAMESPACE_1_1TrackedKeyInfo.html#ad70178f8b9ce9eb6ec13be789221ae61">ROCKSDB_NAMESPACE::TrackedKeyInfo::seq</a></div><div class="ttdeci">SequenceNumber seq</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d94/point__lock__tracker_8h_source.html#l00018">point_lock_tracker.h:18</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_f4ac8d1c8a65a28912067a753d9f7936.html">transactions</a></li><li class="navelem"><a class="el" href="../../dir_d99b51c9fcb491d24ec922010608a137.html">lock</a></li><li class="navelem"><a class="el" href="../../dir_744d54e823ec883aaf889c7c7ed29705.html">point</a></li><li class="navelem"><a class="el" href="../../da/def/point__lock__tracker_8cc.html">point_lock_tracker.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

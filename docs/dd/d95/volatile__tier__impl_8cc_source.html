@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: utilities/persistent_cache/volatile_tier_impl.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('dd/d95/volatile__tier__impl_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">volatile_tier_impl.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../dd/d95/volatile__tier__impl_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2013, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d0d/volatile__tier__impl_8h.html">utilities/persistent_cache/volatile_tier_impl.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#ac3bd10ab9e98a474bc8b689029053c52">   13</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#ac3bd10ab9e98a474bc8b689029053c52">VolatileCacheTier::DeleteCacheData</a>(<a class="code hl_struct" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html">VolatileCacheTier::CacheData</a>* data) {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  assert(data);</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keyword">delete</span> data;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>}</div>
+</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a87dde1cb415bb0f2546bd7a689dbe909">   18</a></span><a class="code hl_function" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a87dde1cb415bb0f2546bd7a689dbe909">VolatileCacheTier::~VolatileCacheTier</a>() { <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af162cf7b21c7de284e96f0bcfe58636e">index_</a>.Clear(&amp;<a class="code hl_function" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#ac3bd10ab9e98a474bc8b689029053c52">DeleteCacheData</a>); }</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a793b6129673281bbeb9c49313feeb7c8">   20</a></span><a class="code hl_typedef" href="../../d0/d11/classROCKSDB__NAMESPACE_1_1PersistentCache.html#a88b79b565df677e22ff2308ddb9697da">PersistentCache::StatsType</a> <a class="code hl_function" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a793b6129673281bbeb9c49313feeb7c8">VolatileCacheTier::Stats</a>() {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  std::map&lt;std::string, double&gt; stat;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  stat.insert({<span class="stringliteral">&quot;persistent_cache.volatile_cache.hits&quot;</span>,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>               <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">stats_</a>.cache_hits_)});</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  stat.insert({<span class="stringliteral">&quot;persistent_cache.volatile_cache.misses&quot;</span>,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>               <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">stats_</a>.cache_misses_)});</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  stat.insert({<span class="stringliteral">&quot;persistent_cache.volatile_cache.inserts&quot;</span>,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>               <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">stats_</a>.cache_inserts_)});</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  stat.insert({<span class="stringliteral">&quot;persistent_cache.volatile_cache.evicts&quot;</span>,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>               <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">stats_</a>.cache_evicts_)});</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  stat.insert({<span class="stringliteral">&quot;persistent_cache.volatile_cache.hit_pct&quot;</span>,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>               <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">stats_</a>.CacheHitPct())});</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  stat.insert({<span class="stringliteral">&quot;persistent_cache.volatile_cache.miss_pct&quot;</span>,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>               <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">stats_</a>.CacheMissPct())});</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">auto</span> out = <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#aec1bd264ad2b6688cdd02a5144cec73e">PersistentCacheTier::Stats</a>();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  out.push_back(stat);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">return</span> out;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a3e55146a68cd841fc5f6e1ce85453bfc">   40</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a3e55146a68cd841fc5f6e1ce85453bfc">VolatileCacheTier::Insert</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; page_key, <span class="keyword">const</span> <span class="keywordtype">char</span>* data,</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                 <span class="keyword">const</span> <span class="keywordtype">size_t</span> size) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// precondition</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  assert(data);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  assert(size);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// increment the size</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a5cfa3e8f90e27eb2a6876f877c9773bd">size_</a> += size;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// check if we have overshot the limit, if so evict some space</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">while</span> (<a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a5cfa3e8f90e27eb2a6876f877c9773bd">size_</a> &gt; <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af08ccc6ec408c259189e670d95abc332">max_size_</a>) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a0a86e53947f6f955e0327461fc75f889">Evict</a>()) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <span class="comment">// unable to evict data, we give up so we don&#39;t spike read</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="comment">// latency</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      assert(<a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a5cfa3e8f90e27eb2a6876f877c9773bd">size_</a> &gt;= size);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a5cfa3e8f90e27eb2a6876f877c9773bd">size_</a> -= size;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a127c7c326fcd5a9a08f82e01c8a038e4">Status::TryAgain</a>(<span class="stringliteral">&quot;Unable to evict any data&quot;</span>);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  assert(<a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a5cfa3e8f90e27eb2a6876f877c9773bd">size_</a> &gt;= size);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// insert order: LRU, followed by index</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  std::string key(page_key.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">data</a>(), page_key.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>());</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  std::string value(data, size);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  std::unique_ptr&lt;CacheData&gt; cache_data(</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <span class="keyword">new</span> <a class="code hl_struct" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html">CacheData</a>(std::move(key), std::move(value)));</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordtype">bool</span> ok = <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af162cf7b21c7de284e96f0bcfe58636e">index_</a>.Insert(cache_data.get());</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordflow">if</span> (!ok) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="comment">// decrement the size that we incremented ahead of time</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    assert(<a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a5cfa3e8f90e27eb2a6876f877c9773bd">size_</a> &gt;= size);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a5cfa3e8f90e27eb2a6876f877c9773bd">size_</a> -= size;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">// failed to insert to cache, block already in cache</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a127c7c326fcd5a9a08f82e01c8a038e4">Status::TryAgain</a>(<span class="stringliteral">&quot;key already exists in volatile cache&quot;</span>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  }</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  cache_data.release();</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">stats_</a>.cache_inserts_++;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>}</div>
+</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="foldopen" id="foldopen00081" data-start="{" data-end="}">
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a0f3ee2bbfb24765c6a56bcff2bda002b">   81</a></span><a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> <a class="code hl_function" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a0f3ee2bbfb24765c6a56bcff2bda002b">VolatileCacheTier::Lookup</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; page_key,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                                 std::unique_ptr&lt;<span class="keywordtype">char</span>[]&gt;* result,</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                                 <span class="keywordtype">size_t</span>* size) {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <a class="code hl_struct" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html">CacheData</a> key(std::move(page_key.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ToString</a>()));</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <a class="code hl_struct" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html">CacheData</a>* kv;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordtype">bool</span> ok = <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af162cf7b21c7de284e96f0bcfe58636e">index_</a>.Find(&amp;key, &amp;kv);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keywordflow">if</span> (ok) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="comment">// set return data</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    result-&gt;reset(<span class="keyword">new</span> <span class="keywordtype">char</span>[kv-&gt;<a class="code hl_variable" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html#aa71ccdab970ff87d9ae1303ad6b8dc95">value</a>.size()]);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    memcpy(result-&gt;get(), kv-&gt;<a class="code hl_variable" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html#aa71ccdab970ff87d9ae1303ad6b8dc95">value</a>.c_str(), kv-&gt;<a class="code hl_variable" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html#aa71ccdab970ff87d9ae1303ad6b8dc95">value</a>.size());</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    *size = kv-&gt;<a class="code hl_variable" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html#aa71ccdab970ff87d9ae1303ad6b8dc95">value</a>.size();</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="comment">// drop the reference on cache data</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    kv-&gt;<a class="code hl_variable" href="../../d2/d0a/structROCKSDB__NAMESPACE_1_1LRUElement.html#a5856cd9ef88d04ca7bd0e234d92603f6">refs_</a>--;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="comment">// update stats</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">stats_</a>.cache_hits_++;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">Status::OK</a>();</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">stats_</a>.cache_misses_++;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a0df057976be327c6ecbfc4624b15bce1">next_tier</a>()) {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a0df057976be327c6ecbfc4624b15bce1">next_tier</a>()-&gt;Lookup(page_key, result, size);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  }</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#afe5c21c8234dd0fc5745cbd2e7187642">Status::NotFound</a>(<span class="stringliteral">&quot;key not found in volatile cache&quot;</span>);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>}</div>
+</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="foldopen" id="foldopen00108" data-start="{" data-end="}">
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a988d2a9bd9ff2475ec131df7d4695b28">  108</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a988d2a9bd9ff2475ec131df7d4695b28">VolatileCacheTier::Erase</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; <span class="comment">/*key*/</span>) {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  assert(!<span class="stringliteral">&quot;not supported&quot;</span>);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
+</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a0a86e53947f6f955e0327461fc75f889">  113</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a0a86e53947f6f955e0327461fc75f889">VolatileCacheTier::Evict</a>() {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <a class="code hl_struct" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html">CacheData</a>* edata = <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af162cf7b21c7de284e96f0bcfe58636e">index_</a>.Evict();</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordflow">if</span> (!edata) {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="comment">// not able to evict any object</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  }</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">stats_</a>.cache_evicts_++;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// push the evicted object to the next level</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a0df057976be327c6ecbfc4624b15bce1">next_tier</a>()) {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="comment">// TODO: Should the insert error be ignored?</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = <a class="code hl_function" href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a0df057976be327c6ecbfc4624b15bce1">next_tier</a>()-&gt;Insert(<a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>(edata-&gt;<a class="code hl_variable" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html#aa9144ea0545977df4b96ae203c6ad84e">key</a>), edata-&gt;<a class="code hl_variable" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html#aa71ccdab970ff87d9ae1303ad6b8dc95">value</a>.c_str(),</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                                   edata-&gt;<a class="code hl_variable" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html#aa71ccdab970ff87d9ae1303ad6b8dc95">value</a>.size());</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#aaf1532cf0c0cf8fb93620d09e41d624f">PermitUncheckedError</a>();</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  }</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="comment">// adjust size and destroy data</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <a class="code hl_variable" href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a5cfa3e8f90e27eb2a6876f877c9773bd">size_</a> -= edata-&gt;<a class="code hl_variable" href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html#aa71ccdab970ff87d9ae1303ad6b8dc95">value</a>.size();</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="keyword">delete</span> edata;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
+</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_a0df057976be327c6ecbfc4624b15bce1"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#a0df057976be327c6ecbfc4624b15bce1">ROCKSDB_NAMESPACE::PersistentCacheTier::next_tier</a></div><div class="ttdeci">virtual Tier &amp; next_tier()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/df0/persistent__cache__tier_8h_source.html#l00274">persistent_cache_tier.h:274</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCacheTier_html_aec1bd264ad2b6688cdd02a5144cec73e"><div class="ttname"><a href="../../de/d09/classROCKSDB__NAMESPACE_1_1PersistentCacheTier.html#aec1bd264ad2b6688cdd02a5144cec73e">ROCKSDB_NAMESPACE::PersistentCacheTier::Stats</a></div><div class="ttdeci">PersistentCache::StatsType Stats() override</div><div class="ttdef"><b>Definition</b> <a href="../../df/d4a/persistent__cache__tier_8cc_source.html#l00094">persistent_cache_tier.cc:94</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1PersistentCache_html_a88b79b565df677e22ff2308ddb9697da"><div class="ttname"><a href="../../d0/d11/classROCKSDB__NAMESPACE_1_1PersistentCache.html#a88b79b565df677e22ff2308ddb9697da">ROCKSDB_NAMESPACE::PersistentCache::StatsType</a></div><div class="ttdeci">std::vector&lt; std::map&lt; std::string, double &gt; &gt; StatsType</div><div class="ttdef"><b>Definition</b> <a href="../../db/de4/persistent__cache_8h_source.html#l00028">persistent_cache.h:28</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a290b26395e5d5df4b78f0a164c7da733"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ROCKSDB_NAMESPACE::Slice::ToString</a></div><div class="ttdeci">std::string ToString(bool hex=false) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d5a/slice_8cc_source.html#l00292">slice.cc:292</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a47c51c16ecee27b619768f1b817a342c"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">ROCKSDB_NAMESPACE::Slice::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00060">slice.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a5230d45b66475f5e342a7654313d4c0e"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">ROCKSDB_NAMESPACE::Slice::data</a></div><div class="ttdeci">const char * data() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00057">slice.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a127c7c326fcd5a9a08f82e01c8a038e4"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a127c7c326fcd5a9a08f82e01c8a038e4">ROCKSDB_NAMESPACE::Status::TryAgain</a></div><div class="ttdeci">static Status TryAgain(SubCode msg=kNone)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00270">status.h:270</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a68c941da5f3083ca54122b381139b65b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a68c941da5f3083ca54122b381139b65b">ROCKSDB_NAMESPACE::Status::OK</a></div><div class="ttdeci">static Status OK()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00174">status.h:174</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_aaf1532cf0c0cf8fb93620d09e41d624f"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#aaf1532cf0c0cf8fb93620d09e41d624f">ROCKSDB_NAMESPACE::Status::PermitUncheckedError</a></div><div class="ttdeci">void PermitUncheckedError() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00067">status.h:67</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_afe5c21c8234dd0fc5745cbd2e7187642"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#afe5c21c8234dd0fc5745cbd2e7187642">ROCKSDB_NAMESPACE::Status::NotFound</a></div><div class="ttdeci">static Status NotFound(const Slice &amp;msg, const Slice &amp;msg2=Slice())</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00191">status.h:191</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_a0a86e53947f6f955e0327461fc75f889"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a0a86e53947f6f955e0327461fc75f889">ROCKSDB_NAMESPACE::VolatileCacheTier::Evict</a></div><div class="ttdeci">bool Evict()</div><div class="ttdef"><b>Definition</b> <a href="#l00113">volatile_tier_impl.cc:113</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_a0f3ee2bbfb24765c6a56bcff2bda002b"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a0f3ee2bbfb24765c6a56bcff2bda002b">ROCKSDB_NAMESPACE::VolatileCacheTier::Lookup</a></div><div class="ttdeci">Status Lookup(const Slice &amp;page_key, std::unique_ptr&lt; char[]&gt; *data, size_t *size) override</div><div class="ttdef"><b>Definition</b> <a href="#l00081">volatile_tier_impl.cc:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_a3e55146a68cd841fc5f6e1ce85453bfc"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a3e55146a68cd841fc5f6e1ce85453bfc">ROCKSDB_NAMESPACE::VolatileCacheTier::Insert</a></div><div class="ttdeci">Status Insert(const Slice &amp;page_key, const char *data, const size_t size) override</div><div class="ttdef"><b>Definition</b> <a href="#l00040">volatile_tier_impl.cc:40</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_a5cfa3e8f90e27eb2a6876f877c9773bd"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a5cfa3e8f90e27eb2a6876f877c9773bd">ROCKSDB_NAMESPACE::VolatileCacheTier::size_</a></div><div class="ttdeci">std::atomic&lt; uint64_t &gt; size_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d0d/volatile__tier__impl_8h_source.html#l00134">volatile_tier_impl.h:134</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_a793b6129673281bbeb9c49313feeb7c8"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a793b6129673281bbeb9c49313feeb7c8">ROCKSDB_NAMESPACE::VolatileCacheTier::Stats</a></div><div class="ttdeci">PersistentCache::StatsType Stats() override</div><div class="ttdef"><b>Definition</b> <a href="#l00020">volatile_tier_impl.cc:20</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_a87dde1cb415bb0f2546bd7a689dbe909"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a87dde1cb415bb0f2546bd7a689dbe909">ROCKSDB_NAMESPACE::VolatileCacheTier::~VolatileCacheTier</a></div><div class="ttdeci">virtual ~VolatileCacheTier()</div><div class="ttdef"><b>Definition</b> <a href="#l00018">volatile_tier_impl.cc:18</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_a988d2a9bd9ff2475ec131df7d4695b28"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#a988d2a9bd9ff2475ec131df7d4695b28">ROCKSDB_NAMESPACE::VolatileCacheTier::Erase</a></div><div class="ttdeci">bool Erase(const Slice &amp;key) override</div><div class="ttdef"><b>Definition</b> <a href="#l00108">volatile_tier_impl.cc:108</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_ac3bd10ab9e98a474bc8b689029053c52"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#ac3bd10ab9e98a474bc8b689029053c52">ROCKSDB_NAMESPACE::VolatileCacheTier::DeleteCacheData</a></div><div class="ttdeci">static void DeleteCacheData(CacheData *data)</div><div class="ttdef"><b>Definition</b> <a href="#l00013">volatile_tier_impl.cc:13</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_af08ccc6ec408c259189e670d95abc332"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af08ccc6ec408c259189e670d95abc332">ROCKSDB_NAMESPACE::VolatileCacheTier::max_size_</a></div><div class="ttdeci">std::atomic&lt; uint64_t &gt; max_size_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d0d/volatile__tier__impl_8h_source.html#l00133">volatile_tier_impl.h:133</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_af162cf7b21c7de284e96f0bcfe58636e"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af162cf7b21c7de284e96f0bcfe58636e">ROCKSDB_NAMESPACE::VolatileCacheTier::index_</a></div><div class="ttdeci">IndexType index_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d0d/volatile__tier__impl_8h_source.html#l00132">volatile_tier_impl.h:132</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1VolatileCacheTier_html_af47eb5102767b5a126bf811828ca881b"><div class="ttname"><a href="../../de/d6b/classROCKSDB__NAMESPACE_1_1VolatileCacheTier.html#af47eb5102767b5a126bf811828ca881b">ROCKSDB_NAMESPACE::VolatileCacheTier::stats_</a></div><div class="ttdeci">Statistics stats_</div><div class="ttdef"><b>Definition</b> <a href="../../df/d0d/volatile__tier__impl_8h_source.html#l00135">volatile_tier_impl.h:135</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1LRUElement_html_a5856cd9ef88d04ca7bd0e234d92603f6"><div class="ttname"><a href="../../d2/d0a/structROCKSDB__NAMESPACE_1_1LRUElement.html#a5856cd9ef88d04ca7bd0e234d92603f6">ROCKSDB_NAMESPACE::LRUElement::refs_</a></div><div class="ttdeci">std::atomic&lt; size_t &gt; refs_</div><div class="ttdef"><b>Definition</b> <a href="../../db/d8f/lrulist_8h_source.html#l00027">lrulist.h:27</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData_html"><div class="ttname"><a href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html">ROCKSDB_NAMESPACE::VolatileCacheTier::CacheData</a></div><div class="ttdef"><b>Definition</b> <a href="../../df/d0d/volatile__tier__impl_8h_source.html#l00075">volatile_tier_impl.h:75</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData_html_aa71ccdab970ff87d9ae1303ad6b8dc95"><div class="ttname"><a href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html#aa71ccdab970ff87d9ae1303ad6b8dc95">ROCKSDB_NAMESPACE::VolatileCacheTier::CacheData::value</a></div><div class="ttdeci">const std::string value</div><div class="ttdef"><b>Definition</b> <a href="../../df/d0d/volatile__tier__impl_8h_source.html#l00085">volatile_tier_impl.h:85</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData_html_aa9144ea0545977df4b96ae203c6ad84e"><div class="ttname"><a href="../../d2/d0f/structROCKSDB__NAMESPACE_1_1VolatileCacheTier_1_1CacheData.html#aa9144ea0545977df4b96ae203c6ad84e">ROCKSDB_NAMESPACE::VolatileCacheTier::CacheData::key</a></div><div class="ttdeci">const std::string key</div><div class="ttdef"><b>Definition</b> <a href="../../df/d0d/volatile__tier__impl_8h_source.html#l00084">volatile_tier_impl.h:84</a></div></div>
+<div class="ttc" id="avolatile__tier__impl_8h_html"><div class="ttname"><a href="../../df/d0d/volatile__tier__impl_8h.html">volatile_tier_impl.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_df38b2a5d584e0f6066b4518b95c638b.html">utilities</a></li><li class="navelem"><a class="el" href="../../dir_ac80ecde573b52e8729c1d4ee319d032.html">persistent_cache</a></li><li class="navelem"><a class="el" href="../../dd/d95/volatile__tier__impl_8cc.html">volatile_tier_impl.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

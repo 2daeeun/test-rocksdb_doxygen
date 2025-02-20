@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: table/block_based/block_cache.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('de/dd7/block__cache_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">block_cache.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../de/dd7/block__cache_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) Meta Platforms, Inc. and affiliates.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/db7/block__cache_8h.html">table/block_based/block_cache.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/da7/block__based__table__reader_8h.html">table/block_based/block_based_table_reader.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="}">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a87e77eac33f3773b6299e04547fe9aeb">   12</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a5c261bec996f7952fa0e3f43a33acd07">BlockCreateContext::Create</a>(std::unique_ptr&lt;Block_kData&gt;* parsed_out,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                                <a class="code hl_struct" href="../../dc/d4b/structROCKSDB__NAMESPACE_1_1BlockContents.html">BlockContents</a>&amp;&amp; block) {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  parsed_out-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../dd/d1c/classROCKSDB__NAMESPACE_1_1Block__kData.html">Block_kData</a>(</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>      std::move(block), <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a9d943ac6c41c7274a5bb52e9b106d86a">table_options</a>-&gt;read_amp_bytes_per_bit, <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#aafd13eec1e011fc7f7a82710bb38dcb7">statistics</a>));</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  parsed_out-&gt;get()-&gt;InitializeDataBlockProtectionInfo(<a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#ac5ed68ef6152565827afe335503fadd5">protection_bytes_per_key</a>,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                                                       <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a03f37ec58d516c22e3ed28c78cdb545d">raw_ucmp</a>);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
+</div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a5b4a08af165bfb5feac39bc70dd8f9d1">   19</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a5c261bec996f7952fa0e3f43a33acd07">BlockCreateContext::Create</a>(std::unique_ptr&lt;Block_kIndex&gt;* parsed_out,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                                <a class="code hl_struct" href="../../dc/d4b/structROCKSDB__NAMESPACE_1_1BlockContents.html">BlockContents</a>&amp;&amp; block) {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  parsed_out-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../d5/d46/classROCKSDB__NAMESPACE_1_1Block__kIndex.html">Block_kIndex</a>(std::move(block),</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                                     <span class="comment">/*read_amp_bytes_per_bit*/</span> 0, <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#aafd13eec1e011fc7f7a82710bb38dcb7">statistics</a>));</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  parsed_out-&gt;get()-&gt;InitializeIndexBlockProtectionInfo(</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#ac5ed68ef6152565827afe335503fadd5">protection_bytes_per_key</a>, <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a03f37ec58d516c22e3ed28c78cdb545d">raw_ucmp</a>, <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a011f325bb43c83d2d2a98d9f52737737">index_value_is_full</a>,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a1dae5a6781d80d832ea5436100a26eac">index_has_first_key</a>);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}</div>
+</div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#aac9db0e5eb76957949d1508d7016bab6">   27</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a5c261bec996f7952fa0e3f43a33acd07">BlockCreateContext::Create</a>(</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    std::unique_ptr&lt;Block_kFilterPartitionIndex&gt;* parsed_out,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_struct" href="../../dc/d4b/structROCKSDB__NAMESPACE_1_1BlockContents.html">BlockContents</a>&amp;&amp; block) {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  parsed_out-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../db/d5d/classROCKSDB__NAMESPACE_1_1Block__kFilterPartitionIndex.html">Block_kFilterPartitionIndex</a>(</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      std::move(block), <span class="comment">/*read_amp_bytes_per_bit*/</span> 0, <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#aafd13eec1e011fc7f7a82710bb38dcb7">statistics</a>));</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  parsed_out-&gt;get()-&gt;InitializeIndexBlockProtectionInfo(</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#ac5ed68ef6152565827afe335503fadd5">protection_bytes_per_key</a>, <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a03f37ec58d516c22e3ed28c78cdb545d">raw_ucmp</a>, <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a011f325bb43c83d2d2a98d9f52737737">index_value_is_full</a>,</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a1dae5a6781d80d832ea5436100a26eac">index_has_first_key</a>);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
+</div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a72dabfeb1ebfc3c567e3eda8ecdec041">   36</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a5c261bec996f7952fa0e3f43a33acd07">BlockCreateContext::Create</a>(</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    std::unique_ptr&lt;Block_kRangeDeletion&gt;* parsed_out, <a class="code hl_struct" href="../../dc/d4b/structROCKSDB__NAMESPACE_1_1BlockContents.html">BlockContents</a>&amp;&amp; block) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  parsed_out-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../d7/d8c/classROCKSDB__NAMESPACE_1_1Block__kRangeDeletion.html">Block_kRangeDeletion</a>(</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      std::move(block), <span class="comment">/*read_amp_bytes_per_bit*/</span> 0, <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#aafd13eec1e011fc7f7a82710bb38dcb7">statistics</a>));</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
+</div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#af7530658013f2c5f186a0c2081657621">   41</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a5c261bec996f7952fa0e3f43a33acd07">BlockCreateContext::Create</a>(std::unique_ptr&lt;Block_kMetaIndex&gt;* parsed_out,</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                                <a class="code hl_struct" href="../../dc/d4b/structROCKSDB__NAMESPACE_1_1BlockContents.html">BlockContents</a>&amp;&amp; block) {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  parsed_out-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../da/d5e/classROCKSDB__NAMESPACE_1_1Block__kMetaIndex.html">Block_kMetaIndex</a>(</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      std::move(block), <span class="comment">/*read_amp_bytes_per_bit*/</span> 0, <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#aafd13eec1e011fc7f7a82710bb38dcb7">statistics</a>));</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  parsed_out-&gt;get()-&gt;InitializeMetaIndexBlockProtectionInfo(</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#ac5ed68ef6152565827afe335503fadd5">protection_bytes_per_key</a>);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
+</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a1e21d2afad47db3096efde233d742503">   49</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a5c261bec996f7952fa0e3f43a33acd07">BlockCreateContext::Create</a>(</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    std::unique_ptr&lt;ParsedFullFilterBlock&gt;* parsed_out, <a class="code hl_struct" href="../../dc/d4b/structROCKSDB__NAMESPACE_1_1BlockContents.html">BlockContents</a>&amp;&amp; block) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  parsed_out-&gt;reset(<span class="keyword">new</span> <a class="code hl_class" href="../../d0/d4b/classROCKSDB__NAMESPACE_1_1ParsedFullFilterBlock.html">ParsedFullFilterBlock</a>(</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a9d943ac6c41c7274a5bb52e9b106d86a">table_options</a>-&gt;filter_policy.get(), std::move(block)));</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
+</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a5732b20940d8c7e3d4c28dfb05f42e63">   55</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a5c261bec996f7952fa0e3f43a33acd07">BlockCreateContext::Create</a>(std::unique_ptr&lt;UncompressionDict&gt;* parsed_out,</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                                <a class="code hl_struct" href="../../dc/d4b/structROCKSDB__NAMESPACE_1_1BlockContents.html">BlockContents</a>&amp;&amp; block) {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  parsed_out-&gt;reset(<span class="keyword">new</span> <a class="code hl_struct" href="../../db/daa/structROCKSDB__NAMESPACE_1_1UncompressionDict.html">UncompressionDict</a>(</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      block.data, std::move(block.allocation), <a class="code hl_variable" href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#ad5e63349edc1182d3f37e434e69e913a">using_zstd</a>));</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>}</div>
+</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">namespace </span>{</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">// For getting SecondaryCache-compatible helpers from a BlockType. This is</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">// useful for accessing block cache in untyped contexts, such as for generic</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">// cache warming in table builder.</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">const</span> std::array&lt;<span class="keyword">const</span> <a class="code hl_struct" href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html">Cache::CacheItemHelper</a>*,</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                 <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9b6e623bd70a7ac3e6beb8773cd7a91bab10913c938482a8aa4ba85b7a1116cb4">BlockType::kInvalid</a>) + 1&gt;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    kCacheItemFullHelperForBlockType{{</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <a class="code hl_function" href="../../d3/de1/classROCKSDB__NAMESPACE_1_1FullTypedCacheHelper.html#ad8594bbf847aaf0c6ab5a9df986304b3">BlockCacheInterface&lt;Block_kData&gt;::GetFullHelper</a>(),</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <a class="code hl_function" href="../../d3/de1/classROCKSDB__NAMESPACE_1_1FullTypedCacheHelper.html#ad8594bbf847aaf0c6ab5a9df986304b3">BlockCacheInterface&lt;ParsedFullFilterBlock&gt;::GetFullHelper</a>(),</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <a class="code hl_function" href="../../d3/de1/classROCKSDB__NAMESPACE_1_1FullTypedCacheHelper.html#ad8594bbf847aaf0c6ab5a9df986304b3">BlockCacheInterface&lt;Block_kFilterPartitionIndex&gt;::GetFullHelper</a>(),</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keyword">nullptr</span>,  <span class="comment">// kProperties</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <a class="code hl_function" href="../../d3/de1/classROCKSDB__NAMESPACE_1_1FullTypedCacheHelper.html#ad8594bbf847aaf0c6ab5a9df986304b3">BlockCacheInterface&lt;UncompressionDict&gt;::GetFullHelper</a>(),</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <a class="code hl_function" href="../../d3/de1/classROCKSDB__NAMESPACE_1_1FullTypedCacheHelper.html#ad8594bbf847aaf0c6ab5a9df986304b3">BlockCacheInterface&lt;Block_kRangeDeletion&gt;::GetFullHelper</a>(),</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keyword">nullptr</span>,  <span class="comment">// kHashIndexPrefixes</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keyword">nullptr</span>,  <span class="comment">// kHashIndexMetadata</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keyword">nullptr</span>,  <span class="comment">// kMetaIndex (not yet stored in block cache)</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <a class="code hl_function" href="../../d3/de1/classROCKSDB__NAMESPACE_1_1FullTypedCacheHelper.html#ad8594bbf847aaf0c6ab5a9df986304b3">BlockCacheInterface&lt;Block_kIndex&gt;::GetFullHelper</a>(),</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keyword">nullptr</span>,  <span class="comment">// kInvalid</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    }};</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">// For getting basic helpers from a BlockType (no SecondaryCache support)</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">const</span> std::array&lt;<span class="keyword">const</span> Cache::CacheItemHelper*,</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                 <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span><span class="keyword">&gt;</span>(BlockType::kInvalid) + 1&gt;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    kCacheItemBasicHelperForBlockType{{</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        BlockCacheInterface&lt;Block_kData&gt;::GetBasicHelper(),</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        BlockCacheInterface&lt;ParsedFullFilterBlock&gt;::GetBasicHelper(),</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        BlockCacheInterface&lt;Block_kFilterPartitionIndex&gt;::GetBasicHelper(),</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keyword">nullptr</span>,  <span class="comment">// kProperties</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        BlockCacheInterface&lt;UncompressionDict&gt;::GetBasicHelper(),</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        BlockCacheInterface&lt;Block_kRangeDeletion&gt;::GetBasicHelper(),</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keyword">nullptr</span>,  <span class="comment">// kHashIndexPrefixes</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keyword">nullptr</span>,  <span class="comment">// kHashIndexMetadata</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keyword">nullptr</span>,  <span class="comment">// kMetaIndex (not yet stored in block cache)</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        BlockCacheInterface&lt;Block_kIndex&gt;::GetBasicHelper(),</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keyword">nullptr</span>,  <span class="comment">// kInvalid</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    }};</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}  <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="foldopen" id="foldopen00099" data-start="{" data-end="}">
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac320c118f147585e4527bb7e4a1a7f34">   99</a></span><span class="keyword">const</span> <a class="code hl_struct" href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html">Cache::CacheItemHelper</a>* <a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac320c118f147585e4527bb7e4a1a7f34">GetCacheItemHelper</a>(</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9b6e623bd70a7ac3e6beb8773cd7a91b">BlockType</a> block_type, <a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8267448672a5161843bc6fd001fcae7">CacheTier</a> lowest_used_cache_tier) {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">if</span> (lowest_used_cache_tier &gt; <a class="code hl_enumvalue" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8267448672a5161843bc6fd001fcae7a2e37645333e9d1fb7a0fd0862c2eff3e">CacheTier::kVolatileTier</a>) {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">return</span> kCacheItemFullHelperForBlockType[<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span><span class="keyword">&gt;</span>(block_type)];</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">return</span> kCacheItemBasicHelperForBlockType[<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span><span class="keyword">&gt;</span>(block_type)];</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  }</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>}</div>
+</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="ablock__based__table__reader_8h_html"><div class="ttname"><a href="../../df/da7/block__based__table__reader_8h.html">block_based_table_reader.h</a></div></div>
+<div class="ttc" id="ablock__cache_8h_html"><div class="ttname"><a href="../../d3/db7/block__cache_8h.html">block_cache.h</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Block__kData_html"><div class="ttname"><a href="../../dd/d1c/classROCKSDB__NAMESPACE_1_1Block__kData.html">ROCKSDB_NAMESPACE::Block_kData</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00027">block_cache.h:27</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Block__kFilterPartitionIndex_html"><div class="ttname"><a href="../../db/d5d/classROCKSDB__NAMESPACE_1_1Block__kFilterPartitionIndex.html">ROCKSDB_NAMESPACE::Block_kFilterPartitionIndex</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00043">block_cache.h:43</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Block__kIndex_html"><div class="ttname"><a href="../../d5/d46/classROCKSDB__NAMESPACE_1_1Block__kIndex.html">ROCKSDB_NAMESPACE::Block_kIndex</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00035">block_cache.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Block__kMetaIndex_html"><div class="ttname"><a href="../../da/d5e/classROCKSDB__NAMESPACE_1_1Block__kMetaIndex.html">ROCKSDB_NAMESPACE::Block_kMetaIndex</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00062">block_cache.h:62</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Block__kRangeDeletion_html"><div class="ttname"><a href="../../d7/d8c/classROCKSDB__NAMESPACE_1_1Block__kRangeDeletion.html">ROCKSDB_NAMESPACE::Block_kRangeDeletion</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00052">block_cache.h:52</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FullTypedCacheHelper_html_ad8594bbf847aaf0c6ab5a9df986304b3"><div class="ttname"><a href="../../d3/de1/classROCKSDB__NAMESPACE_1_1FullTypedCacheHelper.html#ad8594bbf847aaf0c6ab5a9df986304b3">ROCKSDB_NAMESPACE::FullTypedCacheHelper::GetFullHelper</a></div><div class="ttdeci">static const Cache::CacheItemHelper * GetFullHelper()</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d39/typed__cache_8h_source.html#l00261">typed_cache.h:261</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1ParsedFullFilterBlock_html"><div class="ttname"><a href="../../d0/d4b/classROCKSDB__NAMESPACE_1_1ParsedFullFilterBlock.html">ROCKSDB_NAMESPACE::ParsedFullFilterBlock</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/deb/parsed__full__filter__block_8h_source.html#l00019">parsed_full_filter_block.h:19</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a9b6e623bd70a7ac3e6beb8773cd7a91b"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9b6e623bd70a7ac3e6beb8773cd7a91b">ROCKSDB_NAMESPACE::BlockType</a></div><div class="ttdeci">BlockType</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d45/block__type_8h_source.html#l00019">block_type.h:19</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a9b6e623bd70a7ac3e6beb8773cd7a91bab10913c938482a8aa4ba85b7a1116cb4"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a9b6e623bd70a7ac3e6beb8773cd7a91bab10913c938482a8aa4ba85b7a1116cb4">ROCKSDB_NAMESPACE::BlockType::kInvalid</a></div><div class="ttdeci">@ kInvalid</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d45/block__type_8h_source.html#l00031">block_type.h:31</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa8267448672a5161843bc6fd001fcae7"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8267448672a5161843bc6fd001fcae7">ROCKSDB_NAMESPACE::CacheTier</a></div><div class="ttdeci">CacheTier</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d27/advanced__options_8h_source.html#l00124">advanced_options.h:124</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aa8267448672a5161843bc6fd001fcae7a2e37645333e9d1fb7a0fd0862c2eff3e"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aa8267448672a5161843bc6fd001fcae7a2e37645333e9d1fb7a0fd0862c2eff3e">ROCKSDB_NAMESPACE::CacheTier::kVolatileTier</a></div><div class="ttdeci">@ kVolatileTier</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d27/advanced__options_8h_source.html#l00125">advanced_options.h:125</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ac320c118f147585e4527bb7e4a1a7f34"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ac320c118f147585e4527bb7e4a1a7f34">ROCKSDB_NAMESPACE::GetCacheItemHelper</a></div><div class="ttdeci">const Cache::CacheItemHelper * GetCacheItemHelper(BlockType block_type, CacheTier lowest_used_cache_tier)</div><div class="ttdef"><b>Definition</b> <a href="#l00099">block_cache.cc:99</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockContents_html"><div class="ttname"><a href="../../dc/d4b/structROCKSDB__NAMESPACE_1_1BlockContents.html">ROCKSDB_NAMESPACE::BlockContents</a></div><div class="ttdef"><b>Definition</b> <a href="../../d8/d01/table_2format_8h_source.html#l00354">format.h:354</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCreateContext_html_a011f325bb43c83d2d2a98d9f52737737"><div class="ttname"><a href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a011f325bb43c83d2d2a98d9f52737737">ROCKSDB_NAMESPACE::BlockCreateContext::index_value_is_full</a></div><div class="ttdeci">bool index_value_is_full</div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00095">block_cache.h:95</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCreateContext_html_a03f37ec58d516c22e3ed28c78cdb545d"><div class="ttname"><a href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a03f37ec58d516c22e3ed28c78cdb545d">ROCKSDB_NAMESPACE::BlockCreateContext::raw_ucmp</a></div><div class="ttdeci">const Comparator * raw_ucmp</div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00090">block_cache.h:90</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCreateContext_html_a1dae5a6781d80d832ea5436100a26eac"><div class="ttname"><a href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a1dae5a6781d80d832ea5436100a26eac">ROCKSDB_NAMESPACE::BlockCreateContext::index_has_first_key</a></div><div class="ttdeci">bool index_has_first_key</div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00096">block_cache.h:96</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCreateContext_html_a5c261bec996f7952fa0e3f43a33acd07"><div class="ttname"><a href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a5c261bec996f7952fa0e3f43a33acd07">ROCKSDB_NAMESPACE::BlockCreateContext::Create</a></div><div class="ttdeci">void Create(std::unique_ptr&lt; TBlocklike &gt; *parsed_out, size_t *charge_out, const Slice &amp;data, CompressionType type, MemoryAllocator *alloc)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00100">block_cache.h:100</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCreateContext_html_a9d943ac6c41c7274a5bb52e9b106d86a"><div class="ttname"><a href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#a9d943ac6c41c7274a5bb52e9b106d86a">ROCKSDB_NAMESPACE::BlockCreateContext::table_options</a></div><div class="ttdeci">const BlockBasedTableOptions * table_options</div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00087">block_cache.h:87</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCreateContext_html_aafd13eec1e011fc7f7a82710bb38dcb7"><div class="ttname"><a href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#aafd13eec1e011fc7f7a82710bb38dcb7">ROCKSDB_NAMESPACE::BlockCreateContext::statistics</a></div><div class="ttdeci">Statistics * statistics</div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00089">block_cache.h:89</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCreateContext_html_ac5ed68ef6152565827afe335503fadd5"><div class="ttname"><a href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#ac5ed68ef6152565827afe335503fadd5">ROCKSDB_NAMESPACE::BlockCreateContext::protection_bytes_per_key</a></div><div class="ttdeci">uint8_t protection_bytes_per_key</div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00094">block_cache.h:94</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1BlockCreateContext_html_ad5e63349edc1182d3f37e434e69e913a"><div class="ttname"><a href="../../d5/df7/structROCKSDB__NAMESPACE_1_1BlockCreateContext.html#ad5e63349edc1182d3f37e434e69e913a">ROCKSDB_NAMESPACE::BlockCreateContext::using_zstd</a></div><div class="ttdeci">bool using_zstd</div><div class="ttdef"><b>Definition</b> <a href="../../d3/db7/block__cache_8h_source.html#l00093">block_cache.h:93</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper_html"><div class="ttname"><a href="../../d6/d62/structROCKSDB__NAMESPACE_1_1Cache_1_1CacheItemHelper.html">ROCKSDB_NAMESPACE::Cache::CacheItemHelper</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/db9/advanced__cache_8h_source.html#l00132">advanced_cache.h:132</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1UncompressionDict_html"><div class="ttname"><a href="../../db/daa/structROCKSDB__NAMESPACE_1_1UncompressionDict.html">ROCKSDB_NAMESPACE::UncompressionDict</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/daf/compression_8h_source.html#l00231">compression.h:231</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_7cea70ad8000b4ba25606f1df9c7574a.html">table</a></li><li class="navelem"><a class="el" href="../../dir_baa4495771c56dece086ba46f2450cec.html">block_based</a></li><li class="navelem"><a class="el" href="../../de/dd7/block__cache_8cc.html">block_cache.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

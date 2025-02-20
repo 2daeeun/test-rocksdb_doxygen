@@ -1,0 +1,386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: fuzz/sst_file_writer_fuzzer.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('db/d21/sst__file__writer__fuzzer_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">sst_file_writer_fuzzer.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../db/d21/sst__file__writer__fuzzer_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;proto/gen/db_operation.pb.h&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d8d/file__system_8h.html">rocksdb/file_system.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../d7/dee/sst__file__writer_8h.html">rocksdb/sst_file_writer.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;src/libfuzzer/libfuzzer_macro.h&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/d55/table__builder_8h.html">table/table_builder.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/d98/table__reader_8h.html">table/table_reader.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d3c/util_8h.html">util.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">using </span><a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab22d3e48c76ac44adbd1699e8e1aef84">ROCKSDB_NAMESPACE::BytewiseComparator</a>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::Comparator;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::EnvOptions;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::ExternalSstFileInfo;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::FileOptions;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::FileSystem;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::ImmutableCFOptions;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::ImmutableOptions;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">using </span><a class="code hl_typedef" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">ROCKSDB_NAMESPACE::InternalIterator</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::IOOptions;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">using </span><a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">ROCKSDB_NAMESPACE::kMaxSequenceNumber</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::Options;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::ParsedInternalKey;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">using </span><a class="code hl_function" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7fae4a23fa6b9c2c08ee516677913d33">ROCKSDB_NAMESPACE::ParseInternalKey</a>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::RandomAccessFileReader;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::ReadOptions;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::SstFileWriter;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::Status;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::TableReader;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">using </span><a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07352f7dacd1a517cd84f38fd10c1010">ROCKSDB_NAMESPACE::TableReaderCaller</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">using </span>ROCKSDB_NAMESPACE::TableReaderOptions;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">using </span><a class="code hl_enumeration" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a63da61d97d5cc28e7b9c847bb8a76abc">ROCKSDB_NAMESPACE::ValueType</a>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">// Keys in SST file writer operations must be unique and in ascending order.</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">// For each DBOperation generated by the fuzzer, this function is called on</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">// it to deduplicate and sort the keys in the DBOperations.</span></div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="};">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a48f3263b8c790a268806be1a129ebcfc">   45</a></span>protobuf_mutator::libfuzzer::PostProcessorRegistration&lt;DBOperations&gt; <a class="code hl_variable" href="../../d2/dc6/db__map__fuzzer_8cc.html#a48f3263b8c790a268806be1a129ebcfc">reg</a> = {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    [](DBOperations* input, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <span class="comment">/* seed */</span>) {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keyword">const</span> <a class="code hl_class" href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1Comparator.html">Comparator</a>* comparator = BytewiseComparator();</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keyword">auto</span> ops = input-&gt;mutable_operations();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      <span class="comment">// Make sure begin &lt;= end for DELETE_RANGE.</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="keywordflow">for</span> (DBOperation&amp; op : *ops) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordflow">if</span> (op.type() == OpType::DELETE_RANGE) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>          <span class="keyword">auto</span> begin = op.key();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>          <span class="keyword">auto</span> end = op.value();</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>          <span class="keywordflow">if</span> (comparator-&gt;<a class="code hl_function" href="../../df/df1/classROCKSDB__NAMESPACE_1_1CompareInterface.html#a3ade320bd39c9af6327110e65df81000">Compare</a>(begin, end) &gt; 0) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <a class="code hl_function" href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a>(begin, end);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            op.set_key(begin);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            op.set_value(end);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>          }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      std::sort(ops-&gt;begin(), ops-&gt;end(),</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                [&amp;comparator](<span class="keyword">const</span> DBOperation&amp; a, <span class="keyword">const</span> DBOperation&amp; b) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                  return comparator-&gt;Compare(a.key(), b.key()) &lt; 0;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                });</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keyword">auto</span> last = std::unique(</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>          ops-&gt;begin(), ops-&gt;end(),</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>          [&amp;comparator](<span class="keyword">const</span> DBOperation&amp; a, <span class="keyword">const</span> DBOperation&amp; b) {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            return comparator-&gt;Compare(a.key(), b.key()) == 0;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>          });</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      ops-&gt;erase(last, ops-&gt;end());</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    }};</div>
+</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="foldopen" id="foldopen00076" data-start="{" data-end="}">
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a90b5a8a91aca3cba4b841fb0c7295629">   76</a></span><a class="code hl_class" href="../../d8/d7c/classROCKSDB__NAMESPACE_1_1TableReader.html">TableReader</a>* <a class="code hl_function" href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a90b5a8a91aca3cba4b841fb0c7295629">NewTableReader</a>(<span class="keyword">const</span> std::string&amp; sst_file_path,</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                            <span class="keyword">const</span> <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a>&amp; options,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                            <span class="keyword">const</span> <a class="code hl_struct" href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">EnvOptions</a>&amp; env_options,</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                            <span class="keyword">const</span> <a class="code hl_struct" href="../../de/d54/structROCKSDB__NAMESPACE_1_1ImmutableCFOptions.html">ImmutableCFOptions</a>&amp; cf_ioptions) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// This code block is similar to SstFileReader::Open.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  uint64_t file_size = 0;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  std::unique_ptr&lt;RandomAccessFileReader&gt; file_reader;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  std::unique_ptr&lt;TableReader&gt; table_reader;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; fs = options.<a class="code hl_variable" href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#a8e8130980785981b140f6291ab0ec8bc">env</a>-&gt;<a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a1be4ed1309b173fc7b7cad85e5ed1086">GetFileSystem</a>();</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <a class="code hl_struct" href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">FileOptions</a> fopts(env_options);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <a class="code hl_class" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">Status</a> s = options.<a class="code hl_variable" href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#a8e8130980785981b140f6291ab0ec8bc">env</a>-&gt;<a class="code hl_function" href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a860678565518d1be1e4a879dd197b7d8">GetFileSize</a>(sst_file_path, &amp;file_size);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordflow">if</span> (s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    s = <a class="code hl_function" href="../../db/d39/classROCKSDB__NAMESPACE_1_1RandomAccessFileReader.html#a53e5958701cb07971b2126866714edf3">RandomAccessFileReader::Create</a>(fs, sst_file_path, fopts, &amp;file_reader,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                                       <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keywordflow">if</span> (s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <a class="code hl_struct" href="../../d8/dab/structROCKSDB__NAMESPACE_1_1ImmutableOptions.html">ImmutableOptions</a> iopts(options, cf_ioptions);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <a class="code hl_struct" href="../../de/dad/structROCKSDB__NAMESPACE_1_1TableReaderOptions.html">TableReaderOptions</a> t_opt(iopts, <span class="comment">/*prefix_extractor=*/</span><span class="keyword">nullptr</span>, env_options,</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                             cf_ioptions.<a class="code hl_variable" href="../../de/d54/structROCKSDB__NAMESPACE_1_1ImmutableCFOptions.html#ac168f9c882be815e386d847c4d85ac24">internal_comparator</a>,</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                             0 <span class="comment">/* block_protection_bytes_per_key */</span>);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    t_opt.<a class="code hl_variable" href="../../de/dad/structROCKSDB__NAMESPACE_1_1TableReaderOptions.html#a714c1165661da9b03325c68e5b6506f6">largest_seqno</a> = kMaxSequenceNumber;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    s = options.<a class="code hl_variable" href="../../dc/d97/structROCKSDB__NAMESPACE_1_1ColumnFamilyOptions.html#a4b5ad114d285c3130aaefaa14b350ce1">table_factory</a>-&gt;NewTableReader(t_opt, std::move(file_reader),</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                                              file_size, &amp;table_reader,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                                              <span class="comment">/*prefetch=*/</span><span class="keyword">false</span>);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  }</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keywordflow">if</span> (!s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ok</a>()) {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to create TableReader for &quot;</span> &lt;&lt; sst_file_path &lt;&lt; <span class="stringliteral">&quot;: &quot;</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>              &lt;&lt; s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a9405441372e0f9ce926cc59c37b00b11">ToString</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    abort();</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordflow">return</span> table_reader.release();</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
+</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a3d328cc1a20221a56f9796bd03968a12">  110</a></span>ValueType <a class="code hl_function" href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a3d328cc1a20221a56f9796bd03968a12">ToValueType</a>(OpType op_type) {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordflow">switch</span> (op_type) {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordflow">case</span> OpType::PUT:</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      <span class="keywordflow">return</span> ValueType::kTypeValue;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">case</span> OpType::MERGE:</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      <span class="keywordflow">return</span> ValueType::kTypeMerge;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordflow">case</span> OpType::DELETE:</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      <span class="keywordflow">return</span> ValueType::kTypeDeletion;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">case</span> OpType::DELETE_RANGE:</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="keywordflow">return</span> ValueType::kTypeRangeDeletion;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Unknown operation type &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(op_type)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      abort();</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  }</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
+</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">// Fuzzes DB operations as input, let SstFileWriter generate a SST file</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment">// according to the operations, then let TableReader read and check all the</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">// key-value pairs from the generated SST file.</span></div>
+<div class="foldopen" id="foldopen00130" data-start="{" data-end="}">
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a734b78c2ddcf41e3190a6ee37abdf9c0">  130</a></span><a class="code hl_function" href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a734b78c2ddcf41e3190a6ee37abdf9c0">DEFINE_PROTO_FUZZER</a>(DBOperations&amp; input) {</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keywordflow">if</span> (input.operations().empty()) {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  std::string sstfile;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  {</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keyword">auto</span> fs = <a class="code hl_function" href="../../d3/d26/classROCKSDB__NAMESPACE_1_1FileSystem.html#a788539fff627c87d7e57b928d42829c8">FileSystem::Default</a>();</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    std::string dir;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <a class="code hl_struct" href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">IOOptions</a> opt;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <a class="code hl_define" href="../../d8/d3c/util_8h.html#a44be0085dcbe7cee2636a69d16457f84">CHECK_OK</a>(fs-&gt;GetTestDirectory(opt, &amp;dir, <span class="keyword">nullptr</span>));</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    sstfile = dir + <span class="stringliteral">&quot;/SstFileWriterFuzzer.sst&quot;</span>;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  }</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <a class="code hl_struct" href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">Options</a> options;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <a class="code hl_struct" href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">EnvOptions</a> env_options(options);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <a class="code hl_struct" href="../../de/d54/structROCKSDB__NAMESPACE_1_1ImmutableCFOptions.html">ImmutableCFOptions</a> cf_ioptions(options);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">// Generate sst file.</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <a class="code hl_class" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html">SstFileWriter</a> writer(env_options, options);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <a class="code hl_define" href="../../d8/d3c/util_8h.html#a44be0085dcbe7cee2636a69d16457f84">CHECK_OK</a>(writer.<a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#a3bcdfeebf600e5162cbcc16697607f01">Open</a>(sstfile));</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> DBOperation&amp; op : input.operations()) {</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">switch</span> (op.type()) {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>      <span class="keywordflow">case</span> OpType::PUT: {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <a class="code hl_define" href="../../d8/d3c/util_8h.html#a44be0085dcbe7cee2636a69d16457f84">CHECK_OK</a>(writer.<a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#a1f558f500d52f7de2c212daa5457c30d">Put</a>(op.key(), op.value()));</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      }</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>      <span class="keywordflow">case</span> OpType::MERGE: {</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        <a class="code hl_define" href="../../d8/d3c/util_8h.html#a44be0085dcbe7cee2636a69d16457f84">CHECK_OK</a>(writer.<a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#a6e0b360ae0b22029fb75f71d601658c0">Merge</a>(op.key(), op.value()));</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>      }</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>      <span class="keywordflow">case</span> OpType::DELETE: {</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <a class="code hl_define" href="../../d8/d3c/util_8h.html#a44be0085dcbe7cee2636a69d16457f84">CHECK_OK</a>(writer.<a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#a43051600830b9c0b5b2b2b3b366ed003">Delete</a>(op.key()));</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>      }</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>      <span class="keywordflow">case</span> OpType::DELETE_RANGE: {</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        <a class="code hl_define" href="../../d8/d3c/util_8h.html#a44be0085dcbe7cee2636a69d16457f84">CHECK_OK</a>(writer.<a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#aac8dfd85920ab707e1e2b9813fd6dca3">DeleteRange</a>(op.key(), op.value()));</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>      }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>      <span class="keywordflow">default</span>: {</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Unsupported operation&quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(op.type())</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                  &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        abort();</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      }</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    }</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  }</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <a class="code hl_struct" href="../../d5/d0f/structROCKSDB__NAMESPACE_1_1ExternalSstFileInfo.html">ExternalSstFileInfo</a> info;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <a class="code hl_define" href="../../d8/d3c/util_8h.html#a44be0085dcbe7cee2636a69d16457f84">CHECK_OK</a>(writer.<a class="code hl_function" href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#a6e3450b054ebd345ce3b657c7cf80368">Finish</a>(&amp;info));</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="comment">// Iterate and verify key-value pairs.</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  std::unique_ptr&lt;TableReader&gt; table_reader(</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>      <a class="code hl_function" href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a90b5a8a91aca3cba4b841fb0c7295629">::NewTableReader</a>(sstfile, options, env_options, cf_ioptions));</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <a class="code hl_struct" href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ReadOptions</a> roptions;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <a class="code hl_define" href="../../d8/d3c/util_8h.html#a44be0085dcbe7cee2636a69d16457f84">CHECK_OK</a>(table_reader-&gt;VerifyChecksum(roptions,</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                                        TableReaderCaller::kUncategorized));</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  std::unique_ptr&lt;InternalIterator&gt; it(</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>      table_reader-&gt;NewIterator(roptions, <span class="comment">/*prefix_extractor=*/</span><span class="keyword">nullptr</span>,</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                                <span class="comment">/*arena=*/</span><span class="keyword">nullptr</span>, <span class="comment">/*skip_filters=*/</span><span class="keyword">true</span>,</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                                TableReaderCaller::kUncategorized));</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  it-&gt;SeekToFirst();</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> DBOperation&amp; op : input.operations()) {</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordflow">if</span> (op.type() == OpType::DELETE_RANGE) {</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>      <span class="comment">// InternalIterator cannot iterate over DELETE_RANGE entries.</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    }</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <a class="code hl_define" href="../../d8/d3c/util_8h.html#af743c8942d444daf4a94c469efa64dca">CHECK_TRUE</a>(it-&gt;Valid());</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <a class="code hl_struct" href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html">ParsedInternalKey</a> ikey;</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <a class="code hl_define" href="../../d8/d3c/util_8h.html#a44be0085dcbe7cee2636a69d16457f84">CHECK_OK</a>(ParseInternalKey(it-&gt;key(), &amp;ikey, <span class="comment">/*log_err_key=*/</span><span class="keyword">true</span>));</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <a class="code hl_define" href="../../d8/d3c/util_8h.html#abc966756c9622b65c37a842ea9159f44">CHECK_EQ</a>(ikey.<a class="code hl_variable" href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html#a3fa54a8b2f8309aaa3a5b685d058b786">user_key</a>.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ToString</a>(), op.key());</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <a class="code hl_define" href="../../d8/d3c/util_8h.html#abc966756c9622b65c37a842ea9159f44">CHECK_EQ</a>(ikey.<a class="code hl_variable" href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html#ab05f91e7025cda89ac36d14e6205ced8">sequence</a>, 0);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <a class="code hl_define" href="../../d8/d3c/util_8h.html#abc966756c9622b65c37a842ea9159f44">CHECK_EQ</a>(ikey.<a class="code hl_variable" href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html#abbfe057bb02455d894db433d44e7c3fe">type</a>, <a class="code hl_function" href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a3d328cc1a20221a56f9796bd03968a12">ToValueType</a>(op.type()));</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keywordflow">if</span> (op.type() != OpType::DELETE) {</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>      <a class="code hl_define" href="../../d8/d3c/util_8h.html#abc966756c9622b65c37a842ea9159f44">CHECK_EQ</a>(op.value(), it-&gt;value().ToString());</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    }</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    it-&gt;Next();</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  }</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <a class="code hl_define" href="../../d8/d3c/util_8h.html#af743c8942d444daf4a94c469efa64dca">CHECK_TRUE</a>(!it-&gt;Valid());</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  <span class="comment">// Delete sst file.</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  remove(sstfile.c_str());</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>}</div>
+</div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Comparator_html"><div class="ttname"><a href="../../dc/d3f/classROCKSDB__NAMESPACE_1_1Comparator.html">ROCKSDB_NAMESPACE::Comparator</a></div><div class="ttdef"><b>Definition</b> <a href="../../d3/df8/include_2rocksdb_2comparator_8h_source.html#l00044">comparator.h:44</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1CompareInterface_html_a3ade320bd39c9af6327110e65df81000"><div class="ttname"><a href="../../df/df1/classROCKSDB__NAMESPACE_1_1CompareInterface.html#a3ade320bd39c9af6327110e65df81000">ROCKSDB_NAMESPACE::CompareInterface::Compare</a></div><div class="ttdeci">virtual int Compare(const Slice &amp;a, const Slice &amp;b) const =0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a1be4ed1309b173fc7b7cad85e5ed1086"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a1be4ed1309b173fc7b7cad85e5ed1086">ROCKSDB_NAMESPACE::Env::GetFileSystem</a></div><div class="ttdeci">const std::shared_ptr&lt; FileSystem &gt; &amp; GetFileSystem() const</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d7d/env_8cc_source.html#l01173">env.cc:1173</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Env_html_a860678565518d1be1e4a879dd197b7d8"><div class="ttname"><a href="../../df/d9b/classROCKSDB__NAMESPACE_1_1Env.html#a860678565518d1be1e4a879dd197b7d8">ROCKSDB_NAMESPACE::Env::GetFileSize</a></div><div class="ttdeci">virtual Status GetFileSize(const std::string &amp;fname, uint64_t *file_size)=0</div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1FileSystem_html_a788539fff627c87d7e57b928d42829c8"><div class="ttname"><a href="../../d3/d26/classROCKSDB__NAMESPACE_1_1FileSystem.html#a788539fff627c87d7e57b928d42829c8">ROCKSDB_NAMESPACE::FileSystem::Default</a></div><div class="ttdeci">static std::shared_ptr&lt; FileSystem &gt; Default()</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d60/fs__posix_8cc_source.html#l01321">fs_posix.cc:1321</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1RandomAccessFileReader_html_a53e5958701cb07971b2126866714edf3"><div class="ttname"><a href="../../db/d39/classROCKSDB__NAMESPACE_1_1RandomAccessFileReader.html#a53e5958701cb07971b2126866714edf3">ROCKSDB_NAMESPACE::RandomAccessFileReader::Create</a></div><div class="ttdeci">static IOStatus Create(const std::shared_ptr&lt; FileSystem &gt; &amp;fs, const std::string &amp;fname, const FileOptions &amp;file_opts, std::unique_ptr&lt; RandomAccessFileReader &gt; *reader, IODebugContext *dbg)</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d08/random__access__file__reader_8cc_source.html#l00095">random_access_file_reader.cc:95</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a290b26395e5d5df4b78f0a164c7da733"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ROCKSDB_NAMESPACE::Slice::ToString</a></div><div class="ttdeci">std::string ToString(bool hex=false) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d5a/slice_8cc_source.html#l00292">slice.cc:292</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstFileWriter_html"><div class="ttname"><a href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html">ROCKSDB_NAMESPACE::SstFileWriter</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/dee/sst__file__writer_8h_source.html#l00083">sst_file_writer.h:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstFileWriter_html_a1f558f500d52f7de2c212daa5457c30d"><div class="ttname"><a href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#a1f558f500d52f7de2c212daa5457c30d">ROCKSDB_NAMESPACE::SstFileWriter::Put</a></div><div class="ttdeci">Status Put(const Slice &amp;user_key, const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d67/sst__file__writer_8cc_source.html#l00432">sst_file_writer.cc:432</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstFileWriter_html_a3bcdfeebf600e5162cbcc16697607f01"><div class="ttname"><a href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#a3bcdfeebf600e5162cbcc16697607f01">ROCKSDB_NAMESPACE::SstFileWriter::Open</a></div><div class="ttdeci">Status Open(const std::string &amp;file_path, Temperature temp=Temperature::kUnknown)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d67/sst__file__writer_8cc_source.html#l00330">sst_file_writer.cc:330</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstFileWriter_html_a43051600830b9c0b5b2b2b3b366ed003"><div class="ttname"><a href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#a43051600830b9c0b5b2b2b3b366ed003">ROCKSDB_NAMESPACE::SstFileWriter::Delete</a></div><div class="ttdeci">Status Delete(const Slice &amp;user_key)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d67/sst__file__writer_8cc_source.html#l00450">sst_file_writer.cc:450</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstFileWriter_html_a6e0b360ae0b22029fb75f71d601658c0"><div class="ttname"><a href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#a6e0b360ae0b22029fb75f71d601658c0">ROCKSDB_NAMESPACE::SstFileWriter::Merge</a></div><div class="ttdeci">Status Merge(const Slice &amp;user_key, const Slice &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d67/sst__file__writer_8cc_source.html#l00446">sst_file_writer.cc:446</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstFileWriter_html_a6e3450b054ebd345ce3b657c7cf80368"><div class="ttname"><a href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#a6e3450b054ebd345ce3b657c7cf80368">ROCKSDB_NAMESPACE::SstFileWriter::Finish</a></div><div class="ttdeci">Status Finish(ExternalSstFileInfo *file_info=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d67/sst__file__writer_8cc_source.html#l00469">sst_file_writer.cc:469</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1SstFileWriter_html_aac8dfd85920ab707e1e2b9813fd6dca3"><div class="ttname"><a href="../../dc/db2/classROCKSDB__NAMESPACE_1_1SstFileWriter.html#aac8dfd85920ab707e1e2b9813fd6dca3">ROCKSDB_NAMESPACE::SstFileWriter::DeleteRange</a></div><div class="ttdeci">Status DeleteRange(const Slice &amp;begin_key, const Slice &amp;end_key)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d67/sst__file__writer_8cc_source.html#l00459">sst_file_writer.cc:459</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html">ROCKSDB_NAMESPACE::Status</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00035">status.h:35</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a44cf4d9e0f59181d4838378a46b41c73"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a44cf4d9e0f59181d4838378a46b41c73">ROCKSDB_NAMESPACE::Status::ok</a></div><div class="ttdeci">bool ok() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00320">status.h:320</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a9405441372e0f9ce926cc59c37b00b11"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a9405441372e0f9ce926cc59c37b00b11">ROCKSDB_NAMESPACE::Status::ToString</a></div><div class="ttdeci">std::string ToString() const</div><div class="ttdef"><b>Definition</b> <a href="../../da/dc3/status_8cc_source.html#l00081">status.cc:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1TableReader_html"><div class="ttname"><a href="../../d8/d7c/classROCKSDB__NAMESPACE_1_1TableReader.html">ROCKSDB_NAMESPACE::TableReader</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/d98/table__reader_8h_source.html#l00040">table_reader.h:40</a></div></div>
+<div class="ttc" id="adb__map__fuzzer_8cc_html_a48f3263b8c790a268806be1a129ebcfc"><div class="ttname"><a href="../../d2/dc6/db__map__fuzzer_8cc.html#a48f3263b8c790a268806be1a129ebcfc">reg</a></div><div class="ttdeci">protobuf_mutator::libfuzzer::PostProcessorRegistration&lt; DBOperations &gt; reg</div><div class="ttdef"><b>Definition</b> <a href="../../d2/dc6/db__map__fuzzer_8cc_source.html#l00017">db_map_fuzzer.cc:17</a></div></div>
+<div class="ttc" id="afile__system_8h_html"><div class="ttname"><a href="../../d6/d8d/file__system_8h.html">file_system.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a07352f7dacd1a517cd84f38fd10c1010"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07352f7dacd1a517cd84f38fd10c1010">ROCKSDB_NAMESPACE::TableReaderCaller</a></div><div class="ttdeci">TableReaderCaller</div><div class="ttdef"><b>Definition</b> <a href="../../de/dc0/table__reader__caller_8h_source.html#l00016">table_reader_caller.h:16</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a63da61d97d5cc28e7b9c847bb8a76abc"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a63da61d97d5cc28e7b9c847bb8a76abc">ROCKSDB_NAMESPACE::ValueType</a></div><div class="ttdeci">ValueType</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00041">dbformat.h:41</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a7fae4a23fa6b9c2c08ee516677913d33"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a7fae4a23fa6b9c2c08ee516677913d33">ROCKSDB_NAMESPACE::ParseInternalKey</a></div><div class="ttdeci">Status ParseInternalKey(const Slice &amp;internal_key, ParsedInternalKey *result, bool log_err_key)</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00515">dbformat.h:515</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab22d3e48c76ac44adbd1699e8e1aef84"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab22d3e48c76ac44adbd1699e8e1aef84">ROCKSDB_NAMESPACE::BytewiseComparator</a></div><div class="ttdeci">const Comparator * BytewiseComparator()</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d09/comparator_8cc_source.html#l00322">comparator.cc:322</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_ab914b3e98761b03dc768578c4353c57a"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#ab914b3e98761b03dc768578c4353c57a">ROCKSDB_NAMESPACE::InternalIterator</a></div><div class="ttdeci">InternalIteratorBase&lt; Slice &gt; InternalIterator</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d33/internal__iterator_8h_source.html#l00227">internal_iterator.h:227</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_aec4ce90d41846978a4702e7e924468eb"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#aec4ce90d41846978a4702e7e924468eb">ROCKSDB_NAMESPACE::kMaxSequenceNumber</a></div><div class="ttdeci">static const SequenceNumber kMaxSequenceNumber</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00128">dbformat.h:128</a></div></div>
+<div class="ttc" id="anamespacestd_html_ae634fddc996b9fd1d88a852ef8a90ca3"><div class="ttname"><a href="../../d8/dcc/namespacestd.html#ae634fddc996b9fd1d88a852ef8a90ca3">std::swap</a></div><div class="ttdeci">void swap(ROCKSDB_NAMESPACE::port::WindowsThread &amp;th1, ROCKSDB_NAMESPACE::port::WindowsThread &amp;th2)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d78/win__thread_8h_source.html#l00111">win_thread.h:111</a></div></div>
+<div class="ttc" id="asst__file__writer_8h_html"><div class="ttname"><a href="../../d7/dee/sst__file__writer_8h.html">sst_file_writer.h</a></div></div>
+<div class="ttc" id="asst__file__writer__fuzzer_8cc_html_a3d328cc1a20221a56f9796bd03968a12"><div class="ttname"><a href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a3d328cc1a20221a56f9796bd03968a12">ToValueType</a></div><div class="ttdeci">ValueType ToValueType(OpType op_type)</div><div class="ttdef"><b>Definition</b> <a href="#l00110">sst_file_writer_fuzzer.cc:110</a></div></div>
+<div class="ttc" id="asst__file__writer__fuzzer_8cc_html_a734b78c2ddcf41e3190a6ee37abdf9c0"><div class="ttname"><a href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a734b78c2ddcf41e3190a6ee37abdf9c0">DEFINE_PROTO_FUZZER</a></div><div class="ttdeci">DEFINE_PROTO_FUZZER(DBOperations &amp;input)</div><div class="ttdef"><b>Definition</b> <a href="#l00130">sst_file_writer_fuzzer.cc:130</a></div></div>
+<div class="ttc" id="asst__file__writer__fuzzer_8cc_html_a90b5a8a91aca3cba4b841fb0c7295629"><div class="ttname"><a href="../../db/d21/sst__file__writer__fuzzer_8cc.html#a90b5a8a91aca3cba4b841fb0c7295629">NewTableReader</a></div><div class="ttdeci">TableReader * NewTableReader(const std::string &amp;sst_file_path, const Options &amp;options, const EnvOptions &amp;env_options, const ImmutableCFOptions &amp;cf_ioptions)</div><div class="ttdef"><b>Definition</b> <a href="#l00076">sst_file_writer_fuzzer.cc:76</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ColumnFamilyOptions_html_a4b5ad114d285c3130aaefaa14b350ce1"><div class="ttname"><a href="../../dc/d97/structROCKSDB__NAMESPACE_1_1ColumnFamilyOptions.html#a4b5ad114d285c3130aaefaa14b350ce1">ROCKSDB_NAMESPACE::ColumnFamilyOptions::table_factory</a></div><div class="ttdeci">std::shared_ptr&lt; TableFactory &gt; table_factory</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l00309">options.h:309</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1DBOptions_html_a8e8130980785981b140f6291ab0ec8bc"><div class="ttname"><a href="../../d8/d57/structROCKSDB__NAMESPACE_1_1DBOptions.html#a8e8130980785981b140f6291ab0ec8bc">ROCKSDB_NAMESPACE::DBOptions::env</a></div><div class="ttdeci">Env * env</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l00658">options.h:658</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1EnvOptions_html"><div class="ttname"><a href="../../df/d51/structROCKSDB__NAMESPACE_1_1EnvOptions.html">ROCKSDB_NAMESPACE::EnvOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d5/d81/env_8h_source.html#l00076">env.h:76</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ExternalSstFileInfo_html"><div class="ttname"><a href="../../d5/d0f/structROCKSDB__NAMESPACE_1_1ExternalSstFileInfo.html">ROCKSDB_NAMESPACE::ExternalSstFileInfo</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/dee/sst__file__writer_8h_source.html#l00031">sst_file_writer.h:31</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1FileOptions_html"><div class="ttname"><a href="../../de/dc1/structROCKSDB__NAMESPACE_1_1FileOptions.html">ROCKSDB_NAMESPACE::FileOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00179">file_system.h:179</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1IOOptions_html"><div class="ttname"><a href="../../d9/d1c/structROCKSDB__NAMESPACE_1_1IOOptions.html">ROCKSDB_NAMESPACE::IOOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d8d/file__system_8h_source.html#l00097">file_system.h:97</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ImmutableCFOptions_html"><div class="ttname"><a href="../../de/d54/structROCKSDB__NAMESPACE_1_1ImmutableCFOptions.html">ROCKSDB_NAMESPACE::ImmutableCFOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d27/cf__options_8h_source.html#l00022">cf_options.h:22</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ImmutableCFOptions_html_ac168f9c882be815e386d847c4d85ac24"><div class="ttname"><a href="../../de/d54/structROCKSDB__NAMESPACE_1_1ImmutableCFOptions.html#ac168f9c882be815e386d847c4d85ac24">ROCKSDB_NAMESPACE::ImmutableCFOptions::internal_comparator</a></div><div class="ttdeci">InternalKeyComparator internal_comparator</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d27/cf__options_8h_source.html#l00033">cf_options.h:33</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ImmutableOptions_html"><div class="ttname"><a href="../../d8/dab/structROCKSDB__NAMESPACE_1_1ImmutableOptions.html">ROCKSDB_NAMESPACE::ImmutableOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d27/cf__options_8h_source.html#l00087">cf_options.h:87</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1Options_html"><div class="ttname"><a href="../../d9/d25/structROCKSDB__NAMESPACE_1_1Options.html">ROCKSDB_NAMESPACE::Options</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01620">options.h:1620</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ParsedInternalKey_html"><div class="ttname"><a href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html">ROCKSDB_NAMESPACE::ParsedInternalKey</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00140">dbformat.h:140</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ParsedInternalKey_html_a3fa54a8b2f8309aaa3a5b685d058b786"><div class="ttname"><a href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html#a3fa54a8b2f8309aaa3a5b685d058b786">ROCKSDB_NAMESPACE::ParsedInternalKey::user_key</a></div><div class="ttdeci">Slice user_key</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00141">dbformat.h:141</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ParsedInternalKey_html_ab05f91e7025cda89ac36d14e6205ced8"><div class="ttname"><a href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html#ab05f91e7025cda89ac36d14e6205ced8">ROCKSDB_NAMESPACE::ParsedInternalKey::sequence</a></div><div class="ttdeci">SequenceNumber sequence</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00142">dbformat.h:142</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ParsedInternalKey_html_abbfe057bb02455d894db433d44e7c3fe"><div class="ttname"><a href="../../dd/da1/structROCKSDB__NAMESPACE_1_1ParsedInternalKey.html#abbfe057bb02455d894db433d44e7c3fe">ROCKSDB_NAMESPACE::ParsedInternalKey::type</a></div><div class="ttdeci">ValueType type</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d73/dbformat_8h_source.html#l00143">dbformat.h:143</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1ReadOptions_html"><div class="ttname"><a href="../../db/dea/structROCKSDB__NAMESPACE_1_1ReadOptions.html">ROCKSDB_NAMESPACE::ReadOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../d7/d5b/options_8h_source.html#l01680">options.h:1680</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableReaderOptions_html"><div class="ttname"><a href="../../de/dad/structROCKSDB__NAMESPACE_1_1TableReaderOptions.html">ROCKSDB_NAMESPACE::TableReaderOptions</a></div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00033">table_builder.h:33</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1TableReaderOptions_html_a714c1165661da9b03325c68e5b6506f6"><div class="ttname"><a href="../../de/dad/structROCKSDB__NAMESPACE_1_1TableReaderOptions.html#a714c1165661da9b03325c68e5b6506f6">ROCKSDB_NAMESPACE::TableReaderOptions::largest_seqno</a></div><div class="ttdeci">SequenceNumber largest_seqno</div><div class="ttdef"><b>Definition</b> <a href="../../de/d55/table__builder_8h_source.html#l00081">table_builder.h:81</a></div></div>
+<div class="ttc" id="atable__builder_8h_html"><div class="ttname"><a href="../../de/d55/table__builder_8h.html">table_builder.h</a></div></div>
+<div class="ttc" id="atable__reader_8h_html"><div class="ttname"><a href="../../d4/d98/table__reader_8h.html">table_reader.h</a></div></div>
+<div class="ttc" id="autil_8h_html"><div class="ttname"><a href="../../d8/d3c/util_8h.html">util.h</a></div></div>
+<div class="ttc" id="autil_8h_html_a44be0085dcbe7cee2636a69d16457f84"><div class="ttname"><a href="../../d8/d3c/util_8h.html#a44be0085dcbe7cee2636a69d16457f84">CHECK_OK</a></div><div class="ttdeci">#define CHECK_OK(expression)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d3c/util_8h_source.html#l00009">util.h:9</a></div></div>
+<div class="ttc" id="autil_8h_html_abc966756c9622b65c37a842ea9159f44"><div class="ttname"><a href="../../d8/d3c/util_8h.html#abc966756c9622b65c37a842ea9159f44">CHECK_EQ</a></div><div class="ttdeci">#define CHECK_EQ(a, b)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d3c/util_8h_source.html#l00018">util.h:18</a></div></div>
+<div class="ttc" id="autil_8h_html_af743c8942d444daf4a94c469efa64dca"><div class="ttname"><a href="../../d8/d3c/util_8h.html#af743c8942d444daf4a94c469efa64dca">CHECK_TRUE</a></div><div class="ttdeci">#define CHECK_TRUE(cond)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d3c/util_8h_source.html#l00025">util.h:25</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_b05962af846a36bbc52d05dfc046b2b4.html">fuzz</a></li><li class="navelem"><a class="el" href="../../db/d21/sst__file__writer__fuzzer_8cc.html">sst_file_writer_fuzzer.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

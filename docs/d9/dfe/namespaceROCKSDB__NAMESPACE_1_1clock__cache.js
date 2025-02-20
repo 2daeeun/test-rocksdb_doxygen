@@ -1,0 +1,28 @@
+var namespaceROCKSDB__NAMESPACE_1_1clock__cache =
+[
+    [ "AutoHyperClockCache", "d8/dbd/classROCKSDB__NAMESPACE_1_1clock__cache_1_1AutoHyperClockCache.html", "d8/dbd/classROCKSDB__NAMESPACE_1_1clock__cache_1_1AutoHyperClockCache" ],
+    [ "AutoHyperClockTable", "d1/d81/classROCKSDB__NAMESPACE_1_1clock__cache_1_1AutoHyperClockTable.html", "d1/d81/classROCKSDB__NAMESPACE_1_1clock__cache_1_1AutoHyperClockTable" ],
+    [ "BaseClockTable", "d9/dd4/classROCKSDB__NAMESPACE_1_1clock__cache_1_1BaseClockTable.html", "d9/dd4/classROCKSDB__NAMESPACE_1_1clock__cache_1_1BaseClockTable" ],
+    [ "BaseHyperClockCache", "de/d6f/classROCKSDB__NAMESPACE_1_1clock__cache_1_1BaseHyperClockCache.html", "de/d6f/classROCKSDB__NAMESPACE_1_1clock__cache_1_1BaseHyperClockCache" ],
+    [ "ClockCacheTest", "df/d44/classROCKSDB__NAMESPACE_1_1clock__cache_1_1ClockCacheTest.html", "df/d44/classROCKSDB__NAMESPACE_1_1clock__cache_1_1ClockCacheTest" ],
+    [ "ClockHandle", "d7/d95/structROCKSDB__NAMESPACE_1_1clock__cache_1_1ClockHandle.html", "d7/d95/structROCKSDB__NAMESPACE_1_1clock__cache_1_1ClockHandle" ],
+    [ "ClockHandleBasicData", "d1/d57/structROCKSDB__NAMESPACE_1_1clock__cache_1_1ClockHandleBasicData.html", "d1/d57/structROCKSDB__NAMESPACE_1_1clock__cache_1_1ClockHandleBasicData" ],
+    [ "FixedHyperClockCache", "de/d13/classROCKSDB__NAMESPACE_1_1clock__cache_1_1FixedHyperClockCache.html", "de/d13/classROCKSDB__NAMESPACE_1_1clock__cache_1_1FixedHyperClockCache" ],
+    [ "FixedHyperClockTable", "d3/d91/classROCKSDB__NAMESPACE_1_1clock__cache_1_1FixedHyperClockTable.html", "d3/d91/classROCKSDB__NAMESPACE_1_1clock__cache_1_1FixedHyperClockTable" ],
+    [ "LoadVarianceStats", "db/d3f/classROCKSDB__NAMESPACE_1_1clock__cache_1_1LoadVarianceStats.html", "db/d3f/classROCKSDB__NAMESPACE_1_1clock__cache_1_1LoadVarianceStats" ],
+    [ "ClockCacheTypes", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#ac9da39bc72bc3f699ad7f7dfb3bb01be", null ],
+    [ "ClockUpdateChainLockedOpData", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#a470a3872094d612cdd54f3dbed329085", null ],
+    [ "ClockUpdateChainOpData", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#a298e8cae8e125a06bf157eb80eb13e95", null ],
+    [ "PurgeLockedOpData", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#ae1e84f46ab62a996f0a3a49003456084", null ],
+    [ "PurgeOpData", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#a48b0be0c96d685297593378fc5fd8973", null ],
+    [ "IsEvictionEffortExceeded", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#ab9d2629b7bb55879c4db7eb3c0ac8e41", null ],
+    [ "TYPED_TEST", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#a9ac0d61a7d049ca08ff3034b43d1b72b", null ],
+    [ "TYPED_TEST", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#a2641ed4c522a45269b710483a608f791", null ],
+    [ "TYPED_TEST", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#ab3d77a7a1598299120dffa3bf02b3f2f", null ],
+    [ "TYPED_TEST", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#a87710677c426b2a5279139dfd405001a", null ],
+    [ "TYPED_TEST", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#a4187f8253ddc0b8052032675a02608fc", null ],
+    [ "TYPED_TEST", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#ab673429c61ee114e6c879b65a2397aa6", null ],
+    [ "TYPED_TEST", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#a13f2c34917c7c46800f9ab153aeae627", null ],
+    [ "TYPED_TEST", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#a9d5fb7420b9c2bb88554fc29029d7266", null ],
+    [ "TYPED_TEST_CASE", "d9/dfe/namespaceROCKSDB__NAMESPACE_1_1clock__cache.html#a8a3a0f4b56f20b8ddfb81f626cbf2dd3", null ]
+];

@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RocksDB Doxygen: util/status.cc 소스 파일</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">RocksDB Doxygen
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','검색',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('da/dc3/status_8cc_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">로딩중...</div>
+<div class="SRStatus" id="Searching">검색중...</div>
+<div class="SRStatus" id="NoMatches">일치하는것 없음</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">status.cc</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../da/dc3/status_8cc.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//  Copyright (c) 2011-present, Facebook, Inc.  All rights reserved.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//  This source code is licensed under both the GPLv2 (found in the</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//  COPYING file in the root directory) and Apache 2.0 License</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//  (found in the LICENSE.Apache file in the root directory).</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">// Copyright (c) 2011 The LevelDB Authors. All rights reserved.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// Use of this source code is governed by a BSD-style license that can be</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// found in the LICENSE file. See the AUTHORS file for names of contributors.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../d9/dd0/include_2rocksdb_2status_8h.html">rocksdb/status.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#ifdef OS_WIN</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;string.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;cstring&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d00/port_8h.html">port/port.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a3c86cebd545e86b1cb450853649d8fb1">   22</a></span>std::unique_ptr&lt;const char[]&gt; <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a3c86cebd545e86b1cb450853649d8fb1">Status::CopyState</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> cch = std::strlen(s) + 1;  <span class="comment">// +1 for the null terminator</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordtype">char</span>* rv = <span class="keyword">new</span> <span class="keywordtype">char</span>[cch];</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  std::strncpy(rv, s, cch);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordflow">return</span> std::unique_ptr&lt;const char[]&gt;(rv);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}</div>
+</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="};">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07cafac1dc14f7869a3fbfb95f9df71f">   29</a></span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07cafac1dc14f7869a3fbfb95f9df71f">msgs</a>[<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34a9cb65620bbbf3470a85c31603398c138">Status::kMaxSubCode</a>)] = {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="stringliteral">&quot;&quot;</span>,                                                   <span class="comment">// kNone</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="stringliteral">&quot;Timeout Acquiring Mutex&quot;</span>,                            <span class="comment">// kMutexTimeout</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="stringliteral">&quot;Timeout waiting to lock key&quot;</span>,                        <span class="comment">// kLockTimeout</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="stringliteral">&quot;Failed to acquire lock due to max_num_locks limit&quot;</span>,  <span class="comment">// kLockLimit</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="stringliteral">&quot;No space left on device&quot;</span>,                            <span class="comment">// kNoSpace</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="stringliteral">&quot;Deadlock&quot;</span>,                                           <span class="comment">// kDeadlock</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="stringliteral">&quot;Stale file handle&quot;</span>,                                  <span class="comment">// kStaleFile</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="stringliteral">&quot;Memory limit reached&quot;</span>,                               <span class="comment">// kMemoryLimit</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="stringliteral">&quot;Space limit reached&quot;</span>,                                <span class="comment">// kSpaceLimit</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="stringliteral">&quot;No such file or directory&quot;</span>,                          <span class="comment">// kPathNotFound</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// KMergeOperandsInsufficientCapacity</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="stringliteral">&quot;Insufficient capacity for merge operands&quot;</span>,</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="comment">// kManualCompactionPaused</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="stringliteral">&quot;Manual compaction paused&quot;</span>,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="stringliteral">&quot; (overwritten)&quot;</span>,         <span class="comment">// kOverwritten, subcode of OK</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="stringliteral">&quot;Txn not prepared&quot;</span>,       <span class="comment">// kTxnNotPrepared</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="stringliteral">&quot;IO fenced off&quot;</span>,          <span class="comment">// kIOFenced</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="stringliteral">&quot;Merge operator failed&quot;</span>,  <span class="comment">// kMergeOperatorFailed</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="stringliteral">&quot;Number of operands merged exceeded threshold&quot;</span>,  <span class="comment">// kMergeOperandThresholdExceeded</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>};</div>
+</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#ac520fff9a4f510208d6264f19335f446">   51</a></span><a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a9f76d02ed8e41702a1388cd092a12464">Status::Status</a>(<a class="code hl_enumeration" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14">Code</a> _code, <a class="code hl_enumeration" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34">SubCode</a> _subcode, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; msg,</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>               <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; msg2, <a class="code hl_enumeration" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a0544a1d60b41a3a7f34cbaaf8854959b">Severity</a> sev)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    : <a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fc7ddb8613f2ccb5829a189d604599b">code_</a>(_code),</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      <a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a93d03d86cd2871315c813741a01fcf57">subcode_</a>(_subcode),</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#aedf2e3fdc20deac6e76dfe976d7de109">sev_</a>(sev),</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a3fd228764d331d081ee1b4e412a230d2">retryable_</a>(false),</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a76662342eec5813645856fbab5dbbc94">data_loss_</a>(false),</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      <a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a74132a4ee1e4aa48b18e0b9a035e3b2b">scope_</a>(0) {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  assert(<a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a93d03d86cd2871315c813741a01fcf57">subcode_</a> != <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34a9cb65620bbbf3470a85c31603398c138">kMaxSubCode</a>);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> len1 = msg.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>();</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> len2 = msg2.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">size</a>();</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> size = len1 + (len2 ? (2 + len2) : 0);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordtype">char</span>* <span class="keyword">const</span> result = <span class="keyword">new</span> <span class="keywordtype">char</span>[size + 1];  <span class="comment">// +1 for null terminator</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  memcpy(result, msg.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">data</a>(), len1);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordflow">if</span> (len2) {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    result[len1] = <span class="charliteral">&#39;:&#39;</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    result[len1 + 1] = <span class="charliteral">&#39; &#39;</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    memcpy(result + len1 + 2, msg2.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">data</a>(), len2);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  result[size] = <span class="charliteral">&#39;\0&#39;</span>;  <span class="comment">// null terminator for C style string</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a36187e693d58b9d0bae1332a0203c395">state_</a>.reset(result);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>}</div>
+</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="foldopen" id="foldopen00074" data-start="{" data-end="}">
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a64a5bd9f87a01cbe2e4bd495f0518bc8">   74</a></span><a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a9f76d02ed8e41702a1388cd092a12464">Status</a> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a64a5bd9f87a01cbe2e4bd495f0518bc8">Status::CopyAppendMessage</a>(<span class="keyword">const</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a9f76d02ed8e41702a1388cd092a12464">Status</a>&amp; s, <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; delim,</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                                 <span class="keyword">const</span> <a class="code hl_class" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">Slice</a>&amp; msg) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// (No attempt at efficiency)</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a9f76d02ed8e41702a1388cd092a12464">Status</a>(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#afc660ff45fc7c890834fd65eb0ee6c9c">code</a>(), s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a050fc5495745ccd2e8fe55855178ae67">subcode</a>(), s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a3dd4ad65887b26c97b6e211cf1d0cd7a">severity</a>(),</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                std::string(s.<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a52baac1bc012bbeed9c5563ab9f51159">getState</a>()) + delim.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ToString</a>() + msg.<a class="code hl_function" href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ToString</a>());</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>}</div>
+</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="foldopen" id="foldopen00081" data-start="{" data-end="}">
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a9405441372e0f9ce926cc59c37b00b11">   81</a></span>std::string <a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a9405441372e0f9ce926cc59c37b00b11">Status::ToString</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#ifdef ROCKSDB_ASSERT_STATUS_CHECKED</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  checked_ = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#endif  </span><span class="comment">// ROCKSDB_ASSERT_STATUS_CHECKED</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fc7ddb8613f2ccb5829a189d604599b">code_</a>) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a645e8814603c6f6e0bbbf879093427fc">kOk</a>:</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;OK&quot;</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a921b510f54610ebe113f3ebc49e32c2c">kNotFound</a>:</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;NotFound: &quot;</span>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a444d5d17b5ea472c122507b9b7d8d88e">kCorruption</a>:</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Corruption: &quot;</span>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14aef5096a55ab822bf4efe0001e9d4ba56">kNotSupported</a>:</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Not implemented: &quot;</span>;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a770cabc25612cba9f1fe4668ad48f448">kInvalidArgument</a>:</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Invalid argument: &quot;</span>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a88f30f2b92c38b1d2bb32ea2705e2f45">kIOError</a>:</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;IO error: &quot;</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14ac39c3f01824e36ed2cd06578742d1ceb">kMergeInProgress</a>:</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Merge in progress: &quot;</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14ae0ec68d51362b90b3481255a9d4ccd7c">kIncomplete</a>:</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Result incomplete: &quot;</span>;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a71c434609a4af6b86ce7ae8a8a48ad56">kShutdownInProgress</a>:</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Shutdown in progress: &quot;</span>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a5449b870b8fc52404f8a959cff4eaa87">kTimedOut</a>:</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Operation timed out: &quot;</span>;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14ab6387174c43ed819f9117389d520764e">kAborted</a>:</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Operation aborted: &quot;</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14abba863996f3c5fe16c80efc87eaad09c">kBusy</a>:</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Resource busy: &quot;</span>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a3f985888a2d93c4c8493feff9a87b43b">kExpired</a>:</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Operation expired: &quot;</span>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14ac1cb8b31c779711552a397aa728d1fc1">kTryAgain</a>:</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Operation failed. Try again.: &quot;</span>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a6d9661a22f09f6618e5337ba79ee863a">kCompactionTooLarge</a>:</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Compaction too large: &quot;</span>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a73386f2f203ae1b5f275b9de9eb8f8ca">kColumnFamilyDropped</a>:</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = <span class="stringliteral">&quot;Column family dropped: &quot;</span>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14aa9f7364fd8652aafb83585d430afc2d9">kMaxCode</a>:</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keywordtype">char</span> tmp[30];</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="keywordflow">if</span> (<a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="comment">// This should not happen since `code_` should be a valid non-`kMaxCode`</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="comment">// member of the `Code` enum. The above switch-statement should have had a</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="comment">// case assigning `type` to a corresponding string.</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    snprintf(tmp, <span class="keyword">sizeof</span>(tmp), <span class="stringliteral">&quot;Unknown code(%d): &quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#afc660ff45fc7c890834fd65eb0ee6c9c">code</a>()));</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a> = tmp;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  std::string result(<a class="code hl_class" href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">type</a>);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a93d03d86cd2871315c813741a01fcf57">subcode_</a> != <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34a62442baf1e207dd6d9c9828a2e422873">kNone</a>) {</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    uint32_t index = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a93d03d86cd2871315c813741a01fcf57">subcode_</a>);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    assert(<span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07cafac1dc14f7869a3fbfb95f9df71f">msgs</a>) / <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07cafac1dc14f7869a3fbfb95f9df71f">msgs</a>[0]) &gt; index);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    result.append(<a class="code hl_variable" href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07cafac1dc14f7869a3fbfb95f9df71f">msgs</a>[index]);</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  }</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a36187e693d58b9d0bae1332a0203c395">state_</a> != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a93d03d86cd2871315c813741a01fcf57">subcode_</a> != <a class="code hl_enumvalue" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34a62442baf1e207dd6d9c9828a2e422873">kNone</a>) {</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      result.append(<span class="stringliteral">&quot;: &quot;</span>);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    }</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    result.append(<a class="code hl_variable" href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a36187e693d58b9d0bae1332a0203c395">state_</a>.get());</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  }</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>}</div>
+</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>}  <span class="comment">// namespace ROCKSDB_NAMESPACE</span></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html">ROCKSDB_NAMESPACE::Slice</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00032">slice.h:32</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a290b26395e5d5df4b78f0a164c7da733"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a290b26395e5d5df4b78f0a164c7da733">ROCKSDB_NAMESPACE::Slice::ToString</a></div><div class="ttdeci">std::string ToString(bool hex=false) const</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d5a/slice_8cc_source.html#l00292">slice.cc:292</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a47c51c16ecee27b619768f1b817a342c"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a47c51c16ecee27b619768f1b817a342c">ROCKSDB_NAMESPACE::Slice::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00060">slice.h:60</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Slice_html_a5230d45b66475f5e342a7654313d4c0e"><div class="ttname"><a href="../../de/dc6/classROCKSDB__NAMESPACE_1_1Slice.html#a5230d45b66475f5e342a7654313d4c0e">ROCKSDB_NAMESPACE::Slice::data</a></div><div class="ttdeci">const char * data() const</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d48/slice_8h_source.html#l00057">slice.h:57</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a050fc5495745ccd2e8fe55855178ae67"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a050fc5495745ccd2e8fe55855178ae67">ROCKSDB_NAMESPACE::Status::subcode</a></div><div class="ttdeci">SubCode subcode() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00121">status.h:121</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a0544a1d60b41a3a7f34cbaaf8854959b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a0544a1d60b41a3a7f34cbaaf8854959b">ROCKSDB_NAMESPACE::Status::Severity</a></div><div class="ttdeci">Severity</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00126">status.h:126</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14">ROCKSDB_NAMESPACE::Status::Code</a></div><div class="ttdeci">Code</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00075">status.h:75</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14a3f985888a2d93c4c8493feff9a87b43b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a3f985888a2d93c4c8493feff9a87b43b">ROCKSDB_NAMESPACE::Status::kExpired</a></div><div class="ttdeci">@ kExpired</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00088">status.h:88</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14a444d5d17b5ea472c122507b9b7d8d88e"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a444d5d17b5ea472c122507b9b7d8d88e">ROCKSDB_NAMESPACE::Status::kCorruption</a></div><div class="ttdeci">@ kCorruption</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00078">status.h:78</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14a5449b870b8fc52404f8a959cff4eaa87"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a5449b870b8fc52404f8a959cff4eaa87">ROCKSDB_NAMESPACE::Status::kTimedOut</a></div><div class="ttdeci">@ kTimedOut</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00085">status.h:85</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14a645e8814603c6f6e0bbbf879093427fc"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a645e8814603c6f6e0bbbf879093427fc">ROCKSDB_NAMESPACE::Status::kOk</a></div><div class="ttdeci">@ kOk</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00076">status.h:76</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14a6d9661a22f09f6618e5337ba79ee863a"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a6d9661a22f09f6618e5337ba79ee863a">ROCKSDB_NAMESPACE::Status::kCompactionTooLarge</a></div><div class="ttdeci">@ kCompactionTooLarge</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00090">status.h:90</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14a71c434609a4af6b86ce7ae8a8a48ad56"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a71c434609a4af6b86ce7ae8a8a48ad56">ROCKSDB_NAMESPACE::Status::kShutdownInProgress</a></div><div class="ttdeci">@ kShutdownInProgress</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00084">status.h:84</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14a73386f2f203ae1b5f275b9de9eb8f8ca"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a73386f2f203ae1b5f275b9de9eb8f8ca">ROCKSDB_NAMESPACE::Status::kColumnFamilyDropped</a></div><div class="ttdeci">@ kColumnFamilyDropped</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00091">status.h:91</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14a770cabc25612cba9f1fe4668ad48f448"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a770cabc25612cba9f1fe4668ad48f448">ROCKSDB_NAMESPACE::Status::kInvalidArgument</a></div><div class="ttdeci">@ kInvalidArgument</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00080">status.h:80</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14a88f30f2b92c38b1d2bb32ea2705e2f45"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a88f30f2b92c38b1d2bb32ea2705e2f45">ROCKSDB_NAMESPACE::Status::kIOError</a></div><div class="ttdeci">@ kIOError</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00081">status.h:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14a921b510f54610ebe113f3ebc49e32c2c"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14a921b510f54610ebe113f3ebc49e32c2c">ROCKSDB_NAMESPACE::Status::kNotFound</a></div><div class="ttdeci">@ kNotFound</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00077">status.h:77</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14aa9f7364fd8652aafb83585d430afc2d9"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14aa9f7364fd8652aafb83585d430afc2d9">ROCKSDB_NAMESPACE::Status::kMaxCode</a></div><div class="ttdeci">@ kMaxCode</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00092">status.h:92</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14ab6387174c43ed819f9117389d520764e"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14ab6387174c43ed819f9117389d520764e">ROCKSDB_NAMESPACE::Status::kAborted</a></div><div class="ttdeci">@ kAborted</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00086">status.h:86</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14abba863996f3c5fe16c80efc87eaad09c"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14abba863996f3c5fe16c80efc87eaad09c">ROCKSDB_NAMESPACE::Status::kBusy</a></div><div class="ttdeci">@ kBusy</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00087">status.h:87</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14ac1cb8b31c779711552a397aa728d1fc1"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14ac1cb8b31c779711552a397aa728d1fc1">ROCKSDB_NAMESPACE::Status::kTryAgain</a></div><div class="ttdeci">@ kTryAgain</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00089">status.h:89</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14ac39c3f01824e36ed2cd06578742d1ceb"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14ac39c3f01824e36ed2cd06578742d1ceb">ROCKSDB_NAMESPACE::Status::kMergeInProgress</a></div><div class="ttdeci">@ kMergeInProgress</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00082">status.h:82</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14ae0ec68d51362b90b3481255a9d4ccd7c"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14ae0ec68d51362b90b3481255a9d4ccd7c">ROCKSDB_NAMESPACE::Status::kIncomplete</a></div><div class="ttdeci">@ kIncomplete</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00083">status.h:83</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a24da4a2cbcd367c98a8366eef8af3f14aef5096a55ab822bf4efe0001e9d4ba56"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a24da4a2cbcd367c98a8366eef8af3f14aef5096a55ab822bf4efe0001e9d4ba56">ROCKSDB_NAMESPACE::Status::kNotSupported</a></div><div class="ttdeci">@ kNotSupported</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00079">status.h:79</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a36187e693d58b9d0bae1332a0203c395"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a36187e693d58b9d0bae1332a0203c395">ROCKSDB_NAMESPACE::Status::state_</a></div><div class="ttdeci">std::unique_ptr&lt; const char[]&gt; state_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00500">status.h:500</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a384eddcdea39c77626913680da62aa34"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34">ROCKSDB_NAMESPACE::Status::SubCode</a></div><div class="ttdeci">SubCode</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00100">status.h:100</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a384eddcdea39c77626913680da62aa34a62442baf1e207dd6d9c9828a2e422873"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34a62442baf1e207dd6d9c9828a2e422873">ROCKSDB_NAMESPACE::Status::kNone</a></div><div class="ttdeci">@ kNone</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00101">status.h:101</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a384eddcdea39c77626913680da62aa34a9cb65620bbbf3470a85c31603398c138"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a384eddcdea39c77626913680da62aa34a9cb65620bbbf3470a85c31603398c138">ROCKSDB_NAMESPACE::Status::kMaxSubCode</a></div><div class="ttdeci">@ kMaxSubCode</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00118">status.h:118</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a3c86cebd545e86b1cb450853649d8fb1"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a3c86cebd545e86b1cb450853649d8fb1">ROCKSDB_NAMESPACE::Status::CopyState</a></div><div class="ttdeci">static std::unique_ptr&lt; const char[]&gt; CopyState(const char *s)</div><div class="ttdef"><b>Definition</b> <a href="#l00022">status.cc:22</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a3dd4ad65887b26c97b6e211cf1d0cd7a"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a3dd4ad65887b26c97b6e211cf1d0cd7a">ROCKSDB_NAMESPACE::Status::severity</a></div><div class="ttdeci">Severity severity() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00143">status.h:143</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a3fd228764d331d081ee1b4e412a230d2"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a3fd228764d331d081ee1b4e412a230d2">ROCKSDB_NAMESPACE::Status::retryable_</a></div><div class="ttdeci">bool retryable_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00495">status.h:495</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a52baac1bc012bbeed9c5563ab9f51159"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a52baac1bc012bbeed9c5563ab9f51159">ROCKSDB_NAMESPACE::Status::getState</a></div><div class="ttdeci">const char * getState() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00149">status.h:149</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a5fc7ddb8613f2ccb5829a189d604599b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a5fc7ddb8613f2ccb5829a189d604599b">ROCKSDB_NAMESPACE::Status::code_</a></div><div class="ttdeci">Code code_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00492">status.h:492</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a64a5bd9f87a01cbe2e4bd495f0518bc8"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a64a5bd9f87a01cbe2e4bd495f0518bc8">ROCKSDB_NAMESPACE::Status::CopyAppendMessage</a></div><div class="ttdeci">static Status CopyAppendMessage(const Status &amp;s, const Slice &amp;delim, const Slice &amp;msg)</div><div class="ttdef"><b>Definition</b> <a href="#l00074">status.cc:74</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a74132a4ee1e4aa48b18e0b9a035e3b2b"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a74132a4ee1e4aa48b18e0b9a035e3b2b">ROCKSDB_NAMESPACE::Status::scope_</a></div><div class="ttdeci">unsigned char scope_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00497">status.h:497</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a76662342eec5813645856fbab5dbbc94"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a76662342eec5813645856fbab5dbbc94">ROCKSDB_NAMESPACE::Status::data_loss_</a></div><div class="ttdeci">bool data_loss_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00496">status.h:496</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a93d03d86cd2871315c813741a01fcf57"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a93d03d86cd2871315c813741a01fcf57">ROCKSDB_NAMESPACE::Status::subcode_</a></div><div class="ttdeci">SubCode subcode_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00493">status.h:493</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a9405441372e0f9ce926cc59c37b00b11"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a9405441372e0f9ce926cc59c37b00b11">ROCKSDB_NAMESPACE::Status::ToString</a></div><div class="ttdeci">std::string ToString() const</div><div class="ttdef"><b>Definition</b> <a href="#l00081">status.cc:81</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_a9f76d02ed8e41702a1388cd092a12464"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#a9f76d02ed8e41702a1388cd092a12464">ROCKSDB_NAMESPACE::Status::Status</a></div><div class="ttdeci">Status()</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00038">status.h:38</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_aedf2e3fdc20deac6e76dfe976d7de109"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#aedf2e3fdc20deac6e76dfe976d7de109">ROCKSDB_NAMESPACE::Status::sev_</a></div><div class="ttdeci">Severity sev_</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00494">status.h:494</a></div></div>
+<div class="ttc" id="aclassROCKSDB__NAMESPACE_1_1Status_html_afc660ff45fc7c890834fd65eb0ee6c9c"><div class="ttname"><a href="../../d4/d5b/classROCKSDB__NAMESPACE_1_1Status.html#afc660ff45fc7c890834fd65eb0ee6c9c">ROCKSDB_NAMESPACE::Status::code</a></div><div class="ttdeci">Code code() const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/dd0/include_2rocksdb_2status_8h_source.html#l00095">status.h:95</a></div></div>
+<div class="ttc" id="ainclude_2rocksdb_2status_8h_html"><div class="ttname"><a href="../../d9/dd0/include_2rocksdb_2status_8h.html">status.h</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html">ROCKSDB_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d4b/cache_8cc_source.html#l00018">cache.cc:18</a></div></div>
+<div class="ttc" id="anamespaceROCKSDB__NAMESPACE_html_a07cafac1dc14f7869a3fbfb95f9df71f"><div class="ttname"><a href="../../d1/d23/namespaceROCKSDB__NAMESPACE.html#a07cafac1dc14f7869a3fbfb95f9df71f">ROCKSDB_NAMESPACE::msgs</a></div><div class="ttdeci">static const char * msgs[static_cast&lt; int &gt;(Status::kMaxSubCode)]</div><div class="ttdef"><b>Definition</b> <a href="#l00029">status.cc:29</a></div></div>
+<div class="ttc" id="aport_8h_html"><div class="ttname"><a href="../../da/d00/port_8h.html">port.h</a></div></div>
+<div class="ttc" id="astructROCKSDB__NAMESPACE_1_1aligned__storage_html"><div class="ttname"><a href="../../de/da8/structROCKSDB__NAMESPACE_1_1aligned__storage.html">ROCKSDB_NAMESPACE::type</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_23ec12649285f9fabf3a6b7380226c28.html">util</a></li><li class="navelem"><a class="el" href="../../da/dc3/status_8cc.html">status.cc</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

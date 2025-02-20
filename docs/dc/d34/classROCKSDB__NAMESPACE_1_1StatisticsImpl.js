@@ -1,0 +1,27 @@
+var classROCKSDB__NAMESPACE_1_1StatisticsImpl =
+[
+    [ "StatisticsImpl", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a823bdc44df446bbee60cc4c6a1e63f45", null ],
+    [ "~StatisticsImpl", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a55b82260f1403513fe134e847eb2901f", null ],
+    [ "ALIGN_AS", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#accd9bd3f188aeef2219e41637edeab72", null ],
+    [ "getAndResetTickerCount", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a8a9c010dd9832459e872552601b7bf47", null ],
+    [ "getHistogramImplLocked", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a010bccb3be3c230b3b6868c1b731d9f6", null ],
+    [ "getHistogramString", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a2dca58920ff637ba9366536b1b942615", null ],
+    [ "getTickerCount", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a7da1f2e6f012880cc3db6a6a54c0346c", null ],
+    [ "getTickerCountLocked", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#abe8957be615d3a585a866437f7fa3eaf", null ],
+    [ "getTickerMap", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#ab290c8596723e0d5faf5171217731638", null ],
+    [ "HistEnabledForType", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a467deb32c614eedbac9eb1fa5a2e5e72", null ],
+    [ "histogramData", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a805757ff42e0f1616f5b25e32afd462c", null ],
+    [ "Inner", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a80a2fe32cd297a5a51f12640559ada73", null ],
+    [ "kClassName", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#ab69bb4f2115b64a4e666e8b9c3d01257", null ],
+    [ "measureTime", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a5853daeff6799405de47d781bb0c779e", null ],
+    [ "Name", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a79de5e1aa5c0a59506fc1cc09ab02f2b", null ],
+    [ "recordInHistogram", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a69ca37cda9fb049d1f650f85127ad1cc", null ],
+    [ "recordTick", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a188d2218bcfbb5143cab325828c51672", null ],
+    [ "Reset", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a2c05f346aea34a9b90119368ff472df5", null ],
+    [ "setTickerCount", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#aa77a908c536b22b9cdf993cdb1d17023", null ],
+    [ "setTickerCountLocked", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#affe62c0f37724d2df2e4ec96c5c230c8", null ],
+    [ "ToString", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a3c3678f0fc48a9467888df8e12473620", null ],
+    [ "aggregate_lock_", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#abae641d74686af242b9861e51e9a77d2", null ],
+    [ "per_core_stats_", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a573d34e38e00a59f22cc6e7ddb8c8fbd", null ],
+    [ "stats_", "dc/d34/classROCKSDB__NAMESPACE_1_1StatisticsImpl.html#a16c2307cbcbe0ad7c3fef0be437e715a", null ]
+];
