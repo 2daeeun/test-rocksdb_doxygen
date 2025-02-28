@@ -1,9 +1,3 @@
-### RocksDB Doxygen 다운받기
-```bash
-git clone https://github.com/2daeeun/rocksdb_doxygen.git
-cd rocksdb_doxygen
-```
-
 ### Doxygen 설치하기
 - **Ubuntu**:
   ```bash
@@ -14,10 +8,14 @@ cd rocksdb_doxygen
   sudo pacman -S doxygen graphviz
   ```
 
-
+### RocksDB Doxygen 저장소 다운받기
+```bash
+git clone https://github.com/2daeeun/rocksdb_doxygen.git
+cd rocksdb_doxygen
+```
 
 ### 원본 RocksDB의 최신 브랜치 가져오기
-(예: v9.10.0)
+예: v9.10.0
 ```bash
 git remote add upstream https://github.com/facebook/rocksdb.git
 git fetch upstream
@@ -28,15 +26,22 @@ git push origin v9.10.0_doxygen
 
 
 ### Git Submodule (Doxygen Awesome)
+커밋 메시지: add: Doxygen Awesome (CSS)
 ```bash
 git submodule add https://github.com/jothepro/doxygen-awesome-css.git
 cd doxygen-awesome-css
 git checkout v2.3.4
-cd..
+cd ..
 ```
 
-### Commit 해야 할 것
-* Doxyfile
-* doxygen-awesome-css
-* Doxygen 생성 파일 
-  * 커밋 내용: Generate Doxygen documentation for RocksDB v9.10.0 (1/3))
+### Doxyfile
+커밋 메시지: add: Doxyfile
+```bash
+wget https://raw.githubusercontent.com/2daeeun/rocksdb_doxygen/refs/heads/main/Doxyfile.md
+git add Doxyfile
+git commit -m "add: Doxyfile"
+```
+
+### Generate Doxygen documentation
+예: v9.10.0  
+커밋 메시지: Generate Doxygen documentation for RocksDB v9.10.0 (n/3))
